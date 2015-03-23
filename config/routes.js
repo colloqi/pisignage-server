@@ -1,0 +1,76 @@
+'use strict';
+
+var express = require('express'),
+    router = express.Router();
+
+var index = require('../app/controllers/index');
+
+var assets = require('../app/controllers/assets'),
+    playlists = require('../app/controllers/playlists'),
+    players = require('../app/controllers/players'),
+    groups = require('../app/controllers/groups'),
+    labels = require('../app/controllers/labels'),
+    gcalAuthorize = require('../app/controllers/gcal-authorize');
+
+/**
+ * Application routes
+ */
+
+//Server Routes
+router.get('/auth/gcal/callback', gcalAuthorize.gCalCallback)     // from Google
+router.post('/api/gcal/authorize', gcalAuthorize.gCalAuthorize)   //from client
+
+router.get('/api/files', assets.index);
+router.get('/api/files/:file', assets.getFileDetails);
+router.post('/api/files', assets.createFiles);
+router.post('/api/postupload', assets.updateFileDetails);
+router.post('/api/files/:file', assets.updateAsset);
+router.del('/api/files/:file', assets.deleteFile);
+
+router.get('/api/calendars/:file', assets.getCalendar);
+router.post('/api/calendars/:file', assets.updateCalendar);
+router.del('/api/calendars/:file', assets.deleteFile);
+
+router.post('/api/links', assets.createLinkFile);
+router.get('/api/links/:file', assets.getLinkFileDetails);
+
+router.get('/api/playlists', playlists.index);
+router.get('/api/playlists/:file', playlists.getPlaylist);
+router.post('/api/playlists', playlists.createPlaylist);
+router.post('/api/playlists/:file', playlists.savePlaylist);
+
+// group routes
+router.get('/api/groups', groups.index)
+router.get('/api/groups/:groupid', groups.getObject)
+router.post('/api/groups', groups.createObject)
+router.post('/api/groups/:groupid', groups.updateObject)
+router.del('/api/groups/:groupid', groups.deleteObject)
+
+router.param(':groupid', groups.loadObject)
+
+router.get('/api/players', players.index);
+router.get('/api/players/:playerid', players.getObject)
+router.post('/api/players', players.createObject)
+router.post('/api/players/:playerid', players.updateObject)
+router.del('/api/players/:playerid', players.deleteObject)
+
+router.post('/api/pishell/:playerid', players.shell)
+router.post('/api/swupdate/:playerid', players.swupdate)
+
+router.param(':playerid', players.loadObject)
+
+router.get('/api/labels', labels.index);
+router.get('/api/labels/:label', labels.getObject)
+router.post('/api/labels', labels.createObject);
+router.post('/api/labels/:label', labels.updateObject);
+router.del('/api/labels/:label', labels.deleteObject);
+
+router.param(':label', labels.loadObject)
+
+// All other routes to use Angular routing in public/app/js/appMobile.js
+router.get('/partials/*', index.partials);
+
+router.get('/*', index.index);
+
+module.exports = router;
+

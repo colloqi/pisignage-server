@@ -1,0 +1,48 @@
+'use strict';
+
+var path = require('path');
+
+var rootPath = process.cwd();
+
+var dataDir = path.join(rootPath, '/data');
+
+var assetDir = path.join(rootPath, '/../media');
+
+module.exports = {
+    root: rootPath,
+    dataDir: dataDir,
+    uploadDir: assetDir,
+    syncDir: path.join(dataDir, '/sync_folders'),
+    syncDirPath: path.join(dataDir, '/sync_folders/'),
+    viewDir: path.join(rootPath, '/app/views'),
+    mediaDir: assetDir,
+    mediaPath: assetDir + '/',
+    thumbnailDir: assetDir + '/_thumbnails',
+    defaultPlaylist: "default",
+
+    mongo: {
+        options: {
+            db: {
+                safe: true
+            }
+        }
+    },
+    session: {
+        secret: 'piSignage'
+    },
+
+    videoRegex: /(mp4|mov|m4v|avi|webm|wmv|flv)$/i,
+    audioRegex: /(mp3)$/i,
+    imageRegex: /(jpg|jpeg|png|gif)$/i,
+    noticeRegex: /\.html$/,
+    zipfileRegex: /(.zip|.gz|.bz2)/i,
+    repofileRegex: /\.repo/i,
+    liveStreamRegex: /\.tv/i,
+    linkURL: /\.link/i,
+    gCalendar: {
+        CLIENT_ID: '',
+        CLIENT_SECRET: '',
+        REDIRECT_URL: '',
+        REDIRECT_BASE_URL: ''
+    }
+};

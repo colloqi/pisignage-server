@@ -1,0 +1,30 @@
+{
+  "name": "pisignage-server",
+  "version": "0.1.0",
+  "description": "Server to manage piSignage players in a LAN or Private Network.",
+  "author": "ariemtech <info@ariemtech.com>",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "private": false,
+  "dependencies": {
+    "express": "~4.12.3",
+    "socket.io": "~1.3.5",
+    "nedb": "~1.1.1",
+    "serve-favicon": "~2.2.0",
+    "errorhandler": "~1.3.5",
+    "morgan": "~1.5.2",
+    "method-override": "~2.3.2",
+    "body-parser": "~1.12.2",
+    "cookie-parser": "~1.3.4",
+    "multer": "~0.1.8",
+    "serve-index": "~1.6.3",
+    "http-auth": "~2.2.5"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/nodemon server.js"
+  }
+}
