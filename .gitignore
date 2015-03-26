@@ -1,2 +1,4 @@
 .idea
 node_modules
+
+public/app/bower_components

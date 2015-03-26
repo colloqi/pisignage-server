@@ -4,7 +4,8 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var express = require('express'),
-    socketio = require('socket.io');
+    socketio = require('socket.io'),
+    mongoose= require('mongoose');
 
 var path = require('path'),
     fs = require('fs');
@@ -12,8 +13,11 @@ var path = require('path'),
 // Application Config
 var config = require(path.join(__dirname,'/config/config'));
 
-//using nedb
-var modelsPath = path.join(__dirname, 'app/nedb');
+// Connect to database
+var db = mongoose.connect(config.mongo.uri, config.mongo.options);
+
+// Bootstrap models
+var modelsPath = path.join(__dirname, 'app/models');
 fs.readdirSync(modelsPath).forEach(function (file) {
     require(modelsPath + '/' + file);
 });

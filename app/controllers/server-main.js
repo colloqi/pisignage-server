@@ -9,12 +9,11 @@ var mongoose = require('mongoose'),
     async = require('async'),
     path = require('path');
 
-var socketio = require('./server-socket'),
-    reports = require('./reports');
+var socketio = require('./server-socket');
 
 var playersToBeSynced = {}, players = {},  syncTime = {};
 
-xports.getStatus = function (req, res) {
+exports.getStatus = function (req, res) {
     return rest.sendSuccess(res, 'Dummy status', {server: true});
 }
 

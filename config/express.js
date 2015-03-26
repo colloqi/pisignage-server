@@ -60,14 +60,9 @@ module.exports = function (app) {
         app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     };
 
-
-    //serve-index supplies index file for route as well which is not desired.
-    //Following is added in the directory function of index.js at serve-index
-    //    if (req.url == '/') return next ();
-
     app.use(auth.connect(digest));      //can specify specific routes for auth also
-    app.use(serveIndex(config.dataDir));
-    app.use(express.static(config.dataDir));
+    app.use('/sync_folders',serveIndex(config.syncDir));
+    app.use('/sync_folders',express.static(config.syncDir));
 
     app.use('/media', express.static(path.join(config.mediaDir)));
     app.use(express.static(path.join(config.root, 'public')));
@@ -97,6 +92,7 @@ module.exports = function (app) {
     })
 
     app.use(function (req, res, next) {
+        //res.redirect('/');
         res.status(404).render('404', {url: req.originalUrl})
     })
 };

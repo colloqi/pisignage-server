@@ -11,17 +11,17 @@ var isPlaylist = function (file) {
     return (file.charAt(0) == '_' && file.charAt(1) == '_');
 }
 
-exports.newPlaylist = function (installation, playlist, cb) {
-    var file = path.join(config.mediaDir, installation, ("__" + playlist + '.json'));
+exports.newPlaylist = function ( playlist, cb) {
+    var file = path.join(config.mediaDir, ("__" + playlist + '.json'));
 
-    fs.writeFile(file, '', function (err) {
+    fs.writeFile(file, JSON.stringify({}, null, 4), function (err) {
         cb(err);
     })
 }
 
 exports.index = function (req, res) {
 
-    var assetDir = path.join(config.mediaDir, req.installation);
+    var assetDir = path.join(config.mediaDir);
 
     fs.readdir(assetDir, function (err, files) {
         if (err) {
@@ -69,7 +69,7 @@ exports.index = function (req, res) {
 
 exports.getPlaylist = function (req, res) {
 
-    var file = path.join(config.mediaDir, req.installation, ("__" + req.params['file'] + '.json'));
+    var file = path.join(config.mediaDir,  ("__" + req.params['file'] + '.json'));
 
     fs.readFile(file, 'utf8', function (err, data) {
         if (err) {
@@ -99,7 +99,7 @@ exports.getPlaylist = function (req, res) {
 
 exports.createPlaylist = function (req, res) {
 
-    exports.newPlaylist(req.installation, req.body['file'], function (err) {
+    exports.newPlaylist(req.body['file'], function (err) {
         if (err) {
             rest.sendError(res, "Playlist write error", err);
         } else {

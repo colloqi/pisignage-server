@@ -3,7 +3,6 @@
 var mongoose = require('mongoose'),
     Player = mongoose.model('Player'),
     Group = mongoose.model('Group'),
-    User = mongoose.model('User'),
     rest = require('../others/restware'),
     _ = require('lodash'),
     http = require('http'),
@@ -11,13 +10,10 @@ var mongoose = require('mongoose'),
     async = require('async'),
     config = require('../../config/config');
 
-var socketio = require('./server-socket'),
-    reports = require('./reports');
+var socketio = require('./server-socket');
 
 var pipkgjson,
     fs = require('fs');
-
-var license = require('../others/server-license');
 
 var activePlayers = {};
 Player.find({"isConnected": true}, function (err, players) {

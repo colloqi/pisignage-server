@@ -1,0 +1,26 @@
+{
+  "name": "pisignage-server",
+  "version": "0.1.0",
+  "homepage": "https://github.com/ariemtech/pisignage-server",
+  "authors": [
+    "Ravi <rbail2000@gmail.com>"
+  ],
+  "description": "Local server to manage piSignage players",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ui-router": "~0.2.13",
+    "angular": "1.3.15",
+    "bootstrap": "~3.3.4",
+    "fontawesome": "~4.3.0",
+    "angular-bootstrap": "~0.12.1",
+    "lato": "~0.3.0"
+  }
+}

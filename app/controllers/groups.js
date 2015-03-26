@@ -2,7 +2,6 @@
 
 var mongoose = require('mongoose'),
     Group = mongoose.model('Group'),
-    User = mongoose.model('User'),
 
     fs = require('fs'),
     config = require('../../config/config'),

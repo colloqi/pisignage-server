@@ -6,7 +6,8 @@ var fs = require('fs'),
     util = require('util'),
     _ = require('lodash');
 
-var Asset = require('../nedb/asset'),
+var mongoose = require('mongoose'),
+    Asset = mongoose.model('Asset'),
     config = require('../../config/config'),
     rest = require('../others/restware');
 
@@ -174,13 +175,34 @@ exports.updateAsset = function (req, res) {
         var oldName = req.params['file'],
             newName = req.body.newname;
 
-        fs.rename(path.join(config.mediaDir, oldName), path.join(config.mediaDir, newName), function (err) {
-            if (err) {
-                return rest.sendError(res, 'File rename error', err);
-            } else {
-                return rest.sendSuccess(res, ' Successfully renamed file to', newName);
+        async.series([
+            function(next) {
+                fs.rename(path.join(config.mediaDir, oldName), path.join(config.mediaDir, newName), function (err) {
+                    if (err) {
+                        next('File rename error: '+ err);
+                    } else {
+                        next();
+                    }
+                });
+            },
+            function(next) {
+                Asset.findOne({name: oldName}, function(err, asset){
+                    if (err)
+                        util.log('unable to find asset from db,' + oldName)
+                    asset.name = newName;
+                    asset.save(function(err) {
+                        if (err)
+                            util.log('unable to save asset after rename,' + oldName)
+                        next();
+                    });
+                });
             }
-        });
+        ], function(err) {
+            if (err)
+                rest.sendError(res,err);
+            else
+                return rest.sendSuccess(res, 'Successfully renamed file to', newName);
+        })
     } else if (req.body.dbdata) {
         Asset.load(req.body.dbdata._id, function (err, asset) {
             if (err) {
@@ -197,10 +219,6 @@ exports.updateAsset = function (req, res) {
         })
     }
 }
-
-
-
-
 
 exports.getCalendar = function (req, res) {
     var calFile = path.join(config.mediaDir, req.params['file']);

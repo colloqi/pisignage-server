@@ -25,8 +25,7 @@ exports.storeDetails = function (req, res) {
     var errorMessages = [];
 
     var files = req.body.files,
-        installation = req.installation,
-        assetDir = path.join(config.mediaDir, req.installation);
+        assetDir = config.mediaDir;
 
     var processFile = function (fileObj, array_cb) {
         var src = path.join(assetDir, fileObj.name),

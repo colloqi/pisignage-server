@@ -1,0 +1,50 @@
+nav.navbar.navbar-default.navbar-fixed-top
+    .container
+        .navbar-header
+            button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+                span.sr-only Toggle navigation
+                i.fa.fa-bars
+            a.navbar-brand(href='http://pisignage.com', target="_self")
+                img(src="app/img/pisignage-logo.png",height="32px")
+        #navbar.navbar-collapse.collapse
+            ul.nav.navbar-nav
+                li(ng-class="getClass('home.players')")
+                    a(ng-click="loadState('home.players')") Players
+                li(ng-class="getClass('home.groups')")
+                    a(ng-click="loadState('home.groups')") Groups
+                li(ng-class="getClass('home.assets')")
+                    a(ng-click="loadState('home.assets')") Assets
+                li(ng-class="getClass('home.playlists')")
+                    a(ng-click="loadState('home.playlists')") Playlists
+                li(ng-class="getClass('home.settings')")
+                    a(ng-click="loadState('home.settings')") Settings
+                li.dropdown
+                    a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false')
+                        | Dropdown
+                        span.caret
+                    ul.dropdown-menu(role='menu')
+                        li
+                            a(href='#') Action
+                        li
+                            a(href='#') Another action
+                        li
+                            a(href='#') Something else here
+                        li.divider
+                        li.dropdown-header Nav header
+                        li
+                            a(href='#') Separated link
+                        li
+                            a(href='#') One more separated link
+            ul.nav.navbar-nav.navbar-right
+                li.active
+                    button.btn.navbar-btn.pull-right(ng-show='navbar.showPrimaryButton',
+                                                            ng-click='primaryButtonClick()',
+                                                            ng-bind='navbar.primaryButtonText',
+                                                            ng-class='navbar.primaryButtonTypeClass')
+.container(style="height:100%;overflow:hidden")
+    .row(style="height:100%;overflow:hidden")
+        .col-sm-3(style="height:100%;overflow:auto")
+            div(ui-view="labels")
+        .col-sm-9(style="height:100%;overflow:auto")
+            div(ui-view="", autoscroll="false")
+            div(ui-view="players", autoscroll='false')
