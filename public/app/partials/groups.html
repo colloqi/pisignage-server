@@ -1,0 +1,27 @@
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Groups<a ng-click="fn.edit()" class="pull-right"><em class="text-danger">{{fn.editMode?'Done':'Edit'}}</em></a></h3>
+  </div>
+  <div class="panel-body">
+    <ul class="nav nav-pills nav-stacked">
+      <li ng-repeat="group in groups" ng-class="fn.getClass(group)"><a ng-click="fn.selected(group)">
+          <div class="row">
+            <div class="col-sm-10"><small ng-hide="group.renameEnable &amp;&amp; fn.editMode">{{ group.name }}</small>
+              <div ng-show="group.renameEnable &amp;&amp; fn.editMode" class="form-group">
+                <input type="text" ng-model="group.newname" ng-blur="fn.rename($index)" class="form-control"/>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <button ng-click="$event.stopPropagation();fn.delete($index);" ng-if="fn.editMode || fn.getClass(group)" class="close"><i ng-class="{'text-danger': fn.editMode}" class="fa fa-times-circle"></i></button>
+            </div>
+          </div></a></li>
+    </ul>
+  </div>
+  <form name="addform" ng-submit="fn.add()">
+    <div class="input-group col-xs-12">
+      <input type="text" ng-model="newGroup.name" required="required" class="form-control"/><span class="input-group-btn">
+        <button type="submit" class="btn btn-info"><i class="fa fa-plus"></i></button></span>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,19 @@
+.modal-header(ng-controller="GroupDetailCtrl")
+    h4.text-primary  Set Timings for Scheduled Playlist ({{forPlaylist.name}})
+.modal-body
+    form(role='form', name='schedule-cal')
+        .form-group
+            label.control-label(for="startdate") Start Date
+            input.form-control(type='date', ng-model='forPlaylist.settings.startdate', name='startdate', title='Start Date')
+        .form-group
+            label.control-label(for="enddate") End Date
+            input.form-control(type='date', ng-model='forPlaylist.settings.enddate', name='enddate', title='End Date')
+        .form-group
+            label.control-label(for="starttime") Every Day Start Time
+            input.form-control(type='time', ng-model='forPlaylist.settings.starttime', name='starttime', title='Everyday Start Time')
+        .form-group
+            label.control-label(for="endtime") Every Day End Time
+            input.form-control(type='time', ng-model='forPlaylist.settings.endtime', name='enddate', title='Everyday End Time')
+.modal-footer
+    button.btn(ng-click="scheduleCalendarModal.close()") Cancel
+    button.btn.btn-danger(ng-click="saveSchedules()") OK

@@ -1,6 +1,6 @@
 'use strict;'
 
-angular.module('piplaylist.controllers', [])
+angular.module('piPlaylists.controllers', [])
     .factory('miscMethods', function() {
         return ({
             toPlJsonExt: function(file){
@@ -8,38 +8,138 @@ angular.module('piplaylist.controllers', [])
             }
         })
     })
-    .controller('PlaylistsCtrl',['$scope', '$http', 'Navbar', '$location', '$state','miscMethods','piUrls','piFeatures',
-        function($scope, $http, Navbar, $location, $state, miscMethods,piUrls,piFeatures){
 
-            if (piFeatures.playlistEditFeature) {
-                Navbar.showPrimaryButton= true;
-                Navbar.primaryButtonText= "EDIT";
-                Navbar.primaryButtonTypeClass= "btn-info";
-            } else {
-                Navbar.showPrimaryButton= false;
+    .factory('PlaylistTab', function () {
+        var obj = {
+            selectedPlaylist: null
+        }
+        return (obj)
+    })
+
+    .controller('PlaylistsCtrl',function($scope, $http, $stateParams,$location, piUrls,PlaylistTab,piPopup){
+
+        $scope.fn = {};
+        $scope.fn.editMode = false;
+        $scope.fn.edit = function () {
+            $scope.fn.editMode = !$scope.fn.editMode;
+            PlaylistTab.selectedPlaylist = null;
+        }
+
+        $http
+            .get(piUrls.playlists, {})
+            .success(function(data, status) {
+                if (data.success) {
+                    $scope.playlists= data.data;
+                    if ($stateParams.group) {
+                        for (var i = 0, len = $scope.groups.length; i < len; i++) {
+                            if ($scope.groups[i]._id == $stateParams.group) {
+                                $scope.fn.selected($scope.groups[i])
+                                break;
+                            }
+                        }
+                    }
+                }
+            })
+            .error(function(data, status) {
+            });
+
+        $scope.newPlaylist = {}
+
+        $scope.fn.add = function () {
+            if (!$scope.newPlaylist.name) {
+                return;
+            }
+
+            for (var i = 0; i < $scope.playlists.length; i++) {
+                if ($scope.playlists[i].name == $scope.newPlaylist.name) {
+                    $scope.newPlaylist.name = "Playlist exists";
+                    return;
+                }
             }
 
             $http
-                .get(piUrls.playlists, {})
-                .success(function(data, status) {
+                .post(piUrls.playlists, {file: $scope.newPlaylist.name})
+                .success(function (data, status) {
                     if (data.success) {
-                        $scope.playlists= data.data;
+                        $scope.newPlaylist.settings = null;
+                        $scope.playlists.push($scope.newPlaylist);
+                        $scope.newPlaylist = {}
                     }
                 })
-                .error(function(data, status) {
+                .error(function (data, status) {
                 });
+        }
 
+        $scope.fn.delete = function (index) {
+            if ($scope.fn.editMode) {
+                piPopup.confirm("Playlist "+$scope.playlists[index].name, function () {
 
-            $scope.pbHandler = function(buttonText){
-                $location.path('/playlists/edit');
+                    $http
+                        .delete(piUrls.files + '__' + $scope.playlists[index].name + '.json')
+                        .success(function (data, status) {
+                            if (data.success) {
+                                $scope.playlists.splice(index, 1);
+                            }
+                        })
+                        .error(function (data, status) {
+                        });
+                })
+            } else {
+                $scope.fn.selected($scope.groups[index])
             }
-            Navbar.primaryButtonHandler = $scope.pbHandler;
+        }
 
-            $scope.loadPlaylist = function(name){
-                $location.path("/playlists/details/"+name);
+        $scope.fn.rename = function (index) {
+            $scope.playlists[index].renameEnable = false;
+            if (!$scope.playlists[index].newname ||
+                ($scope.playlists[index].name == $scope.playlists[index].newname)) {
+                return;
             }
 
-        }])
+            for (var i = 0; i < $scope.playlists.length; i++) {
+                if ($scope.playlists[i].name == $scope.playlists[index].newname) {
+                    $scope.playlists[index].newname = "Playlist exists";
+                    return;
+                }
+            }
+            var oldname = $scope.playlists[index].name;
+            $scope.playlists[index].name = $scope.playlists[index].newname;
+            $http
+                .post(piUrls.files + '__' + oldname+'.json', {  newname: '__' + $scope.playlists[index].name+'.json' })
+                .success(function (data, status) {
+                    if (!data.success) {
+                        $scope.playlists[index].name = oldname;
+                        $scope.playlists[index].newname = "Could not rename";
+                    }
+                })
+                .error(function (data, status) {
+                    $scope.playlists[index].name = oldname;
+                    $scope.playlists[index].newname = "Could not rename";
+                });
+        }
+
+        $scope.fn.selected = function (playlist) {
+            if (!$scope.fn.editMode) {
+                PlaylistTab.selectedPlaylist = (PlaylistTab.selectedPlaylist == playlist) ? null : playlist;
+            } else {
+                playlist.renameEnable = true;
+                playlist.newname = playlist.name;
+            }
+
+            if (PlaylistTab.selectedPlaylist)
+                $location.path("/assets/" + playlist.name);
+            else
+                $location.path("/assets");
+        }
+
+        $scope.fn.getClass = function (playlist) {
+            if (PlaylistTab.selectedPlaylist == playlist) {
+                return "bg-info"
+            } else {
+                return ""
+            }
+        }
+    })
 
 
     .controller('PlaylistViewCtrl',['$scope', '$http', '$rootScope', 'piUrls',
@@ -378,119 +478,6 @@ angular.module('piplaylist.controllers', [])
             }
         }])
 
-    .controller('PlaylistsEditCtrl',['$scope', '$http', 'Navbar', '$location', '$state', 'piUrls','piFeatures', 'piPopup',
-        function($scope, $http, Navbar, $location, $state, piUrls,piFeatures,piPopup){
-
-            $scope.renameFeature  = piFeatures.playlistRenameFeature;
-
-            Navbar.showPrimaryButton= true;
-            Navbar.primaryButtonText = "DONE";
-            Navbar.primaryButtonTypeClass= "btn-success";
-
-            $http
-                .get(piUrls.playlists, {})
-                .success(function(data, status) {
-                    if (data.success) {
-                        $scope.playlists= data.data;
-                        for (var i=0; i <$scope.playlists.length; i++) {
-                            if ($scope.playlists[i].name == "default") {
-                                $scope.playlists.splice(i,1);
-                                break;
-                            }
-                        }
-                        $scope.playlistsCopy= angular.copy($scope.playlists);
-                    }
-                })
-                .error(function(data, status) {
-                });
-
             
-            $scope.pbHandler = function(buttonText){
-                $location.path('/playlists');
-            }
-            Navbar.primaryButtonHandler = $scope.pbHandler;
 
-            $scope.delete= function(index){
-                piPopup.confirm("Playlist", function() {
-                    $http
-                        .delete(piUrls.files + '__' + $scope.playlists[index].name + '.json')
-                        .success(function (data, status) {
-                            if (data.success) {
-                                $scope.playlists.splice(index, 1);
-                                $scope.playlistsCopy.splice(index, 1);
-                            }
-                        })
-                        .error(function (data, status) {
-                        });
-                });
-            }
-
-
-            $scope.newPlaylist = "playlist"
-            $scope.add= function(){
-
-                if (!$scope.newPlaylist) {
-                    $scope.newPlaylist = "Empty name not allowed";
-                    $scope.addform.$setPristine();
-                    $scope.fieldStatus = "has-error";
-                    return;
-                }
-
-                for (var i=0; i <$scope.playlists.length; i++) {
-                    if ($scope.playlists[i].name == $scope.newPlaylist) {
-                        $scope.newPlaylist = "File name already exists";
-                        $scope.addform.$setPristine();
-                        $scope.fieldStatus = "has-error";
-                        return;
-                    }
-                }
-
-                $http
-                    .post(piUrls.playlists, {file: $scope.newPlaylist})
-                    .success(function(data, status) {
-                        if (data.success) {
-                            $scope.playlists.push({name: $scope.newPlaylist, settings: ""});
-                            $scope.playlistsCopy.push({name: $scope.newPlaylist, settings: ""});
-                            $scope.addform.$setPristine();
-                            $scope.fieldStatus = "has-success";
-                            $scope.addPlaylist = false;
-                        }
-                    })
-                    .error(function(data, status) {
-                    });
-            }
-            
-    }])
-
-    .controller('PlaylistsItemCtrl',['$scope','$http', 'piUrls',function($scope,$http,piUrls){
-        $scope.rename= function(index){
-            if (!$scope.playlists[index].name) {
-                $scope.playlists[index].name = "Empty name not allowed";
-                $scope.pleditform.$setPristine();
-                $scope.fieldStatus = "has-error";
-                return;
-            }
-            for (var i=0; i <$scope.playlistsCopy.length; i++) {
-                if ($scope.playlistsCopy[i].name == $scope.playlists[index].name) {
-                    $scope.playlists[index].name = "File name already exists";
-                    $scope.pleditform.$setPristine();
-                    $scope.fieldStatus = "has-error";
-                    return;
-                }
-            }
-            var oldname = '__' + $scope.playlistsCopy[index].name +'.json',
-                newname = '__' + $scope.playlists[index].name+'.json';
-                $http
-                    .post(piUrls.files + oldname, {  newname: newname })
-                    .success(function (data, status) {
-                        if (data.success) {
-                            $scope.playlistsCopy[index].name = $scope.playlists[index].name;
-                            $scope.pleditform.$setPristine();
-                            $scope.fieldStatus = "has-success";
-                        }
-                    })
-                    .error(function (data, status) {
-                    });
-        }
-    }])
 

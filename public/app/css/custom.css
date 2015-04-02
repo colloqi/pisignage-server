@@ -1,0 +1,18 @@
+body {
+    margin: auto;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    height:100%;
+    padding-top:70px;
+}
+
+.height100 {
+    height: 100%;
+}
+
+.overflow-hidden {
+    overflow:hidden;
+}
+
+.overflow-auto {
+    overflow:auto;
+}

@@ -1,15 +1,18 @@
 'use strict';
 
 angular.module('piLabels.controllers', [])
-    .controller('LabelsCtrl', function ($scope, $http,piUrls, selectedLabel,piPopup) {
-        
-        $scope.buttonText = 'Edit';
-        $scope.editMode= false;        
-        $scope.edit = function() {
-            $scope.editMode = !$scope.editMode;
-            selectedLabel.selectedLabel= null;
+    .factory('Label', function() {
+        return({selectedLabel:null, labelsCount: {}})
+    })
+    .controller('LabelsCtrl', function ($scope, $http,piUrls, Label,piPopup) {
+
+        $scope.fn = {};
+        $scope.fn.editMode = false;
+        $scope.fn.edit = function () {
+            $scope.fn.editMode = !$scope.fn.editMode;
+            Label.selectedGroup = null;
         }
-        
+
         $http.get(piUrls.labels)
             .success(function(data, status) {
                 if (data.success) {
@@ -19,16 +22,16 @@ angular.module('piLabels.controllers', [])
             .error(function(data, status) {
             });
 
-        $scope.newLabel = {
-        }
-        $scope.add = function(){
+        $scope.newLabel = {}
+
+        $scope.fn.add = function(){
             if (!$scope.newLabel.name) {
                 return;
             }
 
             for (var i=0; i <$scope.labels.length; i++) {
                 if ($scope.labels[i].name == $scope.newLabel.name) {
-                    $scope.newLabel.name = "Category exists";
+                    $scope.newLabel.name = "Label exists";
                     return;
                 }
             }
@@ -45,9 +48,9 @@ angular.module('piLabels.controllers', [])
                 });
         }
 
-        $scope.delete= function(index){
-            if($scope.editMode){
-                piPopup.confirm("Label", function() {
+        $scope.fn.delete= function(index){
+            if($scope.fn.editMode){
+                piPopup.confirm("Label "+$scope.labels[index].name, function() {
 
                     $http
                         .delete(piUrls.labels + $scope.labels[index]._id)
@@ -60,23 +63,23 @@ angular.module('piLabels.controllers', [])
                         });
                 })
             } else {
-                selectedLabel.selectedLabel= null;
+                $scope.fn.selected($scope.labels[index])
             }
         }
         
-        $scope.getClass = function(label) {
-            if (selectedLabel.selectedLabel == label) {
-                return "active"
+        $scope.fn.getClass = function(label) {
+            if (Label.selectedLabel == label) {
+                return "bg-info"
             } else {
                 return ""
             }
         }
         
-        $scope.selected= function(label){            
-            if(!$scope.editMode)
-                selectedLabel.selectedLabel= (selectedLabel.selectedLabel==label) ? null: label;
+        $scope.fn.selected= function(label){
+            if(!$scope.fn.editMode)
+                Label.selectedLabel= (Label.selectedLabel==label) ? null: label;
         }
-        
-        $scope.labelsCount= selectedLabel.labelsCount;
+
+        $scope.labelsCount= Label.labelsCount;
 })
         

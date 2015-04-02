@@ -18,18 +18,15 @@ exports.newGroup = function (group, cb) {
 
     var object = new Group(group);
     //create a sync folder under sync_folder
-    fs.mkdir(path.join(config.syncDir, group.installation, object.name), function (err) {
+    fs.mkdir(path.join(config.syncDir, object.name), function (err) {
         if (err && (err.code != 'EEXIST'))
             return cb('Unable to create a group folder in server: ' + err);
         else {
-            saveAndReply();
+            object.save(function (err, data) {
+                cb(err, data);
+            })
         }
     });
-    function saveAndReply() {
-        object.save(function (err, data) {
-            cb(err, data);
-        })
-    }
 }
 
 //Load a object
@@ -48,7 +45,7 @@ exports.loadObject = function (req, res, next, id) {
 //list of objects
 exports.index = function (req, res) {
 
-    var criteria = {installation: req.installation};
+    var criteria = {};
 
     if (req.param('string')) {
         var str = new RegExp(req.param('string'), "i")
@@ -86,10 +83,6 @@ exports.getObject = function (req, res) {
 exports.createObject = function (req, res) {
 
     var object = req.body;
-    if (req.user) {
-        object.createdBy = req.user._id;  //creator of entity
-    }
-    object.installation = req.installation;
     exports.newGroup(object, function (err, data) {
         if (err)
             return rest.sendError(res, err);
@@ -115,33 +108,12 @@ exports.updateObject = function (req, res) {
     var object = req.object;
     object = _.extend(object, req.body);
 
-    async.eachSeries(object.assets, function (file, callback) {
-        if (file && file.match(/(\.html)$/i)) {
-            fs.readFile(path.join(config.mediaPath, req.installation, ('_' + path.basename(file, '.html') + '.json')), 'utf8',
-                function (err, data) {
-                    if (err) {
-                        console.log(err);
-                        return callback(err);
-                    }
-                    var img = JSON.parse(data).image;
-                    if (img)
-                        object.assets.push(img);
-                    callback();
-                }
-            );
+    object.save(function (err, data) {
+        if (!err && req.body.deploy) {
+            serverMain.deploy(object, saveObject);
         } else {
-            callback();
+            saveObject(err, object);
         }
-    }, function (err) {
-        object.save(function (err, data) {
-            if (err) {
-                saveObject(err, object);
-            } else if (req.body.deploy) {
-                serverMain.deploy(req.installation, object, saveObject);
-            } else {
-                saveObject(null, object);
-            }
-        });
     });
 
 };

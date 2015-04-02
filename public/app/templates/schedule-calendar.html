@@ -1,0 +1,28 @@
+
+<div ng-controller="GroupDetailCtrl" class="modal-header">
+  <h4 class="text-primary"> Set Timings for Scheduled Playlist ({{forPlaylist.name}})</h4>
+</div>
+<div class="modal-body">
+  <form role="form" name="schedule-cal">
+    <div class="form-group">
+      <label for="startdate" class="control-label">Start Date</label>
+      <input type="date" ng-model="forPlaylist.settings.startdate" name="startdate" title="Start Date" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <label for="enddate" class="control-label">End Date</label>
+      <input type="date" ng-model="forPlaylist.settings.enddate" name="enddate" title="End Date" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <label for="starttime" class="control-label">Every Day Start Time</label>
+      <input type="time" ng-model="forPlaylist.settings.starttime" name="starttime" title="Everyday Start Time" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <label for="endtime" class="control-label">Every Day End Time</label>
+      <input type="time" ng-model="forPlaylist.settings.endtime" name="enddate" title="Everyday End Time" class="form-control"/>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button ng-click="scheduleCalendarModal.close()" class="btn">Cancel</button>
+  <button ng-click="saveSchedules()" class="btn btn-danger">OK</button>
+</div>

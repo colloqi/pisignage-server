@@ -187,8 +187,10 @@ exports.updateAsset = function (req, res) {
             },
             function(next) {
                 Asset.findOne({name: oldName}, function(err, asset){
-                    if (err)
+                    if (err || !asset) {
                         util.log('unable to find asset from db,' + oldName)
+                        return next();
+                    }
                     asset.name = newName;
                     asset.save(function(err) {
                         if (err)

@@ -26,7 +26,7 @@ Player.find({"isConnected": true}, function (err, players) {
 })
 
 var defaultGroup = {_id: 0, name: 'default'};
-Group.findOne({name: 'default', installation: 'admin'}, function (err, data) {
+Group.findOne({name: 'default'}, function (err, data) {
     if (!err && data)
         defaultGroup = data;
 });
@@ -39,7 +39,6 @@ function checkPlayersWatchdog() {
                 if (!err && player) {
                     player.isConnected = false;
                     player.save();
-                    reports.createEvent(player, 'server', 'network', 'disconnect', (new Date(player.lastReported)).getTime())
                     delete activePlayers[playerId];
                 }
                 cb();
@@ -53,36 +52,6 @@ function checkPlayersWatchdog() {
     })
 }
 
-//Service is used from http://freegeoip.net/json/{ip_or_hostname}   //ipinfo.io is alternative
-function getLocation(ip, callback) {
-    var options = {
-        host: 'freegeoip.net',
-        port: 80,
-        path: '/json/' + ip
-    };
-
-    http.get(options, function (resp) {
-        resp.on('data', function (jsonData) {
-            var location = '';
-            try {
-                var data = JSON.parse(jsonData);
-                //console.log('the location is '+data.city+','+data.region_name+','+data.country_name);
-                location = data.city ? data.city + ',' : '';
-                //location += data.region_name?data.region_name+',':'';
-                location += data.country_name ? data.country_name : '';
-            } catch (e) {
-
-            }
-            //console.log('connection from '+location);
-            if (location.length == 0) location = "unknown";
-            callback(location);
-        });
-    }).on("error", function (e) {
-        console.log("Got location query error: " + e.message);
-        callback("unknown");
-    });
-}
-
 var sendConfig = function (player, group, periodic) {
     var retObj = {};
     retObj.secret = group.name;
@@ -94,8 +63,8 @@ var sendConfig = function (player, group, periodic) {
     } else {
         retObj.playlists = group.playlists;
     }
-    retObj.installation = player.installation;
-    retObj.baseUrl = '/sync_folders/' + player.installation + '/';
+    retObj.installation = config.installation;
+    retObj.baseUrl = '/sync_folders/';
     retObj.assets = group.assets;
     retObj.name = player.name;
     retObj.resolution = group.resolution || '720p';
@@ -108,18 +77,10 @@ var sendConfig = function (player, group, periodic) {
         token: config.gCalendar.CLIENT_SECRET
     }
     if (periodic) {
-        //set date in pi
     }
 
-    User.findOne({username: player.installation}, function (err, user) {
-        if (err || !user) {
-            console.log("player.installation for which user is not found: ", player.installation);
-        } else {
-            retObj.authCredentials = user.authCredentials;
-        }
-        socketio.emitMessage(player.socket, 'config', retObj);
-        //reports.createEvent(player,'server','config', retObj.installation+'/'+retObj.secret, Date.now())
-    })
+    retObj.authCredentials = config.authCredentials;
+    socketio.emitMessage(player.socket, 'config', retObj);
 }
 
 //Load a object
@@ -216,28 +177,6 @@ exports.createObject = function (req, res) {
             if (err) {
                 return rest.sendError(res, 'Error in saving new Player', err || "");
             } else {
-                User.findOne({username: player.installation}, function (err, installation) {
-                    if (!err && installation) {
-                        if ((installation.licensesPurchased - installation.licensesUsed > 0) || licenseExists) {
-                            license.generateLicense(player.installation, player.cpuSerialNumber,
-                                function (err) {
-                                    if (!err) {
-                                        console.log("generated license file successfully")
-                                        if (!licenseExists) {
-                                            installation.licensesUsed++;
-                                            installation.save();
-                                        }
-                                    }
-                                }
-                            );
-                        } else {
-                            console.log("no licenses available to register " + player.cpuSerialNumber + "for " + req.installation + ',' + installation.licensesPurchased)
-                        }
-                    } else {
-                        console.log("unable to read installation details to register " +
-                        player.cpuSerialNumber + "for " + req.installation)
-                    }
-                })
                 return rest.sendSuccess(res, 'new Player added successfully', obj);
             }
         })
@@ -277,13 +216,6 @@ exports.deleteObject = function (req, res) {
         if (err)
             return rest.sendError(res, 'Unable to remove Player record', err);
         else {
-            User.findOne({username: req.installation}, function (err, installation) {
-                if (!err && installation) {
-                    installation.licensesUsed--;
-                    installation.save();
-                }
-            })
-            license.revokeLicense(req.installation, playerId)
             return rest.sendSuccess(res, 'Player record deleted successfully');
         }
     })
@@ -333,14 +265,6 @@ exports.updatePlayerStatus = function (obj) {
             player.save(function (err, player) {
                 if (err) {
                     return console.log("Error while saving player status: " + err);
-                }
-                //console.log("Player update data: ");
-                //console.log(player);
-                if (updatePlayerCount[obj.cpuSerialNumber] === 1) {
-                    getLocation(player.ip, function (location) {
-                        player.location = location;
-                        player.save();
-                    })
                 }
             });
         }

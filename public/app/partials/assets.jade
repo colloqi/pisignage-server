@@ -1,0 +1,53 @@
+.alert.alert-info(style="margin-bottom:5px;")
+    .row
+        .col-sm-5
+            h3.panel-title Available Assets
+        .col-sm-2
+            p.control-label.text-right Group by
+        .col-sm-3
+            select.form-control(ng-model="groupType",
+                                    ng-options="type for type in groupByOptions",
+                                    ng-change="groupBy(groupType)")
+        .col-sm-2
+            a.pull-right(ng-click='fn.edit()'): em.text-danger {{fn.editMode?'Done':'Edit'}}
+
+div(ng-hide='files.length')
+    h4.text-center No media assets found, Upload assets using Add button
+
+
+accordion(close-others="false")
+    accordion-group(ng-repeat="(playlist,assets) in groupWiseAssets",is-open="true")
+        accordion-heading
+            | {{playlist}} &nbsp;
+            span.badge.pull-right {{assets.length}}
+
+        .media(ng-repeat='file in assets ',ng-click='loadAsset(file.filename)')
+                a(ng-href="#").pull-left
+                    img.media-object.img-rounded(ng-src='{{filesDetails[file.filename].thumbnail}}')
+                .letter-box.media-object.pull-left.img-rounded(ng-if='!filesDetails[file.filename].thumbnail')
+                    | {{filesDetails[file.filename].type.slice(0,1) || 'N'}}
+                .media-body
+                    .row
+                        .col-sm-8
+                            h4.media-heading {{file.filename }}
+                        .col-sm-4(ng-if="filesDetails[file.filename].labels")
+                            small.bg-info {{filesDetails[file.filename].labels}}
+                    .row(ng-if="filesDetails[file.filename]")
+                        .col-sm-2
+                            h6(ng-if="filesDetails[file.filename].resolution.width")
+                                strong {{filesDetails[file.filename].resolution.width}}x{{filesDetails[file.filename].resolution.height}}
+                        .col-sm-2
+                            h6(ng-if="filesDetails[file.filename].duration > 0")
+                                strong {{filesDetails[file.filename].duration}} seconds
+                        .col-sm-2
+                            h6
+                                strong {{filesDetails[file.filename].size}}
+                        .col-sm-3
+                            h6 {{filesDetails[file.filename].type}} uploaded on:&nbsp;
+                                | {{filesDetails[file.filename].createdAt | date: 'MMM dd'}}
+                        .col-sm-2
+                            h6 by:
+                                strong {{filesDetails[file.filename].createdBy.name}}
+        h5.text-warning(ng-if="!assets.length") No Files
+
+

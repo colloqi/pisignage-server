@@ -1,0 +1,10 @@
+.modal-header
+    button.close(ng-click='cancel()') &times;
+    h3.text-danger Please Confirm
+.modal-body
+    h5 Do you want to delete the&nbsp
+        b {{deleteText}}
+        |&nbsp?
+.modal-footer
+    button.btn(ng-click='cancel()') Cancel
+    button.btn.btn-danger(ng-click='ok()') OK

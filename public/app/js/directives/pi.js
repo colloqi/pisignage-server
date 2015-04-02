@@ -2,30 +2,6 @@
 
 angular.module('pisignage.directives', []).
 
-directive('touch',function() {
-    return function(scope, element) {
-        var el = element[0];       
-        function touchHandler(e) {
-            var touch= e.changedTouches[0];           
-            var simulatedEvent= document.createEvent("MouseEvent");
-                simulatedEvent.initMouseEvent({
-                touchstart: "mousedown",
-                touchmove: "mousemove",
-                touchend: "mouseup"
-            }[e.type], true, true, window, 1,
-                touch.screenX, touch.screenY,
-                touch.clientX, touch.clientY, false,
-                false, false, false, 0, null);                
-            touch.target.dispatchEvent(simulatedEvent);
-            e.preventDefault();
-        }        
-        el.addEventListener("touchstart", touchHandler, true);
-        el.addEventListener("touchmove", touchHandler, true);        
-        el.addEventListener("touchend", touchHandler, true);
-        el.addEventListener("touchcancel", touchHandler, true);
-    }
-}).
-
 directive('showonhoverparent', function() {
     return {
         link : function(scope, element, attrs) {
@@ -123,10 +99,10 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
                     '</label>'+
                    '</div>',
                 large: '<div>'+
-                    '<button class="btn btn-info upload_file_containerlarge btn-block">'+
-                        '<input type="file" multiple="" style="opacity: 0;width:100%;height:100%;z-index: 100">'+
-                            '<span ng-transclude></span>'+
-                    '</button>'+                   
+                    '<button class="btn btn-link btn-block">'+
+                        '<input type="file" multiple="" style="position:absolute;top:0;left:0;opacity: 0;width:100%;height:50px;z-index: 100"/>'+
+                        '<span ng-transclude>'+
+                    '</button></span>'+
                     //'<label ng-if="progressText">'+
                     //    '<small class="text-success">{{progressText}}</small>'+
                     //'</label>'+

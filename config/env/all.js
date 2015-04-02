@@ -1,12 +1,16 @@
 'use strict';
 
+var installation = "local",
+    authCredentials = {
+        user: "user",
+        password: "password"
+    };
+
 var path = require('path');
 
-var rootPath = process.cwd();
-
-var dataDir = path.join(rootPath, '/data');
-
-var assetDir = path.join(rootPath, '/../media');
+var rootPath = process.cwd(),
+    dataDir = path.join(rootPath, '/data'),
+    assetDir = path.join(rootPath, '/../media');
 
 module.exports = {
     root: rootPath,
@@ -44,5 +48,8 @@ module.exports = {
         CLIENT_SECRET: '',
         REDIRECT_URL: '',
         REDIRECT_BASE_URL: ''
-    }
+    },
+
+    installation: installation,
+    authCredentials: authCredentials
 };

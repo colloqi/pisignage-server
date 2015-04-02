@@ -1,0 +1,50 @@
+.panel.panel-info
+    .panel-heading
+        .row
+            .col-sm-7
+                h3.panel-title {{group.name}}
+            .col-sm-3
+                a.btn.btn-link.btn-sm.pull-right(ng-click='displaySet()'): em.text-danger Set Display Mode
+            .col-sm-2
+                a.btn.btn-success.btn-sm.pull-right(ng-disabled="!group.playlists.length",ng-click='deploy()') Deploy
+
+    ul.list-group
+        li.list-group-item(ng-repeat='playlist in group.playlists')
+            .form-group
+                form.row( name="group-playlists")
+                    .col-sm-5
+                        select.form-control(ng-model="playlist.name",
+                                                ng-options="pl.name as pl.name for pl in playlists",
+                                                ng-change="updateGroup()")
+                            option(value="") -- choose playlist --
+                    .col-sm-6(ng-if="$index")
+                        a.btn.btn-link(ng-click="scheduleCalendar(playlist)")
+                            i.fa.fa-calendar.fa-lg.text-info
+                        small(ng-if='!playlist.settings.startdate && !playlist.settings.starttime')
+                            | Click the icon to Schedule
+                        small(ng-if='playlist.settings.startdate')
+                            | {{playlist.settings.startdate | date:'MMM d'}} -
+                            | {{playlist.settings.enddate | date:'MMM d'}} &nbsp&nbsp
+                        small(ng-if='playlist.settings.starttime')
+                            | {{playlist.settings.starttime }} -
+                            | {{playlist.settings.endtime }}
+                    .col-sm-1
+                        a.btn.btn-link(ng-click='delete($index)')
+                            i.fa.fa-times.text-danger
+        li.list-group-item
+            form
+                .form-group
+                    label.control-label.col-sm-4.text-muted Add a Playlist to the group
+                    .input-group.col-sm-8
+                        select.form-control(ng-model="newPlaylistName", ng-options="pl.name as pl.name for pl in playlists")
+                            option(value="") -- choose playlist --
+                        .input-group-btn
+                            button.btn.btn-info(ng-click="add()")
+                                i.fa.fa-plus
+
+    //.panel-footer
+        button.btn.btn-primary.btn-block(ng-click='deploy()')
+            | {{group.playlists.length?"DEPLOY":"Nothing to deploy"}}
+
+
+

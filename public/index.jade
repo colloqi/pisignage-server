@@ -11,9 +11,24 @@ html(lang='en')
         title pisignage-server
         // Bootstrap core CSS
         link(rel='stylesheet', href='app/css/bootstrap.min.css')
-        link(rel='stylesheet', href='app/css/font-awesome.min.css')
         link(rel='stylesheet', href='app/css/lato.min.css')
+        link(rel='stylesheet', href='app/css/font-awesome.min.css')
+        link(rel='stylesheet', href='app/css/custom.css')
 
         script(src='app/lib/angular/angular.min.js')
-    body(ng-app="piServerApp", style="height:100%")
-        div(ui-view="",,autoscroll="false", style="height:100%") Please wait while the app loads
+        script(src='app/lib/angular-ui-router/angular-ui-router.min.js')
+        script(src='app/lib/angular-bootstrap/ui-bootstrap-tpls.min.js')
+
+        script(src='app/js/pi-config.js')
+        script(src='app/js/controllers/pi-index.js')
+        script(src='app/js/controllers/server.js')
+        script(src='app/js/controllers/groups.js')
+        script(src='app/js/controllers/assets.js')
+        script(src='app/js/controllers/playlists.js')
+        script(src='app/js/controllers/labels.js')
+        script(src='app/js/directives/pi.js')
+        script(src='app/js/services/pi.js')
+        script(src='app/js/app-pc.js')
+
+    body(ng-app="piServerApp")
+        div.height100(ui-view="",autoscroll="false") Please wait while the app loads

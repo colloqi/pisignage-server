@@ -1,0 +1,34 @@
+.panel.panel-info
+    .panel-heading
+        h3.panel-title Registered Players
+    ul.list-group
+
+        li.list-group-item(ng-repeat='player in players | filter:search | orderBy:"lastReported":true')
+            .row
+                .col-sm-4(ng-click='shellCommand(player)')
+                    h6.text-primary.truncate  {{player.name}}
+                .col-sm-3
+                    h6.text-primary.truncate  {{player.myIpAddress}}
+                .col-sm-3
+                    i.fa.fa-circle.fa-2x(ng-class="player.statusClass")
+                    span.text-primary &nbsp;{{player.currentPlaylist}}
+                .col-sm-2
+                    select.form-control(ng-model="player.group.name",ng-change="assignGroup(player)",
+                                                                        ng-options="group for group in groups")
+            .row
+                .col-sm-4
+                    h6.text-primary: small {{player.cpuSerialNumber}}
+                .col-sm-3
+                    h6.text-primary.truncate: small last seen:&nbsp;{{player.lastReported | date: "MMM dd, hh:mm a"}}
+                .col-sm-3
+                    h6(ng-if="!player.isConnected || !player.syncInProgress").text-primary.truncate: small last sync:&nbsp;{{player.lastUpload | date: "MMM dd, hh:mm a"}}
+                    h6(ng-if="player.isConnected && player.syncInProgress").text-primary
+                        i.fa.fa-spinner.fa-spin
+                        small.truncate &nbsp;{{player.wgetBytes }} &nbsp;{{player.wgetSpeed }}B/sec
+
+                .col-sm-2(ng-if='player.version')
+                    h6.text-primary.truncate: small ver:&nbsp;{{player.version}}/{{player.platform_version}}&nbsp;
+                        button.btn.btn-warning.btn-xs(ng-if="player.version != currentVersion.version",ng-click="swUpdate(player)")
+                            i.fa.fa-arrow-circle-up.fa-lg
+
+

@@ -1,0 +1,55 @@
+
+<div style="margin-bottom:5px;" class="alert alert-info">
+  <div class="row">
+    <div class="col-sm-5">
+      <h3 class="panel-title">Available Assets</h3>
+    </div>
+    <div class="col-sm-2">
+      <p class="control-label text-right">Group by</p>
+    </div>
+    <div class="col-sm-3">
+      <select ng-model="groupType" ng-options="type for type in groupByOptions" ng-change="groupBy(groupType)" class="form-control"></select>
+    </div>
+    <div class="col-sm-2"><a ng-click="fn.edit()" class="pull-right"><em class="text-danger">{{fn.editMode?'Done':'Edit'}}</em></a></div>
+  </div>
+</div>
+<div ng-hide="files.length">
+  <h4 class="text-center">No media assets found, Upload assets using Add button</h4>
+</div>
+<accordion close-others="false">
+  <accordion-group ng-repeat="(playlist,assets) in groupWiseAssets" is-open="true">
+    <accordion-heading>{{playlist}} &nbsp;<span class="badge pull-right">{{assets.length}}</span></accordion-heading>
+    <div ng-repeat="file in assets " ng-click="loadAsset(file.filename)" class="media"><a ng-href="#" class="pull-left"><img ng-src="{{filesDetails[file.filename].thumbnail}}" class="media-object img-rounded"/></a>
+      <div ng-if="!filesDetails[file.filename].thumbnail" class="letter-box media-object pull-left img-rounded">{{filesDetails[file.filename].type.slice(0,1) || 'N'}}</div>
+      <div class="media-body">
+        <div class="row">
+          <div class="col-sm-8">
+            <h4 class="media-heading">{{file.filename }}</h4>
+          </div>
+          <div ng-if="filesDetails[file.filename].labels" class="col-sm-4"><small class="bg-info">{{filesDetails[file.filename].labels}}</small></div>
+        </div>
+        <div ng-if="filesDetails[file.filename]" class="row">
+          <div class="col-sm-2">
+            <h6 ng-if="filesDetails[file.filename].resolution.width"><strong>{{filesDetails[file.filename].resolution.width}}x{{filesDetails[file.filename].resolution.height}}</strong></h6>
+          </div>
+          <div class="col-sm-2">
+            <h6 ng-if="filesDetails[file.filename].duration &gt; 0"><strong>{{filesDetails[file.filename].duration}} seconds</strong></h6>
+          </div>
+          <div class="col-sm-2">
+            <h6><strong>{{filesDetails[file.filename].size}}</strong></h6>
+          </div>
+          <div class="col-sm-3">
+            <h6>
+              {{filesDetails[file.filename].type}} uploaded on:&nbsp;
+              {{filesDetails[file.filename].createdAt | date: 'MMM dd'}}
+            </h6>
+          </div>
+          <div class="col-sm-2">
+            <h6>by:<strong>{{filesDetails[file.filename].createdBy.name}}</strong></h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h5 ng-if="!assets.length" class="text-warning">No Files</h5>
+  </accordion-group>
+</accordion>

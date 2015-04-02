@@ -4,9 +4,6 @@
 
 angular.module('pisignage.services',[]).
 
-    factory('selectedLabel', function() {
-        return({selectedLabel:null, labelsCount: {}})
-    }).
     //https://github.com/logicbomb/lvlFileUpload
     factory('fileUploader', ['$rootScope', '$q', function($rootScope, $q) {
         var xhr, completeTransferDone;
@@ -94,42 +91,6 @@ angular.module('pisignage.services',[]).
         return svc;
     }]).
 
-    factory('screenlog', ['$timeout',  function($timeout) {
-
-        var scope = angular.element(document.querySelector("#screenlogelement")).scope();
-        scope.screenlogclass = "hide";
-        var debugFlag = false,
-            timeout = 15000;
-
-        return  {
-            enableDebug: function(flag) {
-                debugFlag = flag;
-            },
-            debug: function(msg) {
-                if (!debugFlag) return;
-
-                scope.screenlogclass = "alert-success";
-                $timeout(function(){scope.screenlogclass = "hidden"; },timeout);
-                scope.screenlog = msg;
-            },
-            error: function(msg) {
-                scope.screenlogclass = "alert-danger";
-                $timeout(function(){scope.screenlogclass = "hidden"; },timeout);
-                scope.screenlog = msg;
-            },
-            warn: function(msg){
-                scope.screenlogclass = "alert-warning";
-                $timeout(function(){scope.screenlogclass = "hidden"; },timeout);
-                scope.screenlog = msg;
-            },
-            info: function(msg){
-                scope.screenlogclass = "alert-info";
-                $timeout(function(){scope.screenlogclass = "hidden"; },timeout);
-                scope.screenlog = msg;
-            }
-        }
-    }]).
-
     factory('onlineStatusInterceptor', ['$q','$rootScope',function($q,$rootScope) {
 
         var onlineStatus = false;
@@ -158,7 +119,7 @@ angular.module('pisignage.services',[]).
             confirm: function (objString, cb) {
                 return (
                     $modal.open({
-                        templateUrl: '/app/templates/confirmPopup.html',
+                        templateUrl: '/app/templates/confirm-popup.html',
                         controller: ['$scope', '$modalInstance', 'msg', function ($scope, $modalInstance, msg) {
                             $scope.deleteText = msg;
                             $scope.ok = function () {

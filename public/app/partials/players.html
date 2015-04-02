@@ -1,0 +1,38 @@
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Registered Players</h3>
+  </div>
+  <ul class="list-group">
+    <li ng-repeat="player in players | filter:search | orderBy:&quot;lastReported&quot;:true" class="list-group-item">
+      <div class="row">
+        <div ng-click="shellCommand(player)" class="col-sm-4">
+          <h6 class="text-primary truncate"> {{player.name}}</h6>
+        </div>
+        <div class="col-sm-3">
+          <h6 class="text-primary truncate"> {{player.myIpAddress}}</h6>
+        </div>
+        <div class="col-sm-3"><i ng-class="player.statusClass" class="fa fa-circle fa-2x"></i><span class="text-primary">&nbsp;{{player.currentPlaylist}}</span></div>
+        <div class="col-sm-2">
+          <select ng-model="player.group.name" ng-change="assignGroup(player)" ng-options="group for group in groups" class="form-control"></select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <h6 class="text-primary"><small>{{player.cpuSerialNumber}}</small></h6>
+        </div>
+        <div class="col-sm-3">
+          <h6 class="text-primary truncate"><small>last seen:&nbsp;{{player.lastReported | date: "MMM dd, hh:mm a"}}</small></h6>
+        </div>
+        <div class="col-sm-3">
+          <h6 ng-if="!player.isConnected || !player.syncInProgress" class="text-primary truncate"><small>last sync:&nbsp;{{player.lastUpload | date: "MMM dd, hh:mm a"}}</small></h6>
+          <h6 ng-if="player.isConnected &amp;&amp; player.syncInProgress" class="text-primary"><i class="fa fa-spinner fa-spin"></i><small class="truncate">&nbsp;{{player.wgetBytes }} &nbsp;{{player.wgetSpeed }}B/sec</small></h6>
+        </div>
+        <div ng-if="player.version" class="col-sm-2">
+          <h6 class="text-primary truncate"><small>ver:&nbsp;{{player.version}}/{{player.platform_version}}&nbsp;
+              <button ng-if="player.version != currentVersion.version" ng-click="swUpdate(player)" class="btn btn-warning btn-xs"><i class="fa fa-arrow-circle-up fa-lg"></i></button></small></h6>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

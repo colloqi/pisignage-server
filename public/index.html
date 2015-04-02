@@ -11,11 +11,24 @@
     <title>pisignage-server</title>
     <!-- Bootstrap core CSS-->
     <link rel="stylesheet" href="app/css/bootstrap.min.css">
-    <link rel="stylesheet" href="app/css/font-awesome.min.css">
     <link rel="stylesheet" href="app/css/lato.min.css">
+    <link rel="stylesheet" href="app/css/font-awesome.min.css">
+    <link rel="stylesheet" href="app/css/custom.css">
     <script src="app/lib/angular/angular.min.js"></script>
+    <script src="app/lib/angular-ui-router/angular-ui-router.min.js"></script>
+    <script src="app/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="app/js/pi-config.js"></script>
+    <script src="app/js/controllers/pi-index.js"></script>
+    <script src="app/js/controllers/server.js"></script>
+    <script src="app/js/controllers/groups.js"></script>
+    <script src="app/js/controllers/assets.js"></script>
+    <script src="app/js/controllers/playlists.js"></script>
+    <script src="app/js/controllers/labels.js"></script>
+    <script src="app/js/directives/pi.js"></script>
+    <script src="app/js/services/pi.js"></script>
+    <script src="app/js/app-pc.js"></script>
   </head>
-  <body ng-app="piServerApp" style="height:100%">
-    <div ui-view="" ,autoscroll="false" style="height:100%">Please wait while the app loads</div>
+  <body ng-app="piServerApp">
+    <div ui-view="" autoscroll="false" class="height100">Please wait while the app loads</div>
   </body>
 </html>
