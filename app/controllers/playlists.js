@@ -12,10 +12,11 @@ var isPlaylist = function (file) {
 }
 
 exports.newPlaylist = function ( playlist, cb) {
-    var file = path.join(config.mediaDir, ("__" + playlist + '.json'));
+    var file = path.join(config.mediaDir, ("__" + playlist + '.json')),
+        data = {name:playlist,settings:{ticker:{enable:false},ads:{adPlaylist:false,adInterval:60}},assets:[],layout:'1'};
 
-    fs.writeFile(file, JSON.stringify({}, null, 4), function (err) {
-        cb(err);
+    fs.writeFile(file, JSON.stringify(data, null, 4), function (err) {
+        cb(err,data);
     })
 }
 
@@ -48,6 +49,7 @@ exports.index = function (req, res) {
                         }
                         playlist.settings = obj.settings || {};
                         playlist.assets = obj.assets || [];
+                        playlist.layout = obj.layout || '1';
                         list.push(playlist);
                     }
                     cb();
@@ -99,18 +101,18 @@ exports.getPlaylist = function (req, res) {
 
 exports.createPlaylist = function (req, res) {
 
-    exports.newPlaylist(req.body['file'], function (err) {
+    exports.newPlaylist(req.body['file'], function (err,data) {
         if (err) {
             rest.sendError(res, "Playlist write error", err);
         } else {
-            rest.sendSuccess(res, "Playlist Created: ", req.body['file']);
+            rest.sendSuccess(res, "Playlist Created: ", data);
         }
     });
 }
 
 exports.savePlaylist = function (req, res) {
 
-    var file = path.join(config.mediaDir, req.installation, ("__" + req.params['file'] + '.json'));
+    var file = path.join(config.mediaDir,  ("__" + req.params['file'] + '.json'));
 
     fs.readFile(file, 'utf8', function (err, data) {
         if (err) {
@@ -124,7 +126,7 @@ exports.savePlaylist = function (req, res) {
                 try {
                     fileData = JSON.parse(data);
                 } catch (e) {
-                    console.log("savePlaylist parsing error for " + req.installation)
+                    console.log("savePlaylist parsing error for ")
                 }
                 fileData.version = fileData.version || 0;
             }

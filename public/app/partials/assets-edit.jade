@@ -1,0 +1,16 @@
+.panel.panel-danger
+    .panel-heading
+        .panel-title Rename or delete files, tap Done when completed
+            a.pull-right(ng-click='fn.edit()'): em.text-danger {{fn.editMode?'Done':'Edit'}}
+    ul.list-group
+        li.list-group-item(ng-repeat='name in names')
+            form.row(name="editform")
+                .form-group.col-xs-10(ng-class="editform.$dirty?'':fieldStatus")
+                    .input-group.col-xs-12
+                        input.form-control(type='text', ng-model='name.name')
+                        span.input-group-addon(ng-bind="name.ext", ng-hide="editform.$dirty")
+                        span.input-group-btn(ng-click='fn.rename($index)', ng-show="editform.$dirty")
+                            a.btn.btn-success(type="button") SAVE
+                .col-xs-2
+                    button.btn.btn-danger.pull-right(ng-click='fn.delete($index)')
+                        i.fa.fa-times.fa-lg

@@ -89,26 +89,14 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
             onerror: '&'
         },
         template: function(tElem,tAttrs){
-            var templates={
-                small: '<div>'+
-                    '<button class="btn btn-default upload_file_container">'+
-                        '<input type="file" style="opacity: 0;width:50px">'+
-                    '</button><span ng-transclude></span>'+
-                    '<label ng-if="progressText"  style="width:50px;">'+
-                        '<small class="text-success">{{progressText}}</small>'+
-                    '</label>'+
-                   '</div>',
-                large: '<div>'+
+            return (
+                '<div>'+
                     '<button class="btn btn-link btn-block">'+
                         '<input type="file" multiple="" style="position:absolute;top:0;left:0;opacity: 0;width:100%;height:50px;z-index: 100"/>'+
                         '<span ng-transclude>'+
                     '</button></span>'+
-                    //'<label ng-if="progressText">'+
-                    //    '<small class="text-success">{{progressText}}</small>'+
-                    //'</label>'+
-                   '</div>'
-            };
-            return (tAttrs.type == 'small')? templates.small : templates.large;
+               '</div>'
+            )
         },
         compile: function compile(tElement, tAttrs, transclude) {            
             if (!tAttrs.maxFiles) {

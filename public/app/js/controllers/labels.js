@@ -4,7 +4,9 @@ angular.module('piLabels.controllers', [])
     .factory('Label', function() {
         return({selectedLabel:null, labelsCount: {}})
     })
-    .controller('LabelsCtrl', function ($scope, $http,piUrls, Label,piPopup) {
+    .controller('LabelsCtrl', function ($scope,$stateParams, $http,$location,piUrls, Label,piPopup) {
+
+        $scope.setAssetParam();
 
         $scope.fn = {};
         $scope.fn.editMode = false;
@@ -78,6 +80,10 @@ angular.module('piLabels.controllers', [])
         $scope.fn.selected= function(label){
             if(!$scope.fn.editMode)
                 Label.selectedLabel= (Label.selectedLabel==label) ? null: label;
+            if (Label.selectedLabel)
+                $location.path("/assets/assets/" + label);
+            else
+                $location.path("/assets/assets");
         }
 
         $scope.labelsCount= Label.labelsCount;

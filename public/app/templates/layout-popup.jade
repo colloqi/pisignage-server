@@ -1,0 +1,20 @@
+.panel.panel-primary(style="margin-bottom:0px;")
+	.panel-heading
+		h4.text-center Select Display Layout (default 1)
+			button.btn.btn-success.pull-right(ng-click="modal.close()") DONE
+	.panel-body
+		i: small The Display can be divided into multiple zones with each zone playing different content. Video files can be played
+			| only in the main Zone. Select a file in the playlist to play in the main zone,add other zone files to the main file
+			| by clicking zone file button. If there is no file attached to a particular zone, the previous content for that zone
+			| will continue to play.
+	ul.list-group
+		li.list-group-item(ng-repeat="item in layouts",ng-class="{'list-group-item-success':layout.type==item.type}")
+			.row
+				.col-sm-10
+					.radio
+						label
+							input(type="radio",value="{{item.type}}",ng-change="saveLayout()",ng-model="selected.playlist.layout")
+							strong.text-primary {{item.type}}: &nbsp;{{item.title}}
+							p: small ({{item.description}})
+				.col-sm-2
+					img(height="40px",src="/app/img/{{item.type}}.ico")

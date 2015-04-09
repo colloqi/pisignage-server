@@ -3,6 +3,7 @@
 angular.module('piServerApp', [
     'ui.router',
     'ui.bootstrap',
+    'ui.sortable',
     'piConfig',
     'piIndex.controllers',
     'server.controllers',
@@ -30,11 +31,11 @@ angular.module('piServerApp', [
             .state("home.players", {
                 url: "players",
                 views: {
-                    "left1": {
+                    "left": {
                         templateUrl: '/app/partials/groups.html',
                         controller: 'GroupsCtrl'
                     },
-                    "main1": {
+                    "list": {
                         templateUrl: 'app/partials/players.html',
                         controller: 'ServerPlayerCtrl'
                     }
@@ -44,15 +45,15 @@ angular.module('piServerApp', [
             .state("home.groupsDetails", {
                 url: "players/:group",
                 views: {
-                    "left1": {
+                    "left": {
                         templateUrl: '/app/partials/groups.html',
                         controller: 'GroupsCtrl'
                     },
-                    "main1": {
+                    "details": {
                         templateUrl: '/app/partials/group-details.html',
                         controller: 'GroupDetailCtrl'
                     },
-                    "main2": {
+                    "list": {
                         templateUrl: '/app/partials/players.html',
                         controller: 'ServerPlayerCtrl'
                     }
@@ -60,48 +61,96 @@ angular.module('piServerApp', [
             })
 
             .state("home.assets", {
+                abstract: true,
+                url: "assets/",
+                views: {
+                    "main": {
+                        templateUrl: 'app/partials/assets-main.html',
+                        controller: 'AssetsCtrl'
+                    }
+                },
+                resolve:{
+                    assetParam: ['$stateParams', function($stateParams){
+                        return $stateParams.label || $stateParams.playlist;
+                    }]
+                }
+            })
+
+            .state("home.assets.assets", {
                 url: "assets",
                 views: {
-                    "left1": {
-                        templateUrl: '/app/partials/playlists.html',
-                        controller: 'PlaylistsCtrl'
-                    },
-                    "left2": {
+                    "left": {
                         templateUrl: '/app/partials/labels.html',
                         controller: 'LabelsCtrl'
                     },
-                    "main1": {
+                    "list": {
                         templateUrl: '/app/partials/assets.html',
-                        controller: 'AssetsCtrl'
+                        controller: 'AssetsEditCtrl'
                     }
                 }
             })
 
-            .state("home.playlistDetails", {
-                url: "assets/:playlist",
+            .state("home.assets.labelDetails", {
+                url: "assets/:label",
                 views: {
-                    "left1": {
-                        templateUrl: '/app/partials/playlists.html',
-                        controller: 'PlaylistsCtrl'
-                    },
-                    "left2": {
+                    "left": {
                         templateUrl: '/app/partials/labels.html',
                         controller: 'LabelsCtrl'
                     },
-                    "main1": {
+                    "list": {
                         templateUrl: '/app/partials/assets.html',
-                        controller: 'AssetsCtrl'
+                        controller: 'AssetsEditCtrl'
                     }
                 }
             })
 
-            .state("home.assets_edit", {
-                url: "assets/edit",
-                templateUrl: '/app/partials/assets/_edit.html',
-                controller: 'AssetsEditCtrl',
+            .state("home.assets.playlists", {
+                url: "playlists",
+                views: {
+                    "left": {
+                        templateUrl: '/app/partials/playlists.html',
+                        controller: 'PlaylistsCtrl'
+                    },
+                    "list": {
+                        templateUrl: '/app/partials/assets.html',
+                        controller: 'AssetsEditCtrl'
+                    }
+                }
+            })
 
-                showBackButton: true
+            .state("home.assets.playlistDetails", {
+                url: "playlists/:playlist",
+                views: {
+                    "left": {
+                        templateUrl: '/app/partials/playlists.html',
+                        controller: 'PlaylistsCtrl'
+                    },
+                    "details": {
+                        templateUrl: '/app/partials/playlist-details.html',
+                        controller: 'PlaylistViewCtrl'
+                    },
+                    "list": {
+                        templateUrl: '/app/partials/assets.html',
+                        controller: 'AssetsEditCtrl'
+                    }
+                }
+            })
 
+            .state("home.assets.playlistAddAssets", {
+                url: "playlists/:playlist/add-assets",
+                views: {
+                    "left": {
+                        templateUrl: '/app/partials/playlists.html',
+                        controller: 'PlaylistsCtrl'
+                    },
+                    "list": {
+                        templateUrl: '/app/partials/assets.html',
+                        controller: 'AssetsEditCtrl'
+                    },
+                    "right": {
+                        templateUrl: '/app/partials/playlist-add.html'
+                    }
+                }
             })
 
             .state("home.assets_links", {
@@ -129,22 +178,6 @@ angular.module('piServerApp', [
                 showBackButton: true
 
             })
-
-            .state("home.playlists", {
-                url: "playlists",
-                templateUrl: '/app/partials/playlists/_list.html',
-                controller: 'PlaylistsCtrl'
-            })
-
-
-            .state("home.playlists_edit", {
-                url: "playlists/edit",
-                templateUrl: '/app/partials/playlists/_edit.html',
-                controller: 'PlaylistsEditCtrl',
-
-                showBackButton: true
-            })
-
 
             .state("home.playlists_details", {
                 url: "playlists/details/:file",

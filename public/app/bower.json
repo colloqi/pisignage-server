@@ -21,6 +21,7 @@
     "bootstrap": "~3.3.4",
     "fontawesome": "~4.3.0",
     "angular-bootstrap": "~0.12.1",
-    "lato": "~0.3.0"
+    "lato": "~0.3.0",
+    "ng-sortable": "~1.2.0"
   }
 }

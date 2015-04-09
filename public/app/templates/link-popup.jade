@@ -1,0 +1,21 @@
+.modal-header
+    .row
+        .col-xs-8
+            h4 Stream From Internet
+        .col-xs-4.pull-right
+            button.btn.btn-success.btn-block(ng-disabled='Utubeform.$invalid',ng-click='saveDetails()') Save
+.modal-body
+    p.text-danger(ng-if="errorMessage") {{errorMessage}}
+    form(role='form',name='Utubeform')
+        .form-group.row
+            label.col-sm-4.control-label File Name
+            .col-sm-8
+                input.form-control(type='text',name='linkname' , ng-model='link.obj.name',placeholder='link will be saved in this file',required='')
+        .form-group.row
+            label.col-sm-4.control-label Link Type
+            .col-sm-8
+                select.form-control(ng-options='entry.name for entry in link.types',name='linktype', ng-model='link.obj.type', required='')
+        .form-group.row
+            label.col-sm-4.control-label Link Address
+            .col-sm-8
+                input.form-control(type='url',name='linkUrl', ng-model='link.obj.link', placeholder='Actual link',required='')

@@ -60,7 +60,7 @@ module.exports = function (app) {
         app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     };
 
-    app.use(auth.connect(digest));      //can specify specific routes for auth also
+    //app.use(auth.connect(digest));      //can specify specific routes for auth also
     app.use('/sync_folders',serveIndex(config.syncDir));
     app.use('/sync_folders',express.static(config.syncDir));
 

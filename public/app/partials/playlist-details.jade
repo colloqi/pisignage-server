@@ -1,0 +1,50 @@
+.panel.panel-info
+    .panel-heading
+        .row
+            .col-sm-7
+                h3.panel-title {{selected.playlist.name}} Settings
+                    a.btn.btn-link(ng-click="collapsed = !collapsed;")
+                        i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
+            .col-sm-3.pull-right
+                a.btn.btn-primary.btn-sm.pull-right(ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})") Add Asset to Playlist
+    ul.list-group(ng-show="!collapsed")
+        li.list-group-item
+            h5: strong Select a Layout for the playlist&nbsp;
+                button.btn.btn-primary(ng-click="openLayout ()") Layout&nbsp;
+                    span.badge: small {{selected.playlist.layout}}
+        li.list-group-item
+            h5: strong Add a Ticker Message
+            .input-group
+                input.form-control( name='ticker_messages',
+                                            ng-model='selected.playlist.settings.ticker.messages',
+                                            placeholder="Type in the Ticker message")
+                .input-group-btn
+                    button.btn.btn-primary.pull-right(ng-click='saveSettings()')
+                        i.fa.fa-check
+        li.list-group-item
+            h5: strong Make the playlist as Advertisement list
+            .form-group
+                .checkbox
+                    label
+                        input(type="checkbox",ng-model="selected.playlist.settings.ads.adPlaylist")
+                        span.text-muted Insert the assets of this playlist periodically like Advertisement
+
+            .row(ng-show="selected.playlist.settings.ads.adPlaylist")
+                .col-sm-12
+                    .form-group
+                        label.col-sm-3.control-label.text-muted Insert Interval (seconds)
+                        .col-sm-3
+                            input.form-control(type="number",ng-model="selected.playlist.settings.ads.adInterval")
+                .col-sm-12
+                    .form-group
+                        .checkbox
+                            label
+                                input(type="checkbox",ng-model='selected.playlist.settings.ads.noMainPlay')
+                                span.text-muted Play only in side/bottom zones&nbsp;
+                                p.text-muted (still a dummy Main zone file need to be selected)
+
+
+            .form-group
+                button.btn.btn-primary.btn-sm(ng-click='saveSettings()') Save
+
+

@@ -1,18 +1,18 @@
 
 <div class="panel panel-info">
   <div class="panel-heading">
-    <h3 class="panel-title">Labels<a ng-click="fn.edit()" class="pull-right"><em class="text-danger">{{fn.editMode?'Done':'Edit'}}</em></a></h3>
+    <h3 class="panel-title">Labels<a ng-click="fn.edit()" class="btn btn-sm btn-link pull-right"><em ng-class="{'text-danger':!fn.editMode,'text-success':fn.editMode}">{{fn.editMode?'Done':'Edit'}}</em></a></h3>
   </div>
-  <div class="panel-body">
-    <ul class="nav nav-pills nav-stacked">
-      <li ng-repeat="label in labels" ng-class="fn.getClass(label.name)"><a ng-click="fn.selected(label.name)"><small>{{ label.name }}</small><span ng-if="!fn.editMode &amp;&amp; !fn.getClass(label.name)" class="badge pull-right">{{labelsCount[label.name] || '0'}}</span>
-          <button ng-click="fn.delete($index); $event.stopPropagation()" ng-if="fn.editMode || fn.getClass(label.name)" class="close"><i ng-class="{'text-danger': fn.editMode}" class="fa fa-times-circle fa-lg"></i></button></a></li>
-    </ul>
+  <div class="form-group">
+    <form name="addform" ng-submit="fn.add()">
+      <div class="input-group col-xs-12">
+        <input type="text" ng-model="newLabel.name" placeholder="Add a new Label" required="required" class="form-control"/><span class="input-group-btn">
+          <button type="submit" class="btn btn-info"><i class="fa fa-plus"></i></button></span>
+      </div>
+    </form>
   </div>
-  <form name="addform" ng-submit="fn.add()">
-    <div class="input-group col-xs-12">
-      <input type="text" ng-model="newLabel.name" required="required" class="form-control"/><span class="input-group-btn">
-        <button type="submit" class="btn btn-info"><i class="fa fa-plus"></i></button></span>
-    </div>
-  </form>
+  <ul class="nav nav-pills nav-stacked">
+    <li ng-repeat="label in labels" ng-class="fn.getClass(label.name)"><a ng-click="fn.selected(label.name)"><small>{{ label.name }}</small><span ng-if="!fn.editMode &amp;&amp; !fn.getClass(label.name)" class="badge pull-right">{{labelsCount[label.name] || '0'}}</span>
+        <button ng-click="fn.delete($index); $event.stopPropagation()" ng-if="fn.editMode || fn.getClass(label.name)" class="close"><i ng-class="{'text-danger': fn.editMode}" class="fa fa-times-circle fa-lg"></i></button></a></li>
+  </ul>
 </div>

@@ -1,0 +1,28 @@
+
+<div style="margin-bottom:0px;" class="panel panel-primary">
+  <div class="panel-heading">
+    <h4 class="text-center">Select Display Layout (default 1)
+      <button ng-click="modal.close()" class="btn btn-success pull-right">DONE</button>
+    </h4>
+  </div>
+  <div class="panel-body"><i><small>
+        The Display can be divided into multiple zones with each zone playing different content. Video files can be played
+        only in the main Zone. Select a file in the playlist to play in the main zone,add other zone files to the main file
+        by clicking zone file button. If there is no file attached to a particular zone, the previous content for that zone
+        will continue to play.</small></i></div>
+  <ul class="list-group">
+    <li ng-repeat="item in layouts" ng-class="{'list-group-item-success':layout.type==item.type}" class="list-group-item">
+      <div class="row">
+        <div class="col-sm-10">
+          <div class="radio">
+            <label>
+              <input type="radio" value="{{item.type}}" ng-change="saveLayout()" ng-model="selected.playlist.layout"/><strong class="text-primary">{{item.type}}: &nbsp;{{item.title}}</strong>
+              <p><small>({{item.description}})</small></p>
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-2"><img height="40px" src="/app/img/{{item.type}}.ico"/></div>
+      </div>
+    </li>
+  </ul>
+</div>

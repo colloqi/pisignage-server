@@ -1,0 +1,12 @@
+.modal-header
+    h3.text-warning {{msg.title}} Status    
+.modal-body
+    h4 {{msg.msg}}
+    div(ng-if="msg.buttonText == 'Continue'")
+        hr
+        h5 Select Categories for the files
+        categories(selected-labels="selectedLabels")
+
+.modal-footer
+    button.btn.btn-danger(ng-click='upload.abort()', ng-show="msg.buttonText == 'Uploading' ") Cancel
+    button.btn.btn-warning(ng-click='upload.modalOk()', ng-bind="msg.buttonText", ng-disabled="msg.disable")

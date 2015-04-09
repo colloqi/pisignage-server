@@ -162,7 +162,6 @@ exports.storeDetails = function (req, res) {
                             duration: ~~duration,
                             size: ~~(fileObj.size / 1000) + ' KB',
                             labels: req.body.categories,
-                            installation: installation,
                             thumbnail: thumbnail,
 
                             createdBy: {_id: req.user._id, name: req.user.username}
