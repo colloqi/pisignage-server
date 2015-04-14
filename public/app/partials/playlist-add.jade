@@ -11,12 +11,12 @@
         li.list-group-item(ng-repeat='file in obj.assets track by $index',as-sortable-item,
                                         ng-class='{"list-group-item-danger":file.deleted}'
                                         ng-click='loadAsset(file.fileDetails.name)')
-            .media(as-sortable-item-handle)
+
                 //a(ng-href="#").pull-left
                     img.media-object.img-rounded(ng-src='{{file.fileDetails.thumbnail}}')
                 //.letter-box.media-object.pull-left.img-rounded(ng-if='!file.fileDetails.thumbnail')
                     | {{file.fileDetails.type.slice(0,1) || 'N'}}
-                .media-body
+                div(as-sortable-item-handle)
                     .row
                         .col-sm-9
                             h6 {{file.fileDetails.name }}

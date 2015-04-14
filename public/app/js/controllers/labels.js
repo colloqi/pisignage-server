@@ -2,9 +2,15 @@
 
 angular.module('piLabels.controllers', [])
     .factory('Label', function() {
-        return({selectedLabel:null, labelsCount: {}})
+        return({selectedLabel:null, labelsCount: {}, labels:[]})
     })
-    .controller('LabelsCtrl', function ($scope,$stateParams, $http,$location,piUrls, Label,piPopup) {
+    .controller('LabelsCtrl', function ($scope,$stateParams, $http,$location,piUrls, Label,PlaylistTab,piPopup) {
+
+        if ($stateParams.label)
+            Label.selectedLabel = $stateParams.label;
+        else
+            Label.selectedLabel = null;
+        PlaylistTab.selectedPlaylist = null;         //clear all selected Labels
 
         $scope.setAssetParam();
 
@@ -14,15 +20,6 @@ angular.module('piLabels.controllers', [])
             $scope.fn.editMode = !$scope.fn.editMode;
             Label.selectedGroup = null;
         }
-
-        $http.get(piUrls.labels)
-            .success(function(data, status) {
-                if (data.success) {
-                    $scope.labels= data.data;
-                }
-            })
-            .error(function(data, status) {
-            });
 
         $scope.newLabel = {}
 
@@ -65,7 +62,7 @@ angular.module('piLabels.controllers', [])
                         });
                 })
             } else {
-                $scope.fn.selected($scope.labels[index])
+                $scope.fn.selected($scope.labels[index].name)
             }
         }
         

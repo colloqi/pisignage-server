@@ -4,6 +4,7 @@ angular.module('piServerApp', [
     'ui.router',
     'ui.bootstrap',
     'ui.sortable',
+    'angularjs-dropdown-multiselect',
     'piConfig',
     'piIndex.controllers',
     'server.controllers',
@@ -90,7 +91,7 @@ angular.module('piServerApp', [
                 }
             })
 
-            .state("home.assets.labelDetails", {
+            .state("home.assets.assetLabelDetails", {
                 url: "assets/:label",
                 views: {
                     "left": {

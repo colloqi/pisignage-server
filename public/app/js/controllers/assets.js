@@ -14,14 +14,16 @@ angular.module('piAssets.controllers',[])
             if (PlaylistTab.selectedPlaylist) {
                 $scope.selected.playlist = $scope.groupWiseAssets[PlaylistTab.selectedPlaylist.name].playlist;
                 $scope.showAssets[PlaylistTab.selectedPlaylist.name] = $scope.groupWiseAssets[PlaylistTab.selectedPlaylist.name]
-            } else if (Label.selectedLabel) {
-                $scope.showAssets[Label.selectedLabel] = $scope.groupWiseAssets[Label.selectedLabel]
             } else {
                 $scope.selected.playlist = null;
                 $scope.showAssets = {'All': $scope.allAssets['All']}
             }
             if ($scope.selected.rightWindowNeeded )
                 $scope.showAssets = {'All':$scope.allAssets['All']}
+
+            if ($state.current.name.indexOf("home.assets.playlist") == 0) {
+                $scope.playlistState = true;
+            }
         }
 
         $scope.filterPlaylistName = function(items) {
@@ -93,37 +95,47 @@ angular.module('piAssets.controllers',[])
             })
             $scope.setAssetParam();
         }
-        $http.get(piUrls.files,{})
+        $http.get(piUrls.labels)
             .success(function(data, status) {
                 if (data.success) {
-                    $scope.files = data.data.files;
-                    if (data.data.dbdata) {
-                        $scope.filesDetails = {};
-                        data.data.dbdata.forEach(function(dbdata){
-                            if ($scope.files.indexOf(dbdata.name) >=0){
-                                $scope.filesDetails[dbdata.name] = dbdata;
-                            }
-                        })
-                        Object.keys(Label.labelsCount).forEach(function(item){
-                            Label.labelsCount[item]= 0;
-                        });
-                        for (var filename in $scope.filesDetails) {
-                            $scope.filesDetails[filename].labels.forEach(function(item){
-                                Label.labelsCount[item] = (Label.labelsCount[item] || 0) +1;
-                            })
-                        }
-                        $http
-                            .get(piUrls.playlists, {})
-                            .success(function(data, status) {
-                                if (data.success) {
-                                    $scope.playlists = data.data;
-                                    assemblePlaylistAssets();
-                                }
-                            })
-                            .error(function(data, status) {
-                            });
-                    }
+                    $scope.labels= data.data;
+                    Label.labels = $scope.labels;
                 }
+                $http.get(piUrls.files,{})
+                    .success(function(data, status) {
+                        if (data.success) {
+                            $scope.files = data.data.files;
+                            if (data.data.dbdata) {
+                                $scope.filesDetails = {};
+                                data.data.dbdata.forEach(function(dbdata){
+                                    if ($scope.files.indexOf(dbdata.name) >=0){
+                                        $scope.filesDetails[dbdata.name] = dbdata;
+                                    }
+                                })
+                                Object.keys(Label.labelsCount).forEach(function(item){
+                                    Label.labelsCount[item]= 0;
+                                });
+                                for (var filename in $scope.filesDetails) {
+                                    $scope.filesDetails[filename].labels.forEach(function(item){
+                                        Label.labelsCount[item] = (Label.labelsCount[item] || 0) +1;
+                                    })
+                                }
+                                $http
+                                    .get(piUrls.playlists, {})
+                                    .success(function(data, status) {
+                                        if (data.success) {
+                                            $scope.playlists = data.data;
+                                            PlaylistTab.playlists = $scope.playlists;
+                                            assemblePlaylistAssets();
+                                        }
+                                    })
+                                    .error(function(data, status) {
+                                    });
+                            }
+                        }
+                    })
+                    .error(function(data, status) {
+                    });
             })
             .error(function(data, status) {
             });
@@ -358,15 +370,153 @@ angular.module('piAssets.controllers',[])
                     });
             }
         }
+        $scope.ngDropdown = {
+            selectedAssets: [],
+            label: {
+                extraSettings: {displayProp:'name', idProp:'name', externalIdProp:'name',
+                    //scrollableHeight: '200px', scrollable: true,
+                    showCheckAll:false,showUncheckAll:false  },
+                customTexts: {buttonDefaultText: ($state.current.name.indexOf("home.assets.playlist") == 0)?
+                                                                "FilterBy Label":"AssignTo Label"},
+                Label: Label,
+                selectedLabels: [],
+                events: {
+                    onItemSelect: function(label) {
+                        if (!$scope.playlistState && $scope.ngDropdown.selectedAssets.length) {
+                            for (var i=0,len=$scope.ngDropdown.selectedAssets.length;i<len;i++) {
+                                var asset = $scope.ngDropdown.selectedAssets[i];
+                                if (asset.fileDetails.labels.indexOf(label.name) == -1)
+                                    asset.fileDetails.labels.push(label.name);
+                                //delete asset.selected;
+
+                                $http.post(piUrls.files + asset.fileDetails.name, {dbdata: asset.fileDetails})
+                                    .success(function(data, status) {
+                                        if (data.success) {
+                                            asset.fileDetails = data.data;
+                                        }
+                                    })
+                                    .error(function(data, status) {
+                                    });
+                            }
+                        } else {
+
+                        }
+                    },
+                    onItemDeselect: function(label) {
+                        if (!$scope.playlistState && $scope.ngDropdown.selectedAssets.length) {
+                            for (var i = 0, len = $scope.ngDropdown.selectedAssets.length; i < len; i++) {
+                                var asset = $scope.ngDropdown.selectedAssets[i],
+                                    index = asset.fileDetails.labels.indexOf(label.name);
+                                if (index != -1)
+                                    asset.fileDetails.labels.splice(index, 1);
+                                //delete asset.selected;
+
+                                $http.post(piUrls.files + asset.fileDetails.name, {dbdata: asset.fileDetails})
+                                    .success(function (data, status) {
+                                        if (data.success) {
+                                            asset.fileDetails = data.data;
+                                        }
+                                    })
+                                    .error(function (data, status) {
+                                    });
+                            }
+                        } else {
+
+                        }
+                    }
+                }
+            },
+            playlist: {
+                extraSettings: {displayProp:'name', idProp:'name', externalIdProp:'name',
+                    closeOnSelect: true,
+                    showCheckAll:false,showUncheckAll:false  },
+                customTexts: {buttonDefaultText:($state.current.name.indexOf("home.assets.playlists") == 0)?"AssignTo Playlist":"RemoveFrom Playlist"},
+                PlaylistTab: PlaylistTab,
+                selectedPlaylists: [],
+                events: {
+                    onItemSelect: function(playlistObj) {
+                        var playlist = $scope.groupWiseAssets[playlistObj.name].playlist;
+                        if (playlist) {
+                            var assetNames = playlist.assets.map(function (asset) {
+                                return asset.filename;
+                            });
+                            $scope.ngDropdown.selectedAssets.forEach(function (asset) {
+                                if (assetNames.indexOf(asset.playlistDetails.filename) == -1)
+                                    playlist.assets.splice(0, 0, asset.playlistDetails);
+                            })
+                            $http.post(piUrls.playlists + playlistObj.name, {assets: playlist.assets})
+                                .success(function (data, status) {
+                                    if (data.success) {
+                                        $scope.ngDropdown.clearCheckboxes();
+                                    }
+                                })
+                                .error(function (data, status) {
+                                    console.log(status);
+                                });
+                        }
+                    },
+                    onItemDeselect: function(playlist) {
+
+                    }
+                }
+            },
+            checkbox: function(asset) {
+                if (asset.selected)
+                    $scope.ngDropdown.selectedAssets.push(asset);
+                else
+                    $scope.ngDropdown.selectedAssets.splice($scope.ngDropdown.selectedAssets.indexOf(asset), 1)
+            },
+            clearCheckboxes: function() {
+                $scope.ngDropdown.selectedAssets.forEach(function(asset){
+                    asset.selected = false;
+                })
+                $scope.ngDropdown.selectedAssets=[];
+                $scope.ngDropdown.label.selectedLabels = [];
+                $scope.ngDropdown.playlist.selectedPlaylists = [];
+            },
+            removeFromPlaylist: function () {
+                if (PlaylistTab.selectedPlaylist) {
+                    var playlist = $scope.groupWiseAssets[PlaylistTab.selectedPlaylist.name].playlist;
+                    var assetNames = playlist.assets.map(function (asset) {
+                        return asset.filename;
+                    });
+                    $scope.ngDropdown.selectedAssets.forEach(function (asset) {
+                        var index = assetNames.indexOf(asset.playlistDetails.filename);
+                        if (index >= 0) {
+                            playlist.assets.splice(index, 1);
+                            $scope.groupWiseAssets[PlaylistTab.selectedPlaylist.name].assets.splice(
+                                $scope.groupWiseAssets[PlaylistTab.selectedPlaylist.name].assets.indexOf(asset),1
+                            )
+                        }
+                    })
+                    $http.post(piUrls.playlists + playlist.name, {assets: playlist.assets})
+                        .success(function (data, status) {
+                            if (data.success) {
+                            }
+                        })
+                        .error(function (data, status) {
+                            console.log(status);
+                        });
+                }
+            }
+        }
 
         $scope.selectedLabels = [];
 
-        $scope.label_search= function(obj){
-            if(Label.Label){
-                return ($scope.filesDetails[obj.filename || obj] && $scope.filesDetails[obj.filename || obj].labels.indexOf(Label.selectedLabel) >= 0)
-            }else{
-                return true;
+        $scope.labelFilter = function(asset){
+            if(Label.selectedLabel){
+                return (asset.fileDetails.labels && asset.fileDetails.labels.indexOf(Label.selectedLabel) >= 0)
             }
+            if ((!$scope.playlistState && $scope.ngDropdown.selectedAssets.length) ||
+                        !$scope.ngDropdown.label.selectedLabels.length)
+                return true;
+
+            for (var i= 0,len=$scope.ngDropdown.label.selectedLabels.length;i<len;i++) {
+                var selLabel = $scope.ngDropdown.label.selectedLabels[i].name;
+                if (asset.fileDetails.labels && asset.fileDetails.labels.indexOf(selLabel) >= 0)
+                    return true;
+            }
+            return false;
         }
 
         $scope.configureGCalendar= function() {

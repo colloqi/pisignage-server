@@ -2,11 +2,25 @@
 <div ng-if="!fn.editMode" ng-repeat="(key,obj) in showAssets" class="panel panel-info">
   <div class="panel-heading">
     <div class="row">
+      <div class="col-sm-1">
+        <button ng-click="ngDropdown.clearCheckboxes()" class="btn btn-link"><i class="fa fa-close text-danger"></i></button>
+      </div>
       <div class="col-sm-5">
         <h3 class="panel-title">{{key}}&nbsp; Assets&nbsp;<span class="badge">{{obj.assets.length}}</span></h3>
       </div>
-      <!--.col-sm-2p.control-label.text-right sort by
+      <!--.col-sm-1small.control-label.text-right {{playlistState?"FilterBy":"AssignTo"}}
       -->
+      <div class="col-sm-2">
+        <div ng-dropdown-multiselect="" options="ngDropdown.label.Label.labels" selected-model="ngDropdown.label.selectedLabels" events="ngDropdown.label.events" translation-texts="ngDropdown.label.customTexts" extra-settings="ngDropdown.label.extraSettings" checkboxes="true"></div>
+      </div>
+      <!--.col-sm-1(ng-if="playlistState && showAssets['All']")small.control-label.text-right AssignTo
+      -->
+      <div ng-if="playlistState &amp;&amp; showAssets['All']" class="col-sm-2">
+        <div ng-dropdown-multiselect="" options="ngDropdown.playlist.PlaylistTab.playlists" selected-model="ngDropdown.playlist.selectedPlaylists" events="ngDropdown.playlist.events" translation-texts="ngDropdown.playlist.customTexts" extra-settings="ngDropdown.playlist.extraSettings" checkboxes="true"></div>
+      </div>
+      <div ng-if="playlistState &amp;&amp; !showAssets['All']" class="col-sm-2">
+        <button ng-click="ngDropdown.removeFromPlaylist()" class="btn btn-danger"><small>RemoveFrom Playlist</small></button>
+      </div>
       <!--.col-sm-3
       select.form-control(ng-model="groupType",
                               ng-options="type for type in groupByOptions",
@@ -16,28 +30,41 @@
     </div>
   </div>
   <ul as-sortable="sortable.options" ng-model="obj.assets" style="min-height:50px;" class="list-group">
-    <li ng-repeat="file in obj.assets track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" ng-click="loadAsset(file.fileDetails.name)" class="list-group-item">
-      <div as-sortable-item-handle="as-sortable-item-handle" class="media"><a ng-href="#" class="pull-left"><img ng-src="{{file.fileDetails.thumbnail}}" class="media-object img-rounded"/></a>
-        <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object pull-left img-rounded">{{file.fileDetails.type.slice(0,1) || 'N'}}</div>
+    <li ng-repeat="file in obj.assets | filter:labelFilter track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" ng-click="loadAsset(file.fileDetails.name)" class="list-group-item">
+      <div as-sortable-item-handle="as-sortable-item-handle" class="media">
         <div class="media-body">
           <div class="row">
-            <div class="col-sm-8">
-              <h6><strong>{{file.fileDetails.name }}</strong></h6>
+            <div class="col-sm-1">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="checkbox" ng-model="file.selected" ng-change="ngDropdown.checkbox(file)"/>
+                </label>
+              </div>
             </div>
-            <!--.col-sm-4(ng-if="file.fileDetails.labels")small.bg-info {{file.fileDetails.labels}}
-            -->
-            <div class="col-sm-2">
-              <h6 ng-if="file.fileDetails.resolution.width">{{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}</h6>
+            <div class="col-sm-5">
+              <h4>{{file.fileDetails.name }}</h4>
             </div>
             <div class="col-sm-2">
-              <h6 ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) &amp;&amp; file.fileDetails.duration &gt; 0">{{file.fileDetails.duration}} seconds</h6>
+              <h6 class="text-muted">{{file.fileDetails.size}}</h6>
+            </div>
+            <div class="col-sm-2">
+              <h6 ng-if="file.fileDetails.resolution.width" class="text-muted">{{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}</h6>
+            </div>
+            <div class="col-sm-2">
+              <h6 ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) &amp;&amp; file.fileDetails.duration &gt; 0" class="text-muted">{{file.fileDetails.duration}} seconds</h6>
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-8"><small>{{file.fileDetails.labels}}</small></div>
-            <div class="col-sm-4"><small>{{file.filesDetails.type}} &nbsp; {{file.filesDetails.createdAt | date: 'MMM dd'}}</small></div>
+            <div class="col-sm-7 col-sm-offset-1">
+              <h6 class="text-muted">{{file.fileDetails.labels.join(',')}}</h6>
+            </div>
+            <div class="col-sm-4">
+              <h6 class="text-muted">{{file.fileDetails.type}} &nbsp; {{file.fileDetails.createdAt | date: 'MMM dd'}}</h6>
+            </div>
           </div>
         </div>
+        <div class="media-right"><a ng-href="#"><img ng-src="{{file.fileDetails.thumbnail}}" class="media-object img-rounded"/>
+            <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object img-rounded">{{file.fileDetails.type.slice(0,1) || 'N'}}</div></a></div>
       </div>
     </li>
   </ul>

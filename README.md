@@ -48,4 +48,7 @@
 
 
 
+Points to remember
+--------------------
+1. Close on select took min.js file from https://github.com/dotansimha/angularjs-dropdown-multiselect/pull/23/files
 

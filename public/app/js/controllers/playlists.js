@@ -8,12 +8,13 @@ angular.module('piPlaylists.controllers', [])
         return (obj)
     })
 
-    .controller('PlaylistsCtrl',function($scope, $http, $state,$stateParams,$location, piUrls,PlaylistTab,piPopup){
+    .controller('PlaylistsCtrl',function($scope, $http, $state,$stateParams, piUrls,PlaylistTab,Label,piPopup){
 
         if ($stateParams.playlist)
             PlaylistTab.selectedPlaylist = {name:$stateParams.playlist};
         else
             PlaylistTab.selectedPlaylist = null;
+        Label.selectedLabel = null;         //clear all selected Labels
 
         $scope.selected.rightWindowNeeded = $state.current.name.slice($state.current.name.lastIndexOf('.')+1) == "playlistAddAssets";
         $scope.setAssetParam();
@@ -68,7 +69,7 @@ angular.module('piPlaylists.controllers', [])
                         });
                 })
             } else {
-                $scope.fn.selected($scope.groups[index])
+                $scope.fn.selected($scope.playlists[index])
             }
         }
 
@@ -112,9 +113,9 @@ angular.module('piPlaylists.controllers', [])
                 playlist.newname = playlist.name;
             }
             if (PlaylistTab.selectedPlaylist)
-                $location.path("/assets/playlists/" + playlist.name);
+                $state.go("home.assets.playlistDetails",{playlist:playlist.name}, {reload:true});
             else
-                $location.path("/assets/playlists");
+                $state.go("home.assets.playlists",{}, {reload:true});
         }
 
         $scope.fn.getClass = function (playlist) {
@@ -128,7 +129,7 @@ angular.module('piPlaylists.controllers', [])
 
 
     .controller('PlaylistViewCtrl',
-        function($scope, $http, $rootScope, piUrls, $location, $window,$state, $stateParams,$modal, Label,PlaylistTab){
+        function($scope, $http, $rootScope, piUrls, $window,$state, $stateParams,$modal, Label,PlaylistTab){
 
             //modal for layout
             $scope.layouts = [
