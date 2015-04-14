@@ -132,16 +132,30 @@ angular.module('piPlaylists.controllers', [])
         function($scope, $http, $rootScope, piUrls, $window,$state, $stateParams,$modal, Label,PlaylistTab){
 
             //modal for layout
-            $scope.layouts = [
-                    {type:"1",title:"Single Zone Display",description:"main Zone:1280x720"},
-                    {type:"2a",title:"Two Zones with Main Zone on right",description:"main Zone:960x720, side Zone:320x720"},
-                    {type:"2b",title:"Two Zones with Main Zone on left",description:"main Zone:960x720, side Zone:320x720"},
-                    {type:"3a",title:"Three Zones(full bottom) with Main Zone on right",description:"main Zone:960x540, side Zone:320x540, bottom Zone:1280x180"},
-                    {type:"3b",title:"Three Zones(full bottom) with Main Zone on left",description:"main Zone:960x540, side Zone:320x540, bottom Zone:1280x180"},
-                    {type:"4a",title:"Three Zones(full side) with Main Zone on right",description:"main Zone:960x540, side Zone:320x720, bottom Zone:960x180"},
-                    {type:"4b",title:"Three Zones(full side) with Main Zone on left",description:"main Zone:960x540, side Zone:320x720, bottom Zone:960x180"},
-                    {type:"2ap",title:"Portrait Mode",description:"top Zone:720x540,bottom zone:720x740"}
-                ]
+            $scope.layouts = {
+                "1": {title: "Single Zone Display", description: "main Zone:1280x720"},
+                "2a": {title: "Two Zones with Main Zone on right", description: "main Zone:960x720, side Zone:320x720"},
+                "2b": {title: "Two Zones with Main Zone on left", description: "main Zone:960x720, side Zone:320x720"},
+                "3a": {
+                    title: "Three Zones(full bottom) with Main Zone on right",
+                    description: "main Zone:960x540, side Zone:320x540, bottom Zone:1280x180"
+                },
+                "3b": {
+                    title: "Three Zones(full bottom) with Main Zone on left",
+                    description: "main Zone:960x540, side Zone:320x540, bottom Zone:1280x180"
+                },
+                "4a": {
+                    title: "Three Zones(full side) with Main Zone on right",
+                    description: "main Zone:960x540, side Zone:320x720, bottom Zone:960x180"
+                },
+                "4b": {
+                    title: "Three Zones(full side) with Main Zone on left",
+                    description: "main Zone:960x540, side Zone:320x720, bottom Zone:960x180"
+                },
+                "2ap": {title: "Portrait Mode", description: "top Zone:720x540,bottom zone:720x740"}
+            }
+
+
             $scope.openLayout = function(){
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/layout-popup.html',

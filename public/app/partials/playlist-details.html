@@ -5,55 +5,62 @@
       <div class="col-sm-7">
         <h3 class="panel-title">{{selected.playlist.name}} Settings<a ng-click="collapsed = !collapsed;" class="btn btn-link"><i ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}" class="fa fa-lg"></i></a></h3>
       </div>
-      <div class="col-sm-3 pull-right"><a ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})" class="btn btn-primary btn-sm pull-right">Add Asset to Playlist</a></div>
+      <div class="col-sm-3 pull-right"><a ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})" class="btn btn-primary pull-right">Add Asset to Playlist</a></div>
     </div>
   </div>
-  <ul ng-show="!collapsed" class="list-group">
-    <li class="list-group-item">
-      <h5><strong>Select a Layout for the playlist&nbsp;
-          <button ng-click="openLayout ()" class="btn btn-primary">Layout&nbsp;<span class="badge"><small>{{selected.playlist.layout}}</small></span></button></strong></h5>
-    </li>
-    <li class="list-group-item">
-      <h5><strong>Add a Ticker Message</strong></h5>
-      <div class="input-group">
-        <input name="ticker_messages" ng-model="selected.playlist.settings.ticker.messages" placeholder="Type in the Ticker message" class="form-control"/>
-        <div class="input-group-btn">
-          <button ng-click="saveSettings()" class="btn btn-primary pull-right"><i class="fa fa-check"></i></button>
-        </div>
-      </div>
-    </li>
-    <li class="list-group-item">
-      <h5><strong>Make the playlist as Advertisement list</strong></h5>
+  <div ng-show="!collapsed" class="panel-body">
+    <form class="form-horizontal">
       <div class="form-group">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="selected.playlist.settings.ads.adPlaylist"/><span class="text-muted">Insert the assets of this playlist periodically like Advertisement</span>
-          </label>
-        </div>
-      </div>
-      <div ng-show="selected.playlist.settings.ads.adPlaylist" class="row">
-        <div class="col-sm-12">
-          <div class="form-group">
-            <label class="col-sm-3 control-label text-muted">Insert Interval (seconds)</label>
-            <div class="col-sm-3">
-              <input type="number" ng-model="selected.playlist.settings.ads.adInterval" class="form-control"/>
-            </div>
+        <label class="control-label col-sm-4 text-muted">Selected Layout for the playlist&nbsp;</label>
+        <div class="col-sm-8">
+          <div class="btn-group">
+            <button class="btn btn-default"><span class="text-muted">{{selected.playlist.layout}}:{{layouts[selected.playlist.layout].title}}</span></button>
+            <button ng-click="openLayout ()" class="btn btn-info">Change</button>
           </div>
         </div>
-        <div class="col-sm-12">
-          <div class="form-group">
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" ng-model="selected.playlist.settings.ads.noMainPlay"/><span class="text-muted">Play only in side/bottom zones&nbsp;</span>
-                <p class="text-muted">(still a dummy Main zone file need to be selected)</p>
-              </label>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-4 text-muted">Add a Ticker Message</label>
+        <div class="col-sm-8">
+          <div class="input-group">
+            <input name="ticker_messages" ng-model="selected.playlist.settings.ticker.messages" placeholder="Type in the Ticker message" class="form-control"/>
+            <div class="input-group-btn">
+              <button ng-click="saveSettings()" class="btn btn-info pull-right"><i class="fa fa-check"></i></button>
             </div>
           </div>
         </div>
       </div>
       <div class="form-group">
-        <button ng-click="saveSettings()" class="btn btn-primary btn-sm">Save</button>
+        <label class="control-label col-sm-4 text-muted">Make the playlist as Advertisement list</label>
+        <div class="col-sm-8">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="selected.playlist.settings.ads.adPlaylist"/><span>Insert the assets of this playlist periodically like Advertisement</span>
+            </label>
+          </div>
+        </div>
       </div>
-    </li>
-  </ul>
+      <div ng-show="selected.playlist.settings.ads.adPlaylist" class="form-group">
+        <label class="control-label col-sm-4 text-muted">Insert Interval (seconds)</label>
+        <div class="col-sm-8">
+          <input type="number" ng-model="selected.playlist.settings.ads.adInterval" class="form-control"/>
+        </div>
+      </div>
+      <div ng-show="selected.playlist.settings.ads.adPlaylist" class="form-group">
+        <div class="col-sm-8 col-sm-offset-4">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="selected.playlist.settings.ads.noMainPlay"/><span>Play only in side/bottom zones&nbsp;</span>
+              <p class="text-muted">(still a dummy Main zone file need to be selected)</p>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-8 col-sm-offset-4">
+          <button ng-click="saveSettings()" class="btn btn-info btn-sm">Save & Deploy</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

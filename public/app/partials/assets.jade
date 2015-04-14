@@ -4,35 +4,33 @@
             .col-sm-1
                 button.btn.btn-link(ng-click="ngDropdown.clearCheckboxes()")
                     i.fa.fa-close.text-danger
-            .col-sm-5
+            .col-sm-4
                 h3.panel-title {{key}}&nbsp; Assets&nbsp;
                     span.badge {{obj.assets.length}}
-            //.col-sm-1
-                small.control-label.text-right {{playlistState?"FilterBy":"AssignTo"}}
-            .col-sm-2
-                div(ng-dropdown-multiselect="",
-                                options="ngDropdown.label.Label.labels",
-                                selected-model="ngDropdown.label.selectedLabels",
-                                events = "ngDropdown.label.events",
-                                translation-texts="ngDropdown.label.customTexts",
-                                extra-settings="ngDropdown.label.extraSettings",checkboxes="true")
-            //.col-sm-1(ng-if="playlistState && showAssets['All']")
-                small.control-label.text-right AssignTo
-            .col-sm-2(ng-if="playlistState && showAssets['All']")
-                div(ng-dropdown-multiselect="",
+            .col-sm-2.pull-right(ng-show="!selected.playlist")
+                a.pull-right(ng-click='fn.edit()'): em.text-danger  Edit
+            .col-sm-3.pull-right(ng-if="playlistState && showAssets['All']")
+                div.pull-right(ng-dropdown-multiselect="",
                                 options="ngDropdown.playlist.PlaylistTab.playlists",
                                 selected-model="ngDropdown.playlist.selectedPlaylists",
                                 events = "ngDropdown.playlist.events",
                                 translation-texts="ngDropdown.playlist.customTexts",
                                 extra-settings="ngDropdown.playlist.extraSettings",checkboxes="true")
-            .col-sm-2(ng-if="playlistState && !showAssets['All']")
-                button.btn.btn-danger(ng-click="ngDropdown.removeFromPlaylist()"): small RemoveFrom Playlist
+            .col-sm-3.pull-right(ng-if="playlistState && !showAssets['All']")
+                button.btn.btn-default.pull-right(ng-click="ngDropdown.removeFromPlaylist()"): small.text-danger RemoveFrom Playlist
+            .col-sm-2.pull-right
+                div.pull-right(ng-dropdown-multiselect="",
+                                options="ngDropdown.label.Label.labels",
+                                selected-model="ngDropdown.label.selectedLabels",
+                                events = "ngDropdown.label.events",
+                                translation-texts="ngDropdown.label.customTexts",
+                                extra-settings="ngDropdown.label.extraSettings",checkboxes="true")
+
             //.col-sm-3
                 select.form-control(ng-model="groupType",
                                         ng-options="type for type in groupByOptions",
                                         ng-change="groupBy(groupType)")
-            .col-sm-2.pull-right(ng-show="!selected.playlist")
-                a.pull-right(ng-click='fn.edit()'): em.text-danger  Edit
+
     ul.list-group(as-sortable="sortable.options",ng-model="obj.assets",style="min-height:50px;")
         li.list-group-item(ng-repeat='file in obj.assets | filter:labelFilter track by $index',as-sortable-item,
                                 ng-class='{"list-group-item-danger":file.deleted}'
