@@ -118,9 +118,9 @@ angular.module('piGroups.controllers', [])
             }
 
             if (GroupTab.selectedGroup)
-                $location.path("/players/" + group._id);
+                $location.path("/players/players/" + group._id);
             else
-                $location.path("/players");
+                $location.path("/players/players");
         }
 
         $scope.fn.getClass = function (group) {

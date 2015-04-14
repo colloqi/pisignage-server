@@ -9,7 +9,7 @@ nav.navbar.navbar-default.navbar-fixed-top
         #navbar.navbar-collapse.collapse
             ul.nav.navbar-nav(style="margin-left:20px;")
                 li(ng-class="getClass('home.players')")
-                    a(ui-sref="home.players",ui-sref-opts="{reload: true}") Players
+                    a(ui-sref="home.players.players",ui-sref-opts="{reload: true}") Players
                 li(ng-class="getClass('home.assets.asset')")
                     a(ui-sref="home.assets.assets",ui-sref-opts="{reload: true}") Assets
                 li(ng-class="getClass('home.assets.playlist')")

@@ -17,7 +17,7 @@ angular.module('piServerApp', [
 ])
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
-        $urlRouterProvider.otherwise('/players');
+        $urlRouterProvider.otherwise('/players/players');
 
         $stateProvider
 
@@ -30,6 +30,17 @@ angular.module('piServerApp', [
             })
 
             .state("home.players", {
+                abstract: true,
+                url: "players/",
+                views: {
+                    "main": {
+                        templateUrl: 'app/partials/assets-main.html',
+                        controller: 'ServerPlayerCtrl'
+                    }
+                }
+            })
+
+            .state("home.players.players", {
                 url: "players",
                 views: {
                     "left": {
@@ -37,13 +48,12 @@ angular.module('piServerApp', [
                         controller: 'GroupsCtrl'
                     },
                     "list": {
-                        templateUrl: 'app/partials/players.html',
-                        controller: 'ServerPlayerCtrl'
+                        templateUrl: 'app/partials/players.html'
                     }
                 }
             })
 
-            .state("home.groupsDetails", {
+            .state("home.players.playerGroupsDetails", {
                 url: "players/:group",
                 views: {
                     "left": {
@@ -55,8 +65,7 @@ angular.module('piServerApp', [
                         controller: 'GroupDetailCtrl'
                     },
                     "list": {
-                        templateUrl: '/app/partials/players.html',
-                        controller: 'ServerPlayerCtrl'
+                        templateUrl: '/app/partials/players.html'
                     }
                 }
             })
@@ -69,11 +78,6 @@ angular.module('piServerApp', [
                         templateUrl: 'app/partials/assets-main.html',
                         controller: 'AssetsCtrl'
                     }
-                },
-                resolve:{
-                    assetParam: ['$stateParams', function($stateParams){
-                        return $stateParams.label || $stateParams.playlist;
-                    }]
                 }
             })
 

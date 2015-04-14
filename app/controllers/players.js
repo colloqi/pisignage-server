@@ -200,7 +200,6 @@ exports.updateObject = function (req, res) {
     Group.findById(object.group._id, function (err, group) {
         if (!err && group) {
             sendConfig(object, group, true)
-            reports.createEvent(object, 'server', 'config', object.installation + '/' + group.name, Date.now())
         } else {
             console.log("unable to find group for the player");
         }
@@ -244,7 +243,6 @@ exports.updatePlayerStatus = function (obj) {
                 player = _.extend(data, obj)
                 if (!player.isConnected) {
                     player.isConnected = true;
-                    reports.createEvent(player, 'server', 'network', 'connect', (new Date(player.lastReported)).getTime())
                 }
             } else {
                 player = new Player(obj);
@@ -289,7 +287,6 @@ exports.shell = function (req, res) {
     var object = req.object;
     pendingCommands[object.socket] = res;
     socketio.emitMessage(object.socket, 'shell', cmd);
-    reports.createEvent(object, 'server', 'other', 'shell: ' + cmd, Date.now())
 }
 
 exports.shellAck = function (sid, response) {
@@ -303,7 +300,6 @@ exports.swupdate = function (req, res) {
     var object = req.object;
     pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
     socketio.emitMessage(object.socket, 'swupdate', 'piimage' + pipkgjson.version + '.zip');
-    reports.createEvent(object, 'server', 'other', 'swupdate', Date.now())
     return rest.sendSuccess(res, 'SW update command issued');
 }
 
@@ -316,7 +312,6 @@ exports.upload = function (cpuId, filename, data) {
                     logData = JSON.parse(data);
                     logData.installation = player.installation;
                     logData.playerId = player._id.toString();
-                    reports.storeStats(logData)
                 } catch (e) {
                     //corrupt file
                 }
@@ -330,7 +325,6 @@ exports.upload = function (cpuId, filename, data) {
                         logData.installation = player.installation;
                         logData.playerId = player._id.toString();
                         events.push(logData);
-                        reports.storeEvents(logData);
                     } catch (e) {
                         //corrupt file
                     }
