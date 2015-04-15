@@ -162,9 +162,8 @@ exports.storeDetails = function (req, res) {
                             duration: ~~duration,
                             size: ~~(fileObj.size / 1000) + ' KB',
                             labels: req.body.categories,
-                            thumbnail: thumbnail,
+                            thumbnail: thumbnail
 
-                            createdBy: {_id: req.user._id, name: req.user.username}
                         };
                     if (object.duration == 10)      //hack for default avoidance
                         object.duration = 11;
