@@ -5,7 +5,7 @@
       <h4>Stream From Internet</h4>
     </div>
     <div class="col-xs-4 pull-right">
-      <button ng-disabled="Utubeform.$invalid" ng-click="saveDetails()" class="btn btn-success btn-block">Save</button>
+      <button ng-disabled="Utubeform.$invalid" ng-click="link.save()" class="btn btn-success btn-block">Save</button>
     </div>
   </div>
 </div>
@@ -21,7 +21,7 @@
     <div class="form-group row">
       <label class="col-sm-4 control-label">Link Type</label>
       <div class="col-sm-8">
-        <select ng-options="entry.name for entry in link.types" name="linktype" ng-model="link.obj.type" required="" class="form-control"></select>
+        <select ng-options="entry.ext as entry.name for entry in link.types" name="linktype" ng-model="link.obj.type" required="" class="form-control"></select>
       </div>
     </div>
     <div class="form-group row">

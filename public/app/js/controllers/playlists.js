@@ -16,7 +16,6 @@ angular.module('piPlaylists.controllers', [])
             PlaylistTab.selectedPlaylist = null;
         Label.selectedLabel = null;         //clear all selected Labels
 
-        $scope.selected.rightWindowNeeded = $state.current.name.slice($state.current.name.lastIndexOf('.')+1) == "playlistAddAssets";
         $scope.setAssetParam();
 
         $scope.fn = {};
@@ -45,7 +44,7 @@ angular.module('piPlaylists.controllers', [])
                 .success(function (data, status) {
                     if (data.success) {
                         $scope.playlists.push(data.data);
-                        $scope.groupBy($scope.groupType);
+                        $scope.assemblePlaylistAssets();
                         $scope.newPlaylist = {}
                     }
                 })
@@ -62,7 +61,7 @@ angular.module('piPlaylists.controllers', [])
                         .success(function (data, status) {
                             if (data.success) {
                                 $scope.playlists.splice(index, 1);
-                                $scope.groupBy($scope.groupType);
+                                $scope.assemblePlaylistAssets();
                             }
                         })
                         .error(function (data, status) {
@@ -95,7 +94,7 @@ angular.module('piPlaylists.controllers', [])
                         $scope.playlists[index].name = oldname;
                         $scope.playlists[index].newname = "Could not rename";
                     } else {
-                        $scope.groupBy($scope.groupType);
+                        $scope.assemblePlaylistAssets();
                     }
                 })
                 .error(function (data, status) {

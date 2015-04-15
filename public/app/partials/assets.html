@@ -18,16 +18,10 @@
       <div class="col-sm-2 pull-right">
         <div ng-dropdown-multiselect="" options="ngDropdown.label.Label.labels" selected-model="ngDropdown.label.selectedLabels" events="ngDropdown.label.events" translation-texts="ngDropdown.label.customTexts" extra-settings="ngDropdown.label.extraSettings" checkboxes="true" class="pull-right"></div>
       </div>
-      <!--.col-sm-3
-      select.form-control(ng-model="groupType",
-                              ng-options="type for type in groupByOptions",
-                              ng-change="groupBy(groupType)")
-      
-      -->
     </div>
   </div>
   <ul as-sortable="sortable.options" ng-model="obj.assets" style="min-height:50px;" class="list-group">
-    <li ng-repeat="file in obj.assets | filter:labelFilter track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" ng-click="loadAsset(file.fileDetails.name)" class="list-group-item">
+    <li ng-repeat="file in obj.assets | filter:labelFilter track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" ng-click="fn.showDetails(file.fileDetails.name)" class="list-group-item">
       <div as-sortable-item-handle="as-sortable-item-handle" class="media">
         <div class="media-body">
           <div class="row">

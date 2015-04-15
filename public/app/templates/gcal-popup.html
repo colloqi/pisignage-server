@@ -1,0 +1,17 @@
+
+<div class="modal-header">
+  <h4 class="text-info">Subscribe to a Google Calendar for Events</h4>
+</div>
+<div class="modal-body">
+  <form name="emailForm" action="/api/gcal/authorize" method="POST">
+    <div ng-class="{ 'has-error': emailForm.email.$invalid &amp;&amp; emailForm.email.$dirty }" class="form-group">
+      <h4>Google User ID</h4>
+      <input type="email" name="email" ng-model="email" placeholder="Enter Your Google User ID" required="required" class="form-control"/>
+    </div>
+    <p>
+      You will be redirected to Google Accounts page now with the chosen ID as the account.
+        After logging into the account, accept the permisson request from PiSignage app.
+    </p>
+    <button type="submit" ng-disabled="emailForm.email.$error.required" class="btn btn-primary">Proceed >></button>
+  </form>
+</div>

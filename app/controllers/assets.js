@@ -102,6 +102,16 @@ exports.getFileDetails = function (req, res) {
                         fileData.type = 'image';
                     else if (file.match(config.videoRegex))
                         fileData.type = 'video';
+                    else if (file.match(config.audioRegex))
+                        fileData.type = 'audio';
+                    else if (file.match(config.htmlRegex))
+                        fileData.type = 'html';
+                    else if (file.match(config.liveStreamRegex) || file.match(config.linkUrlRegex))
+                        fileData.type = 'link';
+                    else if (file.match(config.gcalRegex))
+                        fileData.type = 'gcal';
+                    else
+                        fileData.type = 'other';
                     next();
                 }
             })

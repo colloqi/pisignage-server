@@ -109,6 +109,20 @@ angular.module('piServerApp', [
                 }
             })
 
+            .state("home.assets.assetDetails", {
+                url: "assets/detail/:file",
+                views: {
+                    "left": {
+                        templateUrl: '/app/partials/labels.html',
+                        controller: 'LabelsCtrl'
+                    },
+                    "list": {
+                        templateUrl: '/app/partials/asset-details.html',
+                        controller: 'AssetViewCtrl'
+                    }
+                }
+            })
+
             .state("home.assets.playlists", {
                 url: "playlists",
                 views: {

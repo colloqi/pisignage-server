@@ -1,0 +1,49 @@
+.panel.panel-primary
+    .panel-heading
+        .panel-title {{filedetails.name || urlLink.name+urlLink.type || "Google User Account Details"}}
+    .panel-body
+        img.img-responsive.img-rounded(ng-if='filedetails.type=="image"', ng-src='{{ filedetails.path }}')
+        video.img-responsive.img-rounded(ng-if='filedetails.type=="video"', controls, ng-src='{{ filedetails.path }}')
+        iframe(ng-if='filedetails.type=="html"' ng-src='{{ filedetails.path }}')
+        div(ng-if='fileType=="link"')
+            .row
+                .col-xs-2.col-xs-offset-1
+                    h4.text-muted Address
+                .col-xs-8
+                    h4 {{urlLink.link}}
+            .row
+                .col-xs-2.col-xs-offset-1
+                    h4.text-muted Type
+                .col-xs-8
+                    h4 {{urlLink.type == ".tv"?"You Tube":"Web"}}
+
+        div(ng-if='(fileType=="gcal") && calendar.list.length')
+            h4: strong  Profile
+            .media
+                .pull-right
+                    img.media-object(ng-src="{{calendar.profile.picture}}", style="width:84px"  )
+                .media-body.pull-left
+                    h4.media-heading
+                        |   &nbspEmail:&nbsp&nbsp
+                        span(ng-bind="calendar.profile.email")
+                        br
+            h3 Choose a Calendar for subscribing to Events
+            br
+            ul.list-group
+                li.list-group-item(ng-repeat = "item in calendar.list")
+                    .row
+                        .col-sm-8
+                            h4.media-heading: strong {{item.summary}}
+                        .col-sm-4
+                            div.radio
+                                input(type="radio", name="email", ng-click='selectedCalendar(item.id)', ng-checked="calendar.selected == item.summary")
+
+
+    .panel-footer(ng-show='fileType=="other"')
+        .row
+            .col-sm-10
+                categories(selected-labels="selectedLabels")
+            .col-sm-2
+                button.btn.btn-success.pull-right(ng-click='save()', ng-if='filedetails.dbdata') SAVE
+
+

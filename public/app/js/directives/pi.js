@@ -203,17 +203,23 @@ directive('categories',['$http','piUrls', function($http,piUrls) {
         },
         restrict: 'E',
         replace: 'true',
-        template:   '<label ng-repeat="category in label.categories" class="checkbox-inline">' +
-                        '<input type="checkbox" value="{{category.name}}"'+
-                                'ng-checked="selectedLabels.indexOf(category.name) &gt; -1"'+
-                                'ng-click="label.toggleSelection(category.name)"/>{{category.name}}' +
-                    '</label>',
+        template:   '<form><label ng-repeat="category in cat.categories" class="checkbox-inline">' +
+                        '<input type="checkbox"'+
+                                'ng-model="category.selected"'+
+                                'ng-change="cat.toggleSelection(category.name)"/>{{category.name}}' +
+                    '</label></form>',
         link: function(scope, elem, attr){
-            scope.label = {}   //holds all the category related objects
+            scope.cat = {}   //holds all the category related objects
             $http.get(piUrls.labels,{})
                 .success(function(data, status) {
                     if (data.success) {
-                        scope.label.categories = data.data;
+                        scope.cat.categories = data.data;
+                        scope.cat.categories.forEach(function(category){
+                            if (scope.selectedLabels.indexOf(category.name) >= 0)
+                                category.selected = true;
+                            else
+                                category.selected = false;
+                        })
                     }
                 })
                 .error(function(data, status) {
@@ -221,7 +227,7 @@ directive('categories',['$http','piUrls', function($http,piUrls) {
 
 
             // toggle selection for a given fruit by name
-            scope.label.toggleSelection = function toggleSelection(category) {
+            scope.cat.toggleSelection = function(category) {
                 var idx = scope.selectedLabels.indexOf(category);
 
                 // is currently selected

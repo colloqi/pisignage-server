@@ -2,12 +2,27 @@
 
 angular.module('piAssets.controllers',[])
     .controller('AssetsCtrl',function($scope,$state,piUrls,$http,$modal, piConstants,
-                                      fileUploader, $window,piPopup, Upload, PlaylistTab,Label){
 
-        $scope.selected = {playlist:null}
+                                                    fileUploader, $window, Upload, PlaylistTab,Label){
+    /*
+        $scope.files holds all the files present in the media directory
+        $scope.fileDetails contains db data for the files with $scope.files element as key
+        $scope.groupWiseAssets holds object with playlist name as key
+            object contains playlist and assets fields
+            assets contains array with each element is an object of fileDetails, playlistDetails for that file & deleted attribute
+        $scope.includedAssets contains all the included assets in all playlists
+        $scope.allAseets contains all assets with fileDetails, playlistDetails attributes
+     */
 
+        $scope.selected = {
+            playlist:null,
+            rightWindowNeeded: ($state.current.name.slice($state.current.name.lastIndexOf('.')+1) == "playlistAddAssets")
+        }
+
+
+        //decide what to show in assets.jade
         $scope.setAssetParam = function(){
-            if (!$scope.groupWiseAssets)
+            if (!$scope.groupWiseAssets)        //not yet loaded
                 return;
 
             $scope.showAssets = {};
@@ -18,7 +33,7 @@ angular.module('piAssets.controllers',[])
                 $scope.selected.playlist = null;
                 $scope.showAssets = {'All': $scope.allAssets['All']}
             }
-            if ($scope.selected.rightWindowNeeded )
+            if ($scope.selected.rightWindowNeeded)
                 $scope.showAssets = {'All':$scope.allAssets['All']}
 
             if ($state.current.name.indexOf("home.assets.playlist") == 0) {
@@ -26,6 +41,7 @@ angular.module('piAssets.controllers',[])
             }
         }
 
+        //filter used by playlist-add.jade
         $scope.filterPlaylistName = function(items) {
             if ($scope.selected.playlist) {
                 var result = {};
@@ -35,7 +51,25 @@ angular.module('piAssets.controllers',[])
                 return $scope.groupWiseAssets;
         }
 
-        var assemblePlaylistAssets = function() {
+        //Label filter for assets
+        $scope.labelFilter = function(asset){
+            if(Label.selectedLabel){
+                return (asset.fileDetails.labels && asset.fileDetails.labels.indexOf(Label.selectedLabel) >= 0)
+            }
+            if ((!$scope.playlistState && $scope.ngDropdown.selectedAssets.length) ||
+                !$scope.ngDropdown.label.selectedLabels.length)
+                return true;
+
+            for (var i= 0,len=$scope.ngDropdown.label.selectedLabels.length;i<len;i++) {
+                var selLabel = $scope.ngDropdown.label.selectedLabels[i].name;
+                if (asset.fileDetails.labels && asset.fileDetails.labels.indexOf(selLabel) >= 0)
+                    return true;
+            }
+            return false;
+        }
+
+        //arrange files and playlists with details in global structures
+        $scope.assemblePlaylistAssets = function() {
             $scope.groupWiseAssets = {};
             $scope.allAssets = {};
             $scope.includedAssets = [];
@@ -47,21 +81,20 @@ angular.module('piAssets.controllers',[])
                 };
                 playlist.assets.forEach(function(asset){
 
-                    if ($scope.files.indexOf(asset.filename) != -1) {
-                        var obj = {};
-                        obj.fileDetails = $scope.filesDetails[asset.filename] || {name: asset.filename};
-                        obj.playlistDetails = asset;
-                        obj.deleted = ($scope.files.indexOf(asset.filename) == -1);
-                        $scope.groupWiseAssets[playlist.name].assets.push(obj)
-                    }
-                    if (asset.side && $scope.files.indexOf(asset.side) != -1) {
+                    var obj = {};
+                    obj.fileDetails = $scope.filesDetails[asset.filename] || {name: asset.filename};
+                    obj.playlistDetails = asset;
+                    obj.deleted = ($scope.files.indexOf(asset.filename) == -1);
+                    $scope.groupWiseAssets[playlist.name].assets.push(obj)
+
+                    if (asset.side) {
                         var obj = {};
                         obj.fileDetails = $scope.filesDetails[asset.side] || {name: asset.side};
                         obj.playlistDetails = null;
                         obj.deleted = ($scope.files.indexOf(asset.filename) == -1);
                         $scope.groupWiseAssets[playlist.name].assets.push(obj)
                     }
-                    if (asset.bottom && $scope.files.indexOf(asset.bottom) != -1) {
+                    if (asset.bottom) {
                         var obj = {};
                         obj.fileDetails = $scope.filesDetails[asset.bottom] || {name: asset.bottom};
                         obj.playlistDetails = null;
@@ -95,6 +128,9 @@ angular.module('piAssets.controllers',[])
             })
             $scope.setAssetParam();
         }
+
+        //Fetch Labels, files and playlists from server , later move as a service
+        //Once done call assemblePlaylistAssets
         $http.get(piUrls.labels)
             .success(function(data, status) {
                 if (data.success) {
@@ -126,7 +162,7 @@ angular.module('piAssets.controllers',[])
                                         if (data.success) {
                                             $scope.playlists = data.data;
                                             PlaylistTab.playlists = $scope.playlists;
-                                            assemblePlaylistAssets();
+                                            $scope.assemblePlaylistAssets();
                                         }
                                     })
                                     .error(function(data, status) {
@@ -140,82 +176,9 @@ angular.module('piAssets.controllers',[])
             .error(function(data, status) {
             });
 
-        $scope.groupByOptions = ["playlist","label","type","none"]
-        $scope.groupType = "playlist"
-        $scope.groupBy = function(attribute) {               //attribute could be playlist, label, type, date
-            $scope.groupWiseAssets = {};
-            $scope.allAssets = {};
-            $scope.includedAssets = [];
-            switch(attribute) {
-                case 'playlist':
-                    $scope.playlists.forEach(function(playlist){
-                        $scope.groupWiseAssets[playlist.name] = {
-                            playlist:playlist,
-                            assets: []
-                        };
-                        playlist.assets.forEach(function(asset){
 
-                            if ($scope.files.indexOf(asset.filename) != -1) {
-                                var obj = {};
-                                obj.fileDetails = $scope.filesDetails[asset.filename] || {name: asset.filename};
-                                obj.playlistDetails = asset;
-                                obj.deleted = ($scope.files.indexOf(asset.filename) == -1);
-                                $scope.groupWiseAssets[playlist.name].assets.push(obj)
-                            }
-                            if (asset.side && $scope.files.indexOf(asset.side) != -1) {
-                                var obj = {};
-                                obj.fileDetails = $scope.filesDetails[asset.side] || {name: asset.side};
-                                obj.playlistDetails = null;
-                                obj.deleted = ($scope.files.indexOf(asset.filename) == -1);
-                                $scope.groupWiseAssets[playlist.name].assets.push(obj)
-                            }
-                            if (asset.bottom && $scope.files.indexOf(asset.bottom) != -1) {
-                                var obj = {};
-                                obj.fileDetails = $scope.filesDetails[asset.bottom] || {name: asset.bottom};
-                                obj.playlistDetails = null;
-                                obj.deleted = ($scope.files.indexOf(asset.filename) == -1);
-                                $scope.groupWiseAssets[playlist.name].assets.push(obj)
-                            }
-
-                            $scope.includedAssets.push(asset.filename)
-                            if (asset.side)
-                                $scope.includedAssets.push(asset.side)
-                            if (asset.bottom)
-                                $scope.includedAssets.push(asset.bottom)
-
-                        })
-                    });
-                    $scope.allAssets['Unassigned'] =  {
-                        playlist:null,
-                        assets: []
-                    };
-                    $scope.files.forEach(function(filename) {
-                        //if ($scope.includedAssets.indexOf(filename) == -1) {
-                            var obj = {};
-                            obj.fileDetails = $scope.filesDetails[filename] || {name: filename};
-                            obj.playlistDetails = {filename: filename, selected: false};
-                            obj.playlistDetails.isVideo = !(filename.match(piConstants.videoRegex) == null);
-                            if ($scope.filesDetails[filename])
-                                obj.playlistDetails.duration = parseInt($scope.filesDetails[filename].duration);
-                            obj.playlistDetails.duration = obj.playlistDetails.duration || 10;
-                            $scope.allAssets['Unassigned'].assets.push(obj)
-                        //}
-                    })
-                    break;
-                case 'label':
-                    break;
-                case 'type':
-                    break;
-                default:
-                    $scope.groupWiseAssets['All'] = [];
-                    $scope.files.forEach(function(filename) {
-                        $scope.groupWiseAssets['All'].push($scope.filesDetails[filename] || {name: filename})
-                    })
-                    break;
-            }
-        }
-
-
+        //upload assets related
+        $scope.selectedLabels = [];
         $scope.msg = {
             title: 'Upload',
             msg: 'Please Wait',
@@ -286,6 +249,44 @@ angular.module('piAssets.controllers',[])
         }
         Upload.functions = $scope.upload;
 
+        //Add link releated for uploading links
+        $scope.link = {
+            types: [{name: 'You Tube', ext: '.tv'}, {name: 'Web Link', ext: '.link'}],
+            obj: {
+                name: null,
+                type: '.link',
+                link: null
+            },
+            showPopUp: function () {
+                $scope.modal = $modal.open({
+                    templateUrl: '/app/templates/link-popup.html',
+                    scope: $scope
+                });
+            },
+            save: function () {
+                $http
+                    .post(piUrls.links, {details: $scope.link.obj})
+                    .success(function (data, status) {
+                        if (data.success) {
+                            //$scope.Filestatus = data.stat_message;
+                            $scope.modal.close();
+                        }
+                    })
+                    .error(function (data, status) {
+                        $scope.errorMessage = data.stat_message;
+                    })
+            }
+        }
+        Upload.functions.link = $scope.link.showPopUp;
+
+        Upload.functions.configureGCalendar= function() {
+            $scope.gCalModal = $modal.open({
+                templateUrl: '/app/templates/gcal-popup.html',
+                scope: $scope
+            });
+        }
+
+        //drag and drop, sort for playlist files, needs claenup
         $scope.sortable = {}
         $scope.sortable.options = {
             accept: function (sourceItemHandleScope, destSortableScope, destItemScope) {
@@ -370,18 +371,21 @@ angular.module('piAssets.controllers',[])
                     });
             }
         }
+
+        //dropdown selects for filter and assign selected files
         $scope.ngDropdown = {
             selectedAssets: [],
             label: {
                 extraSettings: {displayProp:'name', idProp:'name', externalIdProp:'name',
-                    //scrollableHeight: '200px', scrollable: true,
-                    showCheckAll:false,showUncheckAll:false  },
+                                //scrollableHeight: '200px', scrollable: true,
+                                showCheckAll:false,showUncheckAll:false  },
                 customTexts: {buttonDefaultText: ($state.current.name.indexOf("home.assets.playlist") == 0)?
                                                                 "FilterBy Label":"AssignTo Label"},
                 Label: Label,
                 selectedLabels: [],
                 events: {
                     onItemSelect: function(label) {
+                        //add Labels to selected files
                         if (!$scope.playlistState && $scope.ngDropdown.selectedAssets.length) {
                             for (var i=0,len=$scope.ngDropdown.selectedAssets.length;i<len;i++) {
                                 var asset = $scope.ngDropdown.selectedAssets[i];
@@ -398,11 +402,10 @@ angular.module('piAssets.controllers',[])
                                     .error(function(data, status) {
                                     });
                             }
-                        } else {
-
                         }
                     },
                     onItemDeselect: function(label) {
+                        //delete label for the selected files
                         if (!$scope.playlistState && $scope.ngDropdown.selectedAssets.length) {
                             for (var i = 0, len = $scope.ngDropdown.selectedAssets.length; i < len; i++) {
                                 var asset = $scope.ngDropdown.selectedAssets[i],
@@ -420,8 +423,6 @@ angular.module('piAssets.controllers',[])
                                     .error(function (data, status) {
                                     });
                             }
-                        } else {
-
                         }
                     }
                 }
@@ -434,6 +435,7 @@ angular.module('piAssets.controllers',[])
                 PlaylistTab: PlaylistTab,
                 selectedPlaylists: [],
                 events: {
+                    //add to the playlist
                     onItemSelect: function(playlistObj) {
                         var playlist = $scope.groupWiseAssets[playlistObj.name].playlist;
                         if (playlist) {
@@ -474,6 +476,7 @@ angular.module('piAssets.controllers',[])
                 $scope.ngDropdown.label.selectedLabels = [];
                 $scope.ngDropdown.playlist.selectedPlaylists = [];
             },
+            //called from playlist details screen
             removeFromPlaylist: function () {
                 if (PlaylistTab.selectedPlaylist) {
                     var playlist = $scope.groupWiseAssets[PlaylistTab.selectedPlaylist.name].playlist;
@@ -500,107 +503,9 @@ angular.module('piAssets.controllers',[])
                 }
             }
         }
-
-        $scope.selectedLabels = [];
-
-        $scope.labelFilter = function(asset){
-            if(Label.selectedLabel){
-                return (asset.fileDetails.labels && asset.fileDetails.labels.indexOf(Label.selectedLabel) >= 0)
-            }
-            if ((!$scope.playlistState && $scope.ngDropdown.selectedAssets.length) ||
-                        !$scope.ngDropdown.label.selectedLabels.length)
-                return true;
-
-            for (var i= 0,len=$scope.ngDropdown.label.selectedLabels.length;i<len;i++) {
-                var selLabel = $scope.ngDropdown.label.selectedLabels[i].name;
-                if (asset.fileDetails.labels && asset.fileDetails.labels.indexOf(selLabel) >= 0)
-                    return true;
-            }
-            return false;
-        }
-
-        $scope.configureGCalendar= function() {
-            $scope.gCalModal = $modal.open({
-                templateUrl: '/app/templates/gCalPopup.html',
-                scope: $scope
-            });
-        }
-
-        $scope.extension = function(val) {
-            val = val.filename || val;
-            switch($scope.ext) {
-                case 'v':
-                    return val.match(piConstants.videoRegex);
-                    break;
-                case 'i':
-                    return val.match(piConstants.imageRegex);
-                    break;
-                case 'n':
-                    return val.match(piConstants.noticeRegex);
-                    break;
-                default:
-                    return val;
-                    break;
-            }
-        }
-
-        $scope.link = {
-            types: [{name: 'You Tube', ext: '.tv'}, {name: 'Web Link', ext: '.link'}],
-            obj: {
-                name: null,
-                type: null,
-                link: null
-            },
-            showPopUp: function () {
-                $scope.link.obj.type = $scope.link.types[1];
-                $scope.modal = $modal.open({
-                    templateUrl: '/app/templates/link-popup.html',
-                    scope: $scope
-                });
-            },
-            save: function () {
-                $http
-                    .post(piUrls.links, {details: $scope.link.obj})
-                    .success(function (data, status) {
-                        if (data.success) {
-                            //$scope.Filestatus = data.stat_message;
-                            $scope.modal.close();
-                        }
-                    })
-                    .error(function (data, status) {
-                        $scope.errorMessage = data.stat_message;
-                    })
-            }
-        }
-        Upload.functions.link = $scope.link.showPopUp;
-
-
     }).
 
-    controller('AssetViewCtrl', function($scope, $rootScope, $http, piUrls, $stateParams, $location){
-            $http.get(piUrls.files + $stateParams.file)
-                .success(function(data, status) {
-                    if (data.success) {
-                        $scope.filedetails = data.data;
-                    }
-                })
-                .error(function(data, status) {
-                });
-
-            $scope.save = function() {
-                $http.post(piUrls.files + $stateParams.file, {dbdata: $scope.filedetails.dbdata})
-                    .success(function(data, status) {
-                        if (data.success) {
-                            $scope.filedetails.dbdata = data.data;
-                            $location.path('/assets');
-                        }
-                    })
-                    .error(function(data, status) {
-                    });
-            }
-
-    }).
-    controller('AssetsEditCtrl', function($scope,$rootScope, $http, piUrls,piPopup){
+    controller('AssetsEditCtrl', function($scope,$rootScope,$state, $http, piUrls,piPopup){
 
             $scope.fn = {};
             $scope.fn.editMode = false;
@@ -622,6 +527,8 @@ angular.module('piAssets.controllers',[])
                             ext: ext
                         })
                     });
+                } else {
+                    $scope.assemblePlaylistAssets()
                 }
             }
 
@@ -631,6 +538,7 @@ angular.module('piAssets.controllers',[])
                         .delete(piUrls.files+$scope.files[index])
                         .success(function(data, status) {
                             if (data.success) {
+                                delete $scope.filesDetails[$scope.files[index]];
                                 $scope.files.splice(index,1);
                                 $scope.names.splice(index,1);
                             }
@@ -652,6 +560,8 @@ angular.module('piAssets.controllers',[])
                         .post(piUrls.files + oldname, {  newname: newname })
                         .success(function (data, status) {
                             if (data.success) {
+                                $scope.filesDetails[newname] = $scope.filesDetails[$scope.files[index]];
+                                delete $scope.filesDetails[$scope.files[index]];
                                 $scope.files[index] = newname;
                                 $scope.editform.$setPristine();
                                 $scope.fieldStatus = "has-success";
@@ -662,4 +572,92 @@ angular.module('piAssets.controllers',[])
                 }
             }
 
-        })
+            $scope.fn.showDetails = function(file) {
+                $state.go("home.assets.assetDetails",{file:file})
+            }
+
+        }).
+
+    controller('AssetViewCtrl', function($scope, $rootScope,$window, $http, piUrls, $stateParams){
+
+        //merge the apis for the three
+        $scope.fileType;
+        $scope.selectedLabels = [];
+        switch($stateParams.file.slice($stateParams.file.lastIndexOf('.')+1)) {
+            case 'gcal':
+                $scope.fileType = 'gcal';
+                $scope.calendarname = $stateParams.file;
+
+                if($stateParams.file != "new"){
+                    $http
+                        .get(piUrls.calendars+$stateParams.file)
+                        .success(function(data, status) {
+                            if (data.success) {
+                                $scope.calendar = data.data;
+                            }
+                        })
+                        .error(function(data, status) {
+                        });
+                }
+                break;
+            case 'link':
+            case 'tv':
+                $scope.fileType = 'link';
+                $http
+                    .get(piUrls.links+$stateParams.file)
+                    .success(function(data,status){
+                        if(data.success){
+                            $scope.urlLink = JSON.parse(data.data);
+                        }
+                    })
+                    .error(function(data,status){
+                        console.log(data,status);
+                    })
+                break;
+            default:
+                $scope.fileType = 'other';
+                $http.get(piUrls.files + $stateParams.file)
+                    .success(function(data, status) {
+                        if (data.success) {
+                            $scope.filedetails = data.data;
+                            if ($scope.filedetails.dbdata)
+                                $scope.selectedLabels = $scope.filedetails.dbdata.labels;
+                        }
+                    })
+                    .error(function(data, status) {
+                    });
+                break;
+
+
+        }
+
+        $scope.selectedCalendar = function(value) {
+            $http
+                .post(piUrls.calendars+$stateParams.file, {email: value})
+                .success(function(data, status) {
+                    if (data.success) {
+                        console.log(data);
+                    }
+                })
+                .error(function(data, status) {
+                });
+        }
+
+        $scope.save = function() {
+            if ($scope.filedetails.dbdata) {
+                $scope.filedetails.dbdata.labels = $scope.selectedLabels;
+                $http.post(piUrls.files + $stateParams.file, {dbdata: $scope.filedetails.dbdata})
+                    .success(function (data, status) {
+                        if (data.success) {
+                            $scope.filesDetails[data.data.name].labels = data.data.labels;
+                            $window.history.back();
+                        }
+                    })
+                    .error(function (data, status) {
+                    });
+            } else {
+                $window.history.back();
+            }
+        }
+
+    });

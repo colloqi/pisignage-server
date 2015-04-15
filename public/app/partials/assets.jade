@@ -26,15 +26,10 @@
                                 translation-texts="ngDropdown.label.customTexts",
                                 extra-settings="ngDropdown.label.extraSettings",checkboxes="true")
 
-            //.col-sm-3
-                select.form-control(ng-model="groupType",
-                                        ng-options="type for type in groupByOptions",
-                                        ng-change="groupBy(groupType)")
-
     ul.list-group(as-sortable="sortable.options",ng-model="obj.assets",style="min-height:50px;")
         li.list-group-item(ng-repeat='file in obj.assets | filter:labelFilter track by $index',as-sortable-item,
                                 ng-class='{"list-group-item-danger":file.deleted}'
-                                ng-click='loadAsset(file.fileDetails.name)')
+                                ng-click='fn.showDetails(file.fileDetails.name)')
             .media(as-sortable-item-handle)
 
                 .media-body
