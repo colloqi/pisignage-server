@@ -6,7 +6,8 @@
                     a.btn.btn-link(ng-click="collapsed = !collapsed;")
                         i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
             .col-sm-3.pull-right
-                a.btn.btn-primary.pull-right(ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})") Add Asset to Playlist
+                a.btn.btn-primary.pull-right(ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})",
+                                                ui-sref-opts="{reload: true, notify: true}") Add Asset to Playlist
     .panel-body(ng-show="!collapsed")
         form.form-horizontal
             .form-group

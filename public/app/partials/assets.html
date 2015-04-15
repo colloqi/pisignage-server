@@ -21,7 +21,7 @@
     </div>
   </div>
   <ul as-sortable="sortable.options" ng-model="obj.assets" style="min-height:50px;" class="list-group">
-    <li ng-repeat="file in obj.assets | filter:labelFilter track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" ng-click="fn.showDetails(file.fileDetails.name)" class="list-group-item">
+    <li ng-repeat="file in obj.assets | filter:labelFilter track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" class="list-group-item">
       <div as-sortable-item-handle="as-sortable-item-handle" class="media">
         <div class="media-body">
           <div class="row">
@@ -54,7 +54,7 @@
             </div>
           </div>
         </div>
-        <div class="media-right"><a ng-href="#"><img ng-src="{{file.fileDetails.thumbnail}}" class="media-object img-rounded"/>
+        <div ng-click="fn.showDetails(file.fileDetails.name)" class="media-right"><a ng-href="#"><img ng-src="{{file.fileDetails.thumbnail}}" class="media-object img-rounded"/>
             <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object img-rounded">{{file.fileDetails.type.slice(0,1) || 'N'}}</div></a></div>
       </div>
     </li>

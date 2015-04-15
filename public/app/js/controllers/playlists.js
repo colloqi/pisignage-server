@@ -191,37 +191,29 @@ angular.module('piPlaylists.controllers', [])
                         console.log(status);
                     });
             }
-            
-            $scope.label_search= function(obj){
-                if(Label.selectedLabel){
-                    return ($scope.filesDetails && $scope.filesDetails[obj.filename] &&
-                                $scope.filesDetails[obj.filename].labels &&
-                                $scope.filesDetails[obj.filename].labels.indexOf(Label.selectedLabel) >= 0)
-                } else {
-                    return true;
-                }
-            }
-
-            // modal for link files
-            $scope.linkFile = function(item,zone){
-                //rawdata.fileD = $scope.filesDetails; //files from database
-                //rawdata.fileA = $scope.playlistItems; // file from playlist
-                $scope.selectedAsset = item;
-                $scope.selectedZone = zone;
-
-                $scope.modal = $modal.open({
-                    templateUrl: '/app/templates/linkFilePopup.html',
-                    scope: $scope
-                });
-            }
-
-            $scope.linkFileSave = function(file){
-                $scope.selectedAsset[$scope.selectedZone] = file;
-                $scope.modal.close();
-                $scope.playlist.form.$setDirty();
-            }
 
         })
+
+    .controller('PlaylistAddCtrl',function($scope, $http,  piUrls, $window,$state, $stateParams,$modal){
+        // modal for link files
+        $scope.linkFile = function(item,zone){
+            //rawdata.fileD = $scope.filesDetails; //files from database
+            //rawdata.fileA = $scope.playlistItems; // file from playlist
+            $scope.selectedAsset = item;
+            $scope.selectedZone = zone;
+
+            $scope.modal = $modal.open({
+                templateUrl: '/app/templates/linkfile-popup.html',
+                scope: $scope
+            });
+        }
+
+        $scope.linkFileSave = function(file){
+            $scope.selectedAsset[$scope.selectedZone] = file;
+            $scope.modal.close();
+            $scope.playlist.form.$setDirty();
+        }
+    })
 
             
 

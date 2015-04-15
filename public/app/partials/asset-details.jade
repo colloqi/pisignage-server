@@ -39,11 +39,11 @@
                                 input(type="radio", name="email", ng-click='selectedCalendar(item.id)', ng-checked="calendar.selected == item.summary")
 
 
-    .panel-footer(ng-show='fileType=="other"')
+    .panel-footer
         .row
-            .col-sm-10
+            .col-sm-10(ng-show='fileType=="other"')
                 categories(selected-labels="selectedLabels")
-            .col-sm-2
-                button.btn.btn-success.pull-right(ng-click='save()', ng-if='filedetails.dbdata') SAVE
+            .col-sm-2.pull-right
+                button.btn.btn-success.pull-right(ng-click='save()') DONE
 
 

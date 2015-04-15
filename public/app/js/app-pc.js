@@ -167,7 +167,8 @@ angular.module('piServerApp', [
                         controller: 'AssetsEditCtrl'
                     },
                     "right": {
-                        templateUrl: '/app/partials/playlist-add.html'
+                        templateUrl: '/app/partials/playlist-add.html',
+                        controller: 'PlaylistAddCtrl'
                     }
                 }
             })

@@ -6,11 +6,11 @@
                     span.badge {{obj.assets.length}}
                     span.text-muted &nbsp;(Drag to Add/Remove)
             .col-sm-2
-                a.btn.btn-primary.pull-right(ui-sref="home.assets.playlistDetails({playlist:obj.playlist.name})") Done
+                a.btn.btn-primary.pull-right(ui-sref="home.assets.playlistDetails({playlist:obj.playlist.name})",
+                                                    ui-sref-opts="{reload: true, notify: true}") Done
     ul.list-group(as-sortable="sortable.options",ng-model="obj.assets",style="min-height:50px;")
         li.list-group-item(ng-repeat='file in obj.assets track by $index',as-sortable-item,
-                                        ng-class='{"list-group-item-danger":file.deleted}'
-                                        ng-click='loadAsset(file.fileDetails.name)')
+                                        ng-class='{"list-group-item-danger":file.deleted}')
 
                 //a(ng-href="#").pull-left
                     img.media-object.img-rounded(ng-src='{{file.fileDetails.thumbnail}}')

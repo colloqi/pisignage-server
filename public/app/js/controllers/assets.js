@@ -644,7 +644,7 @@ angular.module('piAssets.controllers',[])
         }
 
         $scope.save = function() {
-            if ($scope.filedetails.dbdata) {
+            if ($scope.filedetails && $scope.filedetails.dbdata) {
                 $scope.filedetails.dbdata.labels = $scope.selectedLabels;
                 $http.post(piUrls.files + $stateParams.file, {dbdata: $scope.filedetails.dbdata})
                     .success(function (data, status) {

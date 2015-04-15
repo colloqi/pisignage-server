@@ -49,13 +49,13 @@
       </ul>
     </div>
   </div>
-  <div ng-show="fileType==&quot;other&quot;" class="panel-footer">
+  <div class="panel-footer">
     <div class="row">
-      <div class="col-sm-10">
+      <div ng-show="fileType==&quot;other&quot;" class="col-sm-10">
         <categories selected-labels="selectedLabels"></categories>
       </div>
-      <div class="col-sm-2">
-        <button ng-click="save()" ng-if="filedetails.dbdata" class="btn btn-success pull-right">SAVE</button>
+      <div class="col-sm-2 pull-right">
+        <button ng-click="save()" class="btn btn-success pull-right">DONE</button>
       </div>
     </div>
   </div>

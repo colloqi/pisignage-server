@@ -5,11 +5,11 @@
       <div class="col-sm-10">
         <h5 class="panel-title">{{obj.playlist.name}}&nbsp;<span class="badge">{{obj.assets.length}}</span><span class="text-muted">&nbsp;(Drag to Add/Remove)</span></h5>
       </div>
-      <div class="col-sm-2"><a ui-sref="home.assets.playlistDetails({playlist:obj.playlist.name})" class="btn btn-primary pull-right">Done</a></div>
+      <div class="col-sm-2"><a ui-sref="home.assets.playlistDetails({playlist:obj.playlist.name})" ui-sref-opts="{reload: true, notify: true}" class="btn btn-primary pull-right">Done</a></div>
     </div>
   </div>
   <ul as-sortable="sortable.options" ng-model="obj.assets" style="min-height:50px;" class="list-group">
-    <li ng-repeat="file in obj.assets track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" ng-click="loadAsset(file.fileDetails.name)" class="list-group-item">
+    <li ng-repeat="file in obj.assets track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" class="list-group-item">
       <!--a(ng-href="#").pull-leftimg.media-object.img-rounded(ng-src='{{file.fileDetails.thumbnail}}')
       -->
       <!--.letter-box.media-object.pull-left.img-rounded(ng-if='!file.fileDetails.thumbnail')| {{file.fileDetails.type.slice(0,1) || 'N'}}
