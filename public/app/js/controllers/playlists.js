@@ -194,7 +194,7 @@ angular.module('piPlaylists.controllers', [])
 
         })
 
-    .controller('PlaylistAddCtrl',function($scope, $http,  piUrls, $window,$state, $stateParams,$modal){
+    .controller('PlaylistAddCtrl',function($scope, $http,  piUrls,$state, $stateParams,$modal){
         // modal for link files
         $scope.linkFile = function(item,zone){
             //rawdata.fileD = $scope.filesDetails; //files from database
@@ -210,8 +210,33 @@ angular.module('piPlaylists.controllers', [])
 
         $scope.linkFileSave = function(file){
             $scope.selectedAsset[$scope.selectedZone] = file;
+            $scope.saveData();
             $scope.modal.close();
-            $scope.playlist.form.$setDirty();
+        }
+
+        $scope.removeLinkFile = function(file,zone){
+            file.playlistDetails[zone] = null;
+            $scope.saveData();
+        }
+
+        $scope.saveData = function (cb) {
+            $http.post(piUrls.playlists + $scope.selected.playlist.name,
+                {assets: $scope.groupWiseAssets[$scope.selected.playlist.name].playlist.assets})
+                    .success(function (data, status) {
+                        if (data.success) {
+                            if (cb)
+                                cb();
+                        }
+                    })
+                    .error(function (data, status) {
+                        console.log(status);
+                    });
+        }
+
+        $scope.done = function()  {
+            $scope.saveData(function(){
+                $state.go("home.assets.playlistDetails",{playlist:$scope.selected.playlist.name},{reload: true})
+            })
         }
     })
 

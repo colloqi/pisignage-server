@@ -13,7 +13,7 @@
         <div ng-dropdown-multiselect="" options="ngDropdown.playlist.PlaylistTab.playlists" selected-model="ngDropdown.playlist.selectedPlaylists" events="ngDropdown.playlist.events" translation-texts="ngDropdown.playlist.customTexts" extra-settings="ngDropdown.playlist.extraSettings" checkboxes="true" class="pull-right"></div>
       </div>
       <div ng-if="playlistState &amp;&amp; !showAssets['All']" class="col-sm-3 pull-right">
-        <button ng-click="ngDropdown.removeFromPlaylist()" class="btn btn-default pull-right"><small class="text-danger">RemoveFrom Playlist</small></button>
+        <!--button.btn.btn-default.pull-right(ng-click="ngDropdown.removeFromPlaylist()"): small.text-danger RemoveFrom Playlist--><a ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})" ui-sref-opts="{reload: true, notify: true}" class="btn btn-primary pull-right">Add/Edit Playlist Assets</a>
       </div>
       <div class="col-sm-2 pull-right">
         <div ng-dropdown-multiselect="" options="ngDropdown.label.Label.labels" selected-model="ngDropdown.label.selectedLabels" events="ngDropdown.label.events" translation-texts="ngDropdown.label.customTexts" extra-settings="ngDropdown.label.extraSettings" checkboxes="true" class="pull-right"></div>
@@ -26,14 +26,14 @@
         <div class="media-body">
           <div class="row">
             <div class="col-sm-1">
-              <div class="checkbox">
+              <div ng-if="!playlistState || showAssets['All']" class="checkbox">
                 <label>
                   <input type="checkbox" name="checkbox" ng-model="file.selected" ng-change="ngDropdown.checkbox(file)"/>
                 </label>
               </div>
             </div>
             <div class="col-sm-5">
-              <h4>{{file.fileDetails.name }}</h4>
+              <h4>{{file.fileDetails.name }}<small ng-if="playlistState &amp;&amp; !showAssets['All']">&nbsp;{{file.playlistDetails.side}} &nbsp;{{file.playlistDetails.bottom}}</small></h4>
             </div>
             <div class="col-sm-2">
               <h6 class="text-muted">{{file.fileDetails.size}}</h6>
@@ -41,8 +41,8 @@
             <div class="col-sm-2">
               <h6 ng-if="file.fileDetails.resolution.width" class="text-muted">{{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}</h6>
             </div>
-            <div class="col-sm-2">
-              <h6 ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) &amp;&amp; file.fileDetails.duration &gt; 0" class="text-muted">{{file.fileDetails.duration}} seconds</h6>
+            <div ng-if="playlistState &amp;&amp; !showAssets['All']" class="col-sm-2">
+              <h6 class="text-muted"> {{file.playlistDetails.duration}} seconds</h6>
             </div>
           </div>
           <div class="row">
@@ -50,7 +50,7 @@
               <h6 class="text-muted">{{file.fileDetails.labels.join(',')}}</h6>
             </div>
             <div class="col-sm-4">
-              <h6 class="text-muted">{{file.fileDetails.type}} &nbsp; {{file.fileDetails.createdAt | date: 'MMM dd'}}</h6>
+              <h6 class="text-muted">{{file.fileDetails.type}}, &nbsp; {{file.fileDetails.createdAt | date: 'MMM dd'}}</h6>
             </div>
           </div>
         </div>

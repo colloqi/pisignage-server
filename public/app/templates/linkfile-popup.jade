@@ -1,18 +1,18 @@
 .modal-header
         h4 File to be played in the {{selectedZone}} zone
-            button.btn.btn-default.pull-right(ng-click="modal.close()") Cancel
+            button.btn.btn-default.pull-right(ng-click="modal.close()") Done
         p along with {{selectedAsset.filename}}
 .modal-body
     ul.list-group
         li.list-group-item.list-group-item-info
             input.form-control(type="text",placeholder="Filter by Name",ng-model="search")
-        li.list-group-item(ng-repeat="file in assets | filter:search ",ng-click="linkFileSave(file)")
+        li.list-group-item(ng-repeat="file in allAssets['All'].assets | filter:search ",ng-click="linkFileSave(file.fileDetails.name)")
             .media
                 .media-left
-                    a.pull-left(href="#" , ng-if="filesDetails[file].thumbnail")
-                        img.media-object(src="{{filesDetails[file].thumbnail}}")
-                    .media-object.letter-box.img-rounded.pull-left(ng-if="!filesDetails[file].thumbnail")
-                        | {{filesDetails[file].type.slice(0,1) || 'N' }}
+                    a.pull-left(href="#" , ng-if="file.fileDetails.thumbnail")
+                        img.media-object(ng-src="{{file.fileDetails.thumbnail}}")
+                    .media-object.letter-box.img-rounded.pull-left(ng-if="!file.fileDetails.thumbnail")
+                        | {{file.fileDetails.type.slice(0,1) || 'N' }}
                 .media-body
                     .media-heading
-                        h4 {{file}}
+                        h4 {{file.fileDetails.name}}

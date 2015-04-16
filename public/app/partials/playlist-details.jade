@@ -7,7 +7,7 @@
                         i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
             .col-sm-3.pull-right
                 a.btn.btn-primary.pull-right(ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})",
-                                                ui-sref-opts="{reload: true, notify: true}") Add Asset to Playlist
+                                                ui-sref-opts="{reload: true, notify: true}") Add/Edit Playlist Assets
     .panel-body(ng-show="!collapsed")
         form.form-horizontal
             .form-group
@@ -15,7 +15,8 @@
                 .col-sm-8
                     .btn-group
                         button.btn.btn-default
-                            span.text-muted {{selected.playlist.layout}}:{{layouts[selected.playlist.layout].title}}
+                            strong {{selected.playlist.layout}}
+                            span.text-muted :{{layouts[selected.playlist.layout].title}}
                         button.btn.btn-info(ng-click="openLayout ()") Change
             .form-group
                 label.control-label.col-sm-4.text-muted Add a Ticker Message

@@ -17,7 +17,9 @@
                                 translation-texts="ngDropdown.playlist.customTexts",
                                 extra-settings="ngDropdown.playlist.extraSettings",checkboxes="true")
             .col-sm-3.pull-right(ng-if="playlistState && !showAssets['All']")
-                button.btn.btn-default.pull-right(ng-click="ngDropdown.removeFromPlaylist()"): small.text-danger RemoveFrom Playlist
+                //button.btn.btn-default.pull-right(ng-click="ngDropdown.removeFromPlaylist()"): small.text-danger RemoveFrom Playlist
+                a.btn.btn-primary.pull-right(ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})",
+                                                            ui-sref-opts="{reload: true, notify: true}") Add/Edit Playlist Assets
             .col-sm-2.pull-right
                 div.pull-right(ng-dropdown-multiselect="",
                                 options="ngDropdown.label.Label.labels",
@@ -34,25 +36,26 @@
                 .media-body
                     .row
                         .col-sm-1
-                            .checkbox
+                            .checkbox(ng-if="!playlistState || showAssets['All']")
                                 label
                                     input(type="checkbox",name='checkbox',ng-model="file.selected",
                                                                     ng-change="ngDropdown.checkbox(file)")
                         .col-sm-5
                             h4 {{file.fileDetails.name }}
+                                small(ng-if="playlistState && !showAssets['All']")
+                                    | &nbsp;{{file.playlistDetails.side}} &nbsp;{{file.playlistDetails.bottom}}
                         .col-sm-2
                             h6.text-muted {{file.fileDetails.size}}
                         .col-sm-2
                             h6.text-muted(ng-if="file.fileDetails.resolution.width")
                                 | {{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}
-                        .col-sm-2
-                            h6.text-muted(ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) && file.fileDetails.duration > 0")
-                                | {{file.fileDetails.duration}} seconds
+                        .col-sm-2(ng-if="playlistState && !showAssets['All']")
+                            h6.text-muted  {{file.playlistDetails.duration}} seconds
                     .row
                         .col-sm-7.col-sm-offset-1
                             h6.text-muted {{file.fileDetails.labels.join(',')}}
                         .col-sm-4
-                            h6.text-muted {{file.fileDetails.type}} &nbsp; {{file.fileDetails.createdAt | date: 'MMM dd'}}
+                            h6.text-muted {{file.fileDetails.type}}, &nbsp; {{file.fileDetails.createdAt | date: 'MMM dd'}}
                 .media-right(ng-click='fn.showDetails(file.fileDetails.name)')
                     a(ng-href="#")
                         img.media-object.img-rounded(ng-src='{{file.fileDetails.thumbnail}}')

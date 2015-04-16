@@ -5,7 +5,7 @@
       <div class="col-sm-7">
         <h3 class="panel-title">{{selected.playlist.name}} Settings<a ng-click="collapsed = !collapsed;" class="btn btn-link"><i ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}" class="fa fa-lg"></i></a></h3>
       </div>
-      <div class="col-sm-3 pull-right"><a ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})" ui-sref-opts="{reload: true, notify: true}" class="btn btn-primary pull-right">Add Asset to Playlist</a></div>
+      <div class="col-sm-3 pull-right"><a ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})" ui-sref-opts="{reload: true, notify: true}" class="btn btn-primary pull-right">Add/Edit Playlist Assets</a></div>
     </div>
   </div>
   <div ng-show="!collapsed" class="panel-body">
@@ -14,7 +14,7 @@
         <label class="control-label col-sm-4 text-muted">Selected Layout for the playlist&nbsp;</label>
         <div class="col-sm-8">
           <div class="btn-group">
-            <button class="btn btn-default"><span class="text-muted">{{selected.playlist.layout}}:{{layouts[selected.playlist.layout].title}}</span></button>
+            <button class="btn btn-default"><strong>{{selected.playlist.layout}}</strong><span class="text-muted">:{{layouts[selected.playlist.layout].title}}</span></button>
             <button ng-click="openLayout ()" class="btn btn-info">Change</button>
           </div>
         </div>
