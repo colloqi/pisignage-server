@@ -31,7 +31,7 @@ angular.module('piGroups.controllers', [])
                             }
                         }
                     } else {
-                        //$scope.fn.selected($scope.groups[0])
+                        $scope.fn.selected($scope.groups[0])
                     }
                 }
             })
@@ -285,8 +285,10 @@ angular.module('piGroups.controllers', [])
                         templateUrl: '/app/templates/status-popup.html',
                         scope: $scope
                     });
+                    showEmptySlots();
                 })
                 .error(function (data, status) {
+                    showEmptySlots();
                 });
         }
     })

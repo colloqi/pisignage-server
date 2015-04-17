@@ -29,7 +29,6 @@ var defaultGroup = {_id: 0, name: 'default'};
 Group.update({name:"default"},{name:"default",description:"Default group for Players"},{upsert:true},function(err){
     fs.mkdir(path.join(config.syncDir,config.installation), function (err) {
         fs.mkdir(path.join(config.syncDir,config.installation, "default"), function (err) {
-            console.log(err);
         })
     })
     Group.findOne({name: 'default'}, function (err, data) {
