@@ -106,6 +106,7 @@ exports.updateObject = function (req, res) {
     }
 
     var object = req.object;
+    delete req.body.__v;        //do not copy version key
     object = _.extend(object, req.body);
 
     object.save(function (err, data) {

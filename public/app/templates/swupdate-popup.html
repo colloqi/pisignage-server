@@ -1,0 +1,12 @@
+
+<div class="modal-header">
+  <button ng-click="modal.dismiss()" class="close">&times;</button>
+  <h3 class="text-danger">Software Update</h3>
+</div>
+<div class="modal-body">
+  <h5>Do you want to update Software from {{msg.curVer}} to {{msg.newVer}}</h5>
+</div>
+<div class="modal-footer">
+  <button ng-click="modal.dismiss()" class="btn">Cancel</button>
+  <button ng-click="confirmUpdate()" class="btn btn-danger">OK</button>
+</div>

@@ -9,15 +9,29 @@
                 a.btn.btn-success.btn-sm.pull-right(ng-disabled="!group.playlists.length",ng-click='deploy()') Deploy
 
     ul.list-group
-        li.list-group-item(ng-repeat='playlist in group.playlists')
+        li.list-group-item
             .form-group
+                form.row( name="group-default-playlist")
+                    label.control-label.col-sm-4 Main Playlist for the group
+                        .input-group.col-sm-8
+                    .col-sm-5
+                        select.form-control(ng-model="group.playlists[0].name",
+                                                ng-options="pl for pl in playlistNames track by pl",
+                                                ng-change="updateGroup()")
+                                                    option(value="") -- None selected --
+        li.list-group-item(ng-show="group.playlists[0].name.length")
+            .row
+                h5.col-sm-12 You can select additional Playlists for Scheduling/Advt purposes
+                    a.btn.btn-link(ng-click="collapsed = !collapsed;")
+                        i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
+            .form-group(ng-repeat='playlist in group.playlists' ng-if="$index > 0",ng-hide="collapsed")
                 form.row( name="group-playlists")
                     .col-sm-5
                         select.form-control(ng-model="playlist.name",
-                                                ng-options="pl.name as pl.name for pl in playlists",
+                                                ng-options="pl for pl in playlistNames track by pl",
                                                 ng-change="updateGroup()")
-                            option(value="") -- choose playlist --
-                    .col-sm-6(ng-if="$index")
+                            option(value="") -- None selected --
+                    .col-sm-6
                         a.btn.btn-link(ng-click="scheduleCalendar(playlist)")
                             i.fa.fa-calendar.fa-lg.text-info
                         small(ng-if='!playlist.settings.startdate && !playlist.settings.starttime')
@@ -28,10 +42,10 @@
                         small(ng-if='playlist.settings.starttime')
                             | {{playlist.settings.starttime }} -
                             | {{playlist.settings.endtime }}
-                    .col-sm-1
+                    .col-sm-1(ng-show="playlist.name.length")
                         a.btn.btn-link(ng-click='delete($index)')
                             i.fa.fa-times.text-danger
-        li.list-group-item
+        //li.list-group-item
             form
                 .form-group
                     label.control-label.col-sm-4.text-muted Add a Playlist to the group

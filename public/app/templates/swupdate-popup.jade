@@ -1,0 +1,9 @@
+.modal-header
+    button.close(ng-click='modal.dismiss()') &times;
+    h3.text-danger Software Update
+.modal-body
+    h5 Do you want to update Software from {{msg.curVer}} to {{msg.newVer}}
+.modal-footer
+    button.btn(ng-click='modal.dismiss()') Cancel
+    button.btn.btn-danger(ng-click='confirmUpdate()') OK
+

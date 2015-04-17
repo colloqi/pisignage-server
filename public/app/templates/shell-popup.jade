@@ -1,0 +1,16 @@
+.modal-header
+    h3.text-warning Pi Shell
+.modal-body
+    form.row(name="shellform",ng-submit='execute()')
+        .form-group
+            .input-group.col-xs-12
+                input.form-control(type='text', ng-model='msg.cmd')
+                span.input-group-btn
+                    button.btn.btn-success(type="submit") EXECUTE
+    .alert.alert-info
+        pre(ng-if="msg.err"): small.text-danger {{msg.err}}
+        pre(ng-if="msg.stdout"): small.text-info stdout: {{msg.stdout}}
+        pre(ng-if="msg.stderr"): small.text-warning stderr: {{msg.stderr}}
+
+.modal-footer
+    button.btn.btn-warning(ng-click='modal.dismiss()') Dismiss

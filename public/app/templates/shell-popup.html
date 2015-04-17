@@ -1,0 +1,22 @@
+
+<div class="modal-header">
+  <h3 class="text-warning">Pi Shell</h3>
+</div>
+<div class="modal-body">
+  <form name="shellform" ng-submit="execute()" class="row">
+    <div class="form-group">
+      <div class="input-group col-xs-12">
+        <input type="text" ng-model="msg.cmd" class="form-control"/><span class="input-group-btn">
+          <button type="submit" class="btn btn-success">EXECUTE</button></span>
+      </div>
+    </div>
+  </form>
+  <div class="alert alert-info">
+    <pre ng-if="msg.err"><small class="text-danger">{{msg.err}}</small></pre>
+    <pre ng-if="msg.stdout"><small class="text-info">stdout: {{msg.stdout}}</small></pre>
+    <pre ng-if="msg.stderr"><small class="text-warning">stderr: {{msg.stderr}}</small></pre>
+  </div>
+</div>
+<div class="modal-footer">
+  <button ng-click="modal.dismiss()" class="btn btn-warning">Dismiss</button>
+</div>

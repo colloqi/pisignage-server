@@ -7,7 +7,6 @@ angular.module('piServerApp', [
     'angularjs-dropdown-multiselect',
     'piConfig',
     'piIndex.controllers',
-    'server.controllers',
     'piGroups.controllers',
     'piAssets.controllers',
     'piPlaylists.controllers',
@@ -172,55 +171,6 @@ angular.module('piServerApp', [
                     }
                 }
             })
-
-            .state("home.assets_links", {
-                url: "assets/links/:file",
-                templateUrl: '/app/partials/assets/_linkFile.html',
-                controller: 'LinksCtrl',
-
-                showBackButton: true
-            })
-
-            .state("home.assets_calendar", {
-                url: "assets/calendars/:file",
-                templateUrl: '/app/partials/assets/_calendar.html',
-                controller: 'CalendarCtrl',
-
-                showBackButton: true
-
-            })
-
-            .state("home.assets_details", {
-                url: "assets/details/:file",
-                templateUrl: '/app/partials/assets/_details.html',
-                controller: 'AssetViewCtrl',
-
-                showBackButton: true
-
-            })
-
-            .state("home.playlists_details", {
-                url: "playlists/details/:file",
-                views: {
-                    "": {
-                        templateUrl: '/app/partials/playlists/_playlist.html',
-                        controller: 'PlaylistViewCtrl'
-                    },
-                    "labels": {
-                        templateUrl: '/app/partials/home/_labels.html',
-                        controller: 'LabelsCtrl'
-                    }
-                },
-                showBackButton: true
-
-            })
-
-            .state("home.settings", {
-                url: "settings",
-                templateUrl: '/app/partials/server/_settings.html',
-                controller: 'ServerSettingsCtrl'
-            })
-
 
         $httpProvider.interceptors.push(function ($q, $rootScope) {
 
