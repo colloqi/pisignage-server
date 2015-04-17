@@ -5,7 +5,6 @@ var mongoose = require('mongoose'),
     Group = mongoose.model('Group'),
     rest = require('../others/restware'),
     _ = require('lodash'),
-    http = require('http'),
     path = require('path'),
     async = require('async'),
     config = require('../../config/config');
@@ -26,10 +25,19 @@ Player.find({"isConnected": true}, function (err, players) {
 })
 
 var defaultGroup = {_id: 0, name: 'default'};
-Group.findOne({name: 'default'}, function (err, data) {
-    if (!err && data)
-        defaultGroup = data;
-});
+//create a default group if does not exist
+Group.update({name:"default"},{name:"default",description:"Default group for Players"},{upsert:true},function(err){
+    fs.mkdir(path.join(config.syncDir,config.installation), function (err) {
+        fs.mkdir(path.join(config.syncDir,config.installation, "default"), function (err) {
+            console.log(err);
+        })
+    })
+    Group.findOne({name: 'default'}, function (err, data) {
+        if (!err && data)
+            defaultGroup = data;
+    });
+})
+
 
 function checkPlayersWatchdog() {
     var playerIds = Object.keys(activePlayers);
@@ -99,7 +107,7 @@ exports.loadObject = function (req, res, next, id) {
 //list of objects
 exports.index = function (req, res) {
 
-    var criteria = {installation: req.installation};
+    var criteria = {};
 
 
     if (req.param('group')) {
@@ -149,7 +157,7 @@ exports.getObject = function (req, res) {
 
 exports.createObject = function (req, res) {
 
-    var player, licenseExists = false;
+    var player;
 
     Player.findOne({cpuSerialNumber: req.body.cpuSerialNumber}, function (err, data) {
 
@@ -159,8 +167,6 @@ exports.createObject = function (req, res) {
 
         if (data) {
             player = _.extend(data, req.body)
-            if (player.installation == req.installation)
-                licenseExists = true;
 
         } else {
             player = new Player(req.body);
@@ -168,10 +174,7 @@ exports.createObject = function (req, res) {
         }
         player.registered = false;
 
-        if (req.user) {
-            player.installation = req.installation;
-            player.createdBy = req.user._id;  //creator of entity
-        }
+        player.installation = config.installation;
         console.log(player);
         player.save(function (err, obj) {
             if (err) {
@@ -247,11 +250,11 @@ exports.updatePlayerStatus = function (obj) {
             } else {
                 player = new Player(obj);
                 player.group = defaultGroup;
-                player.installation = 'admin';
+                player.installation = config.installation;
                 player.isConnected = true;
             }
             activePlayers[player._id.toString()] = true;
-            if (!player.registered || obj.request || (player.installation == 'admin')) {
+            if (!player.registered || obj.request ) {
                 Group.findById(player.group._id, function (err, group) {
                     if (!err && group) {
                         sendConfig(player, group, (updatePlayerCount[obj.cpuSerialNumber] === 1));

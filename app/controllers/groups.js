@@ -18,7 +18,7 @@ exports.newGroup = function (group, cb) {
 
     var object = new Group(group);
     //create a sync folder under sync_folder
-    fs.mkdir(path.join(config.syncDir, object.name), function (err) {
+    fs.mkdir(path.join(config.syncDir,config.installation, object.name), function (err) {
         if (err && (err.code != 'EEXIST'))
             return cb('Unable to create a group folder in server: ' + err);
         else {
@@ -83,6 +83,7 @@ exports.getObject = function (req, res) {
 exports.createObject = function (req, res) {
 
     var object = req.body;
+
     exports.newGroup(object, function (err, data) {
         if (err)
             return rest.sendError(res, err);
@@ -111,7 +112,7 @@ exports.updateObject = function (req, res) {
 
     object.save(function (err, data) {
         if (!err && req.body.deploy) {
-            serverMain.deploy(object, saveObject);
+            serverMain.deploy(config.installation,object, saveObject);
         } else {
             saveObject(err, object);
         }

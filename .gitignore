@@ -2,3 +2,4 @@
 node_modules
 
 public/app/bower_components
+data/sync_folders

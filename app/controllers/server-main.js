@@ -23,7 +23,7 @@ exports.getSettings = function () {
 exports.saveSettings = function () {
 }
 
-exports.deploy = function (group, cb) {
+exports.deploy = function (installation,group, cb) {
     async.series([
         function (async_cb) {
             Player.find({'group._id': group._id}, function (err, data) {
@@ -40,7 +40,7 @@ exports.deploy = function (group, cb) {
             })
         },
         function (async_cb) {
-            var syncPath = path.join(config.syncDir,  group.name),
+            var syncPath = path.join(config.syncDir, installation, group.name),
                 mediaPath = path.join(config.mediaDir);
             async.eachSeries(group.assets,
                 function (file, iterative_cb) {
@@ -60,7 +60,7 @@ exports.deploy = function (group, cb) {
             )
         },
         function (async_cb) {
-            var syncPath = path.join(config.syncDir, group.name);
+            var syncPath = path.join(config.syncDir,installation, group.name);
             fs.readdir(syncPath, function (err, data) {
                 if (err)
                     async_cb(err)

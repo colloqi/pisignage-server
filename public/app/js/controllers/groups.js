@@ -31,7 +31,7 @@ angular.module('piGroups.controllers', [])
                             }
                         }
                     } else {
-                        $scope.fn.selected($scope.groups[0])
+                        //$scope.fn.selected($scope.groups[0])
                     }
                 }
             })
