@@ -1,17 +1,25 @@
 # pisignage-server
-##Server to manage piSignage players in a LAN or Private Network
+###Server to manage piSignage players in a LAN or Private Network
 
 ##Getting Started
 1. Install mongodb
 2. Install node.js and npm
 3. close this reporsitory
 4. npm install
+5. Currently network port is configured as 3000 in local server. Modify in the file config/env/development.js for the port
+6. Run the software from the Chrome browser: http://localhost:3000
 
 
-##Connect Keyboard and press Ctrl-N or F6
-1. Selection of Admin & Content Server
-2. LAN and Wifi settings
-3. delete any existing _config.json and _settings.json file from /home/pi/piSignagePro/config directory
+###Configure Pi
+1. Download the pisignage player software
+2. Configure admin and media server to your local address and port using one the following
+    a. Connect Keyboard and press Ctrl-N or F6
+        - Selection of Admin & Content Server
+        - LAN and Wifi settings
+        - delete any existing _config.json and _settings.json file from /home/pi/piSignagePro/config directory
+    b. connect through ssh
+        - Edit /home/pi/piSignagePro/package.json for admin and media server configuration
+        - delete any existing _config.json and _settings.json file from /home/pi/piSignagePro/config directory
 
 ##Features
 1. Player management
@@ -40,7 +48,7 @@
 5. Reports & Logs
     - Not planned (Feature requests welcome)
 
-##Points to remember
+###Points to remember
 1. angularjs-dropdown-multiselect is taken directly from 
     https://github.com/dotansimha/angularjs-dropdown-multiselect/pull/23/files instead of bower (for close-on-select to work)
 2. Requires following programs to work
@@ -49,6 +57,6 @@
     - imagemagick
 
 
-##You can also manage players using Browser(http://playerip:8000) or downloading Chrome app
+###You can also manage players using Browser(http://playerip:8000) or downloading Chrome app
 1. Currently it is not possible to change admin and media server from this interface, 
     you can either edit /home/pi/piSignagePro/package.json manually or connect a keyboard to Pi and press F6 or Ctrl-N
