@@ -6,7 +6,7 @@
         <h3 class="panel-title">{{group.name}}</h3>
       </div>
       <div class="col-sm-3"><a ng-click="displaySet()" class="btn btn-link btn-sm pull-right"><em class="text-danger">Set Display Mode</em></a></div>
-      <div class="col-sm-2"><a ng-disabled="!group.playlists.length" ng-click="deploy()" class="btn btn-success btn-sm pull-right">Deploy</a></div>
+      <div class="col-sm-2"><a ng-disabled="!group.playlists.length" ng-click="deploy()" class="btn btn-success btn-sm pull-right">Deploy to {{group.name}}</a></div>
     </div>
   </div>
   <ul class="list-group">

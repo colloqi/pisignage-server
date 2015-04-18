@@ -51,4 +51,4 @@
 Points to remember
 --------------------
 1. Close on select took min.js file from https://github.com/dotansimha/angularjs-dropdown-multiselect/pull/23/files
-
+2. fluent-ffmpeg requires ffmpeg >= 0.9 to work.

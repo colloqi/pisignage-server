@@ -64,7 +64,7 @@ exports.createFiles = function (req, res) {
 
     function renameFile(file, next) {
         var fileObj = req.files[file];
-        console.log(fileObj.path);
+        console.log("Uploaded file: "+fileObj.path);
         fs.rename(fileObj.path, path.join(config.mediaDir, fileObj.originalname), function (err) {
             if (err) {
                 next(err);
@@ -74,7 +74,6 @@ exports.createFiles = function (req, res) {
                     size: fileObj.size,
                     type: fileObj.mimetype
                 });
-                console.log(fileObj);
                 next();
             }
         });

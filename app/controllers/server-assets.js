@@ -133,7 +133,7 @@ exports.storeDetails = function (req, res) {
                                         video_cb()
                                     })
                                     .on('end', function (filenames) {
-                                        thumbnail = "/media/_thumbnails/" + fileObj.name + '_1.png';
+                                        thumbnail = "/media/_thumbnails/" + fileObj.name + '.png';
                                         video_cb()
                                     })
                                     .takeScreenshots({
@@ -187,7 +187,7 @@ exports.storeDetails = function (req, res) {
             console.log('store details(media processing) error messages: ')
             console.log(errorMessages.join());
         } else {
-            console.log('Successfully processed files: ', files.join())
+            console.log('Successfully processed files: ', files.map(function(file){return file.name}).toString())
         }
     });
     sendResponse(res);

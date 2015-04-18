@@ -36,7 +36,7 @@ exports.gCalAuthorize = function (req, res, next) {
         accessType: 'offline',
         approvalPrompt: 'force',
         session: false,
-        loginHint: req.param('email')
+        loginHint: req.query['email']
     };
 
     passport.authenticate('google', obj, function (err, user, info) {

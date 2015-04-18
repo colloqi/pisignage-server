@@ -297,8 +297,6 @@ angular.module('piGroups.controllers', [])
 
         var getPlayers = function() {
             var options;
-            if ($stateParams.group)
-                options = {params: {group: $stateParams.group}}
             $http.get(piUrls.players, options)
                 .success(function (data, status) {
                     if (data.success) {
@@ -320,8 +318,6 @@ angular.module('piGroups.controllers', [])
                 });
         }
 
-        getPlayers();
-
         $http
             .get(piUrls.groups, {})
             .success(function(data, status) {
@@ -330,9 +326,11 @@ angular.module('piGroups.controllers', [])
                     $scope.groups= $scope.groupObj.map(function(group){
                         return (group.name)
                     });
+                    getPlayers();
                 }
             })
             .error(function(data, status) {
+                getPlayers();
             });
 
         $scope.assignGroup = function(player) {

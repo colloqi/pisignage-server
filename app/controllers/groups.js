@@ -47,13 +47,13 @@ exports.index = function (req, res) {
 
     var criteria = {};
 
-    if (req.param('string')) {
-        var str = new RegExp(req.param('string'), "i")
+    if (req.query['string']) {
+        var str = new RegExp(req.query['string'], "i")
         criteria['name'] = str;
     }
 
-    var page = req.param('page') > 0 ? req.param('page') : 0
-    var perPage = req.param('per_page') || 50
+    var page = req.query['page'] > 0 ? req.query['page'] : 0
+    var perPage = req.query['per_page'] || 50
 
     var options = {
         perPage: perPage,

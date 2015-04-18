@@ -6,7 +6,7 @@
             .col-sm-3
                 a.btn.btn-link.btn-sm.pull-right(ng-click='displaySet()'): em.text-danger Set Display Mode
             .col-sm-2
-                a.btn.btn-success.btn-sm.pull-right(ng-disabled="!group.playlists.length",ng-click='deploy()') Deploy
+                a.btn.btn-success.btn-sm.pull-right(ng-disabled="!group.playlists.length",ng-click='deploy()') Deploy to {{group.name}}
 
     ul.list-group
         li.list-group-item

@@ -20,3 +20,15 @@ body {
 .overflow-auto {
     overflow:auto;
 }
+
+
+.letter-box {
+    width: 64px;
+    height: 64px;
+    background: lightskyblue;
+    text-align: center;
+    font-size: 32px;
+    line-height: 64px;
+    color: #f8f8ff;
+}
+
