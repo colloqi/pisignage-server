@@ -20,7 +20,7 @@
             </div>
           </div>
           <div class="col-sm-2">
-            <button ng-click="$event.stopPropagation();fn.delete($index);" ng-if="fn.editMode || fn.getClass(playlist)" class="close"><i ng-class="{'text-danger': fn.editMode}" class="fa fa-times-circle"></i></button>
+            <button ng-click="$event.stopPropagation();fn.delete($index);" ng-if="fn.editMode" class="close"><i ng-class="{'text-danger': fn.editMode}" class="fa fa-times-circle"></i></button>
           </div>
         </div></a></li>
   </ul>

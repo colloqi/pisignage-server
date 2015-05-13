@@ -18,6 +18,7 @@ var PlayerSchema = new Schema({
     diskSpaceUsed:          String,
     diskSpaceAvailable:     String,
     lastUpload:             {type: Number, default: 0},
+    localName:              String,
     wgetBytes:              String,
     wgetSpeed:              String,
     syncInProgress:         Boolean,

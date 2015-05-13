@@ -6,7 +6,7 @@
         li.list-group-item(ng-repeat='player in players | filter:search | orderBy:"lastReported":true')
             .row
                 .col-sm-4(ng-click='shellCommand(player)')
-                    h6.text-primary.truncate  {{player.name}}
+                    h6.text-primary.truncate  {{player.localName}}
                 .col-sm-3
                     h6.text-primary.truncate  {{player.myIpAddress}}
                 .col-sm-3

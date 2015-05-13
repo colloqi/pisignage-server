@@ -7,7 +7,7 @@
     <li ng-repeat="player in players | filter:search | orderBy:&quot;lastReported&quot;:true" class="list-group-item">
       <div class="row">
         <div ng-click="shellCommand(player)" class="col-sm-4">
-          <h6 class="text-primary truncate"> {{player.name}}</h6>
+          <h6 class="text-primary truncate"> {{player.localName}}</h6>
         </div>
         <div class="col-sm-3">
           <h6 class="text-primary truncate"> {{player.myIpAddress}}</h6>
