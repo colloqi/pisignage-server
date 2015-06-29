@@ -61,4 +61,4 @@
 1. Currently it is not possible to change admin and media server from this interface, 
     you can either edit /home/pi/piSignagePro/package.json manually or connect a keyboard to Pi and press F6 or Ctrl-N
     
-####The code is still in early release, Please raise an issue for problems or send an email to pisignage@ariemtech.com
+####The code is still in early release, Please raise an issue for problems or send an email to info@pisignage.com
