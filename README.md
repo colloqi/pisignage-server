@@ -1,13 +1,65 @@
 # pisignage-server
-###Server to manage piSignage players in a LAN or Private Network
+**Server to manage piSignage players in a LAN or Private Network**
 
 ##Getting Started
 1. Install mongodb
+     - **Linux**
+     ```
+        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+        
+        echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+        
+        sudo apt-get update
+        
+        sudo apt-get install -y mongodb-org
+    ```
+        check for `/data/db` directory , If not found create using `sudo mkdir -p /data/db` and change the permission using `sudo chmod -R 755 /data`
+     - **Mac**
+        
+        Please use Homebrew
+        ```
+        brew update
+        
+        brew install mongodb
+        ```
+        check for `/data/db` directory , If not found create using `sudo mkdir -p /data/db` and change the permission using `sudo chmod -R 755 /data`
+            
+     - **Windows**
+     
+        Please refere [here](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/#install-mongodb-on-windows)
+        
+    For More info please refer [here](http://docs.mongodb.org/manual/installation/)
+        
 2. Install node.js and npm
-3. close this reporsitory
-4. npm install
-5. Currently network port is configured as 3000 in local server. Modify in the file config/env/development.js for the port
-6. Run the software from the Chrome browser: http://localhost:3000
+     - **Linux**
+        ```
+        curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
+        
+        sudo apt-get install -y nodejs
+        ```
+     - **Mac**
+        ```
+        brew install node
+        ```
+        You may be asked to run above command as super user. If asked please do so.
+        
+     - **Windows**
+        
+        get .msi from [here](https://nodejs.org/download/)
+        
+    For more info, please refere [here](https://github.com/joyent/node/wiki/Installation)
+        
+3. clone this reporsitory and run follwing commands
+    ```
+    git clone https://github.com/ariemtech/pisignage-server 
+    
+    cd pisignage-server
+    
+    npm install
+    ```
+4. Currently network port is configured as 3000 in local server. Modify in the file `config/env/development.js` for the port
+5. Run node server with `sudo node server.js`
+6. Open Chrome browser and check at [http://localhost:3000](http://localhost:3000) **OR** `http://[your-ip]:3000`
 
 
 ###Configure Pi
