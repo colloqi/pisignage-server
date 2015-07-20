@@ -3,7 +3,8 @@
 
 ##Getting Started
 1. Install mongodb
-     - **Linux**
+     - **Ubuntu**
+     
      ```
         sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
         
@@ -12,8 +13,21 @@
         sudo apt-get update
         
         sudo apt-get install -y mongodb-org
-    ```
+     ```
         check for `/data/db` directory , If not found create using `sudo mkdir -p /data/db` and change the permission using `sudo chmod -R 755 /data`
+     
+     - **CentOS**
+     
+     ```
+        
+        echo -e "[mongodb-org-2.6] \nname=MongoDB 2.6 Repository \nbaseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/ \ngpgcheck=0 \nenabled=1" | sudo tee /etc/yum.repos.d/mongodb-org-2.6.repo 
+        
+        sudo yum install -y mongodb-org
+       
+        
+     ```
+        check for `/data/db` directory , If not found create using `sudo mkdir -p /data/db` and change the permission using `sudo chmod -R 755 /data`
+     
      - **Mac**
         
         Please use Homebrew
@@ -28,15 +42,24 @@
      
         Please refere [here](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/#install-mongodb-on-windows)
         
-    For More info please refer [here](http://docs.mongodb.org/manual/installation/)
+     For More info please refer [here](http://docs.mongodb.org/manual/installation/)
         
 2. Install node.js and npm
-     - **Linux**
+     - **Ubuntu**
         ```
         curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
         
         sudo apt-get install -y nodejs
         ```
+        
+     - **CentOS**
+          
+     ```
+        sudo yum install -y epel-release
+                
+        sudo yum install -y nodejs
+        ````
+        
      - **Mac**
         ```
         brew install node
