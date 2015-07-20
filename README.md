@@ -60,6 +60,8 @@
         sudo yum install -y nodejs
         
         sudo yum install -y npm
+        
+        sudo yum install -y git
         ````
         
      - **Mac**
@@ -76,7 +78,6 @@
         
 3. clone this reporsitory and run follwing commands
     ```
-    sudo yum install -y git
     
     git clone https://github.com/ariemtech/pisignage-server 
     
