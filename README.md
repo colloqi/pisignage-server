@@ -58,6 +58,8 @@
         sudo yum install -y epel-release
                 
         sudo yum install -y nodejs
+        
+        sudo yum install -y npm
         ````
         
      - **Mac**
@@ -74,6 +76,8 @@
         
 3. clone this reporsitory and run follwing commands
     ```
+    sudo yum install -y git
+    
     git clone https://github.com/ariemtech/pisignage-server 
     
     cd pisignage-server
