@@ -104,9 +104,11 @@
 1. Download the pisignage player software [here](https://github.com/ariemtech/piSignage#method-1-download-image-and-prepare-the-sd-card)
 
 2. Once installed and Powered-ON Configure admin and media server to your local address and port using one of the below methods  
+
   a. Connect Keyboard and press Ctrl-N or F6    
     * Change config and media server to `http://[your server ip]:port` (ex: 192.168.1.30:3000, 10.50.16.110:3000)   
     * Open terminal `ctrl+Alt+ t` and delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory      
+   
   b. Connect through ssh
     * Edit `/home/pi/piSignagePro/package.json` for admin and media server configuration    
     * delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory    
@@ -116,10 +118,12 @@
 1.Player management  
     - Auto discovery of players in a network  
     - Monitor Players  
+
 2.Group management - create groups and assign players to groups  
     - Display settings - 1080p/720p and landscape or portrait mode  
     - Deploy default playlist, scheduled playlists and advt playlist  
     - Assign Players to Groups  
+
 3.Assets Management  
     - Upload assets (video,mp3,html/zip,images, links, google calendar feed)  
     - Videos are automatically converted to mp4 using ffmpeg  
@@ -129,6 +133,7 @@
     - rename or delete files  
     - view assets locally   
     - auto label creation for uploaded time (in coming releases)  
+
 4.Playlist management  
     - Create, rename or delete playlists  
     - Assign assets & drag to change order  
@@ -136,6 +141,7 @@
     - select a layout to show (1,2a,2b,3a,3b,4,4b,2ab)  
     - Enable ticker & set Ticker text  
     - Make it ad playlist with configurable interval timer  
+
 5.Reports & Logs  
     - Not planned (Feature requests welcome)  
 
@@ -143,6 +149,7 @@
 
 1.angularjs-dropdown-multiselect is taken directly from   
     https://github.com/dotansimha/angularjs-dropdown-multiselect/pull/23/files instead of bower (for close-on-select to work)  
+
 2.Requires following programs to work  
     - ffmpeg >= 0.9  
     - ffprobe associated with ffmpeg  
