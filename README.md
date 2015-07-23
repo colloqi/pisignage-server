@@ -101,15 +101,15 @@
 
 ###Configure Pi
 
-1.Download the pisignage player software [here](https://github.com/ariemtech/piSignage#method-1-download-image-and-prepare-the-sd-card)
+1. Download the pisignage player software [here](https://github.com/ariemtech/piSignage#method-1-download-image-and-prepare-the-sd-card)
 
-2.Once installed and Powered-ON Configure admin and media server to your local address and port using one of the below methods  
-   a.Connect Keyboard and press Ctrl-N or F6    
-      * Change config and media server to `http://[your server ip]:port` (ex: 192.168.1.30:3000, 10.50.16.110:3000) 
-      * open terminal `ctrl+Alt+ t` and delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory  
-   b.Connect through ssh    
-     * Edit `/home/pi/piSignagePro/package.json` for admin and media server configuration  
-     * delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory  
+2. Once installed and Powered-ON Configure admin and media server to your local address and port using one of the below methods
+  a. Connect Keyboard and press Ctrl-N or F6    
+    * Change config and media server to `http://[your server ip]:port` (ex: 192.168.1.30:3000, 10.50.16.110:3000)   
+    * Open terminal `ctrl+Alt+ t` and delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory    
+  b. Connect through ssh
+    * Edit `/home/pi/piSignagePro/package.json` for admin and media server configuration    
+    * delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory    
 
 ##Features  
 
