@@ -1,13 +1,15 @@
 'use strict';
 
 var express = require('express'),
+    config = require('./config'),
     router = express.Router();
 
 var assets = require('../app/controllers/assets'),
     playlists = require('../app/controllers/playlists'),
     players = require('../app/controllers/players'),
     groups = require('../app/controllers/groups'),
-    labels = require('../app/controllers/labels')
+    labels = require('../app/controllers/labels'),
+    multer = require('multer')
     //gcalAuthorize = require('../app/controllers/gcal-authorize');
 
 /**
@@ -20,7 +22,7 @@ var assets = require('../app/controllers/assets'),
 
 router.get('/api/files', assets.index);
 router.get('/api/files/:file', assets.getFileDetails);
-router.post('/api/files', assets.createFiles);
+router.post('/api/files', multer({dest: config.uploadDir}).fields([{ name: 'file', maxCount: 10 }]),assets.createFiles);
 router.post('/api/postupload', assets.updateFileDetails);
 router.post('/api/files/:file', assets.updateAsset);
 router.delete('/api/files/:file', assets.deleteFile);

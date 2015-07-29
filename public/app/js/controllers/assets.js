@@ -202,8 +202,8 @@ angular.module('piAssets.controllers',[])
                 $scope.msg.buttonText = "Continue";
                 $scope.msg.disable = false;
                 $scope.uploadedFiles = files;
-                if (data.data) {
-                    data.data.forEach(function (item) {
+                if (data.files) {
+                    data.files.forEach(function (item) {
                         if ($scope.files.indexOf(item.name) == -1)
                             $scope.files.push(item.name);
                     });

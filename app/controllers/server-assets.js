@@ -24,10 +24,13 @@ exports.storeDetails = function (req, res) {
 
     var errorMessages = [];
 
+    console.log(req.body);
     var files = req.body.files,
         assetDir = config.mediaDir;
 
     var processFile = function (fileObj, array_cb) {
+        console.log(fileObj);
+
         var src = path.join(assetDir, fileObj.name),
             ext = path.extname(fileObj.name),
             destName = path.basename(fileObj.name, ext) + '_c.mp4',

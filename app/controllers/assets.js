@@ -52,7 +52,11 @@ exports.createFiles = function (req, res) {
     var files = Object.keys(req.files),
         data = [];
 
-    async.each(files, renameFile, function (err) {
+    console.log(req.files["file"]);
+
+
+    //async.each(files, renameFile, function (err) {
+    async.forEachOf(files, renameFile,function (err) {
         if (err) {
             var msg = "File rename error after upload: "+err;
             util.log(msg);
@@ -62,9 +66,14 @@ exports.createFiles = function (req, res) {
         }
     })
 
-    function renameFile(file, next) {
-        var fileObj = req.files[file];
-        console.log("Uploaded file: "+fileObj.path);
+
+
+
+    function renameFile(file, key, next) {
+        var fileObj = req.files["file"][key];
+
+        console.log(fileObj);
+
         fs.rename(fileObj.path, path.join(config.mediaDir, fileObj.originalname), function (err) {
             if (err) {
                 next(err);
