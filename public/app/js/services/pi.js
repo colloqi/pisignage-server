@@ -65,13 +65,11 @@ angular.module('pisignage.services',[]).
                         var formData = new FormData();
 
                         if (data) {
-                            Object.keys(data).forEach(function(key) {
-                                formData.append(key, data[key]);
-                            });
+                            formData.append('data', JSON.stringify(data))
                         }
 
                         for (var idx = 0; idx < files.length; idx++) {
-                            formData.append(files[idx].name, files[idx]);
+                            formData.append('assets', files[idx]);
                         }
 
                         xhr.open("POST", uploadUrl);

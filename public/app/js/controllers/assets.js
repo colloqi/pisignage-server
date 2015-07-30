@@ -227,8 +227,11 @@ angular.module('piAssets.controllers',[])
                 }
                 $scope.msg.title = 'Processing in Progress...';
                 $scope.msg.msg = 'Please Wait';
+                var fileArray = $scope.uploadedFiles.map(function(file){
+                    return ({name:file.name,size:file.size,type:file.type})
+                })
                 $http
-                    .post(piUrls.filespostupload, {files: $scope.uploadedFiles, categories: $scope.selectedLabels})
+                    .post(piUrls.filespostupload, {files: fileArray, categories: $scope.selectedLabels})
                     .success(function (data, status) {
                         if (data.success) {
                             $scope.msg.title = 'Queued in for Processing';

@@ -127,7 +127,7 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
                     for (var i = 0; i < scope.maxFiles; i++) {
                         if (i >= e.target.files.length) break;        
                         var file = e.target.files[i];
-                        scope.files.push({name: file.name,size:file.size,type:file.type});
+                        scope.files.push(file);
                         if (file.size > scope.maxFileSizeMb * 1048576) {
                             tooBig.push(file);
                         }

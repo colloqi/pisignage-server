@@ -10,7 +10,6 @@ var favicon = require('serve-favicon'),             //express middleware
     logger = require('morgan'),
     methodOverride = require('method-override'),
     bodyParser = require('body-parser'),
-    multer = require('multer'),
     cookieParser = require('cookie-parser');
 
 
@@ -75,7 +74,6 @@ module.exports = function (app) {
     app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(multer({dest: config.uploadDir}));
     app.use(methodOverride());
 
     app.use(cookieParser());

@@ -3,6 +3,10 @@
 var express = require('express'),
     router = express.Router();
 
+var multer = require('multer'),
+    config = require('./config'),
+    upload = multer({dest:config.uploadDir})
+
 var assets = require('../app/controllers/assets'),
     playlists = require('../app/controllers/playlists'),
     players = require('../app/controllers/players'),
@@ -20,7 +24,7 @@ var assets = require('../app/controllers/assets'),
 
 router.get('/api/files', assets.index);
 router.get('/api/files/:file', assets.getFileDetails);
-router.post('/api/files', assets.createFiles);
+router.post('/api/files', upload.fields([{name:'assets',maxCount: 10}]), assets.createFiles);
 router.post('/api/postupload', assets.updateFileDetails);
 router.post('/api/files/:file', assets.updateAsset);
 router.delete('/api/files/:file', assets.deleteFile);

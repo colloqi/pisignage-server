@@ -49,8 +49,10 @@ exports.index = function (req, res) {
 
 exports.createFiles = function (req, res) {
 
-    var files = Object.keys(req.files),
+    var files = req.files["assets"],
         data = [];
+
+    console.log(req.files);
 
     async.each(files, renameFile, function (err) {
         if (err) {
@@ -62,8 +64,7 @@ exports.createFiles = function (req, res) {
         }
     })
 
-    function renameFile(file, next) {
-        var fileObj = req.files[file];
+    function renameFile(fileObj, next) {
         console.log("Uploaded file: "+fileObj.path);
         fs.rename(fileObj.path, path.join(config.mediaDir, fileObj.originalname), function (err) {
             if (err) {
