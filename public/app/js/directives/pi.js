@@ -116,8 +116,6 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
                 el.bind('change', function(e) {
                     console.log('file change event');
 
-                    console.log(e);
-
                     if (!e.target.files.length) return;
                     
                     scope.files = [];

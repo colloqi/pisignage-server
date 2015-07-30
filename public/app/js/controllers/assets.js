@@ -201,8 +201,6 @@ angular.module('piAssets.controllers',[])
                 $scope.msg.msg = "Upload Complete";
                 $scope.msg.buttonText = "Continue";
                 $scope.msg.disable = false;
-                console.log("Got Answer");
-                console.log(files);
                 $scope.uploadedFiles = files;
                 if (data.files) {
                     data.files.forEach(function (item) {
@@ -229,9 +227,6 @@ angular.module('piAssets.controllers',[])
                 }
                 $scope.msg.title = 'Processing in Progress...';
                 $scope.msg.msg = 'Please Wait';
-
-                console.log("Scope: ");
-                console.log($scope.uploadedFiles);
 
                 var fileArray = [];
 

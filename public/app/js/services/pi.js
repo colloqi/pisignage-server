@@ -70,14 +70,10 @@ angular.module('pisignage.services',[]).
                             });
                         }
 
-                        console.log(files);
                         for (var idx = 0; idx < files.length; idx++) {
                             formData.append('file', files[idx]);
-                            console.log("Addded " + files[idx]);
 
                         }
-
-                        console.log(formData);
 
                         xhr.open("POST", uploadUrl);
                         xhr.send(formData);

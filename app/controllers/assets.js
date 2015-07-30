@@ -52,10 +52,6 @@ exports.createFiles = function (req, res) {
     var files = req.files["file"],
         data = [];
 
-    console.log(req.files["file"]);
-
-
-    //async.each(files, renameFile, function (err) {
     async.forEachOf(files, renameFile,function (err) {
         if (err) {
             var msg = "File rename error after upload: "+err;
@@ -71,8 +67,6 @@ exports.createFiles = function (req, res) {
 
     function renameFile(file, key, next) {
         var fileObj = req.files["file"][key];
-
-        console.log(fileObj);
 
         fs.rename(fileObj.path, path.join(config.mediaDir, fileObj.originalname), function (err) {
             if (err) {
@@ -91,7 +85,6 @@ exports.createFiles = function (req, res) {
 }
 
 exports.updateFileDetails = function (req, res) {
-    console.log(req.body);
     require('./server-assets').storeDetails(req, res);
 }
 
