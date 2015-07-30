@@ -91,6 +91,7 @@ exports.createFiles = function (req, res) {
 }
 
 exports.updateFileDetails = function (req, res) {
+    console.log(req.body);
     require('./server-assets').storeDetails(req, res);
 }
 

@@ -201,6 +201,8 @@ angular.module('piAssets.controllers',[])
                 $scope.msg.msg = "Upload Complete";
                 $scope.msg.buttonText = "Continue";
                 $scope.msg.disable = false;
+                console.log("Got Answer");
+                console.log(files);
                 $scope.uploadedFiles = files;
                 if (data.files) {
                     data.files.forEach(function (item) {
@@ -227,8 +229,18 @@ angular.module('piAssets.controllers',[])
                 }
                 $scope.msg.title = 'Processing in Progress...';
                 $scope.msg.msg = 'Please Wait';
+
+                console.log("Scope: ");
+                console.log($scope.uploadedFiles);
+
+                var fileArray = [];
+
+                for (var file in $scope.uploadedFiles) {
+                    fileArray.push({name: $scope.uploadedFiles[file].name, size: $scope.uploadedFiles[file].size, type: $scope.uploadedFiles[file].type});
+                }
+
                 $http
-                    .post(piUrls.filespostupload, {files: $scope.uploadedFiles, categories: $scope.selectedLabels})
+                    .post(piUrls.filespostupload, {files: fileArray, categories: $scope.selectedLabels})
                     .success(function (data, status) {
                         if (data.success) {
                             $scope.msg.title = 'Queued in for Processing';
