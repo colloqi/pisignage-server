@@ -52,8 +52,6 @@ exports.createFiles = function (req, res) {
     var files = req.files["assets"],
         data = [];
 
-    console.log(req.files);
-
     async.each(files, renameFile, function (err) {
         if (err) {
             var msg = "File rename error after upload: "+err;
