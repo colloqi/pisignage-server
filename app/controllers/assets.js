@@ -49,7 +49,7 @@ exports.index = function (req, res) {
 
 exports.createFiles = function (req, res) {
 
-    var files = Object.keys(req.files),
+    var files = req.files["file"],
         data = [];
 
     console.log(req.files["file"]);
