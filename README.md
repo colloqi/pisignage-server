@@ -86,7 +86,7 @@
 
    ```
     
-    git clone https://github.com/ariemtech/pisignage-server 
+    git clone https://github.com/colloqi/pisignage-server 
     
     cd pisignage-server
     
@@ -101,7 +101,7 @@
 
 ###Configure Pi
 
-1. Download the pisignage player software [here](https://github.com/ariemtech/piSignage#method-1-download-image-and-prepare-the-sd-card)
+1. Download the pisignage player software [here](https://github.com/colloqi/piSignage#method-1-download-image-and-prepare-the-sd-card)
 
 2. Once installed and Powered-ON Configure admin and media server to your local address and port using one of the below methods  
 

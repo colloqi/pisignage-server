@@ -25,7 +25,7 @@ sudo apt-get install -y nodejs
 
 
 echo "installing pisignage-server"
-git clone https://github.com/ariemtech/pisignage-server 
+git clone https://github.com/colloqi/pisignage-server
 cd pisignage-server
 npm install
 

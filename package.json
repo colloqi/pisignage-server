@@ -2,13 +2,13 @@
   "name": "pisignage-server",
   "version": "0.1.0",
   "description": "Server to manage piSignage players in a LAN or Private Network.",
-  "author": "ariemtech <info@ariemtech.com>",
+  "author": "colloqi <info@pisignage.com>",
   "engines": {
     "node": ">=0.10"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ariemtech/piSignage-server"
+    "url": "https://github.com/colloqi/piSignage-server"
   },
   "private": false,
   "dependencies": {
