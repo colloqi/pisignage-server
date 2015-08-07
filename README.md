@@ -15,7 +15,7 @@
         
         sudo apt-get install -y mongodb-org
      ```
-        check for `/data/db` directory , If not found create using `sudo mkdir -p /data/db` and change the permission using `sudo chmod -R 755 /data`
+        check for `/data/db` directory , If not found create using `sudo mkdir -p /data/db` and change the owner if needed using sudo chown `USERNAME` /data/db
      
    - **CentOS**
      
@@ -27,7 +27,7 @@
        
         
      ```
-        check for `/data/db` directory , If not found create using `sudo mkdir -p /data/db` and change the permission using `sudo chmod -R 755 /data`
+        check for `/data/db` directory , If not found create using `sudo mkdir -p /data/db` and and change the owner if needed using sudo chown `USERNAME` /data/db
      
    - **Mac**
         
@@ -39,7 +39,7 @@
         brew install mongodb
      ```
         
-        check for `/data/db` directory , If not found create using `sudo mkdir -p /data/db` and change the permission using `sudo chmod -R 755 /data`
+        check for `/data/db` directory , If not found create using `sudo mkdir -p /data/db` and and change the owner if needed using sudo chown `USERNAME` /data/db
             
    - **Windows**
      
@@ -48,6 +48,8 @@
    For More info please refer [here](http://docs.mongodb.org/manual/installation/)
         
 2.Install node.js and npm
+
+   > In some installations there is another program called node, be sure to install nodejs. If other node program is laready installed you can find out by node --version command, it will not output anything. Uninstall the node program in that case 
 
    - **Ubuntu**
      ```
@@ -151,9 +153,11 @@
     https://github.com/dotansimha/angularjs-dropdown-multiselect/pull/23/files instead of bower (for close-on-select to work)  
 
 2.Requires following programs to work  
-    - ffmpeg >= 0.9  
-    - ffprobe associated with ffmpeg  
-    - imagemagick    
+    - ffmpeg >= 0.9  (in certain Os, these may have to be compiled since the package does not exist, please see the issue #9, it is not that scary!)
+    - ffprobe associated with ffmpeg needed to convert videos  
+    - imagemagick  creates thumbnails
+    
+3. Two directories are created by the program ../media and ../media/_thumbnails. If these directories are not created server won't work as expected (for e.g. thumbnails won't be created if _thumbnails directory does not exit). In that case create those directories manually.
 
 
 ####You can also manage players using Browser(http://playerip:8000) or downloading Chrome app  
