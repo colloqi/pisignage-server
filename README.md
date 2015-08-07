@@ -153,11 +153,12 @@
     https://github.com/dotansimha/angularjs-dropdown-multiselect/pull/23/files instead of bower (for close-on-select to work)  
 
 2.Requires following programs to work  
-    - ffmpeg >= 0.9  (in certain Os, these may have to be compiled since the package does not exist, please see the issue #9, it is not that scary!)
-    - ffprobe associated with ffmpeg needed to convert videos  
+    - ffmpeg >= 0.9  (in certain Os, these may have to be compiled since the package does not exist, 
+      please see the issue #9, it is not that scary!)   
+    - ffprobe associated with ffmpeg needed to convert videos    
     - imagemagick  creates thumbnails
     
-3. Two directories are created by the program ../media and ../media/_thumbnails. If these directories are not created server won't work as expected (for e.g. thumbnails won't be created if _thumbnails directory does not exit). In that case create those directories manually.
+3.Two directories are created by the program ../media and ../media/_thumbnails. If these directories are not created server won't work as expected (for e.g. thumbnails won't be created if _thumbnails directory does not exit). In that case create those directories manually.
 
 
 ####You can also manage players using Browser(http://playerip:8000) or downloading Chrome app  
