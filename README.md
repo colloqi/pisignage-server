@@ -163,6 +163,9 @@
 5.Clone this reporsitory and run follwing commands
 
    ```
+    mkdir media
+    
+    sudo chmod 755 -R ./media
     
     git clone https://github.com/colloqi/pisignage-server 
     
@@ -176,7 +179,7 @@
 
 8.Open Chrome browser and check at [http://localhost:3000](http://localhost:3000) **OR** `http://[your-ip]:3000` (ex: 192.168.1.30:3000, 10.50.16.110:3000)
 
-
+**NOTE:** Please make sure **mongod** process is running and **/data/db** owenership is changed to regular user. If not use, ``` sudo chown -R your-username:user-group /data```
 ###Configure Pi
 
 1. Download the pisignage player software [here](https://github.com/colloqi/piSignage#method-1-download-image-and-prepare-the-sd-card)
