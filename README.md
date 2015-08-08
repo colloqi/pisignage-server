@@ -83,8 +83,84 @@
         
    - For more info on node installation, please refer [here](https://github.com/joyent/node/wiki/Installation)
      
-     
-3.Clone this reporsitory and run follwing commands
+3.Install ffmpeg
+   - **Ubuntu**
+      
+      ```
+      sudo apt-get update
+      
+      sudo apt-get -y --force-yes install autoconf automake build-essential libass-dev libfreetype6-dev \
+      libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev \
+      libxcb-xfixes0-dev pkg-config texi2html zlib1g-dev
+      
+      mkdir ~/ffmpeg_sources
+      cd  ~/ffmpeg_sources
+      
+      sudo apt-get install yasm
+      
+      sudo apt-get install libx264-dev
+      
+      cd  ~/ffmpeg_sources
+      wget -O fdk-aac.tar.gz https://github.com/mstorsjo/fdk-aac/tarball/master
+      tar xzvf fdk-aac.tar.gz
+      cd mstorsjo-fdk-aac*
+      autoreconf -fiv
+      ./configure --prefix="$HOME/ffmpeg_build" --disable-shared
+      make
+      make install
+      make distclean
+      
+      cd  ~/ffmpeg_sources
+      wget http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
+      tar xjvf ffmpeg-snapshot.tar.bz2
+      cd ffmpeg
+      PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
+      >   --prefix="$HOME/ffmpeg_build" \
+      >   --pkg-config-flags="--static" \
+      >   --extra-cflags="-I$HOME/ffmpeg_build/include" \
+      >   --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
+      >   --bindir="$HOME/bin" \
+      >   --enable-gpl \
+      >   --enable-libass \
+      >   --enable-libfdk-aac \
+      >   --enable-libfreetype \
+      >   --enable-libtheora \
+      >   --enable-libvorbis \
+      >   --enable-libx264 \
+      >   --enable-nonfree
+      PATH="$HOME/bin:$PATH" make
+      make install
+      make distclean
+      hash -r
+      ```
+      Create a symboloic for ffprobe and ffmpeg
+      ```
+      
+      sudo ln -s ~/bin/ff /usr/local/bin/ffmpeg
+      sudo ln -s ~/bin/ffprobe /usr/local/bin/ffprobe
+      
+      ```
+   - **Mac**
+   - 
+      ```
+      brew install ffmpeg
+      ```
+      
+      You may be asked to run above command as **root user**
+   
+4.Install imagemagik
+   - **Ubuntu**
+      
+      ```
+      sudo apt-get install imagemagick
+      ```
+   - **Mac**
+   
+      ```
+      brew install imagemagick
+      ```
+
+5.Clone this reporsitory and run follwing commands
 
    ```
     
@@ -94,11 +170,11 @@
     
     npm install
    ```
-4.Currently network port is configured as 3000 in local server. Modify in the file `config/env/development.js` for the port
+6.Currently network port is configured as 3000 in local server. Modify in the file `config/env/development.js` for the port
 
-5.Run node server with `sudo node server.js`
+7.Run node server with `sudo node server.js`
 
-6.Open Chrome browser and check at [http://localhost:3000](http://localhost:3000) **OR** `http://[your-ip]:3000` (ex: 192.168.1.30:3000, 10.50.16.110:3000)
+8.Open Chrome browser and check at [http://localhost:3000](http://localhost:3000) **OR** `http://[your-ip]:3000` (ex: 192.168.1.30:3000, 10.50.16.110:3000)
 
 
 ###Configure Pi
