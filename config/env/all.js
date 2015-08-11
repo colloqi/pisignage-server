@@ -15,13 +15,18 @@ var rootPath = process.cwd(),
 module.exports = {
     root: rootPath,
     dataDir: dataDir,
+
     uploadDir: assetDir,
+    licenseDir: dataDir+'/licenses/'+installation+'/',
+
     syncDir: path.join(dataDir, '/sync_folders'),
     syncDirPath: path.join(dataDir, '/sync_folders/'),
+
     viewDir: path.join(rootPath, '/app/views'),
     mediaDir: assetDir,
     mediaPath: assetDir + '/',
     thumbnailDir: assetDir + '/_thumbnails',
+    
     defaultPlaylist: "default",
 
     mongo: {

@@ -11,7 +11,8 @@ var assets = require('../app/controllers/assets'),
     playlists = require('../app/controllers/playlists'),
     players = require('../app/controllers/players'),
     groups = require('../app/controllers/groups'),
-    labels = require('../app/controllers/labels')
+    labels = require('../app/controllers/labels'),
+    licenseUtil  = require('../app/others/license-util');
     //gcalAuthorize = require('../app/controllers/gcal-authorize');
 
 /**
@@ -66,6 +67,10 @@ router.get('/api/labels/:label', labels.getObject)
 router.post('/api/labels', labels.createObject);
 router.post('/api/labels/:label', labels.updateObject);
 router.delete('/api/labels/:label', labels.deleteObject);
+
+router.post('/api/licensefiles',multer({dest: config.licenseDir}).fields([{name:'assets'}]),licenseUtil.saveLicense);
+router.get('/api/licensefiles',licenseUtil.getList);
+router.delete('/api/licensefiles/:filename',licenseUtil.deleteLicense)
 
 router.param('label', labels.loadObject)
 

@@ -304,7 +304,68 @@ directive('unsavedChangesWarning', ['saveChangesPrompt', '$parse', function(save
             }
         };
     }
-]);
+]).
+directive('angularFileUpload',['fileUploader','piUrls',function(fileUploader, piUrls){
+    return {
+        restrict: 'E',
+        replace: true,
+        transclude: true,
+        scope: {
+            getAdditionalData: '@',
+            onstart: '&',
+            onprogress: '&',
+            ondone: '&',
+            onerror: '&',
+        },
+        template: function(tElem,tAttrs){
+            return (
+                    '<div>'+
+                        '<button class="btn btn-link btn-block">'+
+                            '<input type="file" multiple="" style="position:absolute;opacity: 0;width:90%;height:30px;"/>'+
+                            '<span ng-transclude>'+'</span>'+
+                        '</button>'+
+                    '</div>'
+            )
+        },
+        compile: function compile(tElement, tAttrs, transclude) {
+            return function(scope,el,attrs,ctl){
+                scope.files = [];
+                el.bind('change',function(e){
+                    if(!e.target.files.length)
+                        return;
+                    var uploadFiles = e.target.files;
+                    for(var index=0; index < uploadFiles.length; index++){
+                        if(uploadFiles[index].type == 'text/plain'){
+                            scope.files.push(uploadFiles[index]);
+                        }
+                    }
+                    scope.upload();
+                });
+            
+                scope.upload = function(){
+                    scope.onstart();
+        
+                    var data = null;
+                    if (scope.getAdditionalData) {
+                        data = scope.getAdditionalData;
+                    }
+                    fileUploader
+                        .post(scope.files,data)
+                        .to(piUrls.main+attrs.postPath)
+                        .then(function(ret){
+                            console.log(ret);
+                            scope.ondone({status: true, msg: 'files uploaded succesfuly'});
+                        },function(err){
+                            console.log(err);
+                            scope.onerror({status: false,msg: err})
+                        },function(progress){
+                            console.log(progress);
+                        })
+                }
+            }
+        }
+    }
+}]);
 
 
 

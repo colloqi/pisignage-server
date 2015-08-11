@@ -1,0 +1,19 @@
+p.alert.alert-success.text-center(ng-show='statusMsg') {{statusMsg}}
+.panel.panel-info
+	.panel-heading
+		h4 Upload license
+	.panel-body
+		p Upload your license here:
+		.row.col-sm-offset-4.col-sm-4.btn.btn-success
+			angular-file-upload(post-path='api/licensefiles',onstart='upload.onstart()',ondone='upload.ondone(status,msg)',onerror='upload.onerror(status,msg)') Upload
+.panel.panel-info
+	.panel-heading
+		h4 License Files
+	.panel-body
+		h4.text-danger(ng-show='savedFiles.length == 0') No licensefiles to display
+		.row(ng-repeat='file in savedFiles |  filter: searchLicense')
+			.col-sm-6.col-sm-offset-2
+				p {{file}}
+				br
+			.col-sm-4
+				button.btn.btn-danger.btn-sm(ng-click='deleteEntry(file)') Delete
