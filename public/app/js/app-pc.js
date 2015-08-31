@@ -196,6 +196,26 @@ angular.module('piServerApp', [
         });
 
     })
-    .run(function () {
-
+    .run(function ($window,$modal) {
+        var current_browser = $window.navigator.userAgent.toLowerCase();
+            if(current_browser.indexOf('chrome') == -1){
+                $modal.open({
+                    template: [
+                        '<div class="modal-header">',
+                        '<h3 class="modal-title">Please Switch to Chrome Browser</h3>',
+                        '</div>',
+                        '<div class="modal-body">',
+                        '<p>Things may not work as expected with other Browsers :(</p>',
+                        '</div>',
+                        '<div class="modal-footer">',
+                        '<button ng-click="cancel()" class="btn btn-warning">Got it!</button>',
+                        '</div>'
+                    ].join(''),
+                    controller: ['$scope','$modalInstance',function($scope,$modalInstance){
+                        $scope.cancel = function(){
+                                $modalInstance.close();
+                            }
+                        }]
+                })
+            }
     });
