@@ -52,13 +52,13 @@ exports.saveLicense = function(req,res){ // save license files
 exports.deleteLicense = function(req,res){ // delete particular license and return new file list
 	fs.unlink(path.join(config.licenseDir,req.params['filename']),function(err){
 		if(err)
-			return rest.sendError(res,"License "+deleteFile+" can't be deleted",err);
+			return rest.sendError(res,"License "+req.params['filename']+" can't be deleted",err);
 		
 		getTxtFiles(function(err,files){ // get all license
 			if(err)
 				return rest.sendError(res,'error in reading license directory',err);
 
-			return rest.sendSuccess(res,"License "+deleteFile+" deleted successfuly",files);
+			return rest.sendSuccess(res,"License "+req.params['filename']+" deleted successfuly",files);
 		});
 	})
 }

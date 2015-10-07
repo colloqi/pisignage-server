@@ -702,7 +702,6 @@ angular.module('piAssets.controllers',[])
                     if(data.success){
                         $scope.modal.dismiss(); // close modal if successful
                         $scope.savedFiles = data.data;
-                        $scope.statusMsg = data.stat_message;
                     }else{
                         $scope.statusMsg = data.stat_message;
                     }
