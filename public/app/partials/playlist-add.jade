@@ -38,7 +38,6 @@
                                     span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}
                                 button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",
                                                                     ng-click="removeLinkFile(file,'bottom')") X
-    h6.text-warning(ng-show="!obj.assets.length")
-            | Nothing to show, Please Drag Assets to this box
+    h4.text-danger(ng-show="!obj.assets.length") Nothing to show, Please Drag Assets to this box
 
 

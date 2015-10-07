@@ -3,7 +3,7 @@
 angular.module('piAssets.controllers',[])
     .controller('AssetsCtrl',function($scope,$state,piUrls,$http,$modal, piConstants,
 
-                                                    fileUploader, $window, Upload, PlaylistTab,Label){
+                                                    fileUploader,  Upload, PlaylistTab,Label){
     /*
         $scope.files holds all the files present in the media directory
         $scope.fileDetails contains db data for the files with $scope.files element as key
@@ -18,7 +18,6 @@ angular.module('piAssets.controllers',[])
             playlist:null,
             rightWindowNeeded: ($state.current.name.slice($state.current.name.lastIndexOf('.')+1) == "playlistAddAssets")
         }
-
 
         //decide what to show in assets.jade
         $scope.setAssetParam = function(){
@@ -222,7 +221,7 @@ angular.module('piAssets.controllers',[])
             modalOk: function () {
                 if ($scope.msg.buttonText == "OK") {
                     $scope.modal.close();
-                    $window.location.reload();
+                    $state.reload();
                     return;
                 }
                 $scope.msg.title = 'Processing in Progress...';
@@ -660,6 +659,58 @@ angular.module('piAssets.controllers',[])
                     });
             } else {
                 $window.history.back();
+            }
+        }
+
+    }).
+    controller('licenseCtrl',function($scope,$http,piUrls,$state,$modal){
+        $scope.savedFiles = []; // license files
+        $scope.statusMsg = null;
+
+        $http.get(piUrls.licenses)
+            .success(function(data){
+                if(data.success)
+                    $scope.savedFiles = data.data;
+                else
+                    $scope.statusMsg = data.stat_message;
+
+            }).error(function(err){
+                console.log(err);
+            })
+        $scope.upload = {
+            onstart: function(files){
+                console.log('start upload');
+            },
+            ondone: function(files,data){
+                $scope.statusMsg = "Upload Complete";
+                $state.reload();
+            },
+            onerror: function(files,type,msg){
+                $scope.statusMsg = 'Upload Error,'+type+': '+ msg;;;
+            }
+        };
+        $scope.deleteEntry = function(filename){ // delete license
+            $scope.deleteText = ' license file '+filename;
+            $scope.modal = $modal.open({
+                animation: true,
+                scope: $scope,
+                templateUrl: '/app/templates/confirm-popup.html'
+            })
+            $scope.ok = function(){ 
+                $http.delete(piUrls.licenses+filename)
+                .success(function(data){
+                    if(data.success){
+                        $scope.modal.dismiss(); // close modal if successful
+                        $scope.savedFiles = data.data;
+                    }else{
+                        $scope.statusMsg = data.stat_message;
+                    }
+                    
+                }).error(function(err){
+                })
+            }
+            $scope.cancel = function(){
+                $scope.modal.dismiss();
             }
         }
 

@@ -80,6 +80,7 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
         replace: true,
         transclude: true,
         scope: {
+            postPath: '@',
             maxFiles: '@',
             maxFileSizeMb: '@',
             getAdditionalData: '&',
@@ -160,13 +161,18 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
                 scope.upload = function() {
                     scope.onstart();
         
-                    var data = null;
+                    var data = null,
+                        uploadPath = piUrls.files;
                     if (scope.getAdditionalData) {
                         data = scope.getAdditionalData();
                     }
+                    if (scope.postPath) {
+                        uploadPath = piUrls.base+scope.postPath;
+                    }
+
                     fileUploader
                         .post(scope.files, data)
-                        .to(piUrls.files)
+                        .to(uploadPath)
                         .then(function(ret) {
                             scope.ondone({files: ret.files, data: ret.data});
                         }, function(error) {
@@ -304,7 +310,4 @@ directive('unsavedChangesWarning', ['saveChangesPrompt', '$parse', function(save
             }
         };
     }
-]);
-
-
-
+])

@@ -172,6 +172,17 @@ angular.module('piServerApp', [
                 }
             })
 
+            .state("home.license",{
+                url: "licenseupload",
+                views: {
+                    "main": {
+                        templateUrl: '/app/partials/licenses.html',
+                        controller: 'licenseCtrl'
+                    }
+                }
+                
+            })
+
         $httpProvider.interceptors.push(function ($q, $rootScope) {
 
             var onlineStatus = false;
