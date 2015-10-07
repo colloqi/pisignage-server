@@ -14,7 +14,11 @@
 
     small.alert.alert-danger(ng-show='statusMsg') {{statusMsg}}
     ul.list-group
-        h5.text-danger(ng-show='savedFiles.length == 0') There are no licenses uploaded to this server
+        h5.text-danger(ng-show='savedFiles.length == 0')
+            | Please register the player ID
+            | at pisignage.com to generate the license files.Then either save the license file from the email or download
+            | at pisignage.com/subscriptions.<br><br>
+            | By uploading license files to your local server, they are downloaded to players automatically.
 
         li.list-group-item(ng-repeat='file in savedFiles |  filter: searchLicense')
             p {{file}}
