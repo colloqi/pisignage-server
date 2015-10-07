@@ -208,8 +208,8 @@ angular.module('piServerApp', [
 
     })
     .run(function ($window,$modal) {
-        var current_browser = $window.navigator.userAgent.toLowerCase();
-            if(current_browser.indexOf('chrome') == -1){
+        var currentBrowser = $window.navigator.userAgent.toLowerCase();
+            if(currentBrowser.indexOf('chrome') == -1){
                 $modal.open({
                     template: [
                         '<div class="modal-header">',
