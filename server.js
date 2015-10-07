@@ -16,6 +16,16 @@ var config = require(path.join(__dirname,'/config/config'));
 // Connect to database
 var db = mongoose.connect(config.mongo.uri, config.mongo.options);
 
+db.connection.on('error',function(){
+    console.log('********************************************');
+    console.log('*          MongoDB Process not running     *');
+    console.log('********************************************\n');
+
+    process.exit(1);
+})
+
+// check system 
+require('./app/others/systemCheck')();
 // Bootstrap models
 var modelsPath = path.join(__dirname, 'app/models');
 fs.readdirSync(modelsPath).forEach(function (file) {

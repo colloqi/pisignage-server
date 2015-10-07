@@ -29,3 +29,7 @@ git clone https://github.com/colloqi/pisignage-server
 cd pisignage-server
 npm install
 
+#create media and thumbnail directory
+cd ..
+mkdir media
+sudo chmod 755 -R ./media
