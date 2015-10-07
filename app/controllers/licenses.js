@@ -1,9 +1,33 @@
+'use strict;'
+
 var fs = require('fs'),
 	path = require('path'),
 	async = require('async');
 
-var	config = require('../../config/config');
-	rest = require('./restware');
+var	config = require('../../config/config'),
+	rest = require('../others/restware');
+
+var getTxtFiles = function(cb){
+    var txtOnly;
+    fs.readdir(config.licenseDir,function(err,files){
+        if(err)
+            return cb(err,null);
+        txtOnly = files.filter(function(file){
+            return file.match(/\.txt$/i)  // remove dot, hidden system files
+        });
+        cb(null,txtOnly);
+    })
+}
+
+exports.index = function(req,res){
+
+    getTxtFiles(function(err,files){
+        if(err)
+            return rest.sendError(res,'error in reading license directory',err);
+
+        return rest.sendSuccess(res,'total license list ',files);
+    })
+};
 
 exports.saveLicense = function(req,res){ // save license files
 	var uploadedFiles = req.files["assets"],
@@ -23,19 +47,10 @@ exports.saveLicense = function(req,res){ // save license files
 	})
 };
 
-exports.getList = function(req,res){ // return all license file in /license
-	
-	getTxtFiles(function(err,files){
-		if(err)
-			return rest.sendError(res,'error in reading license directory',err);
-		
-		return rest.sendSuccess(res,'total license list ',files);
-	})
-};
+
 
 exports.deleteLicense = function(req,res){ // delete particular license and return new file list
-	var deleteFile = req.params['filename'];
-	fs.unlink(config.licenseDir+deleteFile,function(err){
+	fs.unlink(path.join(config.licenseDir,req.params['filename']),function(err){
 		if(err)
 			return rest.sendError(res,"License "+deleteFile+" can't be deleted",err);
 		
@@ -48,14 +63,3 @@ exports.deleteLicense = function(req,res){ // delete particular license and retu
 	})
 }
 
-function getTxtFiles(cb){ // get all .txt files in license directory
-	var txtOnly; 
-	fs.readdir(config.licenseDir,function(err,files){
-		if(err)
-			return cb(err,null);
-		txtOnly = files.filter(function(file){
-			return file.match(/\.txt$/i)  // remove dot, hidden system files
-		});
-		cb(null,txtOnly);
-	})
-}

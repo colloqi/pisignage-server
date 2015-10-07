@@ -5,14 +5,15 @@ var express = require('express'),
 
 var multer = require('multer'),
     config = require('./config'),
-    upload = multer({dest:config.uploadDir})
+    upload = multer({dest:config.uploadDir}),
+    uploadLicense = multer({dest:config.licenseDir})
 
 var assets = require('../app/controllers/assets'),
     playlists = require('../app/controllers/playlists'),
     players = require('../app/controllers/players'),
     groups = require('../app/controllers/groups'),
     labels = require('../app/controllers/labels'),
-    licenseUtil  = require('../app/others/license-util');
+    licenses  = require('../app/controllers/licenses');
     //gcalAuthorize = require('../app/controllers/gcal-authorize');
 
 /**
@@ -68,9 +69,9 @@ router.post('/api/labels', labels.createObject);
 router.post('/api/labels/:label', labels.updateObject);
 router.delete('/api/labels/:label', labels.deleteObject);
 
-router.post('/api/licensefiles',multer({dest: config.licenseDir}).fields([{name:'assets'}]),licenseUtil.saveLicense);
-router.get('/api/licensefiles',licenseUtil.getList);
-router.delete('/api/licensefiles/:filename',licenseUtil.deleteLicense)
+router.post('/api/licensefiles',uploadLicense.fields([{name:'assets',maxCount: 10}]),licenses.saveLicense);
+router.get('/api/licensefiles',licenses.index);
+router.delete('/api/licensefiles/:filename',licenses.deleteLicense)
 
 router.param('label', labels.loadObject)
 

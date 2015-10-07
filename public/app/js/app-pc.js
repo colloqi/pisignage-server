@@ -173,10 +173,10 @@ angular.module('piServerApp', [
             })
 
             .state("home.license",{
-                url: "licenseUpload",
+                url: "licenseupload",
                 views: {
                     "main": {
-                        templateUrl: '/app/partials/license-util.html',
+                        templateUrl: '/app/partials/licenses.html',
                         controller: 'licenseCtrl'
                     }
                 }

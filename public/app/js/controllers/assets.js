@@ -3,7 +3,7 @@
 angular.module('piAssets.controllers',[])
     .controller('AssetsCtrl',function($scope,$state,piUrls,$http,$modal, piConstants,
 
-                                                    fileUploader, $window, Upload, PlaylistTab,Label){
+                                                    fileUploader,  Upload, PlaylistTab,Label){
     /*
         $scope.files holds all the files present in the media directory
         $scope.fileDetails contains db data for the files with $scope.files element as key
@@ -221,7 +221,7 @@ angular.module('piAssets.controllers',[])
             modalOk: function () {
                 if ($scope.msg.buttonText == "OK") {
                     $scope.modal.close();
-                    $window.location.reload();
+                    $state.reload();
                     return;
                 }
                 $scope.msg.title = 'Processing in Progress...';
@@ -663,13 +663,12 @@ angular.module('piAssets.controllers',[])
         }
 
     }).
-    controller('licenseCtrl',function($scope,$http,piUrls,$window,$modal){
+    controller('licenseCtrl',function($scope,$http,piUrls,$state,$modal){
         $scope.savedFiles = []; // license files
         $scope.statusMsg = null;
 
         $http.get(piUrls.licenses)
             .success(function(data){
-                console.log(data);
                 if(data.success)
                     $scope.savedFiles = data.data;
                 else
@@ -679,25 +678,15 @@ angular.module('piAssets.controllers',[])
                 console.log(err);
             })
         $scope.upload = {
-            onstart: function(){
+            onstart: function(files){
                 console.log('start upload');
             },
-            ondone: function(status,msg){
-                if(status){
-                    $scope.statusMsg = msg;
-                    $window.location.reload();       
-                }else{
-                    $scope.statusMsg = msg;
-                }
+            ondone: function(files,data){
+                $scope.statusMsg = "Upload Complete";
+                $state.reload();
             },
-            onerror: function(status,msg){
-                if(status){
-                    $scope.statusMsg = msg;
-                    $window.location.reload(); 
-                }else{
-                    console.log(msg);
-                    $scope.statusMsg = msg;
-                }
+            onerror: function(files,type,msg){
+                $scope.statusMsg = 'Upload Error,'+type+': '+ msg;;;
             }
         };
         $scope.deleteEntry = function(filename){ // delete license
@@ -708,8 +697,6 @@ angular.module('piAssets.controllers',[])
                 templateUrl: '/app/templates/confirm-popup.html'
             })
             $scope.ok = function(){ 
-                console.log('delete the license file '+filename);
-
                 $http.delete(piUrls.licenses+filename)
                 .success(function(data){
                     if(data.success){
@@ -721,14 +708,11 @@ angular.module('piAssets.controllers',[])
                     }
                     
                 }).error(function(err){
-                    console.log(err);
                 })
             }
             $scope.cancel = function(){
-                console.log("don't delete");
                 $scope.modal.dismiss();
             }
-            
         }
 
     });

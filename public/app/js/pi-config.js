@@ -14,7 +14,7 @@ angular.module('piConfig', [])
             base = 'http://localhost/';
         console.log("api base: ",base);
         return {
-            main:            base,
+            base:            base,
             files:           base + 'api/files/' ,
             filespostupload: base + 'api/postupload',
             calendars:       base + 'api/calendars/',

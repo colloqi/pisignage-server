@@ -2,21 +2,21 @@
 <p ng-show="statusMsg" class="alert alert-success text-center">{{statusMsg}}</p>
 <div class="panel panel-info">
   <div class="panel-heading">
-    <h4>Upload license</h4>
+    <h4>Upload licenses</h4>
   </div>
   <div class="panel-body">
-    <p>Upload your license here:</p>
+    <p>Serve your license files to players by uploading to server,&nbsp;</p>
     <div class="row col-sm-offset-4 col-sm-4 btn btn-success">
-      <angular-file-upload post-path="api/licensefiles" onstart="upload.onstart()" ondone="upload.ondone(status,msg)" onerror="upload.onerror(status,msg)">Upload</angular-file-upload>
+      <nodeims-file-upload post-path="api/licensefiles" onstart="upload.onstart()" ondone="upload.ondone(status,msg)" onerror="upload.onerror(status,msg)">Upload</nodeims-file-upload>
     </div>
   </div>
 </div>
 <div class="panel panel-info">
   <div class="panel-heading">
-    <h4>License Files</h4>
+    <h4>Available License Files</h4>
   </div>
   <div class="panel-body">
-    <h4 ng-show="savedFiles.length == 0" class="text-danger">No licensefiles to display</h4>
+    <h4 ng-show="savedFiles.length == 0" class="text-danger">There are no licenses uploaded to this server</h4>
     <div ng-repeat="file in savedFiles |  filter: searchLicense" class="row">
       <div class="col-sm-6 col-sm-offset-2">
         <p>{{file}}</p><br/>
