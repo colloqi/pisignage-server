@@ -133,11 +133,11 @@
       make distclean
       hash -r
       ```
-      Create a symboloic for ffprobe and ffmpeg
+      Create a symboloic for ffprobe and ffmpeg (could be in /usr/local/bin or ~/bin) 
       ```
       
-      sudo ln -s ~/bin/ff /usr/local/bin/ffmpeg
-      sudo ln -s ~/bin/ffprobe /usr/local/bin/ffprobe
+      sudo ln -s ~/bin/ffmpeg /usr/local/bin/ffmpeg  (or the directory where ffmpeg/ffprobe programs are created)
+      sudo ln -s ~/bin/ffprobe /usr/local/bin/ffprobe  (or the directory where ffmpeg/ffprobe programs are created)
       
       ```
    - **Mac**
@@ -163,10 +163,6 @@
 5.Clone this reporsitory and run follwing commands
 
    ```
-    mkdir media
-    
-    sudo chmod 755 -R ./media
-    
     git clone https://github.com/colloqi/pisignage-server 
     
     cd pisignage-server
