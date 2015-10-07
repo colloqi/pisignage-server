@@ -182,13 +182,15 @@
 
 2. Once installed and Powered-ON Configure admin and media server to your local address and port using one of the below methods  
 
-  a. Connect Keyboard and press Ctrl-N or F6    
-    * Change config and media server to `http://[your server ip]:port` (ex: 192.168.1.30:3000, 10.50.16.110:3000)   
-    * Open terminal `ctrl+Alt+ t` and delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory      
+   a. Using the webUI of the player at http://<player IP>:8000/settings
+  
+   b. Connect Keyboard and press Ctrl-N or F6    
+      * Change config and media server to `http://[your server ip]:port` (ex: 192.168.1.30:3000, 10.50.16.110:3000)   
+      * Open terminal `ctrl+Alt+ t` and delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory      
    
-  b. Connect through ssh
-    * Edit `/home/pi/piSignagePro/package.json` for admin and media server configuration    
-    * delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory    
+   c. Connect through ssh
+      * Edit `/home/pi/piSignagePro/package.json` for admin and media server configuration    
+      * delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory    
 
 ##Features  
 
@@ -238,7 +240,5 @@
 
 ####You can also manage players using Browser(http://playerip:8000) or downloading Chrome app  
 
-1.Currently it is not possible to change admin and media server from this interface,     
-    you can either edit /home/pi/piSignagePro/package.json manually or connect a keyboard to Pi and press F6 or Ctrl-N  
     
 ####The code is still in early release, Please raise an issue for problems or send an email to info@pisignage.com  
