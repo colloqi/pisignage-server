@@ -57,6 +57,7 @@ var io = socketio.listen(server);
 
 //Bootstrap socket.io
 require('./app/controllers/server-socket').startSIO(io);
+require('./app/controllers/scheduler');
 
 server.listen(config.port, function () {
     console.log('Express server listening on port %d in %s mode', config.port, app.get('env'));

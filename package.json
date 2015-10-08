@@ -27,6 +27,7 @@
     "morgan": "~1.5.2",
     "multer": "^1.0.1",
     "node-ffprobe": "^1.2.2",
+    "node-schedule": "^0.2.9",
     "serve-favicon": "~2.2.0",
     "serve-index": "~1.6.3",
     "socket.io": "~0.9.16"

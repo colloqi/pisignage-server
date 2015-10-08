@@ -15,6 +15,7 @@ var rootPath = process.cwd(),
 module.exports = {
     root: rootPath,
     dataDir: dataDir,
+    releasesDir: dataDir+'/releases',
 
     uploadDir: assetDir,
     licenseDir: dataDir+'/licenses/'+installation+'/',
