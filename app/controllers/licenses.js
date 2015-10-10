@@ -63,3 +63,10 @@ exports.deleteLicense = function(req,res){ // delete particular license and retu
 	})
 }
 
+exports.getConfig = function(req,res) {
+    return rest.sendSuccess(res,"Config Data",{
+        assetLogEnable: config.assetLogEnable,
+        newLayoutsEnable: config.newLayoutsEnable
+    });
+}
+

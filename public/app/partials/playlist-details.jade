@@ -2,22 +2,21 @@
     .panel-heading
         .row
             .col-sm-7
-                h3.panel-title {{selected.playlist.name}} Settings
+                h3.panel-title {{selected.playlist.name}}
                     a.btn.btn-link(ng-click="collapsed = !collapsed;")
-                        i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
+                        i.fa.fa-lg(ng-class="{'fa-carret-right':collapsed,'fa-carret-down':!collapsed}")
             .col-sm-3.pull-right
-                a.btn.btn-primary.pull-right(ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})",
-                                                ui-sref-opts="{reload: true, notify: true}") Add/Edit Playlist Assets
+                a.btn.btn-success.pull-right(ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})",
+                                                ui-sref-opts="{reload: true, notify: true}") Assign Assets
     .panel-body(ng-show="!collapsed")
         form.form-horizontal
             .form-group
                 label.control-label.col-sm-4.text-muted Selected Layout for the playlist&nbsp;
                 .col-sm-8
                     .btn-group
-                        button.btn.btn-default
+                        button.btn.btn-default(ng-click="openLayout ()")
                             strong {{selected.playlist.layout}}
-                            span.text-muted :{{layouts[selected.playlist.layout].title}}
-                        button.btn.btn-info(ng-click="openLayout ()") Change
+                            span :{{layouts[selected.playlist.layout].title}}
             .form-group
                 label.control-label.col-sm-4.text-muted Add a Ticker Message
                 .col-sm-8
@@ -26,7 +25,7 @@
                                                     ng-model='selected.playlist.settings.ticker.messages',
                                                     placeholder="Type in the Ticker message")
                         .input-group-btn
-                            button.btn.btn-info.pull-right(ng-click='saveSettings()')
+                            button.btn.btn-default.pull-right(ng-click='saveSettings()')
                                 i.fa.fa-check
             .form-group
                 label.control-label.col-sm-4.text-muted Make the playlist as Advertisement list
@@ -49,6 +48,6 @@
                                 p.text-muted (still a dummy Main zone file need to be selected)
             .form-group
                 .col-sm-8.col-sm-offset-4
-                    button.btn.btn-info.btn-sm(ng-click='saveSettings()') Save
+                    button.btn.btn-success.btn-sm(ng-click='saveSettings()') Save
 
 

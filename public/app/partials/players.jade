@@ -8,7 +8,13 @@
                 .col-sm-4(ng-click='shellCommand(player)')
                     h6.text-primary.truncate  {{player.localName}}
                 .col-sm-3
-                    h6.text-primary.truncate  {{player.myIpAddress}}
+                    .row
+                        .col-sm-6(style="padding-right:3px;")
+                            small.text-primary.truncate  {{player.myIpAddress}}
+                        .col-sm-6(style="padding:3px;")
+                            select.form-control.select-xs(ng-model="player.TZ", ng-change="changeTZ(player)",
+                            ng-options="tz for tz in tzNames")
+                                option(value="", selected,translate)  --No TZ--
                 .col-sm-3
                     i.fa.fa-circle.fa-2x(ng-class="player.statusClass")
                     span.text-primary &nbsp;{{player.currentPlaylist}}

@@ -135,7 +135,10 @@ angular.module('piGroups.controllers', [])
         }
     })
 
-    .controller('GroupDetailCtrl', function ($scope, $rootScope, $http, piUrls, $stateParams, $location, $modal, piPopup, $timeout) {
+    .controller('GroupDetailCtrl', function ($scope, $rootScope, $http, piUrls, $stateParams, $location, $modal, weeks, days) {
+
+        $scope.weeklist = weeks; // get all week list and code
+        $scope.dayslist = days;
 
         $scope.collapsed = true;
         var showEmptySlots = function(){
@@ -210,9 +213,10 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.add = function () {
+            $scope.deployform.$setDirty(); //  inform user  of new changes
             $scope.group.playlists.push({
                 name: $scope.newPlaylistName,
-                settings: {startdate: null, enddate: null, starttime: null, endtime: null}
+                settings: {durationEnable: false, timeEnable: false, weekday: 0, monthday: 0}
             });
             $scope.updateGroup();
         }
@@ -220,9 +224,10 @@ angular.module('piGroups.controllers', [])
         $scope.delete = function (index) {
             //piPopup.confirm("Playlist from Group", function () {
                 //$scope.group.playlists.splice(index, 1);
+                $scope.deployform.$setDirty(); //  inform user  of new changes
                 $scope.group.playlists[index] =  {
                     name: '',
-                    settings: {startdate: null, enddate: null, starttime: null, endtime: null}
+                    settings: {durationEnable: false, timeEnable: false, weekday: 0, monthday: 0}
                 };
                 $scope.updateGroup();
             //});
@@ -237,6 +242,7 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.saveSchedules = function() {
+            formcontroller.$dirty? $scope.deployform.$setDirty(): ''; //  inform user  of new changes
             $scope.scheduleCalendarModal.close();
             $scope.updateGroup();
         }
@@ -252,10 +258,16 @@ angular.module('piGroups.controllers', [])
                 {value: 'portrait', name: "Portrait Mode"}
             ];
 
+            $scope.animations = [
+                {value: false, name: 'Disable Animation'},
+                {value: true, name: 'Enable Animation'}
+            ];
+
             $scope.displayModal = $modal.open({
                 templateUrl: '/app/templates/display-set.html',
                 scope: $scope
             });
+
         }
         $scope.saveSettings = function () {
             $scope.displayModal.close();

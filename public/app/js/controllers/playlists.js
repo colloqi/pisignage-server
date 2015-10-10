@@ -128,7 +128,7 @@ angular.module('piPlaylists.controllers', [])
 
 
     .controller('PlaylistViewCtrl',
-        function($scope, $http, $rootScope, piUrls, $window,$state, $stateParams,$modal, Label,PlaylistTab){
+        function($scope, $http, $rootScope, piUrls, $window,$state, $stateParams,$modal){
 
             //modal for layout
             $scope.layouts = {
@@ -151,6 +151,16 @@ angular.module('piPlaylists.controllers', [])
                     title: "Three Zones(full side) with Main Zone on left",
                     description: "main Zone:960x540, side Zone:320x720, bottom Zone:960x180"
                 },
+                "4c": {
+                    title: "Three Zones(full side) with Main Zone on right (enable in settings)",
+                    disabled:$rootScope.serverConfig.newLayoutsEnable,
+                    description: "main Zone:960x540, side Zone:320x720, banner Zone:960x180"
+                },
+                "4d": {
+                    title: "Three Zones(full side) with Main Zone on left (enable in settings)",
+                    disabled:$rootScope.serverConfig.newLayoutsEnable,
+                    description: "main Zone:960x540, side Zone:320x720, banner Zone:960x180"
+                },
                 "2ap": {title: "Portrait Mode", description: "top Zone:720x540,bottom zone:720x740"}
             }
 
@@ -164,7 +174,7 @@ angular.module('piPlaylists.controllers', [])
 
             $scope.saveLayout = function(){  // get new layout value
                 var pl = $scope.groupWiseAssets[$scope.selected.playlist.name].playlist;
-                $http.post(piUrls.playlists + $stateParams.playlist, {layout : pl.layout})
+                $http.post(piUrls.playlists + $stateParams.playlist, {layout : pl.layout, videoWindow: $scope.layout.videoWindow})
                     .success(function(data, status) {
                         if (data.success) {
                             $scope.modal.close();
@@ -175,12 +185,20 @@ angular.module('piPlaylists.controllers', [])
                     });
             }
 
+            $scope.setVideoWindow = function(obj){ // SET/RESET video window options
+                $scope.layout.videoWindow = obj;
+                $scope.saveLayout();
+            }
+
             $scope.saveSettings = function() {
                 var pl = $scope.groupWiseAssets[$scope.selected.playlist.name].playlist;
                 if (pl.settings.ticker.messages && pl.settings.ticker.messages.length)
                     pl.settings.ticker.enable = true;
                 else
                     pl.settings.ticker.enable = false;
+
+                if ($scope.settings.ticker.style)
+                    $scope.settings.ticker.style = $scope.settings.ticker.style.replace(/\"/g,'');
 
                 $http.post(piUrls.playlists + $stateParams.playlist, {settings: pl.settings})
                     .success(function(data, status) {

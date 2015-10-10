@@ -10,7 +10,14 @@
           <h6 class="text-primary truncate"> {{player.localName}}</h6>
         </div>
         <div class="col-sm-3">
-          <h6 class="text-primary truncate"> {{player.myIpAddress}}</h6>
+          <div class="row">
+            <div style="padding-right:3px;" class="col-sm-6"><small class="text-primary truncate"> {{player.myIpAddress}}</small></div>
+            <div style="padding:3px;" class="col-sm-6">
+              <select ng-model="player.TZ" ng-change="changeTZ(player)" ng-options="tz for tz in tzNames" class="form-control select-xs">
+                <option value="" selected="selected" translate="translate"> --No TZ--</option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="col-sm-3"><i ng-class="player.statusClass" class="fa fa-circle fa-2x"></i><span class="text-primary">&nbsp;{{player.currentPlaylist}}</span></div>
         <div class="col-sm-2">

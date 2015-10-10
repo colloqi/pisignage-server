@@ -3,9 +3,10 @@ var mongoose = require('mongoose'),
 
 var PlayerSchema = new Schema({
     name:                   String,
-    group:                  {_id: {type: Schema.ObjectId, ref: 'Group'},
+    group:                  {_id: {type: Schema.ObjectId, ref: 'Group', index: true},
                                         name: {type: String, default: 'default'}},
     note:                   String,
+    TZ:                     String,
     version:                String,
     platform_version:       String,
     cpuSerialNumber:        {type: String,unique: true, index: true},
@@ -25,10 +26,11 @@ var PlayerSchema = new Schema({
     duration:               String,
     tvStatus:               Boolean,
     lastReported:           {type: Date},
-    isConnected:            Boolean,
-    socket:                 String,
+    isConnected:            {type: Boolean,index: true},
+    socket:                 {type: String,index: true},
 
     registered:             {type: Boolean, default: false},
+    serverServiceDisabled:  {type: Boolean, default: false},
 
     createdAt:              {type: Date, default: Date.now},
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}

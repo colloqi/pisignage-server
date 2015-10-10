@@ -80,7 +80,8 @@ exports.getPlaylist = function (req, res) {
             var playlist = {
                 settings: {},
                 layout: '1',
-                assets: []
+                assets: [],
+                videoWindow: null
             }
             if (data) {
                 var obj = {};
@@ -92,6 +93,7 @@ exports.getPlaylist = function (req, res) {
                 playlist.settings = obj.settings || {};
                 playlist.assets = obj.assets || [];
                 playlist.layout = obj.layout || '1';
+                playlist.videoWindow = obj.videoWindow;
             }
 
             return rest.sendSuccess(res, ' Sending playlist content', playlist);
@@ -141,6 +143,7 @@ exports.savePlaylist = function (req, res) {
             }
             if (req.body.layout) {
                 fileData.layout = req.body.layout;
+                fileData.videoWindow = req.body.videoWindow;
                 dirty = true;
             }
 

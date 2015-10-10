@@ -16,7 +16,7 @@ angular.module('piAssets.controllers',[])
 
         $scope.selected = {
             playlist:null,
-            rightWindowNeeded: ($state.current.name.slice($state.current.name.lastIndexOf('.')+1) == "playlistAddAssets")
+            rightWindowNeeded: ($state.current.name === "home.assets.playlistAddAssets")
         }
 
         //decide what to show in assets.jade
@@ -25,16 +25,13 @@ angular.module('piAssets.controllers',[])
                 return;
 
             $scope.showAssets = {};
-            if (PlaylistTab.selectedPlaylist) {
+            if (PlaylistTab.selectedPlaylist && !$scope.selected.rightWindowNeeded) {
                 $scope.selected.playlist = $scope.groupWiseAssets[PlaylistTab.selectedPlaylist.name].playlist;
                 $scope.showAssets[PlaylistTab.selectedPlaylist.name] = $scope.groupWiseAssets[PlaylistTab.selectedPlaylist.name]
             } else {
                 $scope.selected.playlist = null;
                 $scope.showAssets = {'All': $scope.allAssets['All']}
             }
-            if ($scope.selected.rightWindowNeeded)
-                $scope.showAssets = {'All':$scope.allAssets['All']}
-
             if ($state.current.name.indexOf("home.assets.playlist") == 0) {
                 $scope.playlistState = true;
             }
@@ -184,6 +181,7 @@ angular.module('piAssets.controllers',[])
             buttonText: 'Uploading',
             disable: true
         }
+        $scope.newLabel = {}
         $scope.upload = {
             onstart: function (files) {
                 $scope.modal = $modal.open({
@@ -218,6 +216,26 @@ angular.module('piAssets.controllers',[])
             abort: function() {
                 fileUploader.cancel();
             },
+            selectedLabels: [],
+            labels: [],
+
+            addLabel: function(){
+                $http
+                    .post(piUrls.labels, $scope.newLabel)
+                    .success(function(data, status) {
+                        if (data.success) {
+                            $scope.upload.selectedLabels.push(data.data.name)
+                            $scope.upload.labels.push(data.data)
+                            $scope.newLabel = {};
+                            $scope.msg.error = null;
+                        } else {
+                            $scope.msg.error = gettext("Category exists");
+                        }
+                    })
+                    .error(function(data, status) {
+                    });
+            },
+
             modalOk: function () {
                 if ($scope.msg.buttonText == "OK") {
                     $scope.modal.close();
@@ -253,7 +271,7 @@ angular.module('piAssets.controllers',[])
 
         //Add link releated for uploading links
         $scope.link = {
-            types: [{name: 'You Tube', ext: '.tv'}, {name: 'Web Link', ext: '.link'}],
+            types: [{name: 'YouTube or Streaming', ext: '.tv'}, {name: 'Web Link', ext: '.link'}],
             obj: {
                 name: null,
                 type: '.link',
@@ -391,6 +409,7 @@ angular.module('piAssets.controllers',[])
                         if (!$scope.playlistState && $scope.ngDropdown.selectedAssets.length) {
                             for (var i=0,len=$scope.ngDropdown.selectedAssets.length;i<len;i++) {
                                 var asset = $scope.ngDropdown.selectedAssets[i];
+                                asset.fileDetails.labels = asset.fileDetails.labels || [];
                                 if (asset.fileDetails.labels.indexOf(label.name) == -1)
                                     asset.fileDetails.labels.push(label.name);
                                 //delete asset.selected;
@@ -662,56 +681,4 @@ angular.module('piAssets.controllers',[])
             }
         }
 
-    }).
-    controller('licenseCtrl',function($scope,$http,piUrls,$state,$modal){
-        $scope.savedFiles = []; // license files
-        $scope.statusMsg = null;
-
-        $http.get(piUrls.licenses)
-            .success(function(data){
-                if(data.success)
-                    $scope.savedFiles = data.data;
-                else
-                    $scope.statusMsg = data.stat_message;
-
-            }).error(function(err){
-                console.log(err);
-            })
-        $scope.upload = {
-            onstart: function(files){
-                console.log('start upload');
-            },
-            ondone: function(files,data){
-                $scope.statusMsg = "Upload Complete";
-                $state.reload();
-            },
-            onerror: function(files,type,msg){
-                $scope.statusMsg = 'Upload Error,'+type+': '+ msg;;;
-            }
-        };
-        $scope.deleteEntry = function(filename){ // delete license
-            $scope.deleteText = ' license file '+filename;
-            $scope.modal = $modal.open({
-                animation: true,
-                scope: $scope,
-                templateUrl: '/app/templates/confirm-popup.html'
-            })
-            $scope.ok = function(){ 
-                $http.delete(piUrls.licenses+filename)
-                .success(function(data){
-                    if(data.success){
-                        $scope.modal.dismiss(); // close modal if successful
-                        $scope.savedFiles = data.data;
-                    }else{
-                        $scope.statusMsg = data.stat_message;
-                    }
-                    
-                }).error(function(err){
-                })
-            }
-            $scope.cancel = function(){
-                $scope.modal.dismiss();
-            }
-        }
-
-    });
+    })

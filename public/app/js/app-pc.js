@@ -9,6 +9,7 @@ angular.module('piServerApp', [
     'piIndex.controllers',
     'piGroups.controllers',
     'piAssets.controllers',
+    'piLicenses.controllers',
     'piPlaylists.controllers',
     'piLabels.controllers',
     'pisignage.directives',
@@ -129,6 +130,10 @@ angular.module('piServerApp', [
                         templateUrl: '/app/partials/playlists.html',
                         controller: 'PlaylistsCtrl'
                     },
+                    "left2": {
+                        templateUrl: '/app/partials/labels.html',
+                        controller: 'LabelsCtrl'
+                    },
                     "list": {
                         templateUrl: '/app/partials/assets.html',
                         controller: 'AssetsEditCtrl'
@@ -142,6 +147,10 @@ angular.module('piServerApp', [
                     "left": {
                         templateUrl: '/app/partials/playlists.html',
                         controller: 'PlaylistsCtrl'
+                    },
+                    "left2": {
+                        templateUrl: '/app/partials/labels.html',
+                        controller: 'LabelsCtrl'
                     },
                     "details": {
                         templateUrl: '/app/partials/playlist-details.html',
@@ -160,6 +169,10 @@ angular.module('piServerApp', [
                     "left": {
                         templateUrl: '/app/partials/playlists.html',
                         controller: 'PlaylistsCtrl'
+                    },
+                    "left2": {
+                        templateUrl: '/app/partials/labels.html',
+                        controller: 'LabelsCtrl'
                     },
                     "list": {
                         templateUrl: '/app/partials/assets.html',
@@ -207,26 +220,33 @@ angular.module('piServerApp', [
         });
 
     })
-    .run(function ($window,$modal) {
+    .run(function ($window,$modal,piUrls,$http, $rootScope) {
         var currentBrowser = $window.navigator.userAgent.toLowerCase();
-            if(currentBrowser.indexOf('chrome') == -1){
-                $modal.open({
-                    template: [
-                        '<div class="modal-header">',
-                        '<h3 class="modal-title">Please Switch to Chrome Browser</h3>',
-                        '</div>',
-                        '<div class="modal-body">',
-                        '<p>Things may not work as expected with other Browsers :(</p>',
-                        '</div>',
-                        '<div class="modal-footer">',
-                        '<button ng-click="cancel()" class="btn btn-warning">Got it!</button>',
-                        '</div>'
-                    ].join(''),
-                    controller: ['$scope','$modalInstance',function($scope,$modalInstance){
-                        $scope.cancel = function(){
-                                $modalInstance.close();
-                            }
-                        }]
-                })
-            }
+        if(currentBrowser.indexOf('chrome') == -1){
+            $modal.open({
+                template: [
+                    '<div class="modal-header">',
+                    '<h3 class="modal-title">Please Switch to Chrome Browser</h3>',
+                    '</div>',
+                    '<div class="modal-body">',
+                    '<p>Things may not work as expected with other Browsers :(</p>',
+                    '</div>',
+                    '<div class="modal-footer">',
+                    '<button ng-click="cancel()" class="btn btn-warning">Got it!</button>',
+                    '</div>'
+                ].join(''),
+                controller: ['$scope','$modalInstance',function($scope,$modalInstance){
+                    $scope.cancel = function(){
+                            $modalInstance.close();
+                        }
+                    }]
+            })
+        }
+        $http.get(piUrls.serverConfig)
+            .success(function(data){
+                if(data.success)
+                    $rootScope.serverConfig = data.data;
+            }).error(function(err){
+                console.log(err);
+            })
     });

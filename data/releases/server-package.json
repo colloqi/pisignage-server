@@ -1,0 +1,24 @@
+{
+    "name": "pisignage",
+    "version": "1.2.3",
+    "config_server":"pisignage.com",
+    "media_server": "pisignage.com",
+    "engines": {
+        "node": ">=0.8.0"
+    },
+    "private": true,
+    "dependencies": {
+    	"apache-md5": "^1.0.0",
+        "express": "~3.4.3",
+        "lodash": "~2.4.1",
+        "ejs": "~1.0.0",
+        "async": "~0.2.10",
+        "node-uuid": "~1.4.1",
+        "socket.io-client": "~0.9.16",
+        "http-auth": "~2.1.7",
+        "forever-monitor": "~1.2.3",
+        "feedparser": "^1.1.3",
+        "request": "^2.58.0",
+        "googleapis": "~1.0.7"
+    }
+}

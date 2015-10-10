@@ -174,9 +174,9 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
                         .post(scope.files, data)
                         .to(uploadPath)
                         .then(function(ret) {
-                            scope.ondone({files: ret.files, data: ret.data});
+                            scope.ondone({files: angular.copy(ret.files), data: angular.copy(ret.data)});
                         }, function(error) {
-                            scope.onerror({files: scope.files, type: error.type, msg: error.msg});
+                            scope.onerror({files: angular.copy(scope.files), type: error.type, msg: error.msg});
                         },  function(progress) {
                             scope.onprogress({percentDone: progress});
                             scope.percent = progress;
@@ -205,7 +205,8 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
 directive('categories',['$http','piUrls', function($http,piUrls) {
     return {
         scope: {
-            selectedLabels: '='
+            selectedLabels: '=',
+            labels: '='
         },
         restrict: 'E',
         replace: 'true',
@@ -226,6 +227,7 @@ directive('categories',['$http','piUrls', function($http,piUrls) {
                             else
                                 category.selected = false;
                         })
+                        scope.labels = scope.cat.categories;
                     }
                 })
                 .error(function(data, status) {

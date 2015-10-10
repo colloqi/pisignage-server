@@ -71,11 +71,14 @@ var sendConfig = function (player, group, periodic) {
         retObj.playlists = group.playlists;
     }
     retObj.installation = config.installation;
+    retObj.TZ = player.TZ;
     retObj.baseUrl = '/sync_folders/';
     retObj.assets = group.assets;
+    retObj.lastDeployed = group.lastDeployed;
     retObj.name = player.name;
     retObj.resolution = group.resolution || '720p';
     retObj.orientation = group.orientation || 'landscape';
+    retObj.animationEnable =  group.animationEnable || false;
     if (!pipkgjson)
         pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
     retObj.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version};
@@ -87,6 +90,7 @@ var sendConfig = function (player, group, periodic) {
     }
 
     retObj.authCredentials = config.authCredentials;
+    retObj.assetLogEnable = config.assetLogEnable;
     socketio.emitMessage(player.socket, 'config', retObj);
 }
 
@@ -165,8 +169,8 @@ exports.createObject = function (req, res) {
         }
 
         if (data) {
+            delete req.body.__v;        //do not copy version key
             player = _.extend(data, req.body)
-
         } else {
             player = new Player(req.body);
             if (!player.group) player.group = defaultGroup;
@@ -188,10 +192,10 @@ exports.createObject = function (req, res) {
 exports.updateObject = function (req, res) {
     var object = req.object;
 
-    if (req.object.group._id != req.body.group._id) {
+    if (req.body.group && req.object.group._id != req.body.group._id) {
         req.body.registered = false;
     }
-
+    delete req.body.__v;        //do not copy version key
     object = _.extend(object, req.body)
     object.save(function (err, data) {
         if (err)
@@ -252,6 +256,10 @@ exports.updatePlayerStatus = function (obj) {
                 player.installation = config.installation;
                 player.isConnected = true;
             }
+            //server license feature, disable communication if server license is not available
+            if (player.serverServiceDisabled)
+                player.socket = null;
+
             activePlayers[player._id.toString()] = true;
             if (!player.registered || obj.request ) {
                 Group.findById(player.group._id, function (err, group) {

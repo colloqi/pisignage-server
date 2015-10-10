@@ -73,6 +73,8 @@ router.post('/api/licensefiles',uploadLicense.fields([{name:'assets',maxCount: 1
 router.get('/api/licensefiles',licenses.index);
 router.delete('/api/licensefiles/:filename',licenses.deleteLicense)
 
+router.get('/api/serverconfig',licenses.getConfig);
+
 router.param('label', labels.loadObject)
 
 module.exports = router;

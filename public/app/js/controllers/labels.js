@@ -6,6 +6,7 @@ angular.module('piLabels.controllers', [])
     })
     .controller('LabelsCtrl', function ($scope,$stateParams, $http,$location,piUrls, Label,PlaylistTab,piPopup) {
 
+/*
         if ($stateParams.label)
             Label.selectedLabel = $stateParams.label;
         else
@@ -13,16 +14,16 @@ angular.module('piLabels.controllers', [])
         PlaylistTab.selectedPlaylist = null;         //clear all selected Labels
 
         $scope.setAssetParam();
+*/
 
         $scope.fn = {};
         $scope.fn.editMode = false;
         $scope.fn.edit = function () {
             $scope.fn.editMode = !$scope.fn.editMode;
-            Label.selectedGroup = null;
+            Label.selectedLabel = null;
         }
 
         $scope.newLabel = {}
-
         $scope.fn.add = function(){
             if (!$scope.newLabel.name) {
                 return;
@@ -77,10 +78,12 @@ angular.module('piLabels.controllers', [])
         $scope.fn.selected= function(label){
             if(!$scope.fn.editMode)
                 Label.selectedLabel= (Label.selectedLabel==label) ? null: label;
+/*
             if (Label.selectedLabel)
                 $location.path("/assets/assets/" + label);
             else
                 $location.path("/assets/assets");
+*/
         }
 
         $scope.labelsCount= Label.labelsCount;

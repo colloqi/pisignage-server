@@ -5,24 +5,71 @@
       <button ng-click="modal.close()" class="btn btn-success pull-right">DONE</button>
     </h4>
   </div>
-  <div class="panel-body"><i><small>
-        The Display can be divided into multiple zones with each zone playing different content. Video files can be played
-        only in the main Zone. Select a file in the playlist to play in the main zone,add other zone files to the main file
-        by clicking zone file button. If there is no file attached to a particular zone, the previous content for that zone
-        will continue to play.</small></i></div>
-  <ul class="list-group">
-    <li ng-repeat="(ltype,item) in layouts" ng-class="{'list-group-item-success':selected.playlist.layout == ltype}" class="list-group-item">
-      <div class="row">
-        <div class="col-sm-10">
-          <div class="radio">
-            <label>
-              <input type="radio" value="{{ltype}}" ng-change="saveLayout()" ng-model="selected.playlist.layout"/><strong class="text-primary">{{ltype}}: &nbsp;{{item.title}}</strong>
-              <p><small>({{item.description}})</small></p>
-            </label>
+  <div class="panel-body">
+    <tabset>
+      <tab heading="Layouts"><i><small>
+            The Display can be divided into multiple zones with each zone playing different content. Video files can be played
+            only in the main Zone. Select a file in the playlist to play in the main zone,add other zone files to the main file
+            by clicking zone file button. If there is no file attached to a particular zone, the previous content for that zone
+            will continue to play.</small></i>
+        <ul class="list-group">
+          <li ng-repeat="(ltype,item) in layouts" ng-class="{'list-group-item-success':selected.playlist.layout == ltype}" class="list-group-item">
+            <div class="row">
+              <div class="col-sm-10">
+                <div class="radio">
+                  <label>
+                    <input type="radio" value="{{ltype}}" ng-change="saveLayout()" ng-disabled="item.disabled" ng-model="selected.playlist.layout"/><strong class="text-primary">{{ltype}}: &nbsp;{{item.title}}</strong>
+                    <p><small>({{item.description}})</small></p>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-2"><img height="40px" ng-src="/app/img/{{ltype}}.ico"/></div>
+            </div>
+          </li>
+        </ul>
+      </tab>
+      <tab heading="Advanced Video Window">
+        <h4 translate="translate">Change video window size</h4><i><small translate="translate">This section is for Advanced user only!! Changing any parameter would affect the video display size.</small>If encountered any problem just click 'Resore Defaults'. The `length` and `width` parameters define the actual window size,
+          `Left-offset` and `Top-Offset` defines the position of the window across your display.<b translate="translate">USE THIS FEATURE CAUTIOUSLY</b></i>
+        <form name="layoutform">
+          <div class="form-group row">
+            <div class="col-sm-2 col-sm-offset-2">
+              <label class="control-label"><small translate="translate">Width:</small></label>
+            </div>
+            <div class="col-sm-2">
+              <input type="text" ng-model="layout.videoWindow.length" required="" class="form-control"/>
+            </div>
+            <div class="col-sm-2">
+              <label class="control-label"><small translate="translate">Height:</small></label>
+            </div>
+            <div class="col-sm-2">
+              <input type="text" ng-model="layout.videoWindow.width" required="" class="form-control"/>
+            </div>
           </div>
-        </div>
-        <div class="col-sm-2"><img height="40px" ng-src="/app/img/{{ltype}}.ico"/></div>
-      </div>
-    </li>
-  </ul>
+          <div class="form-group row">
+            <div class="col-sm-2 col-sm-offset-2">
+              <label class="control-label"><small translate="translate">Left-Offset:</small></label>
+            </div>
+            <div class="col-sm-2">
+              <input type="text" ng-model="layout.videoWindow.xoffset" required="" class="form-control"/>
+            </div>
+            <div class="col-sm-2">
+              <label class="control-label"><small translate="translate">Top-Offset:</small></label>
+            </div>
+            <div class="col-sm-2">
+              <input type="text" ng-model="layout.videoWindow.yoffset" required="" class="form-control"/>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <button ng-click="setVideoWindow(null)" translate="translate" class="btn btn-danger">Restore Defaults</button>
+            </div>
+            <div class="col-sm-3">
+              <button ng-click="setVideoWindow(layout.videoWindow)" ng-disabled="!layoutform.$valid" translate="translate" class="btn btn-info">Save New Changes</button>
+            </div>
+          </div>
+        </form>
+      </tab>
+    </tabset>
+  </div>
 </div>

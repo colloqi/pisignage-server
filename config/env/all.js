@@ -58,5 +58,7 @@ module.exports = {
     },
 
     installation: installation,
-    authCredentials: authCredentials
+    authCredentials: authCredentials,
+    assetLogEnable: false,
+    newLayoutsEnable: false
 };

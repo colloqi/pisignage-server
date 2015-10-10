@@ -9,41 +9,36 @@
       <div class="col-sm-2"><a ng-disabled="!group.playlists.length" ng-click="deploy()" class="btn btn-success btn-sm pull-right">Deploy to {{group.name}}</a></div>
     </div>
   </div>
-  <ul class="list-group">
-    <li class="list-group-item">
-      <div class="form-group">
-        <form name="group-default-playlist" class="row">
-          <label class="control-label col-sm-4">Main Playlist for the group
-            <div class="input-group col-sm-8"></div>
-          </label>
-          <div class="col-sm-5">
-            <select ng-model="group.playlists[0].name" ng-options="pl for pl in playlistNames track by pl" ng-change="updateGroup()" class="form-control">
-              <option value="">-- None selected --</option>
-            </select>
+  <div class="panel-body">
+    <form role="form" name="deployform">
+      <div class="row form-group">
+        <label class="control-label col-sm-4">Default Playlist for the group</label>
+        <div class="col-sm-5">
+          <select ng-model="group.playlists[0].name" ng-options="pl for pl in playlistNames track by pl" ng-change="updateGroup()" class="form-control">
+            <option value="">-- None selected --</option>
+          </select>
+        </div>
+        <div ng-show="group.playlists[0].name.length" class="row form-group">
+          <h5 class="col-sm-12">You can select additional Playlists for Scheduling/Advt purposes<a ng-click="collapsed = !collapsed;" class="btn btn-link"><i ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}" class="fa fa-lg"></i></a></h5>
+        </div>
+        <div ng-repeat="playlist in group.playlists" ng-if="$index &gt; 0" ng-hide="collapsed" class="row form-group">
+          <div class="col-sm-1 text-right">
+            <h6>  {{$index+'.'}}</h6>
           </div>
-        </form>
-      </div>
-    </li>
-    <li ng-show="group.playlists[0].name.length" class="list-group-item">
-      <div class="row">
-        <h5 class="col-sm-12">You can select additional Playlists for Scheduling/Advt purposes<a ng-click="collapsed = !collapsed;" class="btn btn-link"><i ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}" class="fa fa-lg"></i></a></h5>
-      </div>
-      <div ng-repeat="playlist in group.playlists" ng-if="$index &gt; 0" ng-hide="collapsed" class="form-group">
-        <form name="group-playlists" class="row">
-          <div class="col-sm-5">
+          <div class="col-sm-4">
             <select ng-model="playlist.name" ng-options="pl for pl in playlistNames track by pl" ng-change="updateGroup()" class="form-control">
               <option value="">-- None selected --</option>
             </select>
           </div>
-          <div class="col-sm-6"><a ng-click="scheduleCalendar(playlist)" class="btn btn-link"><i class="fa fa-calendar fa-lg text-info"></i></a><small ng-if="!playlist.settings.startdate &amp;&amp; !playlist.settings.starttime">Click the icon to Schedule</small><small ng-if="playlist.settings.startdate">
+          <div class="col-sm-6"><a ng-click="scheduleCalendar(playlist)" class="btn btn-link"><i class="fa fa-calendar fa-lg text-info"></i></a><small ng-if="!(playlist.settings.durationEnable || playlist.settings.timeEnable || playlist.settings.weekday || playlist.settings.monthday)">Click the icon to Schedule</small><small ng-if="playlist.settings.durationEnable">
               {{playlist.settings.startdate | date:'MMM d'}} -
-              {{playlist.settings.enddate | date:'MMM d'}} &nbsp&nbsp</small><small ng-if="playlist.settings.starttime">
+              {{playlist.settings.enddate | date:'MMM d'}} &nbsp&nbsp</small><small ng-if="playlist.settings.timeEnable">
               {{playlist.settings.starttime }} -
-              {{playlist.settings.endtime }}</small></div>
+              {{playlist.settings.endtime }}</small><small ng-if="playlist.settings.weekday">on {{weeklist[playlist.settings.weekday]}} &nbsp;&nbsp;</small><small ng-if="playlist.settings.monthday">on date: {{dayslist[playlist.settings.monthday]}} &nbsp&nbsp</small></div>
           <div ng-show="playlist.name.length" class="col-sm-1"><a ng-click="delete($index)" class="btn btn-link"><i class="fa fa-times text-danger"></i></a></div>
-        </form>
+        </div>
       </div>
-    </li>
+    </form>
     <!--li.list-group-item
     form
         .form-group
@@ -56,7 +51,7 @@
                         i.fa.fa-plus
     
     -->
-  </ul>
+  </div>
   <!--.panel-footer
   button.btn.btn-primary.btn-block(ng-click='deploy()')
       | {{group.playlists.length?"DEPLOY":"Nothing to deploy"}}
