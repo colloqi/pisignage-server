@@ -43,6 +43,7 @@
                                 ng-click="removeLinkFile(file,'bottom')") X
 
 
-    h4.text-danger(ng-show="!obj.assets.length") Nothing to show, Please Drag Assets to this box
+        li.list-group-item(ng-if="!obj.assets.length")
+            h4.text-danger Nothing to show, Please Drag Assets to this box
 
 

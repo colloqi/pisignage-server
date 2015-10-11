@@ -44,6 +44,7 @@ angular.module('piPlaylists.controllers', [])
                 .success(function (data, status) {
                     if (data.success) {
                         $scope.playlists.push(data.data);
+                        PlaylistTab.selectedPlaylist = data.data;
                         $scope.assemblePlaylistAssets();
                         $scope.newPlaylist = {}
                     }
@@ -213,6 +214,7 @@ angular.module('piPlaylists.controllers', [])
         })
 
     .controller('PlaylistAddCtrl',function($scope, $http,  piUrls,$state, $stateParams,$modal){
+
         // modal for link files
         $scope.linkFile = function(item,zone){
             //rawdata.fileD = $scope.filesDetails; //files from database

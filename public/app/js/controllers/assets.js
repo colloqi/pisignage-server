@@ -3,7 +3,7 @@
 angular.module('piAssets.controllers',[])
     .controller('AssetsCtrl',function($scope,$state,piUrls,$http,$modal, piConstants,
 
-                                                    fileUploader,  Upload, PlaylistTab,Label){
+                                                    fileUploader,  PlaylistTab,Label){
     /*
         $scope.files holds all the files present in the media directory
         $scope.fileDetails contains db data for the files with $scope.files element as key
@@ -25,13 +25,16 @@ angular.module('piAssets.controllers',[])
                 return;
 
             $scope.showAssets = {};
-            if (PlaylistTab.selectedPlaylist && !$scope.selected.rightWindowNeeded) {
+            if (PlaylistTab.selectedPlaylist) {
                 $scope.selected.playlist = $scope.groupWiseAssets[PlaylistTab.selectedPlaylist.name].playlist;
                 $scope.showAssets[PlaylistTab.selectedPlaylist.name] = $scope.groupWiseAssets[PlaylistTab.selectedPlaylist.name]
             } else {
                 $scope.selected.playlist = null;
                 $scope.showAssets = {'All': $scope.allAssets['All']}
             }
+            if ($scope.selected.rightWindowNeeded)
+                $scope.showAssets = {'All':$scope.allAssets['All']}
+
             if ($state.current.name.indexOf("home.assets.playlist") == 0) {
                 $scope.playlistState = true;
             }
@@ -49,19 +52,10 @@ angular.module('piAssets.controllers',[])
 
         //Label filter for assets
         $scope.labelFilter = function(asset){
-            if(Label.selectedLabel){
-                return (asset.fileDetails.labels && asset.fileDetails.labels.indexOf(Label.selectedLabel) >= 0)
-            }
-            if ((!$scope.playlistState && $scope.ngDropdown.selectedAssets.length) ||
-                !$scope.ngDropdown.label.selectedLabels.length)
-                return true;
-
-            for (var i= 0,len=$scope.ngDropdown.label.selectedLabels.length;i<len;i++) {
-                var selLabel = $scope.ngDropdown.label.selectedLabels[i].name;
-                if (asset.fileDetails.labels && asset.fileDetails.labels.indexOf(selLabel) >= 0)
-                    return true;
-            }
-            return false;
+            return (Label.selectedLabel?
+                        (asset.fileDetails.labels && asset.fileDetails.labels.indexOf(Label.selectedLabel) >= 0):
+                        true
+            )
         }
 
         //arrange files and playlists with details in global structures
@@ -157,7 +151,6 @@ angular.module('piAssets.controllers',[])
                                     .success(function(data, status) {
                                         if (data.success) {
                                             $scope.playlists = data.data;
-                                            PlaylistTab.playlists = $scope.playlists;
                                             $scope.assemblePlaylistAssets();
                                         }
                                     })
@@ -174,7 +167,6 @@ angular.module('piAssets.controllers',[])
 
 
         //upload assets related
-        $scope.selectedLabels = [];
         $scope.msg = {
             title: 'Upload',
             msg: 'Please Wait',
@@ -248,7 +240,7 @@ angular.module('piAssets.controllers',[])
                     return ({name:file.name,size:file.size,type:file.type})
                 })
                 $http
-                    .post(piUrls.filespostupload, {files: fileArray, categories: $scope.selectedLabels})
+                    .post(piUrls.filespostupload, {files: fileArray, categories: $scope.upload.selectedLabels})
                     .success(function (data, status) {
                         if (data.success) {
                             $scope.msg.title = 'Queued in for Processing';
@@ -267,7 +259,6 @@ angular.module('piAssets.controllers',[])
                     })
             }
         }
-        Upload.functions = $scope.upload;
 
         //Add link releated for uploading links
         $scope.link = {
@@ -297,9 +288,8 @@ angular.module('piAssets.controllers',[])
                     })
             }
         }
-        Upload.functions.link = $scope.link.showPopUp;
 
-        Upload.functions.configureGCalendar= function() {
+        $scope.configureGCalendar= function() {
             $scope.gCalModal = $modal.open({
                 templateUrl: '/app/templates/gcal-popup.html',
                 scope: $scope

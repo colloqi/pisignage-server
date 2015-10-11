@@ -5,8 +5,20 @@
     div(ng-if="msg.buttonText == 'Continue'")
         hr
         h5 Select Categories for the files
-        categories(selected-labels="selectedLabels")
+        categories(selected-labels="upload.selectedLabels", labels="upload.labels")
+        form.form-inline
+            .form-group
+                label: small(translate) new
+                input.form-control.input-sm(type="text", ng-model="newLabel.name")
+            button.btn.btn-success.btn-xs(type="submit", ng-click="upload.addLabel()")
+                i.fa.fa-plus
+        div.text-danger(ng-if='msg.error', ng-bind="msg.error")
 
 .modal-footer
     button.btn.btn-danger(ng-click='upload.abort()', ng-show="msg.buttonText == 'Uploading' ") Cancel
     button.btn.btn-warning(ng-click='upload.modalOk()', ng-bind="msg.buttonText", ng-disabled="msg.disable")
+
+
+
+
+

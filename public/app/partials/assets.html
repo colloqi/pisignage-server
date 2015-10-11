@@ -14,38 +14,16 @@
         <button dropdown-toggle="dropdown-toggle" class="btn btn-success dropdown-toggle pull-right"><i class="fa fa-plus">&nbsp;ADD</i></button>
         <ul role="menu" class="dropdown-menu">
           <li>
-            <nodeims-file-upload onstart="upload.functions.onstart()" onprogress="upload.functions.onprogress(percentDone)" onerror="upload.functions.onerror(files, type, msg)" ondone="upload.functions.ondone(files, data)">Upload Files</nodeims-file-upload>
+            <nodeims-file-upload onstart="upload.onstart()" onprogress="upload.onprogress(percentDone)" onerror="upload.onerror(files, type, msg)" ondone="upload.ondone(files, data)">Upload Files</nodeims-file-upload>
           </li>
-          <li><a ng-click="upload.functions.link()" class="btn btn-link btn-block">Add a Link</a></li>
-          <li><a ng-click="upload.functions.configureGCalendar()" class="btn btn-link btn-block">Add Calendar</a></li>
+          <li><a ng-click="link.showPopup()" class="btn btn-link btn-block">Add a Link</a></li>
+          <li><a ng-click="configureGCalendar()" class="btn btn-link btn-block">Add Calendar</a></li>
         </ul>
       </div>
       <div class="col-sm-1"><a ng-click="fn.edit()" class="btn btn-link"><strong class="text-muted">EDIT</strong></a></div>
       <div class="col-sm-1">
         <div class="btn-group-xs"><a class="btn btn-link"><em>tagTo</em></a><a ng-click="ngDropdown.clearCheckboxes()" class="btn btn-link"><i class="fa fa-times"></i></a></div>
       </div>
-      <!--.col-sm-3.pull-right(ng-if="playlistState && showAssets['All']")
-      div.pull-right(ng-dropdown-multiselect="",
-                      options="ngDropdown.playlist.PlaylistTab.playlists",
-                      selected-model="ngDropdown.playlist.selectedPlaylists",
-                      events = "ngDropdown.playlist.events",
-                      translation-texts="ngDropdown.playlist.customTexts",
-                      extra-settings="ngDropdown.playlist.extraSettings",checkboxes="true")
-      -->
-      <!--.col-sm-3.pull-right(ng-if="playlistState && !showAssets['All']")
-      //button.btn.btn-default.pull-right(ng-click="ngDropdown.removeFromPlaylist()"): small.text-danger RemoveFrom Playlist
-      a.btn.btn-primary.pull-right(ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})",
-                                                  ui-sref-opts="{reload: true, notify: true}") Add/Edit Playlist Assets
-      -->
-      <!--.col-sm-2.pull-right
-      div.pull-right(ng-dropdown-multiselect="",
-                      options="ngDropdown.label.Label.labels",
-                      selected-model="ngDropdown.label.selectedLabels",
-                      events = "ngDropdown.label.events",
-                      translation-texts="ngDropdown.label.customTexts",
-                      extra-settings="ngDropdown.label.extraSettings",checkboxes="true")
-      
-      -->
     </div>
   </div>
   <ul as-sortable="sortable.options" ng-model="obj.assets" style="min-height:50px;" class="list-group">

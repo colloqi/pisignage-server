@@ -4,17 +4,7 @@ angular.module('piLabels.controllers', [])
     .factory('Label', function() {
         return({selectedLabel:null, labelsCount: {}, labels:[]})
     })
-    .controller('LabelsCtrl', function ($scope,$stateParams, $http,$location,piUrls, Label,PlaylistTab,piPopup) {
-
-/*
-        if ($stateParams.label)
-            Label.selectedLabel = $stateParams.label;
-        else
-            Label.selectedLabel = null;
-        PlaylistTab.selectedPlaylist = null;         //clear all selected Labels
-
-        $scope.setAssetParam();
-*/
+    .controller('LabelsCtrl', function ($scope,$stateParams, $http,$location,piUrls, Label,piPopup) {
 
         $scope.fn = {};
         $scope.fn.editMode = false;

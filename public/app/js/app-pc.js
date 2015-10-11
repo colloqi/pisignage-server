@@ -81,34 +81,6 @@ angular.module('piServerApp', [
                 }
             })
 
-            .state("home.assets.assets", {
-                url: "assets",
-                views: {
-                    "left": {
-                        templateUrl: '/app/partials/labels.html',
-                        controller: 'LabelsCtrl'
-                    },
-                    "list": {
-                        templateUrl: '/app/partials/assets.html',
-                        controller: 'AssetsEditCtrl'
-                    }
-                }
-            })
-
-            .state("home.assets.assetLabelDetails", {
-                url: "assets/:label",
-                views: {
-                    "left": {
-                        templateUrl: '/app/partials/labels.html',
-                        controller: 'LabelsCtrl'
-                    },
-                    "list": {
-                        templateUrl: '/app/partials/assets.html',
-                        controller: 'AssetsEditCtrl'
-                    }
-                }
-            })
-
             .state("home.assets.assetDetails", {
                 url: "assets/detail/:file",
                 views: {

@@ -174,9 +174,9 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
                         .post(scope.files, data)
                         .to(uploadPath)
                         .then(function(ret) {
-                            scope.ondone({files: angular.copy(ret.files), data: angular.copy(ret.data)});
+                            scope.ondone({files: ret.files, data: ret.data});
                         }, function(error) {
-                            scope.onerror({files: angular.copy(scope.files), type: error.type, msg: error.msg});
+                            scope.onerror({files: scope.files, type: error.type, msg: error.msg});
                         },  function(progress) {
                             scope.onprogress({percentDone: progress});
                             scope.percent = progress;
@@ -211,9 +211,9 @@ directive('categories',['$http','piUrls', function($http,piUrls) {
         restrict: 'E',
         replace: 'true',
         template:   '<form><label ng-repeat="category in cat.categories" class="checkbox-inline">' +
-                        '<input type="checkbox"'+
-                                'ng-model="category.selected"'+
-                                'ng-change="cat.toggleSelection(category.name)"/>{{category.name}}' +
+                        '<input type="checkbox" value="{{category.name}}"'+
+                                'ng-checked="selectedLabels.indexOf(category.name) &gt; -1"'+
+                                'ng-click="cat.toggleSelection(category.name)"/>{{category.name}}' +
                     '</label></form>',
         link: function(scope, elem, attr){
             scope.cat = {}   //holds all the category related objects
@@ -221,13 +221,8 @@ directive('categories',['$http','piUrls', function($http,piUrls) {
                 .success(function(data, status) {
                     if (data.success) {
                         scope.cat.categories = data.data;
-                        scope.cat.categories.forEach(function(category){
-                            if (scope.selectedLabels.indexOf(category.name) >= 0)
-                                category.selected = true;
-                            else
-                                category.selected = false;
-                        })
-                        scope.labels = scope.cat.categories;
+                        if (scope.labels)
+                            scope.labels = scope.cat.categories;
                     }
                 })
                 .error(function(data, status) {

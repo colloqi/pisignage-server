@@ -11,16 +11,16 @@
                     i.fa.fa-plus &nbsp;ADD
                 ul.dropdown-menu(role="menu")
                     li
-                        nodeims-file-upload(onstart='upload.functions.onstart()',
-                        onprogress='upload.functions.onprogress(percentDone)',
-                        onerror='upload.functions.onerror(files, type, msg)',
-                        ondone='upload.functions.ondone(files, data)')
+                        nodeims-file-upload(onstart='upload.onstart()',
+                                                onprogress='upload.onprogress(percentDone)',
+                                                onerror='upload.onerror(files, type, msg)',
+                                                ondone='upload.ondone(files, data)')
                             | Upload Files
                     li
-                        a.btn.btn-link.btn-block(ng-click="upload.functions.link()")
+                        a.btn.btn-link.btn-block(ng-click="link.showPopup()")
                             | Add a Link
                     li
-                        a.btn.btn-link.btn-block(ng-click="upload.functions.configureGCalendar()")
+                        a.btn.btn-link.btn-block(ng-click="configureGCalendar()")
                             | Add Calendar
             .col-sm-1
                 a.btn.btn-link(ng-click='fn.edit()')
@@ -31,25 +31,6 @@
                         em tagTo
                     a.btn.btn-link(ng-click="ngDropdown.clearCheckboxes()"): i.fa.fa-times
 
-
-            //.col-sm-3.pull-right(ng-if="playlistState && showAssets['All']")
-                div.pull-right(ng-dropdown-multiselect="",
-                                options="ngDropdown.playlist.PlaylistTab.playlists",
-                                selected-model="ngDropdown.playlist.selectedPlaylists",
-                                events = "ngDropdown.playlist.events",
-                                translation-texts="ngDropdown.playlist.customTexts",
-                                extra-settings="ngDropdown.playlist.extraSettings",checkboxes="true")
-            //.col-sm-3.pull-right(ng-if="playlistState && !showAssets['All']")
-                //button.btn.btn-default.pull-right(ng-click="ngDropdown.removeFromPlaylist()"): small.text-danger RemoveFrom Playlist
-                a.btn.btn-primary.pull-right(ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})",
-                                                            ui-sref-opts="{reload: true, notify: true}") Add/Edit Playlist Assets
-            //.col-sm-2.pull-right
-                div.pull-right(ng-dropdown-multiselect="",
-                                options="ngDropdown.label.Label.labels",
-                                selected-model="ngDropdown.label.selectedLabels",
-                                events = "ngDropdown.label.events",
-                                translation-texts="ngDropdown.label.customTexts",
-                                extra-settings="ngDropdown.label.extraSettings",checkboxes="true")
 
     ul.list-group(as-sortable="sortable.options",ng-model="obj.assets",style="min-height:50px;")
         li.list-group-item(ng-repeat='file in obj.assets | filter:labelFilter | filter:search track by $index',as-sortable-item,

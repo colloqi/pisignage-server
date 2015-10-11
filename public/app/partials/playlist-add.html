@@ -36,6 +36,8 @@
         </div>
       </div>
     </li>
+    <li ng-if="!obj.assets.length" class="list-group-item">
+      <h4 class="text-danger">Nothing to show, Please Drag Assets to this box</h4>
+    </li>
   </ul>
-  <h4 ng-show="!obj.assets.length" class="text-danger">Nothing to show, Please Drag Assets to this box</h4>
 </div>
