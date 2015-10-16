@@ -12,7 +12,7 @@
     </form>
   </div>
   <ul ng-hide="collapsed" class="nav nav-pills nav-stacked">
-    <li ng-repeat="playlist in playlists" ng-class="fn.getClass(playlist)"><a ng-click="fn.selected(playlist)">
+    <li ng-repeat="playlist in playlist.playlists" ng-class="fn.getClass(playlist)"><a ng-click="fn.selected(playlist)">
         <div class="row">
           <div class="col-sm-10"><small ng-hide="playlist.renameEnable &amp;&amp; fn.editMode">{{ playlist.name }}</small>
             <div ng-show="playlist.renameEnable &amp;&amp; fn.editMode" class="form-group">

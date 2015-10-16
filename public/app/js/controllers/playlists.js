@@ -1,28 +1,13 @@
 'use strict;'
 
 angular.module('piPlaylists.controllers', [])
-    .factory('PlaylistTab', function () {
-        var obj = {
-            selectedPlaylist: null
-        }
-        return (obj)
-    })
-
-    .controller('PlaylistsCtrl',function($scope, $http, $state,$stateParams, piUrls,PlaylistTab,Label,piPopup){
-
-        if ($stateParams.playlist)
-            PlaylistTab.selectedPlaylist = {name:$stateParams.playlist};
-        else
-            PlaylistTab.selectedPlaylist = null;
-        Label.selectedLabel = null;         //clear all selected Labels
-
-        $scope.setAssetParam();
+    .controller('PlaylistsCtrl',function($scope, $http, $state,$stateParams, piUrls,assetLoader,piPopup){
 
         $scope.fn = {};
         $scope.fn.editMode = false;
         $scope.fn.edit = function () {
             $scope.fn.editMode = !$scope.fn.editMode;
-            PlaylistTab.selectedPlaylist = null;
+            assetLoader.selectPlaylist()
         }
 
         $scope.newPlaylist = {}
@@ -32,8 +17,8 @@ angular.module('piPlaylists.controllers', [])
                 return;
             }
 
-            for (var i = 0; i < $scope.playlists.length; i++) {
-                if ($scope.playlists[i].name == $scope.newPlaylist.name) {
+            for (var i = 0; i < $scope.playlist.playlists.length; i++) {
+                if ($scope.playlist.playlists[i].name == $scope.newPlaylist.name) {
                     $scope.newPlaylist.name = "Playlist exists";
                     return;
                 }
@@ -43,8 +28,8 @@ angular.module('piPlaylists.controllers', [])
                 .post(piUrls.playlists, {file: $scope.newPlaylist.name})
                 .success(function (data, status) {
                     if (data.success) {
-                        $scope.playlists.push(data.data);
-                        PlaylistTab.selectedPlaylist = data.data;
+                        $scope.playlist.playlists.push(data.data);
+                        assetLoader.selectPlaylist(data.data);
                         $scope.assemblePlaylistAssets();
                         $scope.newPlaylist = {}
                     }
@@ -55,13 +40,13 @@ angular.module('piPlaylists.controllers', [])
 
         $scope.fn.delete = function (index) {
             if ($scope.fn.editMode) {
-                piPopup.confirm("Playlist "+$scope.playlists[index].name, function () {
+                piPopup.confirm("Playlist "+$scope.playlist.playlists[index].name, function () {
 
                     $http
-                        .delete(piUrls.files + '__' + $scope.playlists[index].name + '.json')
+                        .delete(piUrls.files + '__' + $scope.playlist.playlists[index].name + '.json')
                         .success(function (data, status) {
                             if (data.success) {
-                                $scope.playlists.splice(index, 1);
+                                $scope.playlist.playlists.splice(index, 1);
                                 $scope.assemblePlaylistAssets();
                             }
                         })
@@ -69,57 +54,59 @@ angular.module('piPlaylists.controllers', [])
                         });
                 })
             } else {
-                $scope.fn.selected($scope.playlists[index])
+                $scope.fn.selected($scope.playlist.playlists[index])
             }
         }
 
         $scope.fn.rename = function (index) {
-            $scope.playlists[index].renameEnable = false;
-            if (!$scope.playlists[index].newname ||
-                ($scope.playlists[index].name == $scope.playlists[index].newname)) {
+            $scope.playlist.playlists[index].renameEnable = false;
+            if (!$scope.playlist.playlists[index].newname ||
+                ($scope.playlist.playlists[index].name == $scope.playlist.playlists[index].newname)) {
                 return;
             }
 
-            for (var i = 0; i < $scope.playlists.length; i++) {
-                if ($scope.playlists[i].name == $scope.playlists[index].newname) {
-                    $scope.playlists[index].newname = "Playlist exists";
+            for (var i = 0; i < $scope.playlist.playlists.length; i++) {
+                if ($scope.playlist.playlists[i].name == $scope.playlist.playlists[index].newname) {
+                    $scope.playlist.playlists[index].newname = "Playlist exists";
                     return;
                 }
             }
-            var oldname = $scope.playlists[index].name;
-            $scope.playlists[index].name = $scope.playlists[index].newname;
+            var oldname = $scope.playlist.playlists[index].name;
+            $scope.playlist.playlists[index].name = $scope.playlist.playlists[index].newname;
             $http
-                .post(piUrls.files + '__' + oldname+'.json', {  newname: '__' + $scope.playlists[index].name+'.json' })
+                .post(piUrls.files + '__' + oldname+'.json', {  newname: '__' + $scope.playlist.playlists[index].name+'.json' })
                 .success(function (data, status) {
                     if (!data.success) {
-                        $scope.playlists[index].name = oldname;
-                        $scope.playlists[index].newname = "Could not rename";
+                        $scope.playlist.playlists[index].name = oldname;
+                        $scope.playlist.playlists[index].newname = "Could not rename";
                     } else {
                         $scope.assemblePlaylistAssets();
                     }
                 })
                 .error(function (data, status) {
-                    $scope.playlists[index].name = oldname;
-                    $scope.playlists[index].newname = "Could not rename";
+                    $scope.playlist.playlists[index].name = oldname;
+                    $scope.playlist.playlists[index].newname = "Could not rename";
                 });
         }
 
         $scope.fn.selected = function (playlist) {
             if (!$scope.fn.editMode) {
-                PlaylistTab.selectedPlaylist = (PlaylistTab.selectedPlaylist &&
-                                                        (PlaylistTab.selectedPlaylist.name == playlist.name)) ? null : playlist;
+                assetLoader.selectPlaylist(($scope.playlist.selectedPlaylist &&
+                                                        ($scope.playlist.selectedPlaylist.name == playlist.name)) ? null : playlist);
             } else {
                 playlist.renameEnable = true;
                 playlist.newname = playlist.name;
             }
-            if (PlaylistTab.selectedPlaylist)
+            /*
+            if ($scope.playlist.selectedPlaylist)
                 $state.go("home.assets.playlistDetails",{playlist:playlist.name}, {reload:true});
             else
                 $state.go("home.assets.playlists",{}, {reload:true});
+            */
         }
 
         $scope.fn.getClass = function (playlist) {
-            if (PlaylistTab.selectedPlaylist && PlaylistTab.selectedPlaylist.name == playlist.name) {
+            if ($scope.playlist.selectedPlaylist && $scope.playlist.selectedPlaylist.name == playlist.name) {
                 return "bg-info"
             } else {
                 return ""
@@ -129,7 +116,7 @@ angular.module('piPlaylists.controllers', [])
 
 
     .controller('PlaylistViewCtrl',
-        function($scope, $http, $rootScope, piUrls, $window,$state, $stateParams,$modal){
+        function($scope, $http, $rootScope, piUrls, $window,$state, $stateParams,$modal, assetLoader){
 
             //modal for layout
             $scope.layouts = {
@@ -174,8 +161,8 @@ angular.module('piPlaylists.controllers', [])
             }
 
             $scope.saveLayout = function(){  // get new layout value
-                var pl = $scope.groupWiseAssets[$scope.selected.playlist.name].playlist;
-                $http.post(piUrls.playlists + $stateParams.playlist, {layout : pl.layout, videoWindow: $scope.layout.videoWindow})
+                var pl = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
+                $http.post(piUrls.playlists + $stateParams.playlist, {layout : pl.layout, videoWindow: $scope.playlist.selectedPlaylist.layout.videoWindow})
                     .success(function(data, status) {
                         if (data.success) {
                             $scope.modal.close();
@@ -187,19 +174,19 @@ angular.module('piPlaylists.controllers', [])
             }
 
             $scope.setVideoWindow = function(obj){ // SET/RESET video window options
-                $scope.layout.videoWindow = obj;
+                $scope.playlist.selectedPlaylist.layout.videoWindow = obj;
                 $scope.saveLayout();
             }
 
             $scope.saveSettings = function() {
-                var pl = $scope.groupWiseAssets[$scope.selected.playlist.name].playlist;
+                var pl = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
                 if (pl.settings.ticker.messages && pl.settings.ticker.messages.length)
                     pl.settings.ticker.enable = true;
                 else
                     pl.settings.ticker.enable = false;
 
-                if ($scope.settings.ticker.style)
-                    $scope.settings.ticker.style = $scope.settings.ticker.style.replace(/\"/g,'');
+                if (pl.settings.ticker.style)
+                    pl.settings.ticker.style = pl.settings.ticker.style.replace(/\"/g,'');
 
                 $http.post(piUrls.playlists + $stateParams.playlist, {settings: pl.settings})
                     .success(function(data, status) {
@@ -211,9 +198,32 @@ angular.module('piPlaylists.controllers', [])
                     });
             }
 
+            $scope.closeWindow = function () {
+                assetLoader.selectPlaylist();
+            };
+
         })
 
-    .controller('PlaylistAddCtrl',function($scope, $http,  piUrls,$state, $stateParams,$modal){
+    .controller('PlaylistAddCtrl',function($scope, $http,  piUrls,$state, $stateParams,$modal, assetLoader){
+
+        $scope.sortListName = "playlistAssets"
+        if (!$scope.asset.showAssets)
+            $state.go("home.assets.main")
+        $scope.removeAsset = function(index) {
+            var playlist = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
+            if (playlist) {
+                playlist.assets.splice(index, 1);
+                $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name, {assets: playlist.assets})
+                    .success(function (data, status) {
+                        if (data.success) {
+                            assetLoader.reload();
+                        }
+                    })
+                    .error(function (data, status) {
+                        console.log(status);
+                    });
+            }
+        }
 
         // modal for link files
         $scope.linkFile = function(item,zone){
@@ -240,10 +250,11 @@ angular.module('piPlaylists.controllers', [])
         }
 
         $scope.saveData = function (cb) {
-            $http.post(piUrls.playlists + $scope.selected.playlist.name,
-                {assets: $scope.groupWiseAssets[$scope.selected.playlist.name].playlist.assets})
+            $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name,
+                {assets: $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.assets})
                     .success(function (data, status) {
                         if (data.success) {
+                            assetLoader.reload();
                             if (cb)
                                 cb();
                         }
@@ -255,7 +266,7 @@ angular.module('piPlaylists.controllers', [])
 
         $scope.done = function()  {
             $scope.saveData(function(){
-                $state.go("home.assets.playlistDetails",{playlist:$scope.selected.playlist.name},{reload: true})
+                $state.go("home.assets.main",{playlist:$scope.playlist.selectedPlaylist.name},{reload: true})
             })
         }
     })

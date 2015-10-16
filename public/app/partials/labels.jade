@@ -14,10 +14,10 @@
                     button.btn.btn-default(type="submit")
                         i.fa.fa-plus
     ul.nav.nav-pills.nav-stacked(ng-hide="collapsed")
-        li(ng-repeat="label in labels", ng-class="fn.getClass(label.name)")
+        li(ng-repeat="label in label.labels", ng-class="fn.getClass(label.name)")
             a(ng-click="fn.selected(label.name)")
                 small {{ label.name }}
-                span.pull-right(ng-if="!fn.editMode && !fn.getClass(label.name)") {{labelsCount[label.name] || '0'}}
+                span.pull-right(ng-if="!fn.editMode && !fn.getClass(label.name)") {{label.labelsCount[label.name] || '0'}}
                 button.close(ng-click='fn.delete($index); $event.stopPropagation()',ng-if="fn.editMode || fn.getClass(label.name)")
                     i.fa.fa-times-circle.fa-lg(ng-class="{'text-danger': fn.editMode}")
 

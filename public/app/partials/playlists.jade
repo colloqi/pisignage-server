@@ -14,7 +14,7 @@
                             i.fa.fa-plus
 
     ul.nav.nav-pills.nav-stacked(ng-hide="collapsed")
-        li(ng-repeat="playlist in playlists",ng-class="fn.getClass(playlist)")
+        li(ng-repeat="playlist in playlist.playlists",ng-class="fn.getClass(playlist)")
             a(ng-click="fn.selected(playlist)")
                 .row
                     .col-sm-10

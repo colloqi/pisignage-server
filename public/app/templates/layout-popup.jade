@@ -10,46 +10,46 @@
                     | by clicking zone file button. If there is no file attached to a particular zone, the previous content for that zone
                     | will continue to play.
                 ul.list-group
-                    li.list-group-item(ng-repeat="(ltype,item) in layouts",ng-class="{'list-group-item-success':selected.playlist.layout == ltype}")
+                    li.list-group-item(ng-repeat="(ltype,item) in layouts",ng-class="{'list-group-item-success':playlist.selectedPlaylist.layout == ltype}")
                         .row
                             .col-sm-10
                                 .radio
                                     label
                                         input(type="radio",value="{{ltype}}",ng-change="saveLayout()",
-                                                    ng-disabled="item.disabled",ng-model="selected.playlist.layout")
+                                                    ng-disabled="item.disabled",ng-model="playlist.selectedPlaylist.layout")
                                         strong.text-primary {{ltype}}: &nbsp;{{item.title}}
                                         p: small ({{item.description}})
                             .col-sm-2
-                                img(height="40px",ng-src="/app/img/{{ltype}}.ico")
+                                img(height="40px",ng-src="/app/img/{{ltype}}.png")
             tab(heading='Advanced Video Window')
-                h4(translate) Change video window size
+                h4 Change video window size
                 i
-                    small(translate) This section is for Advanced user only!! Changing any parameter would affect the video display size.
+                    small This section is for Advanced user only!! Changing any parameter would affect the video display size.
                     | If encountered any problem just click 'Resore Defaults'. The `length` and `width` parameters define the actual window size,
                     | `Left-offset` and `Top-Offset` defines the position of the window across your display.
-                    b(translate) USE THIS FEATURE CAUTIOUSLY
+                    b USE THIS FEATURE CAUTIOUSLY
                 form(name="layoutform")
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small(translate) Width:
+                            label.control-label: small Width:
                         .col-sm-2
-                            input.form-control(type="text",ng-model='layout.videoWindow.length',required='')
+                            input.form-control(type="text",ng-model='playlist.selectedPlaylist.layout.videoWindow.length',required='')
                         .col-sm-2
-                            label.control-label: small(translate) Height:
+                            label.control-label: small Height:
                         .col-sm-2
-                            input.form-control(type="text",ng-model="layout.videoWindow.width",required='')
+                            input.form-control(type="text",ng-model="playlist.selectedPlaylist.layout.videoWindow.width",required='')
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small(translate) Left-Offset:
+                            label.control-label: small Left-Offset:
                         .col-sm-2
-                            input.form-control(type="text",ng-model="layout.videoWindow.xoffset",required='')
+                            input.form-control(type="text",ng-model="playlist.selectedPlaylist.layout.videoWindow.xoffset",required='')
                         .col-sm-2
-                            label.control-label: small(translate) Top-Offset:
+                            label.control-label: small Top-Offset:
                         .col-sm-2
-                            input.form-control(type="text",ng-model="layout.videoWindow.yoffset",required='')
+                            input.form-control(type="text",ng-model="playlist.selectedPlaylist.layout.videoWindow.yoffset",required='')
                     .form-group.row
                         .col-sm-3
-                            button.btn.btn-danger(ng-click="setVideoWindow(null)",translate) Restore Defaults
+                            button.btn.btn-danger(ng-click="setVideoWindow(null)") Restore Defaults
                         .col-sm-3
-                            button.btn.btn-info(ng-click="setVideoWindow(layout.videoWindow)",
-                            ng-disabled="!layoutform.$valid",translate) Save New Changes
+                            button.btn.btn-info(ng-click="setVideoWindow(playlist.selectedPlaylist.layout.videoWindow)",
+                            ng-disabled="!layoutform.$valid") Save New Changes

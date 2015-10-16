@@ -9,6 +9,7 @@ angular.module('piServerApp', [
     'piIndex.controllers',
     'piGroups.controllers',
     'piAssets.controllers',
+    'piAssets.services',
     'piLicenses.controllers',
     'piPlaylists.controllers',
     'piLabels.controllers',
@@ -81,40 +82,8 @@ angular.module('piServerApp', [
                 }
             })
 
-            .state("home.assets.assetDetails", {
-                url: "assets/detail/:file",
-                views: {
-                    "left": {
-                        templateUrl: '/app/partials/labels.html',
-                        controller: 'LabelsCtrl'
-                    },
-                    "list": {
-                        templateUrl: '/app/partials/asset-details.html',
-                        controller: 'AssetViewCtrl'
-                    }
-                }
-            })
-
-            .state("home.assets.playlists", {
-                url: "playlists",
-                views: {
-                    "left": {
-                        templateUrl: '/app/partials/playlists.html',
-                        controller: 'PlaylistsCtrl'
-                    },
-                    "left2": {
-                        templateUrl: '/app/partials/labels.html',
-                        controller: 'LabelsCtrl'
-                    },
-                    "list": {
-                        templateUrl: '/app/partials/assets.html',
-                        controller: 'AssetsEditCtrl'
-                    }
-                }
-            })
-
-            .state("home.assets.playlistDetails", {
-                url: "playlists/:playlist",
+            .state("home.assets.main", {
+                url: "main",
                 views: {
                     "left": {
                         templateUrl: '/app/partials/playlists.html',
@@ -135,17 +104,35 @@ angular.module('piServerApp', [
                 }
             })
 
-            .state("home.assets.playlistAddAssets", {
-                url: "playlists/:playlist/add-assets",
+
+            .state("home.assets.assetDetails", {
+                url: "detail/:file",
                 views: {
                     "left": {
-                        templateUrl: '/app/partials/playlists.html',
-                        controller: 'PlaylistsCtrl'
-                    },
-                    "left2": {
                         templateUrl: '/app/partials/labels.html',
                         controller: 'LabelsCtrl'
                     },
+                    "list": {
+                        templateUrl: '/app/partials/asset-details.html',
+                        controller: 'AssetViewCtrl'
+                    }
+                }
+            })
+
+            .state("home.playlists", {
+                abstract: true,
+                url: "playlists/",
+                views: {
+                    "main": {
+                        templateUrl: 'app/partials/playlists-main.html',
+                        controller: 'AssetsCtrl'
+                    }
+                }
+            })
+
+            .state("home.playlists.playlistAddAssets", {
+                url: "add/:playlist",
+                views: {
                     "list": {
                         templateUrl: '/app/partials/assets.html',
                         controller: 'AssetsEditCtrl'
@@ -154,6 +141,9 @@ angular.module('piServerApp', [
                         templateUrl: '/app/partials/playlist-add.html',
                         controller: 'PlaylistAddCtrl'
                     }
+                },
+                data: {
+                    showAllAssets: true
                 }
             })
 

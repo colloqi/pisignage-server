@@ -1,13 +1,16 @@
-.panel.panel-info
+.panel.panel-info(ng-show="playlist.selectedPlaylist")
     .panel-heading
         .row
-            .col-sm-7
-                h3.panel-title {{selected.playlist.name}}
+            .col-sm-8
+                h3.panel-title {{playlist.selectedPlaylist.name}}
                     a.btn.btn-link(ng-click="collapsed = !collapsed;")
                         i.fa.fa-lg(ng-class="{'fa-carret-right':collapsed,'fa-carret-down':!collapsed}")
-            .col-sm-3.pull-right
-                a.btn.btn-success.pull-right(ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})",
+            .col-sm-3
+                a.btn.btn-success.pull-right(ui-sref="home.playlists.playlistAddAssets({playlist:playlist.selectedPlaylist.name})",
                                                 ui-sref-opts="{reload: true, notify: true}") Assign Assets
+            .col-sm-1
+                a.pull-right.close(ng-click="closeWindow()") &times;
+
     .panel-body(ng-show="!collapsed")
         form.form-horizontal
             .form-group
@@ -15,14 +18,14 @@
                 .col-sm-8
                     .btn-group
                         button.btn.btn-default(ng-click="openLayout ()")
-                            strong {{selected.playlist.layout}}
-                            span :{{layouts[selected.playlist.layout].title}}
+                            strong {{playlist.selectedPlaylist.layout}}
+                            span :{{layouts[playlist.selectedPlaylist.layout].title}}
             .form-group
                 label.control-label.col-sm-4.text-muted Add a Ticker Message
                 .col-sm-8
                     .input-group
                         input.form-control( name='ticker_messages',
-                                                    ng-model='selected.playlist.settings.ticker.messages',
+                                                    ng-model='playlist.selectedPlaylist.settings.ticker.messages',
                                                     placeholder="Type in the Ticker message")
                         .input-group-btn
                             button.btn.btn-default.pull-right(ng-click='saveSettings()')
@@ -32,18 +35,18 @@
                 .col-sm-8
                     .checkbox
                         label
-                            input(type="checkbox",ng-model="selected.playlist.settings.ads.adPlaylist")
+                            input(type="checkbox",ng-model="playlist.selectedPlaylist.settings.ads.adPlaylist")
                             span Insert the assets of this playlist periodically like Advertisement
 
-            .form-group(ng-show="selected.playlist.settings.ads.adPlaylist")
+            .form-group(ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist")
                 label.control-label.col-sm-4.text-muted Insert Interval (seconds)
                 .col-sm-8
-                    input.form-control(type="number",ng-model="selected.playlist.settings.ads.adInterval")
-            .form-group(ng-show="selected.playlist.settings.ads.adPlaylist")
+                    input.form-control(type="number",ng-model="playlist.selectedPlaylist.settings.ads.adInterval")
+            .form-group(ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist")
                 .col-sm-8.col-sm-offset-4
                     .checkbox
                             label
-                                input(type="checkbox",ng-model='selected.playlist.settings.ads.noMainPlay')
+                                input(type="checkbox",ng-model='playlist.selectedPlaylist.settings.ads.noMainPlay')
                                 span Play only in side/bottom zones&nbsp;
                                 p.text-muted (still a dummy Main zone file need to be selected)
             .form-group

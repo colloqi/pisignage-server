@@ -1,11 +1,12 @@
 
-<div class="panel panel-info">
+<div ng-show="playlist.selectedPlaylist" class="panel panel-info">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-sm-7">
-        <h3 class="panel-title">{{selected.playlist.name}}<a ng-click="collapsed = !collapsed;" class="btn btn-link"><i ng-class="{'fa-carret-right':collapsed,'fa-carret-down':!collapsed}" class="fa fa-lg"></i></a></h3>
+      <div class="col-sm-8">
+        <h3 class="panel-title">{{playlist.selectedPlaylist.name}}<a ng-click="collapsed = !collapsed;" class="btn btn-link"><i ng-class="{'fa-carret-right':collapsed,'fa-carret-down':!collapsed}" class="fa fa-lg"></i></a></h3>
       </div>
-      <div class="col-sm-3 pull-right"><a ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})" ui-sref-opts="{reload: true, notify: true}" class="btn btn-success pull-right">Assign Assets</a></div>
+      <div class="col-sm-3"><a ui-sref="home.playlists.playlistAddAssets({playlist:playlist.selectedPlaylist.name})" ui-sref-opts="{reload: true, notify: true}" class="btn btn-success pull-right">Assign Assets</a></div>
+      <div class="col-sm-1"><a ng-click="closeWindow()" class="pull-right close">&times;</a></div>
     </div>
   </div>
   <div ng-show="!collapsed" class="panel-body">
@@ -14,7 +15,7 @@
         <label class="control-label col-sm-4 text-muted">Selected Layout for the playlist&nbsp;</label>
         <div class="col-sm-8">
           <div class="btn-group">
-            <button ng-click="openLayout ()" class="btn btn-default"><strong>{{selected.playlist.layout}}</strong><span>:{{layouts[selected.playlist.layout].title}}</span></button>
+            <button ng-click="openLayout ()" class="btn btn-default"><strong>{{playlist.selectedPlaylist.layout}}</strong><span>:{{layouts[playlist.selectedPlaylist.layout].title}}</span></button>
           </div>
         </div>
       </div>
@@ -22,7 +23,7 @@
         <label class="control-label col-sm-4 text-muted">Add a Ticker Message</label>
         <div class="col-sm-8">
           <div class="input-group">
-            <input name="ticker_messages" ng-model="selected.playlist.settings.ticker.messages" placeholder="Type in the Ticker message" class="form-control"/>
+            <input name="ticker_messages" ng-model="playlist.selectedPlaylist.settings.ticker.messages" placeholder="Type in the Ticker message" class="form-control"/>
             <div class="input-group-btn">
               <button ng-click="saveSettings()" class="btn btn-default pull-right"><i class="fa fa-check"></i></button>
             </div>
@@ -34,22 +35,22 @@
         <div class="col-sm-8">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="selected.playlist.settings.ads.adPlaylist"/><span>Insert the assets of this playlist periodically like Advertisement</span>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.adPlaylist"/><span>Insert the assets of this playlist periodically like Advertisement</span>
             </label>
           </div>
         </div>
       </div>
-      <div ng-show="selected.playlist.settings.ads.adPlaylist" class="form-group">
+      <div ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist" class="form-group">
         <label class="control-label col-sm-4 text-muted">Insert Interval (seconds)</label>
         <div class="col-sm-8">
-          <input type="number" ng-model="selected.playlist.settings.ads.adInterval" class="form-control"/>
+          <input type="number" ng-model="playlist.selectedPlaylist.settings.ads.adInterval" class="form-control"/>
         </div>
       </div>
-      <div ng-show="selected.playlist.settings.ads.adPlaylist" class="form-group">
+      <div ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist" class="form-group">
         <div class="col-sm-8 col-sm-offset-4">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="selected.playlist.settings.ads.noMainPlay"/><span>Play only in side/bottom zones&nbsp;</span>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.noMainPlay"/><span>Play only in side/bottom zones&nbsp;</span>
               <p class="text-muted">(still a dummy Main zone file need to be selected)</p>
             </label>
           </div>
