@@ -50,6 +50,17 @@ angular.module('piAssets.services', [])
                 loadAllModels();
             },
 
+            updateLabelsCount: function() {
+                Object.keys(assetLoader.label.labelsCount).forEach(function (item) {
+                    assetLoader.label.labelsCount[item] = 0;
+                });
+                for (var filename in assetLoader.asset.filesDetails) {
+                    assetLoader.asset.filesDetails[filename].labels.forEach(function (item) {
+                        assetLoader.label.labelsCount[item] = (assetLoader.label.labelsCount[item] || 0) + 1;
+                    })
+                }
+            },
+
             selectLabel: function(label) {
                 assetLoader.label.selectedLabel = label;
                 notifyObservers();
@@ -91,14 +102,7 @@ angular.module('piAssets.services', [])
                                                 assetLoader.asset.filesDetails[dbdata.name] = dbdata;
                                             }
                                         })
-                                        Object.keys(assetLoader.label.labelsCount).forEach(function (item) {
-                                            assetLoader.label.labelsCount[item] = 0;
-                                        });
-                                        for (var filename in assetLoader.asset.filesDetails) {
-                                            assetLoader.asset.filesDetails[filename].labels.forEach(function (item) {
-                                                assetLoader.label.labelsCount[item] = (assetLoader.label.labelsCount[item] || 0) + 1;
-                                            })
-                                        }
+                                        assetLoader.updateLabelsCount();
                                     }
                                 }
                                 next()

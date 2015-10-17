@@ -340,6 +340,8 @@ angular.module('piAssets.controllers',[])
                                     .success(function(data, status) {
                                         if (data.success) {
                                             asset.fileDetails = data.data;
+                                            $scope.asset.filesDetails[data.data.name] = data.data;
+                                            assetLoader.updateLabelsCount()
                                         }
                                     })
                                     .error(function(data, status) {
@@ -361,6 +363,8 @@ angular.module('piAssets.controllers',[])
                                     .success(function (data, status) {
                                         if (data.success) {
                                             asset.fileDetails = data.data;
+                                            $scope.asset.filesDetails[data.data.name] = data.data;
+                                            assetLoader.updateLabelsCount()
                                         }
                                     })
                                     .error(function (data, status) {
