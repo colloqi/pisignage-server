@@ -2,7 +2,7 @@
     .panel-heading
         .row
             .col-sm-2
-                h3.panel-title {{assetConfig.assets.assets.length}} Files in&nbsp;{{playlist.selectedPlaylist.name || "total"}}
+                h3.panel-title {{assetConfig.assets.assets.length}} Files in&nbsp;{{!assetConfig.allAssets && playlist.selectedPlaylist.name || "total"}}
             .col-sm-4
                 form
                     input.form-control(type="text",placeholder="filter",ng-model="search.$")
@@ -52,17 +52,16 @@
                 .col-sm-10
                     .row
                         .col-sm-6
-                            p
-                                | {{file.fileDetails.name }}
+                            small {{file.fileDetails.name }}
                                 small(ng-if="playlist.selectedPlaylist && !assetConfig.allAssets")
                                     | &nbsp;{{file.playlistDetails.side}} &nbsp;{{file.playlistDetails.bottom}}
                         //.col-sm-2
                             p {{file.fileDetails.size}}
                         .col-sm-3
-                            p.text-muted(ng-if="file.fileDetails.resolution.width")
+                            small.text-muted(ng-if="file.fileDetails.resolution.width")
                                 | {{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}
                         .col-sm-2(ng-if="playlist.selectedPlaylist  && !assetConfig.allAssets")
-                            p.text-muted  {{file.playlistDetails.duration}} seconds
+                            small.text-muted  {{file.playlistDetails.duration}} seconds
                         .col-sm-1.pull-right
                             input(type="checkbox",name='checkbox',ng-model="file.selected",
                                     ng-change="ngDropdown.checkbox(file)")
@@ -72,9 +71,10 @@
 
                     .row
                         .col-sm-6
-                            p.text-muted {{file.fileDetails.labels.join(',')}}
+                            small.text-info {{file.fileDetails.labels.join(',')}}
                         .col-sm-5
-                            p.text-muted {{file.fileDetails.type}},&nbsp;{{file.fileDetails.createdAt | date: 'MMM dd'}}
+                            small.text-muted {{file.fileDetails.type}},&nbsp;{{file.fileDetails.size}},&nbsp;
+                                | {{file.fileDetails.createdAt | date: 'MMM dd'}}
 
         h5.text-danger(ng-show="!assetConfig.assets.assets.length") &nbsp&nbsp Nothing to show, Please Add Assets using the `Add Asset` button
 

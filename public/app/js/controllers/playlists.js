@@ -131,6 +131,14 @@ angular.module('piPlaylists.controllers', [])
                     title: "Three Zones(full bottom) with Main Zone on left",
                     description: "main Zone:960x540, side Zone:320x540, bottom Zone:1280x180"
                 },
+                "3c": {
+                    title: "Three Zones(full top) with Main Zone on right (enable in settings)",
+                    description: "main Zone:960x540, side Zone:320x540, banner Zone:1280x180"
+                },
+                "3d": {
+                    title: "Three Zones(full top) with Main Zone on left (enable in settings)",
+                    description: "main Zone:960x540, side Zone:320x540, banner Zone:1280x180"
+                },
                 "4a": {
                     title: "Three Zones(full side) with Main Zone on right",
                     description: "main Zone:960x540, side Zone:320x720, bottom Zone:960x180"
@@ -154,6 +162,7 @@ angular.module('piPlaylists.controllers', [])
 
 
             $scope.openLayout = function(){
+                $scope.videoWindow = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.videoWindow || {}
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/layout-popup.html',
                     scope: $scope
@@ -162,7 +171,8 @@ angular.module('piPlaylists.controllers', [])
 
             $scope.saveLayout = function(){  // get new layout value
                 var pl = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
-                $http.post(piUrls.playlists + $stateParams.playlist, {layout : pl.layout, videoWindow: $scope.playlist.selectedPlaylist.layout.videoWindow})
+                $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name,
+                                {layout : pl.layout, videoWindow: pl.videoWindow})
                     .success(function(data, status) {
                         if (data.success) {
                             $scope.modal.close();
@@ -174,27 +184,44 @@ angular.module('piPlaylists.controllers', [])
             }
 
             $scope.setVideoWindow = function(obj){ // SET/RESET video window options
-                $scope.playlist.selectedPlaylist.layout.videoWindow = obj;
+                $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.videoWindow = obj;
                 $scope.saveLayout();
+            }
+
+            $scope.openTicker = function() {
+                var settings = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.settings
+                settings.ticker.enable = settings.ticker.enable || false
+                settings.ticker.behavior = settings.ticker.behavior || 'slide'
+                settings.ticker.rss = settings.ticker.rss || { enable: false , link: null }
+                $scope.modal = $modal.open({
+                    templateUrl: '/app/templates/ticker-popup.html',
+                    scope: $scope
+                });
+            }
+
+            $scope.openAd = function() {
+                $scope.modal = $modal.open({
+                    templateUrl: '/app/templates/ad-popup.html',
+                    scope: $scope
+                });
             }
 
             $scope.saveSettings = function() {
                 var pl = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
-                if (pl.settings.ticker.messages && pl.settings.ticker.messages.length)
-                    pl.settings.ticker.enable = true;
-                else
-                    pl.settings.ticker.enable = false;
 
                 if (pl.settings.ticker.style)
                     pl.settings.ticker.style = pl.settings.ticker.style.replace(/\"/g,'');
 
-                $http.post(piUrls.playlists + $stateParams.playlist, {settings: pl.settings})
+                $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name, {settings: pl.settings})
                     .success(function(data, status) {
                         if (data.success) {
                         }
                     })
                     .error(function(data, status) {
                         console.log(status);
+                    })
+                    .finally(function(){
+                        $scope.modal.close();
                     });
             }
 

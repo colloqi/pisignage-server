@@ -50,6 +50,7 @@ exports.index = function (req, res) {
                         playlist.settings = obj.settings || {};
                         playlist.assets = obj.assets || [];
                         playlist.layout = obj.layout || '1';
+                        playlist.videoWindow = obj.videoWindow;
                         list.push(playlist);
                     }
                     cb();

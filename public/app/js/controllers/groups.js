@@ -143,7 +143,7 @@ angular.module('piGroups.controllers', [])
         $scope.collapsed = true;
         var showEmptySlots = function(){
             $scope.group.playlists = $scope.group.playlists || [];
-            var len = 4 - $scope.group.playlists.length;
+            var len = 11 - $scope.group.playlists.length;
             if (len <=2)
                 $scope.collapsed = false;
             for (var i= 0; i< len;i++){
@@ -241,7 +241,7 @@ angular.module('piGroups.controllers', [])
             });
         }
 
-        $scope.saveSchedules = function() {
+        $scope.saveSchedules = function(formcontroller) {
             formcontroller.$dirty? $scope.deployform.$setDirty(): ''; //  inform user  of new changes
             $scope.scheduleCalendarModal.close();
             $scope.updateGroup();
@@ -305,7 +305,7 @@ angular.module('piGroups.controllers', [])
         }
     })
 
-    .controller('ServerPlayerCtrl', function($scope,$http,piUrls,$stateParams,$interval,$modal) {
+    .controller('ServerPlayerCtrl', function($scope,$http,piUrls,$stateParams,$interval,$modal,TZNames) {
 
         var getPlayers = function() {
             var options;
@@ -329,6 +329,7 @@ angular.module('piGroups.controllers', [])
                 .error(function (data, status) {
                 });
         }
+        $scope.tzNames = TZNames;
 
         $http
             .get(piUrls.groups, {})

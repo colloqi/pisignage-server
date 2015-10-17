@@ -1,0 +1,65 @@
+
+<div class="modal-header">
+  <h3 class="text-warning">Ticker for the Play-list</h3>
+</div>
+<div class="modal-body">
+  <form name="playlist.popForm">
+    <div class="row">
+      <div class="col-xs-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="ticker_checkbox" ng-model="playlist.selectedPlaylist.settings.ticker.enable"/><span>Enable Ticker</span>
+          </label>
+        </div>
+      </div>
+      <div ng-show="playlist.selectedPlaylist.settings.ticker.enable" class="col-xs-2">
+        <div class="radio">
+          <label class="text-muted pull-right"><small>Type</small></label>
+        </div>
+      </div>
+      <div ng-show="playlist.selectedPlaylist.settings.ticker.enable" class="col-xs-2">
+        <div class="radio">
+          <label>
+            <input type="radio" value="scroll" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><span>Scroll</span>
+          </label>
+        </div>
+      </div>
+      <div ng-show="playlist.selectedPlaylist.settings.ticker.enable" class="col-xs-2">
+        <div class="radio">
+          <label>
+            <input type="radio" value="slide" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><span>Slide</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div ng-show="playlist.selectedPlaylist.settings.ticker.enable" class="row">
+      <div class="col-xs-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="rss_checkbox" ng-model="playlist.selectedPlaylist.settings.ticker.rss.enable"/><span>Use RSS feed</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <label class="text-muted pull-right"><small>CSS</small></label>
+      </div>
+      <div class="col-xs-6">
+        <input type="text" placeholder="e.g. color:#eee; font-style:italic; " ng-model="playlist.selectedPlaylist.settings.ticker.style" class="form-control"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-xs-12">&nbsp;</div>
+    </div>
+    <div ng-show="playlist.selectedPlaylist.settings.ticker.enable &amp;&amp; playlist.selectedPlaylist.settings.ticker.rss.enable" class="form-group">
+      <label class="control-label">RSS feed Link</label>
+      <input type="text" ng-model="playlist.selectedPlaylist.settings.ticker.rss.link" placeholder="enter your rss link ...." class="form-control"/>
+    </div>
+    <div ng-show="playlist.selectedPlaylist.settings.ticker.enable &amp;&amp; !playlist.selectedPlaylist.settings.ticker.rss.enable" class="form-group">
+      <label class="control-label">Add Messages for the ticker</label>
+      <textarea name="ticker_messages" rows="5" ng-model="playlist.selectedPlaylist.settings.ticker.messages" placeholder="Enter messages here" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+      <button ng-click="saveSettings()" class="btn btn-success">SAVE</button>
+    </div>
+  </form>
+</div>

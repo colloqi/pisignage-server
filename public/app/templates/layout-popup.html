@@ -37,13 +37,13 @@
               <label class="control-label"><small>Width:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="playlist.selectedPlaylist.layout.videoWindow.length" required="" class="form-control"/>
+              <input type="text" ng-model="videoWindow.length" required="" class="form-control"/>
             </div>
             <div class="col-sm-2">
               <label class="control-label"><small>Height:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="playlist.selectedPlaylist.layout.videoWindow.width" required="" class="form-control"/>
+              <input type="text" ng-model="videoWindow.width" required="" class="form-control"/>
             </div>
           </div>
           <div class="form-group row">
@@ -51,13 +51,13 @@
               <label class="control-label"><small>Left-Offset:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="playlist.selectedPlaylist.layout.videoWindow.xoffset" required="" class="form-control"/>
+              <input type="text" ng-model="videoWindow.xoffset" required="" class="form-control"/>
             </div>
             <div class="col-sm-2">
               <label class="control-label"><small>Top-Offset:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="playlist.selectedPlaylist.layout.videoWindow.yoffset" required="" class="form-control"/>
+              <input type="text" ng-model="videoWindow.yoffset" required="" class="form-control"/>
             </div>
           </div>
           <div class="form-group row">
@@ -65,7 +65,7 @@
               <button ng-click="setVideoWindow(null)" class="btn btn-danger">Restore Defaults</button>
             </div>
             <div class="col-sm-3">
-              <button ng-click="setVideoWindow(playlist.selectedPlaylist.layout.videoWindow)" ng-disabled="!layoutform.$valid" class="btn btn-info">Save New Changes</button>
+              <button ng-click="setVideoWindow(videoWindow)" ng-disabled="!layoutform.$valid" class="btn btn-info">Save New Changes</button>
             </div>
           </div>
         </form>

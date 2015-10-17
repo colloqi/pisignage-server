@@ -33,23 +33,23 @@
                         .col-sm-2.col-sm-offset-2
                             label.control-label: small Width:
                         .col-sm-2
-                            input.form-control(type="text",ng-model='playlist.selectedPlaylist.layout.videoWindow.length',required='')
+                            input.form-control(type="text",ng-model='videoWindow.length',required='')
                         .col-sm-2
                             label.control-label: small Height:
                         .col-sm-2
-                            input.form-control(type="text",ng-model="playlist.selectedPlaylist.layout.videoWindow.width",required='')
+                            input.form-control(type="text",ng-model="videoWindow.width",required='')
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
                             label.control-label: small Left-Offset:
                         .col-sm-2
-                            input.form-control(type="text",ng-model="playlist.selectedPlaylist.layout.videoWindow.xoffset",required='')
+                            input.form-control(type="text",ng-model="videoWindow.xoffset",required='')
                         .col-sm-2
                             label.control-label: small Top-Offset:
                         .col-sm-2
-                            input.form-control(type="text",ng-model="playlist.selectedPlaylist.layout.videoWindow.yoffset",required='')
+                            input.form-control(type="text",ng-model="videoWindow.yoffset",required='')
                     .form-group.row
                         .col-sm-3
                             button.btn.btn-danger(ng-click="setVideoWindow(null)") Restore Defaults
                         .col-sm-3
-                            button.btn.btn-info(ng-click="setVideoWindow(playlist.selectedPlaylist.layout.videoWindow)",
+                            button.btn.btn-info(ng-click="setVideoWindow(videoWindow)",
                             ng-disabled="!layoutform.$valid") Save New Changes

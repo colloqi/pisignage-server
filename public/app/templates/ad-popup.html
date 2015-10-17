@@ -1,0 +1,49 @@
+
+<div class="modal-header">
+  <h4 class="text-center">Make this as Advt. Playlist</h4>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <p>
+          By making this as Advt. playlist, you can insert the assets of this playlist periodically in between the currently
+          playing playlist.
+        </p>
+      </div>
+      <div class="col-sm-6">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.adPlaylist"/><span>Make this as Advt. Playlist</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-6">
+        <p>
+            You can play the assets only on side and banner zones by disabling main zone here.
+          Still you have to select dummy file for main zone due to our UI issue! We will correct it soon.
+        </p>
+      </div>
+      <div class="col-sm-6">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ,ng-model="playlist.selectedPlaylist.settings.ads.noMainPlay"/><span>Play only in side/banner zones</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-6 control-label">Play one asset after every seconds</label>
+      <div class="col-sm-2">
+        <input type="text" ng-model="playlist.selectedPlaylist.settings.ads.adInterval" class="form-control"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-6 col-sm-offset-6">
+        <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+      </div>
+    </div>
+  </form>
+</div>

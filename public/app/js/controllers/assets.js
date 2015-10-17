@@ -146,10 +146,9 @@ angular.module('piAssets.controllers',[])
                         .delete(piUrls.files+$scope.asset.files[index])
                         .success(function(data, status) {
                             if (data.success) {
-                                delete $scope.asset.filesDetails[$scope.files[index]];
+                                delete $scope.asset.filesDetails[$scope.asset.files[index]];
                                 $scope.asset.files.splice(index,1);
                                 $scope.names.splice(index,1);
-                                assetLoader.reload();
                             }
                         })
                         .error(function(data, status) {
@@ -499,7 +498,7 @@ angular.module('piAssets.controllers',[])
                 $http.post(piUrls.files + $stateParams.file, {dbdata: $scope.filedetails.dbdata})
                     .success(function (data, status) {
                         if (data.success) {
-                            $scope.filesDetails[data.data.name].labels = data.data.labels;
+                            $scope.asset.filesDetails[data.data.name].labels = data.data.labels;
                             assetLoader.reload();
                             $window.history.back();
                         }

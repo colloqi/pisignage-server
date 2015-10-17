@@ -217,7 +217,7 @@ exports.updateAsset = function (req, res) {
         })
     } else if (req.body.dbdata) {
         Asset.load(req.body.dbdata._id, function (err, asset) {
-            if (err) {
+            if (err || !asset) {
                 return rest.sendError(res, 'Categories saving error', err);
             } else {
                 asset = _.extend(asset, req.body.dbdata);

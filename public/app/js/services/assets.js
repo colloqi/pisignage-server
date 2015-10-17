@@ -2,7 +2,7 @@
 
 /*
  $scope.files holds all the files present in the media directory
- $scope.fileDetails contains db data for the files with $scope.files element as key
+ $scope.filesDetails contains db data for the files with $scope.files element as key
  $scope.groupWiseAssets holds object with playlist name as key
  object contains playlist and assets fields
  assets contains array with each element is an object of fileDetails, playlistDetails for that file & deleted attribute
@@ -28,7 +28,7 @@ angular.module('piAssets.services', [])
         var assetLoader = {
             asset: {
                 files: [],
-                fileDetails: {},
+                filesDetails: {},
 
                 groupWiseAssets: null,
                 allAssets: null,

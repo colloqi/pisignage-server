@@ -17,36 +17,36 @@
                                             ng-options="pl for pl in playlistNames track by pl",
                                             ng-change="updateGroup()")
                                                 option(value="") -- None selected --
-                .row.form-group(ng-show="group.playlists[0].name.length")
-                    h5.col-sm-12 You can select additional Playlists for Scheduling/Advt purposes
-                        a.btn.btn-link(ng-click="collapsed = !collapsed;")
-                            i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
-                .row.form-group(ng-repeat='playlist in group.playlists' ng-if="$index > 0",ng-hide="collapsed")
-                    .col-sm-1.text-right
-                        h6   {{$index+'.'}}
-                    .col-sm-4
-                        select.form-control(ng-model="playlist.name",
-                                                ng-options="pl for pl in playlistNames track by pl",
-                                                ng-change="updateGroup()")
-                            option(value="") -- None selected --
-                    .col-sm-6
-                        a.btn.btn-link(ng-click="scheduleCalendar(playlist)")
-                            i.fa.fa-calendar.fa-lg.text-info
-                        small(ng-if='!(playlist.settings.durationEnable || playlist.settings.timeEnable || playlist.settings.weekday || playlist.settings.monthday)')
-                            | Click the icon to Schedule
-                        small(ng-if='playlist.settings.durationEnable')
-                            | {{playlist.settings.startdate | date:'MMM d'}} -
-                            | {{playlist.settings.enddate | date:'MMM d'}} &nbsp&nbsp
-                        small(ng-if='playlist.settings.timeEnable')
-                            | {{playlist.settings.starttime }} -
-                            | {{playlist.settings.endtime }}
-                        small(ng-if='playlist.settings.weekday')
-                            | on {{weeklist[playlist.settings.weekday]}} &nbsp;&nbsp;
-                        small(ng-if='playlist.settings.monthday')
-                            | on date: {{dayslist[playlist.settings.monthday]}} &nbsp&nbsp
-                    .col-sm-1(ng-show="playlist.name.length")
-                        a.btn.btn-link(ng-click='delete($index)')
-                            i.fa.fa-times.text-danger
+            .row.form-group(ng-show="group.playlists[0].name.length")
+                h5.col-sm-12 You can select additional Playlists for Scheduling/Advt purposes
+                    a.btn.btn-link(ng-click="collapsed = !collapsed;")
+                        i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
+            .row.form-group(ng-repeat='playlist in group.playlists' ng-if="$index > 0",ng-hide="collapsed")
+                .col-sm-1.text-right
+                    h6   {{$index+'.'}}
+                .col-sm-4
+                    select.form-control(ng-model="playlist.name",
+                                            ng-options="pl for pl in playlistNames track by pl",
+                                            ng-change="updateGroup()")
+                        option(value="") -- None selected --
+                .col-sm-6
+                    a.btn.btn-link(ng-click="scheduleCalendar(playlist)")
+                        i.fa.fa-calendar.fa-lg.text-info
+                    small(ng-if='!(playlist.settings.durationEnable || playlist.settings.timeEnable || playlist.settings.weekday || playlist.settings.monthday)')
+                        | Click the icon to Schedule
+                    small(ng-if='playlist.settings.durationEnable')
+                        | {{playlist.settings.startdate | date:'MMM d'}} -
+                        | {{playlist.settings.enddate | date:'MMM d'}} &nbsp&nbsp
+                    small(ng-if='playlist.settings.timeEnable')
+                        | {{playlist.settings.starttime }} -
+                        | {{playlist.settings.endtime }}
+                    small(ng-if='playlist.settings.weekday')
+                        | on {{weeklist[playlist.settings.weekday]}} &nbsp;&nbsp;
+                    small(ng-if='playlist.settings.monthday')
+                        | on date: {{dayslist[playlist.settings.monthday]}} &nbsp&nbsp
+                .col-sm-1(ng-show="playlist.name.length")
+                    a.btn.btn-link(ng-click='delete($index)')
+                        i.fa.fa-times.text-danger
         //li.list-group-item
             form
                 .form-group
