@@ -149,7 +149,7 @@ angular.module('piGroups.controllers', [])
             for (var i= 0; i< len;i++){
                 $scope.group.playlists.push({
                     name: '',
-                    settings: {startdate: null, enddate: null, starttime: null, endtime: null}
+                    settings: { durationEnable: false, timeEnable: false, weekday: 0, monthday: 0}
                 });
             }
         }

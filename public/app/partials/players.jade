@@ -6,20 +6,20 @@
         li.list-group-item(ng-repeat='player in players | filter:search | orderBy:"lastReported":true')
             .row
                 .col-sm-4(ng-click='shellCommand(player)')
-                    h6.text-primary.truncate  {{player.localName}}
+                    h6.text-primary.truncate  {{player.localName || ("Player "+player.cpuSerialNumber.slice(12))}}
                 .col-sm-3
                     .row
                         .col-sm-6(style="padding-right:3px;")
-                            small.text-primary.truncate  {{player.myIpAddress}}
+                            small.text-primary.truncate  {{player.myIpAddress || "IP:NA"}}
                         .col-sm-6(style="padding:3px;")
                             select.form-control.select-xs(ng-model="player.TZ", ng-change="changeTZ(player)",
-                            ng-options="tz for tz in tzNames")
+                                                                            ng-options="tz for tz in tzNames")
                                 option(value="", selected,translate)  --No TZ--
                 .col-sm-3
-                    i.fa.fa-circle.fa-2x(ng-class="player.statusClass")
+                    i.fa.fa-circle.fa-lg(ng-class="player.statusClass")
                     span.text-primary &nbsp;{{player.currentPlaylist}}
                 .col-sm-2
-                    select.form-control(ng-model="player.group.name",ng-change="assignGroup(player)",
+                    select.form-control.select-xs(ng-model="player.group.name",ng-change="assignGroup(player)",
                                                                         ng-options="group for group in groups")
             .row
                 .col-sm-4
@@ -35,6 +35,6 @@
                 .col-sm-2(ng-if='player.version')
                     h6.text-primary.truncate: small ver:&nbsp;{{player.version}}/{{player.platform_version}}&nbsp;
                         button.btn.btn-warning.btn-xs(ng-if="player.version != currentVersion.version",ng-click="swUpdate(player)")
-                            i.fa.fa-arrow-circle-up.fa-lg
+                            i.fa.fa-arrow-circle-up
 
 

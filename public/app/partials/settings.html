@@ -1,0 +1,84 @@
+
+<div class="row height100 overflow-auto">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-10">
+          <h4>Available Licenses in the server</h4>
+        </div>
+        <div class="col-xs-2">
+          <button class="btn btn-success pull-right">
+            <nodeims-file-upload post-path="api/licensefiles" onstart="upload.onstart()" ondone="upload.ondone(status,msg)" onerror="upload.onerror(status,msg)"></nodeims-file-upload><strong style="color:white;">Upload</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div ng-show="savedFiles.length == 0" class="panel-body">
+      Please register the player ID
+      at pisignage.com to generate the license files.Then either save the license file from the email or download
+      at pisignage.com/subscriptions.<br><br>
+      By uploading license files to your local server, they are downloaded to players automatically.
+    </div><small ng-show="statusMsg" class="alert alert-danger">{{statusMsg}}</small>
+    <ul class="list-group">
+      <li ng-repeat="file in savedFiles |  filter: searchLicense" class="list-group-item">
+        <p>{{file}}
+          <button ng-click="deleteEntry(file)" class="btn btn-link btn-sm pull-right"><i class="fa fa-close text-danger"></i></button>
+        </p>
+      </li>
+    </ul>
+  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h4 translate="translate">Installation Settings</h4>
+    </div>
+    <div class="panel-body">
+      <form role="form" name="settingsForm" class="form-horizontal">
+        <div class="form-group">
+          <label for="user" translate="translate" class="col-xs-4 control-label">username at pisignage.com</label>
+          <div class="col-xs-4">
+            <input type="text" name="user" ng-model="downloadAuth.user" required="" class="form-control"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label class="col-xs-8 col-xs-offset-4">
+              <input type="checkbox" id="log" name="checkbox" ng-model="settings.assetLogEnable" ng-change="saveSettings()"/><span translate="translate">Enable Log for Files Play Statistics</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label class="col-xs-8 col-xs-offset-4">
+              <input type="checkbox" id="layout" name="checkbox" ng-model="settings.newLayoutsEnable" ng-change="saveSettings()"/><span translate="translate">Enable new Layouts 3c,3d,4c,4d</span><br/><strong translate="translate" class="text-danger">WARNING: ALL players in the GROUP should be of version >= 1.2.2</strong>
+            </label>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h4>Set Username and Password for Download Access</h4>
+    </div>
+    <div class="panel-body">
+      <form role="form" name="downloadAccessForm" class="form-horizontal">
+        <div class="form-group">
+          <label for="user" translate="translate" class="col-xs-4 control-label">Username</label>
+          <div class="col-xs-4">
+            <input type="text" name="user" ng-model="downloadAuth.user" required="" class="form-control"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password" translate="translate" class="col-xs-4 control-label">Password</label>
+          <div class="col-xs-4">
+            <input type="password" name="password" ng-model="downloadAuth.password" required="" class="form-control col-xs-5"/>
+          </div>
+          <div class="col-xs-4">
+            <button type="submit" ng-click="saveDownloadAuth()" ng-disabled="downloadAccessForm.$invalid" translate="translate" class="btn btn-success"> Save</button>
+          </div>
+        </div>
+        <p ng-show="!downloadAccessForm.$dirty" class="text-danger">{{confirmMsg}}</p>
+      </form>
+    </div>
+  </div>
+</div>

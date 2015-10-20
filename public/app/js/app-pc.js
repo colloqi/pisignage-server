@@ -151,7 +151,7 @@ angular.module('piServerApp', [
                 url: "licenseupload",
                 views: {
                     "main": {
-                        templateUrl: '/app/partials/licenses.html',
+                        templateUrl: '/app/partials/settings.html',
                         controller: 'licenseCtrl'
                     }
                 }
