@@ -34,6 +34,51 @@ var allowCrossDomain = function (req, res, next) {
     }
 }
 
+var basicHttpAuth = function(req,res,next) {
+
+    var auth = req.headers['authorization'];  // auth is in base64(username:password)  so we need to decode the base64
+
+    if(!auth) {     // No Authorization header was passed in so it's the first time the browser hit us
+
+        // Sending a 401 will require authentication, we need to send the 'WWW-Authenticate' to tell them the sort of authentication to use
+        res.statusCode = 401;
+        res.setHeader('WWW-Authenticate', 'Basic realm="Secure Area"');
+        res.end('<html><body>Authentication required to access this path</body></html>');
+
+    } else {
+
+        var tmp = auth.split(' ');   // Split on a space, the original auth looks like  "Basic Y2hhcmxlczoxMjM0NQ==" and we need the 2nd part
+
+        var buf = new Buffer(tmp[1], 'base64'); // create a buffer and tell it the data coming in is base64
+        var plain_auth = buf.toString();        // read it back out as a string
+
+        //console.log("Decoded Authorization ", plain_auth);
+
+        // At this point plain_auth = "username:password"
+
+        var creds = plain_auth.split(':');      // split on a ':'
+        var username = creds[0];
+        var password = creds[1];
+
+        var pathComponents = req.path.split('/');
+        //console.log(pathComponents);
+
+        require('../app/controllers/licenses').getSettingsModel(function(err,settings){
+            if( (!settings.authCredentials) ||
+                (!settings.authCredentials.user || username == settings.authCredentials.user) &&
+                (!settings.authCredentials.password || password == settings.authCredentials.password)) {
+                //console.log("http request authorized for download for "+req.path);
+                next();
+            } else {
+                console.log("http request rejected for download for "+req.path);
+                res.statusCode = 401;   // or alternatively just reject them altogether with a 403 Forbidden
+                res.setHeader('WWW-Authenticate', 'Basic realm="Secure Area"');
+                res.end('<html><body>Authentication required to access this path</body></html>');
+            }
+        })
+    }
+}
+
 module.exports = function (app) {
 
     //CORS related  http://stackoverflow.com/questions/7067966/how-to-allow-cors-in-express-nodejs
@@ -60,6 +105,8 @@ module.exports = function (app) {
     };
 
     //app.use(auth.connect(digest));      //can specify specific routes for auth also
+    app.use(basicHttpAuth);
+
     app.use('/sync_folders',serveIndex(config.syncDir));
     app.use('/sync_folders',express.static(config.syncDir));
 

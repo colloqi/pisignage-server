@@ -33,7 +33,11 @@
                 .form-group
                     label.col-xs-4.control-label(for="user",translate) username at pisignage.com
                     div.col-xs-4
-                        input.form-control(type='text', name='user', ng-model='downloadAuth.user', required='')
+                        .input-group
+                            input.form-control(type='text', name='user', ng-model='settings.installation', required='')
+                            span.input-group-btn
+                                a.btn.btn-success(type="button",ng-click='saveSettings()',
+                                                ng-disabled="!settingsForm.user.$dirty") SAVE
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
@@ -55,13 +59,13 @@
                 .form-group
                     label.col-xs-4.control-label(for="user",translate) Username
                     div.col-xs-4
-                        input.form-control(type='text', name='user', ng-model='downloadAuth.user', required='')
+                        input.form-control(type='text', name='user', ng-model='settings.authCredentials.user', required='')
                 .form-group
                     label.col-xs-4.control-label(for="password",translate) Password
                     div.col-xs-4
-                        input.form-control.col-xs-5(type='password', name='password', ng-model='downloadAuth.password', required='')
+                        input.form-control.col-xs-5(type='password', name='password', ng-model='settings.authCredentials.password', required='')
                     div.col-xs-4
-                        button.btn.btn-success(type='submit', ng-click='saveDownloadAuth()',
+                        button.btn.btn-success(type='submit', ng-click='saveSettings()',
                         ng-disabled='downloadAccessForm.$invalid',translate)  Save
                 p.text-danger(ng-show='!downloadAccessForm.$dirty') {{confirmMsg}}
 

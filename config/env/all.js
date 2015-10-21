@@ -1,11 +1,6 @@
 'use strict';
 
-var installation = "local",
-    authCredentials = {
-        user: "user",
-        password: "password"
-    };
-
+//installation and authCredentials has been moved to db, configure at settings tab
 var path = require('path');
 
 var rootPath = process.cwd(),
@@ -18,7 +13,7 @@ module.exports = {
     releasesDir: dataDir+'/releases',
 
     uploadDir: assetDir,
-    licenseDir: dataDir+'/licenses/'+installation+'/',
+    licenseDirPath: dataDir+'/licenses/',
 
     syncDir: path.join(dataDir, '/sync_folders'),
     syncDirPath: path.join(dataDir, '/sync_folders/'),
@@ -55,10 +50,5 @@ module.exports = {
         CLIENT_SECRET: '',
         REDIRECT_URL: '',
         REDIRECT_BASE_URL: ''
-    },
-
-    installation: installation,
-    authCredentials: authCredentials,
-    assetLogEnable: false,
-    newLayoutsEnable: false
+    }
 };

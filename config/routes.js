@@ -5,8 +5,7 @@ var express = require('express'),
 
 var multer = require('multer'),
     config = require('./config'),
-    upload = multer({dest:config.uploadDir}),
-    uploadLicense = multer({dest:config.licenseDir})
+    upload = multer({dest:config.uploadDir})
 
 var assets = require('../app/controllers/assets'),
     playlists = require('../app/controllers/playlists'),
@@ -69,9 +68,15 @@ router.post('/api/labels', labels.createObject);
 router.post('/api/labels/:label', labels.updateObject);
 router.delete('/api/labels/:label', labels.deleteObject);
 
-router.post('/api/licensefiles',uploadLicense.fields([{name:'assets',maxCount: 10}]),licenses.saveLicense);
+require('../app/controllers/licenses').getSettingsModel(function(err,settings){
+    var uploadLicense = multer({dest:(config.licenseDirPath+(settings.installation || "local"))})
+    router.post('/api/licensefiles',uploadLicense.fields([{name:'assets',maxCount: 10}]),licenses.saveLicense);
+})
 router.get('/api/licensefiles',licenses.index);
 router.delete('/api/licensefiles/:filename',licenses.deleteLicense)
+
+router.get('/api/settings',licenses.getSettings)
+router.post('/api/settings',licenses.updateSettings)
 
 router.get('/api/serverconfig',licenses.getConfig);
 

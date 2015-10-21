@@ -20,6 +20,7 @@ angular.module('piConfig', [])
             calendars:       base + 'api/calendars/',
             links:           base + 'api/links/',
             licenses:        base + 'api/licensefiles/',
+            settings:        base + 'api/settings/',
             serverConfig:    base + 'api/serverconfig/',
 
             playlists:       base + 'api/playlists/',

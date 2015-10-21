@@ -10,7 +10,7 @@ angular.module('piServerApp', [
     'piGroups.controllers',
     'piAssets.controllers',
     'piAssets.services',
-    'piLicenses.controllers',
+    'piSettings.controllers',
     'piPlaylists.controllers',
     'piLabels.controllers',
     'pisignage.directives',
@@ -147,12 +147,12 @@ angular.module('piServerApp', [
                 }
             })
 
-            .state("home.license",{
-                url: "licenseupload",
+            .state("home.settings",{
+                url: "settings",
                 views: {
                     "main": {
                         templateUrl: '/app/partials/settings.html',
-                        controller: 'licenseCtrl'
+                        controller: 'SettingsCtrl'
                     }
                 }
                 

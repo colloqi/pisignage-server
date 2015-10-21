@@ -1,6 +1,6 @@
 {
     "name": "pisignage",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "config_server":"pisignage.com",
     "media_server": "pisignage.com",
     "engines": {

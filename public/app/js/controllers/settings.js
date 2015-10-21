@@ -1,7 +1,10 @@
 'use strict;'
 
-angular.module('piLicenses.controllers', []).
-    controller('licenseCtrl', function ($scope, $http, piUrls, $state, $modal) {
+angular.module('piSettings.controllers', []).
+    controller('SettingsCtrl', function ($scope, $http, piUrls, $state, $modal) {
+
+        //licenses part
+
         $scope.savedFiles = []; // license files
         $scope.statusMsg = null;
 
@@ -52,6 +55,26 @@ angular.module('piLicenses.controllers', []).
             $scope.cancel = function () {
                 $scope.modal.dismiss();
             }
+        }
+
+        //settings part
+        $http.get(piUrls.settings)
+            .success(function (data) {
+                if (data.success)
+                    $scope.settings = data.data;
+
+            }).error(function (err) {
+                console.log(err);
+            })
+
+        $scope.saveSettings= function(){
+            $http.post(piUrls.settings, $scope.settings)
+                .success(function(data, status) {
+                    if (data.success) {
+                    }
+                })
+                .error(function(data, status) {
+                });
         }
 
     });
