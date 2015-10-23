@@ -3,7 +3,7 @@
   <h4 class="text-primary"> Set Timings for Scheduled Playlist ({{forPlaylist.name}})</h4>
 </div>
 <div class="modal-body">
-  <form role="form" name="schedule-cal">
+  <form role="form" name="schedulecal">
     <div class="panel panel-info">
       <div class="panel-heading">
         <h4><strong>Duration</strong><small>&nbsp;&nbsp;Schedule between two Dates(both inclusive)</small></h4>
@@ -57,21 +57,21 @@
           <div class="col-xs-2">
             <div class="checkbox">
               <label>
-                <input type="checkbox" ng-model="forPlaylist.settings.timeEnable"/><small translate="translate" ng-show="!forPlaylist.settings.timeEnable">Schedule</small><small translate="translate" ng-show="forPlaylist.settings.timeEnable">Begin</small>
+                <input type="checkbox" ng-model="forPlaylist.settings.timeEnable"/><small ng-show="!forPlaylist.settings.timeEnable">Schedule</small><small ng-show="forPlaylist.settings.timeEnable">Begin</small>
               </label>
             </div>
           </div>
           <div class="col-xs-5">
-            <input type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.starttime" name="starttime" title="Enter Start Time" class="form-control"/>
+            <input type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.starttimeObj" name="starttime" title="Enter Start Time" class="form-control"/>
           </div>
-          <div class="col-xs-1"><small translate="translate" ng-show="forPlaylist.settings.timeEnable">till</small></div>
+          <div class="col-xs-1"><small ng-show="forPlaylist.settings.timeEnable">till</small></div>
           <div class="col-xs-4">
-            <input type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.endtime" name="enddate" title="Enter End Time" class="form-control"/>
+            <input type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.endtimeObj" name="endtime" title="Enter End Time" class="form-control"/>
           </div>
         </div>
       </div>
     </div>
   </form>
   <button ng-click="scheduleCalendarModal.close()" class="btn">Cancel</button>
-  <button ng-click="saveSchedules()" class="btn btn-success">OK</button>
+  <button ng-click="saveSchedules(schedulecal)" class="btn btn-success">OK</button>
 </div>

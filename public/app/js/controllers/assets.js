@@ -211,8 +211,8 @@ angular.module('piAssets.controllers',[])
                 $scope.uploadedFiles = files;
                 if (data.data) {
                     data.data.forEach(function (item) {
-                        if ($scope.files.indexOf(item.name) == -1)
-                            $scope.files.push(item.name);
+                        if ($scope.asset.files.indexOf(item.name) == -1)
+                            $scope.asset.files.push(item.name);
                     });
                 }
             },
@@ -390,14 +390,15 @@ angular.module('piAssets.controllers',[])
                                 return asset.filename;
                             });
                             $scope.ngDropdown.selectedAssets.forEach(function (asset) {
-                                if (assetNames.indexOf(asset.playlistDetails.filename) == -1)
-                                    playlist.assets.splice(0, 0, asset.playlistDetails);
+                                if (assetNames.indexOf(asset.playlistDetails.filename) == -1) {
+                                    playlist.assets.push(asset.playlistDetails);
+                                    $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].assets.push(asset);
+                                }
                             })
                             $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name, {assets: playlist.assets})
                                 .success(function (data, status) {
                                     if (data.success) {
                                         $scope.ngDropdown.clearCheckboxes();
-                                        assetLoader.reload();
                                     }
                                 })
                                 .error(function (data, status) {
@@ -503,7 +504,6 @@ angular.module('piAssets.controllers',[])
                     .success(function (data, status) {
                         if (data.success) {
                             $scope.asset.filesDetails[data.data.name].labels = data.data.labels;
-                            assetLoader.reload();
                             $window.history.back();
                         }
                     })

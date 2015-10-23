@@ -9,12 +9,12 @@
 			.col-sm-4
 				.radio
 					label
-						input(type="radio",ng-model="group.resolution",ng-value="resolutions[0].value")
+						input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[0].value")
 						small {{resolutions[0].name}}
 			.col-sm-4
 				.radio
 					label
-						input(type="radio",ng-model="group.resolution",ng-value="resolutions[1].value")
+						input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[1].value")
 						small {{resolutions[1].name}}
 		.form-group.row
 			.col-sm-4.text-right
@@ -23,12 +23,12 @@
 			.col-sm-4
 				.radio
 					label
-						input(type="radio",ng-model="group.orientation",ng-value="orientations[0].value")
+						input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="orientations[0].value")
 						small {{orientations[0].name}}
 			.col-sm-4
 				.radio
 					label
-						input(type="radio",ng-model="group.orientation",ng-value="orientations[1].value")
+						input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="orientations[1].value")
 						small {{orientations[1].name}}
 		.form-group.row
 			.col-sm-4.text-right
@@ -40,12 +40,12 @@
 			.col-sm-4
 				.radio
 					label
-						input(type="radio",ng-model="group.animationEnable",ng-value="animations[0].value")
+						input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[0].value")
 						small {{animations[0].name}}
 			.col-sm-4
 				.radio
 					label
-						input(type="radio",ng-model="group.animationEnable",ng-value="animations[1].value")
+						input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[1].value")
 						small {{animations[1].name}}
 
 

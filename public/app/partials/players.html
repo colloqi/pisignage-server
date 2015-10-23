@@ -4,40 +4,40 @@
     <h3 class="panel-title">Reported Players</h3>
   </div>
   <ul class="list-group">
-    <li ng-repeat="player in players | filter:search | orderBy:&quot;lastReported&quot;:true" class="list-group-item">
+    <li ng-repeat="item in player.players | filter:search | orderBy:&quot;lastReported&quot;:true" class="list-group-item">
       <div class="row">
-        <div ng-click="shellCommand(player)" class="col-sm-4">
-          <h6 class="text-primary truncate"> {{player.localName || ("Player "+player.cpuSerialNumber.slice(12))}}</h6>
+        <div ng-click="shellCommand(item)" class="col-sm-4">
+          <h6 class="text-primary truncate"> {{item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}</h6>
         </div>
         <div class="col-sm-3">
           <div class="row">
-            <div style="padding-right:3px;" class="col-sm-6"><small class="text-primary truncate"> {{player.myIpAddress || "IP:NA"}}</small></div>
+            <div style="padding-right:3px;" class="col-sm-6"><small class="text-primary truncate"> {{item.myIpAddress || "IP:NA"}}</small></div>
             <div style="padding:3px;" class="col-sm-6">
-              <select ng-model="player.TZ" ng-change="changeTZ(player)" ng-options="tz for tz in tzNames" class="form-control select-xs">
+              <select ng-model="item.TZ" ng-change="changeTZ(item)" ng-options="tz for tz in tzNames" class="form-control select-xs">
                 <option value="" selected="selected" translate="translate"> --No TZ--</option>
               </select>
             </div>
           </div>
         </div>
-        <div class="col-sm-3"><i ng-class="player.statusClass" class="fa fa-circle fa-lg"></i><span class="text-primary">&nbsp;{{player.currentPlaylist}}</span></div>
+        <div class="col-sm-3"><i ng-class="item.statusClass" class="fa fa-circle fa-lg"></i><span class="text-primary">&nbsp;{{item.currentPlaylist}}</span></div>
         <div class="col-sm-2">
-          <select ng-model="player.group.name" ng-change="assignGroup(player)" ng-options="group for group in groups" class="form-control select-xs"></select>
+          <select ng-model="item.group.name" ng-change="assignGroup(item)" ng-options="gr for gr in group.groupNames" class="form-control select-xs"></select>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-4">
-          <h6 class="text-primary"><small>{{player.cpuSerialNumber}}</small></h6>
+          <h6 class="text-primary"><small>{{item.cpuSerialNumber}}</small></h6>
         </div>
         <div class="col-sm-3">
-          <h6 class="text-primary truncate"><small>last seen:&nbsp;{{player.lastReported | date: "MMM dd, hh:mm a"}}</small></h6>
+          <h6 class="text-primary truncate"><small>last seen:&nbsp;{{item.lastReported | date: "MMM dd, hh:mm a"}}</small></h6>
         </div>
         <div class="col-sm-3">
-          <h6 ng-if="!player.isConnected || !player.syncInProgress" class="text-primary truncate"><small>last sync:&nbsp;{{player.lastUpload | date: "MMM dd, hh:mm a"}}</small></h6>
-          <h6 ng-if="player.isConnected &amp;&amp; player.syncInProgress" class="text-primary"><i class="fa fa-spinner fa-spin"></i><small class="truncate">&nbsp;{{player.wgetBytes }} &nbsp;{{player.wgetSpeed }}B/sec</small></h6>
+          <h6 ng-if="!item.isConnected || !item.syncInProgress" class="text-primary truncate"><small>last sync:&nbsp;{{item.lastUpload | date: "MMM dd, hh:mm a"}}</small></h6>
+          <h6 ng-if="item.isConnected &amp;&amp; item.syncInProgress" class="text-primary"><i class="fa fa-spinner fa-spin"></i><small class="truncate">&nbsp;{{item.wgetBytes }} &nbsp;{{item.wgetSpeed }}B/sec</small></h6>
         </div>
-        <div ng-if="player.version" class="col-sm-2">
-          <h6 class="text-primary truncate"><small>ver:&nbsp;{{player.version}}/{{player.platform_version}}&nbsp;
-              <button ng-if="player.version != currentVersion.version" ng-click="swUpdate(player)" class="btn btn-warning btn-xs"><i class="fa fa-arrow-circle-up"></i></button></small></h6>
+        <div ng-if="item.version" class="col-sm-2">
+          <h6 class="text-primary truncate"><small>ver:&nbsp;{{item.version}}/{{item.platform_version}}&nbsp;
+              <button ng-if="item.version != player.currentVersion.version" ng-click="swUpdate(item)" class="btn btn-warning btn-xs"><i class="fa fa-arrow-circle-up"></i></button></small></h6>
         </div>
       </div>
     </li>

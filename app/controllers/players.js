@@ -12,7 +12,8 @@ var mongoose = require('mongoose'),
 var socketio = require('./server-socket'),
     licenses = require('./licenses');
 
-var installation;
+var installation,
+    settings;
 
 var pipkgjson,
     fs = require('fs');
@@ -29,8 +30,10 @@ Player.find({"isConnected": true}, function (err, players) {
 
 var defaultGroup = {_id: 0, name: 'default'};
 //create a default group if does not exist
-licenses.getSettingsModel(function(err,settings){
+licenses.getSettingsModel(function(err,data){
+    settings = data;
     installation = settings.installation || "local"
+
     Group.update({name:"default"},{name:"default",description:"Default group for Players"},{upsert:true},function(err){
         fs.mkdir(path.join(config.syncDir,installation), function (err) {
             fs.mkdir(path.join(config.syncDir,installation, "default"), function (err) {
@@ -95,8 +98,8 @@ var sendConfig = function (player, group, periodic) {
     if (periodic) {
     }
 
-    retObj.authCredentials = config.authCredentials;
-    retObj.assetLogEnable = config.assetLogEnable;
+    retObj.authCredentials = settings.authCredentials;
+    retObj.assetLogEnable = settings.assetLogEnable;
     socketio.emitMessage(player.socket, 'config', retObj);
 }
 

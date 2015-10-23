@@ -30,7 +30,7 @@ angular.module('piPlaylists.controllers', [])
                     if (data.success) {
                         $scope.playlist.playlists.push(data.data);
                         assetLoader.selectPlaylist(data.data);
-                        $scope.assemblePlaylistAssets();
+                        assetLoader.assemblePlaylistAssets();
                         $scope.newPlaylist = {}
                     }
                 })
@@ -47,7 +47,7 @@ angular.module('piPlaylists.controllers', [])
                         .success(function (data, status) {
                             if (data.success) {
                                 $scope.playlist.playlists.splice(index, 1);
-                                $scope.assemblePlaylistAssets();
+                                assetLoader.assemblePlaylistAssets();
                             }
                         })
                         .error(function (data, status) {
@@ -80,7 +80,7 @@ angular.module('piPlaylists.controllers', [])
                         $scope.playlist.playlists[index].name = oldname;
                         $scope.playlist.playlists[index].newname = "Could not rename";
                     } else {
-                        $scope.assemblePlaylistAssets();
+                        assetLoader.assemblePlaylistAssets();
                     }
                 })
                 .error(function (data, status) {
@@ -239,11 +239,10 @@ angular.module('piPlaylists.controllers', [])
         $scope.removeAsset = function(index) {
             var playlist = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
             if (playlist) {
-                playlist.assets.splice(index, 1);
+                assetLoader.removeAssetFromPlaylist($scope.playlist.selectedPlaylist.name,index);
                 $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name, {assets: playlist.assets})
                     .success(function (data, status) {
                         if (data.success) {
-                            assetLoader.reload();
                         }
                     })
                     .error(function (data, status) {
@@ -281,7 +280,6 @@ angular.module('piPlaylists.controllers', [])
                 {assets: $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.assets})
                     .success(function (data, status) {
                         if (data.success) {
-                            assetLoader.reload();
                             if (cb)
                                 cb();
                         }

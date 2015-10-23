@@ -10,6 +10,7 @@ angular.module('piServerApp', [
     'piGroups.controllers',
     'piAssets.controllers',
     'piAssets.services',
+    'piPlayers.services',
     'piSettings.controllers',
     'piPlaylists.controllers',
     'piLabels.controllers',
@@ -42,20 +43,7 @@ angular.module('piServerApp', [
             })
 
             .state("home.players.players", {
-                url: "players",
-                views: {
-                    "left": {
-                        templateUrl: '/app/partials/groups.html',
-                        controller: 'GroupsCtrl'
-                    },
-                    "list": {
-                        templateUrl: 'app/partials/players.html'
-                    }
-                }
-            })
-
-            .state("home.players.playerGroupsDetails", {
-                url: "players/:group",
+                url: "players?group",
                 views: {
                     "left": {
                         templateUrl: '/app/partials/groups.html',

@@ -46,6 +46,10 @@ angular.module('piAssets.services', [])
                 labelsCount: {}
             },
 
+            assemblePlaylistAssets: function() {
+                assemblePlaylistAssets();
+            },
+
             reload: function() {
                 loadAllModels();
             },
@@ -69,13 +73,69 @@ angular.module('piAssets.services', [])
                 assetLoader.playlist.selectedPlaylist = playlist;
                 notifyObservers();
             },
+            removeAssetFromPlaylist: function(playlistName, assetIndex) {
+                assetLoader.asset.groupWiseAssets[playlistName].playlist.assets.splice(assetIndex,1);
+                assetLoader.asset.groupWiseAssets[playlistName].assets.splice(assetIndex,1);
+            },
             registerObserverCallback: function(callback,key){
                 observerCallbacks[key] = callback;
             }
         }
 
-        //decide what to show in assets.jade
 
+        var assemblePlaylistAssets = function() {
+            assetLoader.asset.groupWiseAssets = {};
+
+            assetLoader.playlist.playlists.forEach(function (playlist) {
+                assetLoader.asset.groupWiseAssets[playlist.name] = {
+                    playlist: playlist,
+                    assets: []
+                };
+                playlist.assets.forEach(function (asset) {
+
+                    if (asset == null)
+                        return;
+                    var obj = {};
+                    obj.fileDetails = assetLoader.asset.filesDetails[asset.filename] || {name: asset.filename};
+                    obj.playlistDetails = asset;
+                    obj.deleted = (assetLoader.asset.files.indexOf(asset.filename) == -1);
+                    assetLoader.asset.groupWiseAssets[playlist.name].assets.push(obj)
+
+                    /*if (asset.side) {
+                        var obj = {};
+                        obj.fileDetails = assetLoader.asset.filesDetails[asset.side] || {name: asset.side};
+                        obj.playlistDetails = null;
+                        obj.deleted = (assetLoader.asset.files.indexOf(asset.filename) == -1);
+                        assetLoader.asset.groupWiseAssets[playlist.name].assets.push(obj)
+                    }
+                    if (asset.bottom) {
+                        var obj = {};
+                        obj.fileDetails = assetLoader.asset.filesDetails[asset.bottom] || {name: asset.bottom};
+                        obj.playlistDetails = null;
+                        obj.deleted = (assetLoader.asset.files.indexOf(asset.filename) == -1);
+                        assetLoader.asset.groupWiseAssets[playlist.name].assets.push(obj)
+                    }*/
+
+                })
+            });
+            assetLoader.asset.allAssets = {
+                playlist: null,
+                assets: []
+            };
+            assetLoader.asset.files.forEach(function (filename) {
+                //if ($scope.includedAssets.indexOf(filename) == -1) {
+                var obj = {};
+                obj.fileDetails = assetLoader.asset.filesDetails[filename] || {name: filename};
+                obj.playlistDetails = {filename: filename, selected: false};
+                obj.playlistDetails.isVideo = !(filename.match(piConstants.videoRegex) == null);
+                if (assetLoader.asset.filesDetails[filename])
+                    obj.playlistDetails.duration = parseInt(assetLoader.asset.filesDetails[filename].duration);
+                obj.playlistDetails.duration = obj.playlistDetails.duration || 10;
+                assetLoader.asset.allAssets.assets.push(obj)
+                //}
+            })
+            notifyObservers();
+        }
         var loadAllModels = function() {
             async.series([
                     function (next) {
@@ -125,57 +185,9 @@ angular.module('piAssets.services', [])
                             });
                     }
                 ], function (err) {
-                    assetLoader.asset.groupWiseAssets = {};
-
-                    assetLoader.playlist.playlists.forEach(function (playlist) {
-                        assetLoader.asset.groupWiseAssets[playlist.name] = {
-                            playlist: playlist,
-                            assets: []
-                        };
-                        playlist.assets.forEach(function (asset) {
-
-                            if (asset == null)
-                                return;
-                            var obj = {};
-                            obj.fileDetails = assetLoader.asset.filesDetails[asset.filename] || {name: asset.filename};
-                            obj.playlistDetails = asset;
-                            obj.deleted = (assetLoader.asset.files.indexOf(asset.filename) == -1);
-                            assetLoader.asset.groupWiseAssets[playlist.name].assets.push(obj)
-
-                            if (asset.side) {
-                                var obj = {};
-                                obj.fileDetails = assetLoader.asset.filesDetails[asset.side] || {name: asset.side};
-                                obj.playlistDetails = null;
-                                obj.deleted = (assetLoader.asset.files.indexOf(asset.filename) == -1);
-                                assetLoader.asset.groupWiseAssets[playlist.name].assets.push(obj)
-                            }
-                            if (asset.bottom) {
-                                var obj = {};
-                                obj.fileDetails = assetLoader.asset.filesDetails[asset.bottom] || {name: asset.bottom};
-                                obj.playlistDetails = null;
-                                obj.deleted = (assetLoader.asset.files.indexOf(asset.filename) == -1);
-                                assetLoader.asset.groupWiseAssets[playlist.name].assets.push(obj)
-                            }
-
-                        })
-                    });
-                    assetLoader.asset.allAssets = {
-                        playlist: null,
-                        assets: []
-                    };
-                    assetLoader.asset.files.forEach(function (filename) {
-                        //if ($scope.includedAssets.indexOf(filename) == -1) {
-                        var obj = {};
-                        obj.fileDetails = assetLoader.asset.filesDetails[filename] || {name: filename};
-                        obj.playlistDetails = {filename: filename, selected: false};
-                        obj.playlistDetails.isVideo = !(filename.match(piConstants.videoRegex) == null);
-                        if (assetLoader.asset.filesDetails[filename])
-                            obj.playlistDetails.duration = parseInt(assetLoader.asset.filesDetails[filename].duration);
-                        obj.playlistDetails.duration = obj.playlistDetails.duration || 10;
-                        assetLoader.asset.allAssets.assets.push(obj)
-                        //}
-                    })
-                    notifyObservers();
+                    assetLoader.label.selectedLabel = null;
+                    assetLoader.playlist.selectedPlaylist = null;
+                    assemblePlaylistAssets();
                 }
             )
         }

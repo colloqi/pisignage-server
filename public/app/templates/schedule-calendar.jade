@@ -1,7 +1,7 @@
 .modal-header(ng-controller="GroupDetailCtrl")
     h4.text-primary  Set Timings for Scheduled Playlist ({{forPlaylist.name}})
 .modal-body
-    form(role='form', name='schedule-cal')
+    form(role='form', name='schedulecal')
         .panel.panel-info
             .panel-heading
                 h4
@@ -57,21 +57,21 @@
                         .checkbox
                             label
                                 input(type="checkbox",ng-model="forPlaylist.settings.timeEnable")
-                                small(translate,ng-show='!forPlaylist.settings.timeEnable') Schedule
-                                small(translate,ng-show='forPlaylist.settings.timeEnable') Begin
+                                small(ng-show='!forPlaylist.settings.timeEnable') Schedule
+                                small(ng-show='forPlaylist.settings.timeEnable') Begin
                     .col-xs-5
                         input.form-control(type='time',
-                        ng-show='forPlaylist.settings.timeEnable',
-                        ng-model='forPlaylist.settings.starttime',
-                        name='starttime', title='Enter Start Time')
+                                            ng-show='forPlaylist.settings.timeEnable',
+                                            ng-model='forPlaylist.settings.starttimeObj',
+                                            name='starttime', title='Enter Start Time')
                     .col-xs-1
-                        small(translate,ng-show='forPlaylist.settings.timeEnable') till
+                        small(ng-show='forPlaylist.settings.timeEnable') till
                     .col-xs-4
                         input.form-control(type='time',
-                        ng-show='forPlaylist.settings.timeEnable',
-                        ng-model='forPlaylist.settings.endtime',
-                        name='enddate', title='Enter End Time')
+                                                ng-show='forPlaylist.settings.timeEnable',
+                                                ng-model='forPlaylist.settings.endtimeObj',
+                                                name='endtime', title='Enter End Time')
 
     button.btn(ng-click="scheduleCalendarModal.close()") Cancel
-    button.btn.btn-success(ng-click="saveSchedules()") OK
+    button.btn.btn-success(ng-click="saveSchedules(schedulecal)") OK
 
