@@ -87,7 +87,7 @@ exports.deploy = function (installation,group, cb) {
         },
         function(async_cb){ // brand video check
             var syncPath = path.join(config.syncDir,installation,group.name,"brand_intro.mp4"),
-                mediaPath = path.join(config.mediaDir,installation,"brand_intro.mp4");
+                mediaPath = path.join(config.mediaDir,"brand_intro.mp4");
             fs.exists(mediaPath,function(exists){
                 if(!exists)
                     async_cb();
@@ -106,7 +106,7 @@ exports.deploy = function (installation,group, cb) {
         },
         function(async_cb){ // welcome screen file check
             var syncPath = path.join(config.syncDir,installation,group.name,"welcome.ejs"),
-                mediaPath = path.join(config.mediaDir,installation,"welcome.ejs");
+                mediaPath = path.join(config.mediaDir,"welcome.ejs");
             fs.exists(mediaPath,function(exists){
                 if(!exists)
                     async_cb();

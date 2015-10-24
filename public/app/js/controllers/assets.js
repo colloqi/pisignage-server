@@ -137,6 +137,7 @@ angular.module('piAssets.controllers',[])
                     });
                 } else {
                     assetLoader.reload();
+                    $state.reload();
                 }
             }
 
@@ -161,17 +162,15 @@ angular.module('piAssets.controllers',[])
                     newname = $scope.names[index].name + $scope.names[index].ext;
                 if (!$scope.names[index].name || $scope.asset.files.indexOf(newname) >= 0) {
                     $scope.names[index].name = "File name exists or empty name";
-                    $scope.editform.$setPristine();
                     $scope.fieldStatus = "has-error";
                 } else {
                     $http
                         .post(piUrls.files + oldname, {  newname: newname })
                         .success(function (data, status) {
                             if (data.success) {
-                                $scope.asset.filesDetails[newname] = $scope.asset.filesDetails[$scope.files[index]];
-                                delete $scope.asset.filesDetails[$scope.files[index]];
+                                $scope.asset.filesDetails[newname] = $scope.asset.filesDetails[$scope.asset.files[index]];
+                                delete $scope.asset.filesDetails[$scope.asset.files[index]];
                                 $scope.asset.files[index] = newname;
-                                $scope.editform.$setPristine();
                                 $scope.fieldStatus = "has-success";
                             }
                         })
@@ -251,6 +250,7 @@ angular.module('piAssets.controllers',[])
                     $scope.modal.close();
                     //$state.reload();
                     assetLoader.reload();
+                    $state.reload();
                     return;
                 }
                 $scope.msg.title = 'Processing in Progress...';

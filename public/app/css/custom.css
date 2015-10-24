@@ -41,4 +41,7 @@ body {
     border-radius: 2px;
 }
 
+.media-object {
+    max-height: 64px;
+}
 
