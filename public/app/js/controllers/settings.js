@@ -1,7 +1,7 @@
 'use strict;'
 
 angular.module('piSettings.controllers', []).
-    controller('SettingsCtrl', function ($scope, $http, piUrls, $state, $modal) {
+    controller('SettingsCtrl', function ($scope, $http, piUrls, $state, $modal,$window) {
 
         //licenses part
 
@@ -68,10 +68,14 @@ angular.module('piSettings.controllers', []).
             })
 
         $scope.saveSettings= function(){
-            $scope.settingsForm.$setPristine();
             $http.post(piUrls.settings, $scope.settings)
                 .success(function(data, status) {
                     if (data.success) {
+                    }
+                    if ($scope.settingsForm.user.$dirty) {
+                        $scope.settingsForm.$setPristine();
+                        $scope.loadMsg = "reloading..."
+                        setTimeout($window.location.reload.bind($window.location), 2000);
                     }
                 })
                 .error(function(data, status) {

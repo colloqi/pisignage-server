@@ -38,7 +38,7 @@
           <div class="col-xs-4">
             <div class="input-group">
               <input type="text" name="user" ng-model="settings.installation" required="" class="form-control"/><span class="input-group-btn"><a type="button" ng-click="saveSettings()" ng-disabled="!settingsForm.user.$dirty" class="btn btn-success">SAVE</a></span>
-            </div>
+            </div><small class="text-danger">{{loadMsg}}</small>
           </div>
         </div>
         <div class="form-group">

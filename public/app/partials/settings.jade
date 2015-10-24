@@ -38,6 +38,7 @@
                             span.input-group-btn
                                 a.btn.btn-success(type="button",ng-click='saveSettings()',
                                                 ng-disabled="!settingsForm.user.$dirty") SAVE
+                        small.text-danger {{loadMsg}}
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
