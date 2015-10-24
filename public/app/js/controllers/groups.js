@@ -315,6 +315,17 @@ angular.module('piGroups.controllers', [])
             }
         }
 
+        $scope.changeTZ = function(player) {
+            $http.post(piUrls.players+player._id,{TZ:player.TZ})
+                .success(function(data, status) {
+                    if (data.success) {
+                        player = data.data;
+                    }
+                })
+                .error(function(data, status) {
+                });
+        }
+
         $scope.shellCommand = function(player) {
             if (player.statusClass == "text-danger")
                 return console.log("Player is offline");
