@@ -1,6 +1,17 @@
 # pisignage-server
 **Server to manage piSignage players in a LAN or Private Network**
 
+
+##New version 0.9.0 has been released!      
+###Upgrading to 0.9.0 from existing versions  
+1. git pull origin master and apply your code changes if any 
+2. start the pisignage-server and go to url localhost:3000
+3. Enter the account name of yours at pisignage.com
+4. Default authentication credentials for player webUI has been changed to pi:pi
+5. New settings tab has been added for settings instead of config/env/all.js file
+6. New software upgrades are automatically pulled to the server and you can upgrade from the local server itself
+7. Upload new licenses bought to the local server so that they are automatically installed in the pi
+
 ##Getting Started
 1.Install mongodb
 
