@@ -42,22 +42,25 @@ exports.deploy = function (installation,group, cb) {
         function (async_cb) {
             var syncPath = path.join(config.syncDir, installation, group.name),
                 mediaPath = path.join(config.mediaDir);
-            async.eachSeries(group.assets,
-                function (file, iterative_cb) {
-                    fs.unlink(path.join(syncPath, file), function (err) {
-                        fs.symlink(path.join(mediaPath, file), path.join(syncPath, file), function (err) {
-                            if (err && (err.code != 'ENOENT')) {
-                                iterative_cb(err);
-                            } else {
-                                iterative_cb();
-                            }
+            fs.mkdir(syncPath, function (err) {
+                console.log("created directory: "+syncPath+","+err)
+                async.eachSeries(group.assets,
+                    function (file, iterative_cb) {
+                        fs.unlink(path.join(syncPath, file), function (err) {
+                            fs.symlink(path.join(mediaPath, file), path.join(syncPath, file), function (err) {
+                                if (err && (err.code != 'ENOENT')) {
+                                    iterative_cb(err);
+                                } else {
+                                    iterative_cb();
+                                }
+                            })
                         })
-                    })
-                },
-                function (err, result) {
-                    async_cb(err);
-                }
-            )
+                    },
+                    function (err, result) {
+                        async_cb(err);
+                    }
+                )
+            });
         },
         function (async_cb) {
             var syncPath = path.join(config.syncDir, installation, group.name);
