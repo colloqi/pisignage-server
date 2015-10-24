@@ -11,6 +11,7 @@
 5. New settings tab has been added for settings instead of config/env/all.js file
 6. New software upgrades are automatically pulled to the server and you can upgrade from the local server itself
 7. Upload new licenses bought to the local server so that they are automatically installed in the pi
+8. Authentication has been added to the server UI which can be changed under settings (default pi:pi)
 
 ##Getting Started
 1.Install mongodb
