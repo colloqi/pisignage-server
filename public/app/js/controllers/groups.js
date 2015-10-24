@@ -166,7 +166,7 @@ angular.module('piGroups.controllers', [])
                         $scope.group.selectedGroup = data.data;
                     }
                     if (cb)
-                        cb(!data.success)
+                        cb(!data.success,data.stat_message)
                 })
                 .error(function (data, status) {
                     if (cb)
@@ -277,11 +277,11 @@ angular.module('piGroups.controllers', [])
             $scope.group.selectedGroup.orientation = $scope.group.selectedGroup.orientation || 'landscape';
             $scope.group.selectedGroup.resolution = $scope.group.selectedGroup.resolution || '720p';
             $scope.group.selectedGroup.deploy = true;
-            $scope.updateGroup(function (err) {
+            $scope.updateGroup(function (err,msg) {
                 if (!err) {
                     $scope.msg = {msg: 'Deployed! Request has been sent to all Players.', title: 'Deploy Success'};
                 } else {
-                    $scope.msg = {msg: data.stat_message, title: 'Deploy Failed'};
+                    $scope.msg = {msg: msg, title: 'Deploy Failed'};
                 }
                 $scope.deployModal = $modal.open({
                     templateUrl: '/app/templates/status-popup.html',
