@@ -194,8 +194,39 @@ angular.module('piServerApp', [
         }
         $http.get(piUrls.serverConfig)
             .success(function(data){
-                if(data.success)
+                if(data.success) {
                     $rootScope.serverConfig = data.data;
+                    $rootScope.serverConfig.installation = $rootScope.serverConfig.installation || "local";
+                    if (data.data.installation == "local") {
+                        $modal.open({
+                            template: [
+                                '<div class="modal-header">',
+                                '<h3 class="modal-title">Please Select your account name at pisignage.com</h3>',
+                                '</div>',
+                                '<div class="modal-body">',
+                                '<input class="form-control" type="text", name="user" ng-model="serverConfig.installation", required="">',
+                                '</div>',
+                                '<div class="modal-footer">',
+                                '<button ng-click="save()" class="btn btn-warning">Save</button>',
+                                '</div>'
+                            ].join(''),
+                            controller: ['$scope','$modalInstance',function($scope,$modalInstance){
+                                $scope.save = function(){
+                                    $http.post(piUrls.settings, $rootScope.serverConfig)
+                                        .success(function(data, status) {
+                                            if (data.success) {
+                                            }
+                                            setTimeout(window.location.reload.bind(window.location), 2000);
+                                        })
+                                        .error(function(data, status) {
+                                        });
+                                    $modalInstance.close();
+                                }
+                            }]
+                        })
+                    }
+                }
+
             }).error(function(err){
                 console.log(err);
             })
