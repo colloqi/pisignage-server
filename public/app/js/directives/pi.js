@@ -205,14 +205,15 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
 directive('categories',['$http','piUrls', function($http,piUrls) {
     return {
         scope: {
-            selectedLabels: '='
+            selectedLabels: '=',
+            labels: '='
         },
         restrict: 'E',
         replace: 'true',
         template:   '<form><label ng-repeat="category in cat.categories" class="checkbox-inline">' +
-                        '<input type="checkbox"'+
-                                'ng-model="category.selected"'+
-                                'ng-change="cat.toggleSelection(category.name)"/>{{category.name}}' +
+                        '<input type="checkbox" value="{{category.name}}"'+
+                                'ng-checked="selectedLabels.indexOf(category.name) &gt; -1"'+
+                                'ng-click="cat.toggleSelection(category.name)"/>{{category.name}}' +
                     '</label></form>',
         link: function(scope, elem, attr){
             scope.cat = {}   //holds all the category related objects
@@ -220,12 +221,8 @@ directive('categories',['$http','piUrls', function($http,piUrls) {
                 .success(function(data, status) {
                     if (data.success) {
                         scope.cat.categories = data.data;
-                        scope.cat.categories.forEach(function(category){
-                            if (scope.selectedLabels.indexOf(category.name) >= 0)
-                                category.selected = true;
-                            else
-                                category.selected = false;
-                        })
+                        if (scope.labels)
+                            scope.labels = scope.cat.categories;
                     }
                 })
                 .error(function(data, status) {

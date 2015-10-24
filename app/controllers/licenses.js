@@ -2,14 +2,20 @@
 
 var fs = require('fs'),
 	path = require('path'),
-	async = require('async');
+	async = require('async'),
+    _ = require('lodash');
 
 var	config = require('../../config/config'),
 	rest = require('../others/restware');
 
+var mongoose = require('mongoose'),
+    Settings = mongoose.model('Settings')
+
+var licenseDir = config.licenseDirPath
+
 var getTxtFiles = function(cb){
     var txtOnly;
-    fs.readdir(config.licenseDir,function(err,files){
+    fs.readdir(licenseDir,function(err,files){
         if(err)
             return cb(err,null);
         txtOnly = files.filter(function(file){
@@ -34,7 +40,7 @@ exports.saveLicense = function(req,res){ // save license files
 		savedFiles = [];
 		
 	async.each(uploadedFiles,function(file,callback){
-		fs.rename(file.path,path.join(config.licenseDir, file.originalname),function(err){
+		fs.rename(file.path,path.join(licenseDir, file.originalname),function(err){
 			if(err)
 				return callback(err);
 			savedFiles.push({name: file.originalname , size: file.size});
@@ -50,7 +56,7 @@ exports.saveLicense = function(req,res){ // save license files
 
 
 exports.deleteLicense = function(req,res){ // delete particular license and return new file list
-	fs.unlink(path.join(config.licenseDir,req.params['filename']),function(err){
+	fs.unlink(path.join(licenseDir,req.params['filename']),function(err){
 		if(err)
 			return rest.sendError(res,"License "+req.params['filename']+" can't be deleted",err);
 		
@@ -62,4 +68,56 @@ exports.deleteLicense = function(req,res){ // delete particular license and retu
 		});
 	})
 }
+
+exports.getConfig = function(req,res) {
+    return rest.sendSuccess(res,"Config Data",{
+        assetLogEnable: config.assetLogEnable,
+        newLayoutsEnable: config.newLayoutsEnable
+    });
+}
+
+
+exports.getSettingsModel = function(cb) {
+    Settings.findOne(function (err, settings) {
+        if (err || !settings) {
+            settings = new Settings();
+            settings.save(cb);
+        } else {
+            cb(null,settings);
+        }
+    })
+}
+
+exports.getSettings = function(req,res) {
+    exports.getSettingsModel(function (err, data) {
+        if (err) {
+            return rest.sendError(res, 'Unable to access Settings', err);
+        } else {
+            return rest.sendSuccess(res, 'Settings', data);
+        }
+    })
+}
+
+exports.updateSettings = function(req,res) {
+    Settings.findOne(function (err, settings) {
+        if (err)
+            return rest.sendError(res, 'Unable to update Settings', err);
+
+        if (settings)
+            settings = _.extend(settings, req.body)
+        else
+            settings = new Settings(req.body);
+        settings.save(function (err, data) {
+            if (err) {
+                return rest.sendError(res, 'Unable to update Settings', err);
+            } else {
+                return rest.sendSuccess(res, 'Settings Saved', data);
+            }
+        });
+    })
+}
+
+exports.getSettingsModel(function(err,settings){
+    licenseDir = config.licenseDirPath+(settings.installation || "local")
+})
 

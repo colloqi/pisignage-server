@@ -4,16 +4,51 @@
 	form(role="form", name="formdisplay")
 		.form-group.row
 			.col-sm-4.text-right
-				b Resolution
-			.col-sm-8
-				select.form-control(ng-options="entry.value as entry.name for entry in resolutions", ng-model="group.resolution")
-					option(value="") -----------select resolution-----------
+				.radio
+					label.text-muted(translate) Resolution
+			.col-sm-4
+				.radio
+					label
+						input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[0].value")
+						small {{resolutions[0].name}}
+			.col-sm-4
+				.radio
+					label
+						input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[1].value")
+						small {{resolutions[1].name}}
 		.form-group.row
 			.col-sm-4.text-right
-				b Orientation
-			.col-sm-8
-				select.form-control(ng-options="entry.value as entry.name for entry in orientations", ng-model="group.orientation")
-					option(value="") -----------select orientation-----------
+				.radio
+					label.text-muted(translate) Orientation
+			.col-sm-4
+				.radio
+					label
+						input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="orientations[0].value")
+						small {{orientations[0].name}}
+			.col-sm-4
+				.radio
+					label
+						input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="orientations[1].value")
+						small {{orientations[1].name}}
+		.form-group.row
+			.col-sm-4.text-right
+				.radio
+					label.text-muted
+						span(translate) Animation
+						| <br>
+						span(translate) (only in pi 2)
+			.col-sm-4
+				.radio
+					label
+						input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[0].value")
+						small {{animations[0].name}}
+			.col-sm-4
+				.radio
+					label
+						input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[1].value")
+						small {{animations[1].name}}
+
+
 .modal-footer
 	button.btn(ng-click='displayModal.close()') Cancel
 	button.btn.btn-danger(ng-click='saveSettings()') OK

@@ -3,32 +3,38 @@
         h3.panel-title Reported Players
     ul.list-group
 
-        li.list-group-item(ng-repeat='player in players | filter:search | orderBy:"lastReported":true')
+        li.list-group-item(ng-repeat='item in player.players | filter:search | orderBy:"lastReported":true')
             .row
-                .col-sm-4(ng-click='shellCommand(player)')
-                    h6.text-primary.truncate  {{player.localName}}
+                .col-sm-4(ng-click='shellCommand(item)')
+                    h6.text-primary.truncate  {{item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}
                 .col-sm-3
-                    h6.text-primary.truncate  {{player.myIpAddress}}
+                    .row
+                        .col-sm-6(style="padding-right:3px;")
+                            small.text-primary.truncate  {{item.myIpAddress || "IP:NA"}}
+                        .col-sm-6(style="padding:3px;")
+                            select.form-control.select-xs(ng-model="item.TZ", ng-change="changeTZ(item)",
+                                                                            ng-options="tz for tz in tzNames")
+                                option(value="", selected,translate)  --No TZ--
                 .col-sm-3
-                    i.fa.fa-circle.fa-2x(ng-class="player.statusClass")
-                    span.text-primary &nbsp;{{player.currentPlaylist}}
+                    i.fa.fa-circle.fa-lg(ng-class="item.statusClass")
+                    span.text-primary &nbsp;{{item.currentPlaylist}}
                 .col-sm-2
-                    select.form-control(ng-model="player.group.name",ng-change="assignGroup(player)",
-                                                                        ng-options="group for group in groups")
+                    select.form-control.select-xs(ng-model="item.group.name",ng-change="assignGroup(item)",
+                                                                        ng-options="gr for gr in group.groupNames")
             .row
                 .col-sm-4
-                    h6.text-primary: small {{player.cpuSerialNumber}}
+                    h6.text-primary: small {{item.cpuSerialNumber}}
                 .col-sm-3
-                    h6.text-primary.truncate: small last seen:&nbsp;{{player.lastReported | date: "MMM dd, hh:mm a"}}
+                    h6.text-primary.truncate: small last seen:&nbsp;{{item.lastReported | date: "MMM dd, hh:mm a"}}
                 .col-sm-3
-                    h6(ng-if="!player.isConnected || !player.syncInProgress").text-primary.truncate: small last sync:&nbsp;{{player.lastUpload | date: "MMM dd, hh:mm a"}}
-                    h6(ng-if="player.isConnected && player.syncInProgress").text-primary
+                    h6(ng-if="!item.isConnected || !item.syncInProgress").text-primary.truncate: small last sync:&nbsp;{{item.lastUpload | date: "MMM dd, hh:mm a"}}
+                    h6(ng-if="item.isConnected && item.syncInProgress").text-primary
                         i.fa.fa-spinner.fa-spin
-                        small.truncate &nbsp;{{player.wgetBytes }} &nbsp;{{player.wgetSpeed }}B/sec
+                        small.truncate &nbsp;{{item.wgetBytes }} &nbsp;{{item.wgetSpeed }}B/sec
 
-                .col-sm-2(ng-if='player.version')
-                    h6.text-primary.truncate: small ver:&nbsp;{{player.version}}/{{player.platform_version}}&nbsp;
-                        button.btn.btn-warning.btn-xs(ng-if="player.version != currentVersion.version",ng-click="swUpdate(player)")
-                            i.fa.fa-arrow-circle-up.fa-lg
+                .col-sm-2(ng-if='item.version')
+                    h6.text-primary.truncate: small ver:&nbsp;{{item.version}}/{{item.platform_version}}&nbsp;
+                        button.btn.btn-warning.btn-xs(ng-if="item.version != player.currentVersion.version",ng-click="swUpdate(item)")
+                            i.fa.fa-arrow-circle-up
 
 

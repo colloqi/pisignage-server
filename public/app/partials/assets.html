@@ -1,64 +1,63 @@
 
-<div ng-if="!fn.editMode" ng-repeat="(key,obj) in showAssets" class="panel panel-info">
+<div ng-if="!fn.editMode" class="panel panel-info">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-sm-1">
-        <button ng-click="ngDropdown.clearCheckboxes()" class="btn btn-link"><i class="fa fa-close text-danger"></i></button>
+      <div class="col-sm-2">
+        <h3 class="panel-title">{{assetConfig.assets.assets.length}} Files in&nbsp;{{!assetConfig.allAssets && playlist.selectedPlaylist.name || "total"}}</h3>
       </div>
       <div class="col-sm-4">
-        <h3 class="panel-title">{{key}}&nbsp; Assets&nbsp;<span class="badge">{{obj.assets.length}}</span></h3>
+        <form>
+          <input type="text" placeholder="filter" ng-model="search.$" class="form-control"/>
+        </form>
       </div>
-      <div ng-show="!selected.playlist" class="col-sm-2 pull-right"><a ng-click="fn.edit()" class="pull-right"><em class="text-danger"> Edit</em></a></div>
-      <div ng-if="playlistState &amp;&amp; showAssets['All']" class="col-sm-3 pull-right">
-        <div ng-dropdown-multiselect="" options="ngDropdown.playlist.PlaylistTab.playlists" selected-model="ngDropdown.playlist.selectedPlaylists" events="ngDropdown.playlist.events" translation-texts="ngDropdown.playlist.customTexts" extra-settings="ngDropdown.playlist.extraSettings" checkboxes="true" class="pull-right"></div>
+      <div dropdown="dropdown" ng-if="!assetConfig.allAssets" class="col-sm-3 dropdown">
+        <button dropdown-toggle="dropdown-toggle" class="btn btn-success dropdown-toggle pull-right"><i class="fa fa-plus">&nbsp;ADD</i></button>
+        <ul role="menu" class="dropdown-menu">
+          <li>
+            <nodeims-file-upload onstart="upload.onstart()" onprogress="upload.onprogress(percentDone)" onerror="upload.onerror(files, type, msg)" ondone="upload.ondone(files, data)">Upload Files</nodeims-file-upload>
+          </li>
+          <li><a ng-click="link.showPopup()" class="btn btn-link btn-block">Add a Link</a></li>
+          <li><a ng-click="configureGCalendar()" class="btn btn-link btn-block">Add Calendar</a></li>
+        </ul>
       </div>
-      <div ng-if="playlistState &amp;&amp; !showAssets['All']" class="col-sm-3 pull-right">
-        <!--button.btn.btn-default.pull-right(ng-click="ngDropdown.removeFromPlaylist()"): small.text-danger RemoveFrom Playlist--><a ui-sref="home.assets.playlistAddAssets({playlist:selected.playlist.name})" ui-sref-opts="{reload: true, notify: true}" class="btn btn-primary pull-right">Add/Edit Playlist Assets</a>
-      </div>
-      <div class="col-sm-2 pull-right">
-        <div ng-dropdown-multiselect="" options="ngDropdown.label.Label.labels" selected-model="ngDropdown.label.selectedLabels" events="ngDropdown.label.events" translation-texts="ngDropdown.label.customTexts" extra-settings="ngDropdown.label.extraSettings" checkboxes="true" class="pull-right"></div>
+      <div ng-if="!assetConfig.allAssets" class="col-sm-1"><a ng-click="fn.edit()" class="btn btn-link"><strong class="text-muted">EDIT</strong></a></div>
+      <div ng-hide="!ngDropdown.selectedAssets.length" class="col-sm-2 pull-right">
+        <div ng-if="!assetConfig.allAssets" ng-dropdown-multiselect="" options="ngDropdown.label.Label.labels" selected-model="ngDropdown.label.selectedLabels" events="ngDropdown.label.events" translation-texts="ngDropdown.label.customTexts" extra-settings="ngDropdown.label.extraSettings" checkboxes="true" class="pull-right"></div>
+        <div class="btn-group-xs pull-right"><a ng-if="assetConfig.allAssets" ng-click="ngDropdown.playlist.events.onItemSelect()" class="btn btn-success"><i class="fa fa-lg fa-arrow-circle-right">assign</i></a><a ng-click="ngDropdown.clearCheckboxes()" class="btn btn-link"><i class="fa fa-times"></i></a></div>
       </div>
     </div>
   </div>
-  <ul as-sortable="sortable.options" ng-model="obj.assets" style="min-height:50px;" class="list-group">
-    <li ng-repeat="file in obj.assets | filter:labelFilter track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" class="list-group-item">
-      <div as-sortable-item-handle="as-sortable-item-handle" class="media">
-        <div class="media-body">
+  <ul as-sortable="sortable.options" ng-model="assetConfig.assets.assets" style="min-height:50px;" class="list-group">
+    <li ng-repeat="file in assetConfig.assets.assets | filter:labelFilter | filter:search track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" style="margin:0px;min-height:70px;" class="list-group-item">
+      <div as-sortable-item-handle="as-sortable-item-handle" class="row">
+        <div class="col-sm-2"><a ng-click="fn.showDetails(file.fileDetails.name)"><img ng-if="file.fileDetails.thumbnail" ng-src="{{file.fileDetails.thumbnail}}" class="media-object img-rounded"/>
+            <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object img-rounded">{{file.fileDetails.type.slice(0,1) || 'N'}}</div></a></div>
+        <div class="col-sm-10">
           <div class="row">
-            <div class="col-sm-1">
-              <div ng-if="!playlistState || showAssets['All']" class="checkbox">
-                <label>
-                  <input type="checkbox" name="checkbox" ng-model="file.selected" ng-change="ngDropdown.checkbox(file)"/>
-                </label>
-              </div>
+            <div class="col-sm-6"><small>{{file.fileDetails.name }}<small ng-if="playlist.selectedPlaylist &amp;&amp; !assetConfig.allAssets">&nbsp;{{file.playlistDetails.side}} &nbsp;{{file.playlistDetails.bottom}}</small></small></div>
+            <!--.col-sm-2p {{file.fileDetails.size}}
+            -->
+            <div class="col-sm-3"><small ng-if="file.fileDetails.resolution.width" class="text-muted">{{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}</small></div>
+            <div ng-if="playlist.selectedPlaylist  &amp;&amp; !assetConfig.allAssets" class="col-sm-2"><small class="text-muted"> {{file.playlistDetails.duration}} seconds</small></div>
+            <div class="col-sm-1 pull-right">
+              <input type="checkbox" name="checkbox" ng-model="file.selected" ng-change="ngDropdown.checkbox(file)"/>
             </div>
-            <div class="col-sm-5">
-              <h4>{{file.fileDetails.name }}<small ng-if="playlistState &amp;&amp; !showAssets['All']">&nbsp;{{file.playlistDetails.side}} &nbsp;{{file.playlistDetails.bottom}}</small></h4>
-            </div>
-            <div class="col-sm-2">
-              <h6 class="text-muted">{{file.fileDetails.size}}</h6>
-            </div>
-            <div class="col-sm-2">
-              <h6 ng-if="file.fileDetails.resolution.width" class="text-muted">{{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}</h6>
-            </div>
-            <div ng-if="playlistState &amp;&amp; !showAssets['All']" class="col-sm-2">
-              <h6 class="text-muted"> {{file.playlistDetails.duration}} seconds</h6>
-            </div>
+            <!--.col-sm-1.pull-right(ng-if="assetConfig.allAssets")
+            a(ng-click="")
+                i.fa.fa-lg.fa-arrow-circle-right.text-success
+            
+            -->
           </div>
           <div class="row">
-            <div class="col-sm-7 col-sm-offset-1">
-              <h6 class="text-muted">{{file.fileDetails.labels.join(',')}}</h6>
-            </div>
-            <div class="col-sm-4">
-              <h6 class="text-muted">{{file.fileDetails.type}}, &nbsp; {{file.fileDetails.createdAt | date: 'MMM dd'}}</h6>
-            </div>
+            <div class="col-sm-6"><small class="text-info">{{file.fileDetails.labels.join(',')}}</small></div>
+            <div class="col-sm-5"><small class="text-muted">
+                {{file.fileDetails.type}},&nbsp;{{file.fileDetails.size}},&nbsp;
+                {{file.fileDetails.createdAt | date: 'MMM dd'}}</small></div>
           </div>
         </div>
-        <div ng-click="fn.showDetails(file.fileDetails.name)" class="media-right"><a ng-href="#"><img ng-src="{{file.fileDetails.thumbnail}}" class="media-object img-rounded"/>
-            <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object img-rounded">{{file.fileDetails.type.slice(0,1) || 'N'}}</div></a></div>
       </div>
     </li>
-    <h4 ng-show="!obj.assets.length" class="text-danger">&nbsp&nbsp Nothing to show, Please Add Assets using the `Add Asset` button in Top Menu bar</h4>
+    <h5 ng-show="!assetConfig.assets.assets.length" class="text-danger">&nbsp&nbsp Nothing to show, Use `Add` button to add an asset or 'Assign Assets' to assign assets to playlist</h5>
   </ul>
 </div>
 <div ng-if="fn.editMode" class="panel panel-danger">

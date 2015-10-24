@@ -1,43 +1,52 @@
-.panel.panel-info(ng-repeat="(playlist,obj) in filterPlaylistName(groupWiseAssets)")
+.panel.panel-info
     .panel-heading
         .row
             .col-sm-10
-                h5.panel-title {{obj.playlist.name}}&nbsp;
-                    span.badge {{obj.assets.length}}
+                h5.panel-title {{asset.showAssets.assets.length}}&nbsp;items in&nbsp;
+                    | {{asset.showAssets.playlist.name}}&nbsp;
                     span.text-muted &nbsp;(Drag to Add/Remove)
             .col-sm-2
                 a.btn.btn-primary.pull-right(ng-click="done()") Done
-    ul.list-group(as-sortable="sortable.options",ng-model="obj.assets",style="min-height:50px;")
-        li.list-group-item(ng-repeat='file in obj.assets track by $index',as-sortable-item,
-                                        ng-class='{"list-group-item-danger":file.deleted}')
+    ul.list-group(as-sortable="sortable.options",ng-model="asset.showAssets.assets",
+                        style="min-height:50px;")
+        li.list-group-item(ng-repeat='file in asset.showAssets.assets',
+                                    as-sortable-item,style="margin:0px;",
+                                    ng-class='{"list-group-item-danger":file.deleted}')
+            .row(as-sortable-item-handle)
+                .col-sm-2
+                    a.pull-right(ng-click='fn.showDetails(file.fileDetails.name)')
+                        img.media-object.img-rounded(ng-if='file.fileDetails.thumbnail',ng-src='{{file.fileDetails.thumbnail}}')
+                        .letter-box.media-object.img-rounded(ng-if='!file.fileDetails.thumbnail')
+                            | {{file.fileDetails.type.slice(0,1) || 'N'}}
 
-                //a(ng-href="#").pull-left
-                    img.media-object.img-rounded(ng-src='{{file.fileDetails.thumbnail}}')
-                //.letter-box.media-object.pull-left.img-rounded(ng-if='!file.fileDetails.thumbnail')
-                    | {{file.fileDetails.type.slice(0,1) || 'N'}}
-                div(as-sortable-item-handle)
+                .col-sm-10
                     .row
-                        .col-sm-9
+                        .col-sm-8
                             h6 {{file.fileDetails.name }}
-                        .col-sm-3.pull-right
+                        .col-sm-3
                             h6(ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) && file.fileDetails.duration > 0")
                                 strong {{file.fileDetails.duration}} seconds
                             input.form-control.input-sm(ng-if="file.playlistDetails && !file.playlistDetails.isVideo",
-                                                            type='number', ng-model='file.playlistDetails.duration',min="5",
-                                                            ng-model-options="{ updateOn: 'blur' }",
-                                                            ng-change="saveData()")
-                    .row.text-danger(ng-show="obj.playlist.layout && obj.playlist.layout != '1'")
+                                                                type='number', ng-model='file.playlistDetails.duration',min="5",
+                                                                ng-model-options="{ updateOn: 'blur' }",
+                                                                ng-change="saveData()")
+                        .col-sm-1
+                            button.btn.btn-xs.btn-warning(ng-click="removeAsset($index)") X
+                    .row.text-danger(ng-show="asset.showAssets.playlist.layout && asset.showAssets.playlist.layout != '1'")
                         .col-sm-12
-                            span(ng-show="obj.playlist.layout != '2ap'")
+                            span(ng-show="asset.showAssets.playlist.layout != '2ap'")
                                 button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")
                                     span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}
                                 button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.side",
-                                                                    ng-click="removeLinkFile(file,'side')") X
-                            span(ng-show="obj.playlist.layout != '2a' && obj.playlist.layout != '2b'")
+                                ng-click="removeLinkFile(file,'side')") X
+                            span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b'")
                                 button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'bottom')")
                                     span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}
                                 button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",
-                                                                    ng-click="removeLinkFile(file,'bottom')") X
-    h4.text-danger(ng-show="!obj.assets.length") Nothing to show, Please Drag Assets to this box
+                                ng-click="removeLinkFile(file,'bottom')") X
+
+
+        li.list-group-item(ng-if="!asset.showAssets.assets.length")
+            h4.text-danger Nothing to show, Please Drag Assets to this box
 
 

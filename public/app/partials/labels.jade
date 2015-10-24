@@ -1,22 +1,24 @@
 .panel.panel-info
     .panel-heading
-        h3.panel-title Labels
+        h3.panel-title
+            span(ng-click="collapsed = !collapsed;") Labels&nbsp;
+                i.fa.fa-lg(ng-class="{'fa-caret-right':collapsed,'fa-caret-down':!collapsed}")
             a.btn.btn-sm.btn-link.pull-right(ng-click='fn.edit()'): em(ng-class="{'text-danger':!fn.editMode,'text-success':fn.editMode}")
                         | {{fn.editMode?'Done':'Edit'}}
 
-    .form-group
+    .form-group(ng-hide="collapsed")
         form(name="addform", ng-submit='fn.add()')
             .input-group.col-xs-12
                 input.form-control(type='text', ng-model='newLabel.name',placeholder="Add a new Label",required)
                 span.input-group-btn
-                    button.btn.btn-info(type="submit")
+                    button.btn.btn-default(type="submit")
                         i.fa.fa-plus
-    ul.nav.nav-pills.nav-stacked
-        li(ng-repeat="label in labels", ng-class="fn.getClass(label.name)")
-            a(ng-click="fn.selected(label.name)")
-                small {{ label.name }}
-                span.badge.pull-right(ng-if="!fn.editMode && !fn.getClass(label.name)") {{labelsCount[label.name] || '0'}}
-                button.close(ng-click='fn.delete($index); $event.stopPropagation()',ng-if="fn.editMode || fn.getClass(label.name)")
+    ul.nav.nav-pills.nav-stacked(ng-hide="collapsed")
+        li(ng-repeat="tag in label.labels", ng-class="fn.getClass(tag.name)")
+            a(ng-click="fn.selected(tag.name)")
+                small {{ tag.name }}
+                span.pull-right(ng-if="!fn.editMode && !fn.getClass(tag.name)") {{label.labelsCount[tag.name] || '0'}}
+                button.close(ng-click='fn.delete($index); $event.stopPropagation()',ng-if="fn.editMode || fn.getClass(tag.name)")
                     i.fa.fa-times-circle.fa-lg(ng-class="{'text-danger': fn.editMode}")
 
 

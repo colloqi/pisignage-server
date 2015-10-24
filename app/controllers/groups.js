@@ -12,13 +12,22 @@ var mongoose = require('mongoose'),
     path = require('path'),
     async = require('async');
 
-var serverMain = require('./server-main');
+var serverMain = require('./server-main'),
+    licenses = require('./licenses');
+
+var installation;
+
+licenses.getSettingsModel(function(err,settings){
+    installation = settings.installation || "local"
+})
+
+
 
 exports.newGroup = function (group, cb) {
 
     var object = new Group(group);
     //create a sync folder under sync_folder
-    fs.mkdir(path.join(config.syncDir,config.installation, object.name), function (err) {
+    fs.mkdir(path.join(config.syncDir,installation, object.name), function (err) {
         if (err && (err.code != 'EEXIST'))
             return cb('Unable to create a group folder in server: ' + err);
         else {
@@ -112,7 +121,7 @@ exports.updateObject = function (req, res) {
 
     object.save(function (err, data) {
         if (!err && req.body.deploy) {
-            serverMain.deploy(config.installation,object, saveObject);
+            serverMain.deploy(installation,object, saveObject);
         } else {
             saveObject(err, object);
         }

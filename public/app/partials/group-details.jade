@@ -1,50 +1,57 @@
-.panel.panel-info
+.panel.panel-info(ng-show="group.selectedGroup")
     .panel-heading
         .row
-            .col-sm-7
-                h3.panel-title {{group.name}}
+            .col-sm-6
+                h3.panel-title {{group.selectedGroup.name}}
             .col-sm-3
                 a.btn.btn-link.btn-sm.pull-right(ng-click='displaySet()'): em.text-danger Set Display Mode
             .col-sm-2
-                a.btn.btn-success.btn-sm.pull-right(ng-disabled="!group.playlists.length",ng-click='deploy()') Deploy to {{group.name}}
-
-    ul.list-group
-        li.list-group-item
-            .form-group
-                form.row( name="group-default-playlist")
-                    label.control-label.col-sm-4 Main Playlist for the group
-                        .input-group.col-sm-8
-                    .col-sm-5
-                        select.form-control(ng-model="group.playlists[0].name",
-                                                ng-options="pl for pl in playlistNames track by pl",
-                                                ng-change="updateGroup()")
-                                                    option(value="") -- None selected --
-        li.list-group-item(ng-show="group.playlists[0].name.length")
-            .row
+                a.btn.btn-success.btn-sm.pull-right(ng-disabled="!group.selectedGroup.playlists.length",ng-click='deploy()') Deploy to {{group.selectedGroup.name}}
+            .col-sm-1
+                a.pull-right.close(ng-click="closeWindow()") &times
+    .panel-body
+        form(role='form',name='deployform',as-sortable="sortable.options",ng-model="sortable.playlistArray")
+            .row.form-group
+                label.control-label.col-sm-4 Default Playlist for the group
+                .col-sm-5
+                    select.form-control(ng-model="group.selectedGroup.playlists[0].name",
+                                            ng-options="pl for pl in playlist.playlistNames track by pl",
+                                            ng-change="updateGroup()")
+                                                option(value="") --
+            .row.form-group(ng-show="group.selectedGroup.playlists[0].name.length")
                 h5.col-sm-12 You can select additional Playlists for Scheduling/Advt purposes
-                    a.btn.btn-link(ng-click="collapsed = !collapsed;")
+                    //a.btn.btn-link(ng-click="collapsed = !collapsed;")
                         i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
-            .form-group(ng-repeat='playlist in group.playlists' ng-if="$index > 0",ng-hide="collapsed")
-                form.row( name="group-playlists")
-                    .col-sm-5
-                        select.form-control(ng-model="playlist.name",
-                                                ng-options="pl for pl in playlistNames track by pl",
-                                                ng-change="updateGroup()")
-                            option(value="") -- None selected --
-                    .col-sm-6
-                        a.btn.btn-link(ng-click="scheduleCalendar(playlist)")
-                            i.fa.fa-calendar.fa-lg.text-info
-                        small(ng-if='!playlist.settings.startdate && !playlist.settings.starttime')
-                            | Click the icon to Schedule
-                        small(ng-if='playlist.settings.startdate')
-                            | {{playlist.settings.startdate | date:'MMM d'}} -
-                            | {{playlist.settings.enddate | date:'MMM d'}} &nbsp&nbsp
-                        small(ng-if='playlist.settings.starttime')
-                            | {{playlist.settings.starttime }} -
-                            | {{playlist.settings.endtime }}
-                    .col-sm-1(ng-show="playlist.name.length")
-                        a.btn.btn-link(ng-click='delete($index)')
-                            i.fa.fa-times.text-danger
+                    a.btn.btn-info.btn-xs(ng-click="add()")
+                        i.fa.fa-lg.fa-plus add
+                    span.text-info(ng-show="showMaxErr") &nbsp&nbsp {{'Maximum allowed Playlist Schedules (10)'}}
+
+            .row.form-group(ng-repeat='pl in group.selectedGroup.playlists' ng-if="$index > 0",as-sortable-item)
+                .col-sm-1.text-right(as-sortable-item-handle)
+                    h6   {{$index+'.'}}
+                .col-sm-4
+                    select.form-control(ng-model="pl.name",style="background:#f8f8f8;",
+                                            ng-options="plitems for plitems in playlist.playlistNames track by plitems",
+                                            ng-change="updateGroup()")
+                        option(value="") --
+                .col-sm-6
+                    a.btn.btn-link(ng-show="pl.name",ng-click="scheduleCalendar(pl)")
+                        i.fa.fa-calendar.fa-lg.text-info
+                    small(ng-if='pl.name && !(pl.settings.durationEnable || pl.settings.timeEnable || pl.settings.weekday || pl.settings.monthday)')
+                        | Click the icon to Schedule
+                    small(ng-if='pl.settings.durationEnable')
+                        | {{pl.settings.startdate | date:'MMM d'}} -
+                        | {{pl.settings.enddate | date:'MMM d'}} &nbsp&nbsp
+                    small(ng-if='pl.settings.timeEnable')
+                        | {{pl.settings.starttime | date: 'hh:mm a'}} -
+                        | {{pl.settings.endtime | date: 'hh:mm a'}}
+                    small(ng-if='pl.settings.weekday')
+                        | on {{weeklist[pl.settings.weekday]}} &nbsp;&nbsp;
+                    small(ng-if='pl.settings.monthday')
+                        | on date: {{dayslist[pl.settings.monthday]}} &nbsp&nbsp
+                .col-sm-1(ng-show="pl.name.length")
+                    a.btn.btn-link(ng-click='delete($index)')
+                        i.fa.fa-times.text-danger
         //li.list-group-item
             form
                 .form-group

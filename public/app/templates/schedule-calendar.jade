@@ -1,19 +1,77 @@
 .modal-header(ng-controller="GroupDetailCtrl")
     h4.text-primary  Set Timings for Scheduled Playlist ({{forPlaylist.name}})
 .modal-body
-    form(role='form', name='schedule-cal')
-        .form-group
-            label.control-label(for="startdate") Start Date
-            input.form-control(type='date', ng-model='forPlaylist.settings.startdate', name='startdate', title='Start Date')
-        .form-group
-            label.control-label(for="enddate") End Date
-            input.form-control(type='date', ng-model='forPlaylist.settings.enddate', name='enddate', title='End Date')
-        .form-group
-            label.control-label(for="starttime") Every Day Start Time
-            input.form-control(type='time', ng-model='forPlaylist.settings.starttime', name='starttime', title='Everyday Start Time')
-        .form-group
-            label.control-label(for="endtime") Every Day End Time
-            input.form-control(type='time', ng-model='forPlaylist.settings.endtime', name='enddate', title='Everyday End Time')
-.modal-footer
+    form(role='form', name='schedulecal')
+        .panel.panel-info
+            .panel-heading
+                h4
+                    strong Duration
+                    small &nbsp;&nbsp;Schedule between two Dates(both inclusive)
+            .panel-body
+                .form-group
+                    .col-xs-2
+                        .checkbox
+                            label
+                                input(type="checkbox",ng-model="forPlaylist.settings.durationEnable")
+                                small(translate,ng-show='!forPlaylist.settings.durationEnable') Schedule
+                                small(translate,ng-show='forPlaylist.settings.durationEnable') Begin
+                    .col-xs-5
+                        input.form-control.input-sm(type='date', ng-model='forPlaylist.settings.startdate',
+                        ng-show='forPlaylist.settings.durationEnable',
+                        placeholder="Starting on",
+                        name='startdate', title='Enter Start Date')
+                    .col-xs-1
+                        small(translate,ng-show='forPlaylist.settings.durationEnable') till
+                    .col-xs-4
+                        input.form-control.input-sm(type='date', ng-model='forPlaylist.settings.enddate',
+                        ng-show='forPlaylist.settings.durationEnable',
+                        placeholder="Till date",
+                        name='enddate', title='Enter End Date')
+        .panel.panel-info
+            .panel-heading
+                h4
+                    strong Only on Specific Day
+                    small &nbsp;&nbsp;Schedule on a week day or on a month day
+            .panel-body
+                .form-group
+                    .col-xs-2
+                        label.control-label(for="day") Week Day
+                    .col-xs-4
+                        select.form-control(ng-model='forPlaylist.settings.weekday',
+                        ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',
+                        title='Enter playing week day')
+                    .col-xs-2
+                        label.control-label(for="playDate") Day of Month
+                    .col-xs-4
+                        select.form-control(ng-model='forPlaylist.settings.monthday',
+                        ng-options="dayslist.indexOf(day) as day for day in dayslist",
+                        title='Enter playing date')
+        .panel.panel-info
+            .panel-heading
+                h4
+                    strong At Specified Time
+                    small &nbsp;&nbsp;Only at specific time of the day (for e.g. 7AM - 11AM)
+            .panel-body
+                .form-group
+                    .col-xs-2
+                        .checkbox
+                            label
+                                input(type="checkbox",ng-model="forPlaylist.settings.timeEnable")
+                                small(ng-show='!forPlaylist.settings.timeEnable') Schedule
+                                small(ng-show='forPlaylist.settings.timeEnable') Begin
+                    .col-xs-5
+                        input.form-control(type='time',
+                                            ng-show='forPlaylist.settings.timeEnable',
+                                            ng-model='forPlaylist.settings.starttimeObj',
+                                            name='starttime', title='Enter Start Time')
+                    .col-xs-1
+                        small(ng-show='forPlaylist.settings.timeEnable') till
+                    .col-xs-4
+                        input.form-control(type='time',
+                                                ng-show='forPlaylist.settings.timeEnable',
+                                                ng-model='forPlaylist.settings.endtimeObj',
+                                                name='endtime', title='Enter End Time')
+
     button.btn(ng-click="scheduleCalendarModal.close()") Cancel
-    button.btn.btn-danger(ng-click="saveSchedules()") OK
+    button.btn.btn-success(ng-click="saveSchedules(schedulecal)") OK
+

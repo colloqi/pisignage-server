@@ -9,6 +9,9 @@ angular.module('piServerApp', [
     'piIndex.controllers',
     'piGroups.controllers',
     'piAssets.controllers',
+    'piAssets.services',
+    'piPlayers.services',
+    'piSettings.controllers',
     'piPlaylists.controllers',
     'piLabels.controllers',
     'pisignage.directives',
@@ -40,20 +43,7 @@ angular.module('piServerApp', [
             })
 
             .state("home.players.players", {
-                url: "players",
-                views: {
-                    "left": {
-                        templateUrl: '/app/partials/groups.html',
-                        controller: 'GroupsCtrl'
-                    },
-                    "list": {
-                        templateUrl: 'app/partials/players.html'
-                    }
-                }
-            })
-
-            .state("home.players.playerGroupsDetails", {
-                url: "players/:group",
+                url: "players?group",
                 views: {
                     "left": {
                         templateUrl: '/app/partials/groups.html',
@@ -80,68 +70,16 @@ angular.module('piServerApp', [
                 }
             })
 
-            .state("home.assets.assets", {
-                url: "assets",
-                views: {
-                    "left": {
-                        templateUrl: '/app/partials/labels.html',
-                        controller: 'LabelsCtrl'
-                    },
-                    "list": {
-                        templateUrl: '/app/partials/assets.html',
-                        controller: 'AssetsEditCtrl'
-                    }
-                }
-            })
-
-            .state("home.assets.assetLabelDetails", {
-                url: "assets/:label",
-                views: {
-                    "left": {
-                        templateUrl: '/app/partials/labels.html',
-                        controller: 'LabelsCtrl'
-                    },
-                    "list": {
-                        templateUrl: '/app/partials/assets.html',
-                        controller: 'AssetsEditCtrl'
-                    }
-                }
-            })
-
-            .state("home.assets.assetDetails", {
-                url: "assets/detail/:file",
-                views: {
-                    "left": {
-                        templateUrl: '/app/partials/labels.html',
-                        controller: 'LabelsCtrl'
-                    },
-                    "list": {
-                        templateUrl: '/app/partials/asset-details.html',
-                        controller: 'AssetViewCtrl'
-                    }
-                }
-            })
-
-            .state("home.assets.playlists", {
-                url: "playlists",
+            .state("home.assets.main", {
+                url: "main",
                 views: {
                     "left": {
                         templateUrl: '/app/partials/playlists.html',
                         controller: 'PlaylistsCtrl'
                     },
-                    "list": {
-                        templateUrl: '/app/partials/assets.html',
-                        controller: 'AssetsEditCtrl'
-                    }
-                }
-            })
-
-            .state("home.assets.playlistDetails", {
-                url: "playlists/:playlist",
-                views: {
-                    "left": {
-                        templateUrl: '/app/partials/playlists.html',
-                        controller: 'PlaylistsCtrl'
+                    "left2": {
+                        templateUrl: '/app/partials/labels.html',
+                        controller: 'LabelsCtrl'
                     },
                     "details": {
                         templateUrl: '/app/partials/playlist-details.html',
@@ -154,13 +92,35 @@ angular.module('piServerApp', [
                 }
             })
 
-            .state("home.assets.playlistAddAssets", {
-                url: "playlists/:playlist/add-assets",
+
+            .state("home.assets.assetDetails", {
+                url: "detail/:file",
                 views: {
                     "left": {
-                        templateUrl: '/app/partials/playlists.html',
-                        controller: 'PlaylistsCtrl'
+                        templateUrl: '/app/partials/labels.html',
+                        controller: 'LabelsCtrl'
                     },
+                    "list": {
+                        templateUrl: '/app/partials/asset-details.html',
+                        controller: 'AssetViewCtrl'
+                    }
+                }
+            })
+
+            .state("home.playlists", {
+                abstract: true,
+                url: "playlists/",
+                views: {
+                    "main": {
+                        templateUrl: 'app/partials/playlists-main.html',
+                        controller: 'AssetsCtrl'
+                    }
+                }
+            })
+
+            .state("home.playlists.playlistAddAssets", {
+                url: "add/:playlist",
+                views: {
                     "list": {
                         templateUrl: '/app/partials/assets.html',
                         controller: 'AssetsEditCtrl'
@@ -169,15 +129,18 @@ angular.module('piServerApp', [
                         templateUrl: '/app/partials/playlist-add.html',
                         controller: 'PlaylistAddCtrl'
                     }
+                },
+                data: {
+                    showAllAssets: true
                 }
             })
 
-            .state("home.license",{
-                url: "licenseupload",
+            .state("home.settings",{
+                url: "settings",
                 views: {
                     "main": {
-                        templateUrl: '/app/partials/licenses.html',
-                        controller: 'licenseCtrl'
+                        templateUrl: '/app/partials/settings.html',
+                        controller: 'SettingsCtrl'
                     }
                 }
                 
@@ -207,26 +170,33 @@ angular.module('piServerApp', [
         });
 
     })
-    .run(function ($window,$modal) {
+    .run(function ($window,$modal,piUrls,$http, $rootScope) {
         var currentBrowser = $window.navigator.userAgent.toLowerCase();
-            if(currentBrowser.indexOf('chrome') == -1){
-                $modal.open({
-                    template: [
-                        '<div class="modal-header">',
-                        '<h3 class="modal-title">Please Switch to Chrome Browser</h3>',
-                        '</div>',
-                        '<div class="modal-body">',
-                        '<p>Things may not work as expected with other Browsers :(</p>',
-                        '</div>',
-                        '<div class="modal-footer">',
-                        '<button ng-click="cancel()" class="btn btn-warning">Got it!</button>',
-                        '</div>'
-                    ].join(''),
-                    controller: ['$scope','$modalInstance',function($scope,$modalInstance){
-                        $scope.cancel = function(){
-                                $modalInstance.close();
-                            }
-                        }]
-                })
-            }
+        if(currentBrowser.indexOf('chrome') == -1){
+            $modal.open({
+                template: [
+                    '<div class="modal-header">',
+                    '<h3 class="modal-title">Please Switch to Chrome Browser</h3>',
+                    '</div>',
+                    '<div class="modal-body">',
+                    '<p>Things may not work as expected with other Browsers :(</p>',
+                    '</div>',
+                    '<div class="modal-footer">',
+                    '<button ng-click="cancel()" class="btn btn-warning">Got it!</button>',
+                    '</div>'
+                ].join(''),
+                controller: ['$scope','$modalInstance',function($scope,$modalInstance){
+                    $scope.cancel = function(){
+                            $modalInstance.close();
+                        }
+                    }]
+            })
+        }
+        $http.get(piUrls.serverConfig)
+            .success(function(data){
+                if(data.success)
+                    $rootScope.serverConfig = data.data;
+            }).error(function(err){
+                console.log(err);
+            })
     });

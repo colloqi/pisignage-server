@@ -7,6 +7,7 @@ var players = require('./players'),
 
 var handleClient = function (socket) {
 
+    //console.log("connection event: "+socket.id);
     socket.on('status', function (settings, status) {
         var statusObject = _.extend(
             {
@@ -33,7 +34,7 @@ var handleClient = function (socket) {
     });
 
     socket.on('disconnect', function () {
-        console.log("disconnect event");
+        console.log("disconnect event: "+socket.id);
     });
 };
 

@@ -29,8 +29,8 @@ passport.use(new GoogleStrategy({
 
 exports.gCalAuthorize = function (req, res, next) {
     //hack as there is no parameter to change it
-    req._passport.instance._strategies.google._callbackURL = (config.https ? 'https' : 'http') +
-    '://' + req.installation + config.gCalendar.REDIRECT_BASE_URL;
+    //req._passport.instance._strategies.google._callbackURL = (config.https ? 'https' : 'http') +
+    //'://' + req.installation + config.gCalendar.REDIRECT_BASE_URL;
     //console.log(req.url);
     var obj = {
         accessType: 'offline',

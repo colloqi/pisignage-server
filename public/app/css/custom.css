@@ -32,3 +32,16 @@ body {
     color: #f8f8ff;
 }
 
+
+.select-xs {
+    height: 20px;
+    padding: 2px 2px;
+    font-size: 10px;
+    line-height: 1.5;
+    border-radius: 2px;
+}
+
+.media-object {
+    max-height: 64px;
+}
+

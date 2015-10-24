@@ -7,7 +7,15 @@
   <div ng-if="msg.buttonText == 'Continue'">
     <hr/>
     <h5>Select Categories for the files</h5>
-    <categories selected-labels="selectedLabels"></categories>
+    <categories selected-labels="upload.selectedLabels" labels="upload.labels"></categories>
+    <form class="form-inline">
+      <div class="form-group">
+        <label><small translate="translate">new</small></label>
+        <input type="text" ng-model="newLabel.name" class="form-control input-sm"/>
+      </div>
+      <button type="submit" ng-click="upload.addLabel()" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
+    </form>
+    <div ng-if="msg.error" ng-bind="msg.error" class="text-danger"></div>
   </div>
 </div>
 <div class="modal-footer">

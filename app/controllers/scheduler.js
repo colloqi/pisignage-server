@@ -32,9 +32,9 @@ var checkAndDownloadImage = function() {
         if (err)
             console.log(err);
         //read version, different from local one
-        var serverdata = fs.readFileSync(serverFile),
-            localData = fs.readFileSync(packageJsonFile)
         try {
+            var serverdata = fs.readFileSync(serverFile),
+                localData = fs.readFileSync(packageJsonFile)
             var serverVersion = JSON.parse(serverdata).version,
                 localVersion = JSON.parse(localData).version
         } catch(e) {

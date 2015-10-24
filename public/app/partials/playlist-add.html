@@ -1,38 +1,46 @@
 
-<div ng-repeat="(playlist,obj) in filterPlaylistName(groupWiseAssets)" class="panel panel-info">
+<div class="panel panel-info">
   <div class="panel-heading">
     <div class="row">
       <div class="col-sm-10">
-        <h5 class="panel-title">{{obj.playlist.name}}&nbsp;<span class="badge">{{obj.assets.length}}</span><span class="text-muted">&nbsp;(Drag to Add/Remove)</span></h5>
+        <h5 class="panel-title">
+          {{asset.showAssets.assets.length}}&nbsp;items in&nbsp;
+          {{asset.showAssets.playlist.name}}&nbsp;<span class="text-muted">&nbsp;(Drag to Add/Remove)</span>
+        </h5>
       </div>
       <div class="col-sm-2"><a ng-click="done()" class="btn btn-primary pull-right">Done</a></div>
     </div>
   </div>
-  <ul as-sortable="sortable.options" ng-model="obj.assets" style="min-height:50px;" class="list-group">
-    <li ng-repeat="file in obj.assets track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" class="list-group-item">
-      <!--a(ng-href="#").pull-leftimg.media-object.img-rounded(ng-src='{{file.fileDetails.thumbnail}}')
-      -->
-      <!--.letter-box.media-object.pull-left.img-rounded(ng-if='!file.fileDetails.thumbnail')| {{file.fileDetails.type.slice(0,1) || 'N'}}
-      -->
-      <div as-sortable-item-handle="as-sortable-item-handle">
-        <div class="row">
-          <div class="col-sm-9">
-            <h6>{{file.fileDetails.name }}</h6>
+  <ul as-sortable="sortable.options" ng-model="asset.showAssets.assets" style="min-height:50px;" class="list-group">
+    <li ng-repeat="file in asset.showAssets.assets" as-sortable-item="as-sortable-item" style="margin:0px;" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" class="list-group-item">
+      <div as-sortable-item-handle="as-sortable-item-handle" class="row">
+        <div class="col-sm-2"><a ng-click="fn.showDetails(file.fileDetails.name)" class="pull-right"><img ng-if="file.fileDetails.thumbnail" ng-src="{{file.fileDetails.thumbnail}}" class="media-object img-rounded"/>
+            <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object img-rounded">{{file.fileDetails.type.slice(0,1) || 'N'}}</div></a></div>
+        <div class="col-sm-10">
+          <div class="row">
+            <div class="col-sm-8">
+              <h6>{{file.fileDetails.name }}</h6>
+            </div>
+            <div class="col-sm-3">
+              <h6 ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) &amp;&amp; file.fileDetails.duration &gt; 0"><strong>{{file.fileDetails.duration}} seconds</strong></h6>
+              <input ng-if="file.playlistDetails &amp;&amp; !file.playlistDetails.isVideo" type="number" ng-model="file.playlistDetails.duration" min="5" ng-model-options="{ updateOn: 'blur' }" ng-change="saveData()" class="form-control input-sm"/>
+            </div>
+            <div class="col-sm-1">
+              <button ng-click="removeAsset($index)" class="btn btn-xs btn-warning">X</button>
+            </div>
           </div>
-          <div class="col-sm-3 pull-right">
-            <h6 ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) &amp;&amp; file.fileDetails.duration &gt; 0"><strong>{{file.fileDetails.duration}} seconds</strong></h6>
-            <input ng-if="file.playlistDetails &amp;&amp; !file.playlistDetails.isVideo" type="number" ng-model="file.playlistDetails.duration" min="5" ng-model-options="{ updateOn: 'blur' }" ng-change="saveData()" class="form-control input-sm"/>
+          <div ng-show="asset.showAssets.playlist.layout &amp;&amp; asset.showAssets.playlist.layout != '1'" class="row text-danger">
+            <div class="col-sm-12"><span ng-show="asset.showAssets.playlist.layout != '2ap'">
+                <button ng-click="linkFile(file.playlistDetails,'side')" class="btn btn-xs btn-info"><span>Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}</span></button>
+                <button ng-if="file.playlistDetails.side" ng-click="removeLinkFile(file,'side')" class="btn btn-xs btn-warning">X</button></span><span ng-show="asset.showAssets.playlist.layout != '2a' &amp;&amp; asset.showAssets.playlist.layout != '2b'">
+                <button ng-click="linkFile(file.playlistDetails,'bottom')" class="btn btn-xs btn-info"><span>Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}</span></button>
+                <button ng-if="file.playlistDetails.bottom" ng-click="removeLinkFile(file,'bottom')" class="btn btn-xs btn-warning">X</button></span></div>
           </div>
-        </div>
-        <div ng-show="obj.playlist.layout &amp;&amp; obj.playlist.layout != '1'" class="row text-danger">
-          <div class="col-sm-12"><span ng-show="obj.playlist.layout != '2ap'">
-              <button ng-click="linkFile(file.playlistDetails,'side')" class="btn btn-xs btn-info"><span>Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}</span></button>
-              <button ng-if="file.playlistDetails.side" ng-click="removeLinkFile(file,'side')" class="btn btn-xs btn-warning">X</button></span><span ng-show="obj.playlist.layout != '2a' &amp;&amp; obj.playlist.layout != '2b'">
-              <button ng-click="linkFile(file.playlistDetails,'bottom')" class="btn btn-xs btn-info"><span>Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}</span></button>
-              <button ng-if="file.playlistDetails.bottom" ng-click="removeLinkFile(file,'bottom')" class="btn btn-xs btn-warning">X</button></span></div>
         </div>
       </div>
     </li>
+    <li ng-if="!asset.showAssets.assets.length" class="list-group-item">
+      <h4 class="text-danger">Nothing to show, Please Drag Assets to this box</h4>
+    </li>
   </ul>
-  <h4 ng-show="!obj.assets.length" class="text-danger">Nothing to show, Please Drag Assets to this box</h4>
 </div>

@@ -3,26 +3,75 @@
   <h4 class="text-primary"> Set Timings for Scheduled Playlist ({{forPlaylist.name}})</h4>
 </div>
 <div class="modal-body">
-  <form role="form" name="schedule-cal">
-    <div class="form-group">
-      <label for="startdate" class="control-label">Start Date</label>
-      <input type="date" ng-model="forPlaylist.settings.startdate" name="startdate" title="Start Date" class="form-control"/>
+  <form role="form" name="schedulecal">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h4><strong>Duration</strong><small>&nbsp;&nbsp;Schedule between two Dates(both inclusive)</small></h4>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <div class="col-xs-2">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" ng-model="forPlaylist.settings.durationEnable"/><small translate="translate" ng-show="!forPlaylist.settings.durationEnable">Schedule</small><small translate="translate" ng-show="forPlaylist.settings.durationEnable">Begin</small>
+              </label>
+            </div>
+          </div>
+          <div class="col-xs-5">
+            <input type="date" ng-model="forPlaylist.settings.startdate" ng-show="forPlaylist.settings.durationEnable" placeholder="Starting on" name="startdate" title="Enter Start Date" class="form-control input-sm"/>
+          </div>
+          <div class="col-xs-1"><small translate="translate" ng-show="forPlaylist.settings.durationEnable">till</small></div>
+          <div class="col-xs-4">
+            <input type="date" ng-model="forPlaylist.settings.enddate" ng-show="forPlaylist.settings.durationEnable" placeholder="Till date" name="enddate" title="Enter End Date" class="form-control input-sm"/>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="enddate" class="control-label">End Date</label>
-      <input type="date" ng-model="forPlaylist.settings.enddate" name="enddate" title="End Date" class="form-control"/>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h4><strong>Only on Specific Day</strong><small>&nbsp;&nbsp;Schedule on a week day or on a month day</small></h4>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <div class="col-xs-2">
+            <label for="day" class="control-label">Week Day</label>
+          </div>
+          <div class="col-xs-4">
+            <select ng-model="forPlaylist.settings.weekday" ng-options="weeklist.indexOf(weekday) as weekday for weekday in weeklist" title="Enter playing week day" class="form-control"></select>
+          </div>
+          <div class="col-xs-2">
+            <label for="playDate" class="control-label">Day of Month</label>
+          </div>
+          <div class="col-xs-4">
+            <select ng-model="forPlaylist.settings.monthday" ng-options="dayslist.indexOf(day) as day for day in dayslist" title="Enter playing date" class="form-control"></select>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="starttime" class="control-label">Every Day Start Time</label>
-      <input type="time" ng-model="forPlaylist.settings.starttime" name="starttime" title="Everyday Start Time" class="form-control"/>
-    </div>
-    <div class="form-group">
-      <label for="endtime" class="control-label">Every Day End Time</label>
-      <input type="time" ng-model="forPlaylist.settings.endtime" name="enddate" title="Everyday End Time" class="form-control"/>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h4><strong>At Specified Time</strong><small>&nbsp;&nbsp;Only at specific time of the day (for e.g. 7AM - 11AM)</small></h4>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <div class="col-xs-2">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" ng-model="forPlaylist.settings.timeEnable"/><small ng-show="!forPlaylist.settings.timeEnable">Schedule</small><small ng-show="forPlaylist.settings.timeEnable">Begin</small>
+              </label>
+            </div>
+          </div>
+          <div class="col-xs-5">
+            <input type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.starttimeObj" name="starttime" title="Enter Start Time" class="form-control"/>
+          </div>
+          <div class="col-xs-1"><small ng-show="forPlaylist.settings.timeEnable">till</small></div>
+          <div class="col-xs-4">
+            <input type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.endtimeObj" name="endtime" title="Enter End Time" class="form-control"/>
+          </div>
+        </div>
+      </div>
     </div>
   </form>
-</div>
-<div class="modal-footer">
   <button ng-click="scheduleCalendarModal.close()" class="btn">Cancel</button>
-  <button ng-click="saveSchedules()" class="btn btn-danger">OK</button>
+  <button ng-click="saveSchedules(schedulecal)" class="btn btn-success">OK</button>
 </div>

@@ -60,7 +60,7 @@ exports.deploy = function (installation,group, cb) {
             )
         },
         function (async_cb) {
-            var syncPath = path.join(config.syncDir,installation, group.name);
+            var syncPath = path.join(config.syncDir, installation, group.name);
             fs.readdir(syncPath, function (err, data) {
                 if (err)
                     async_cb(err)
@@ -84,7 +84,44 @@ exports.deploy = function (installation,group, cb) {
                     )
                 }
             })
-
+        },
+        function(async_cb){ // brand video check
+            var syncPath = path.join(config.syncDir,installation,group.name,"brand_intro.mp4"),
+                mediaPath = path.join(config.mediaDir,"brand_intro.mp4");
+            fs.exists(mediaPath,function(exists){
+                if(!exists)
+                    async_cb();
+                else{
+                    // remove symlink
+                    fs.unlink(syncPath,function(err){
+                        fs.symlink(mediaPath,syncPath,function(err){
+                            // create new symlink
+                            if(err)
+                                console.log('error in creating symlink to brand video');
+                            async_cb();
+                        })
+                    })
+                }
+            })
+        },
+        function(async_cb){ // welcome screen file check
+            var syncPath = path.join(config.syncDir,installation,group.name,"welcome.ejs"),
+                mediaPath = path.join(config.mediaDir,"welcome.ejs");
+            fs.exists(mediaPath,function(exists){
+                if(!exists)
+                    async_cb();
+                else{
+                    // remove symlink
+                    fs.unlink(syncPath,function(err){
+                        fs.symlink(mediaPath,syncPath,function(err){
+                            // create new symlink
+                            if(err)
+                                console.log('error in creating symlink to welcome.ejs');
+                            async_cb();
+                        })
+                    })
+                }
+            })
         }], function (err, results) {
             if (err) {
                 console.log("Error in deploy: ", err);

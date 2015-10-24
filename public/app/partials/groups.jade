@@ -4,13 +4,13 @@
             a.pull-right(ng-click='fn.edit()'): em.text-danger {{fn.editMode?'Done':'Edit'}}
     .panel-body
         ul.nav.nav-pills.nav-stacked
-            li(ng-repeat="group in groups",ng-class="fn.getClass(group)")
-                a(ng-click="fn.selected(group)")
+            li(ng-repeat="item in group.groups",ng-class="fn.getClass(item)")
+                a(ng-click="fn.selected(item)")
                     .row
                         .col-sm-10
-                            small(ng-hide="group.renameEnable && fn.editMode") {{ group.name }}
-                            .form-group(ng-show="group.renameEnable && fn.editMode")
-                                input.form-control(type='text', ng-model='group.newname',ng-blur="fn.rename($index)")
+                            small(ng-hide="item.renameEnable && fn.editMode") {{ item.name }}
+                            .form-group(ng-show="item.renameEnable && fn.editMode")
+                                input.form-control(type='text', ng-model='item.newname',ng-blur="fn.rename($index)")
                         .col-sm-2
                             button.close(ng-click='$event.stopPropagation();fn.delete($index);',ng-if="fn.editMode")
                                 i.fa.fa-times-circle(ng-class="{'text-danger': fn.editMode}")

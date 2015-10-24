@@ -6,27 +6,12 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul style="margin-left:20px;" class="nav navbar-nav">
-        <li ng-class="getClass('home.assets.asset')"><a ui-sref="home.assets.assets" ui-sref-opts="{reload: true}">Assets</a></li>
-        <li ng-class="getClass('home.assets.playlist')"><a ui-sref="home.assets.playlists" ui-sref-opts="{reload: true}">Playlists</a></li>
+        <li ng-class="getClass('home.assets.playlist')"><a ui-sref="home.assets.main" ui-sref-opts="{reload: true}">Assets</a></li>
         <li ng-class="getClass('home.players')"><a ui-sref="home.players.players" ui-sref-opts="{reload: true}">Players</a></li>
-        <li ng-class="getClass('home.license')"><a ui-sref="home.license" ui-sref-opts="{reload: true}">Settings</a></li>
+        <li ng-class="getClass('home.license')"><a ui-sref="home.settings" ui-sref-opts="{reload: true}">Settings</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-          <form class="navbar-form">
-            <input type="text" placeholder="Search" ng-model="search.$" class="form-control"/>
-          </form>
-        </li>
-        <li dropdown="dropdown" ng-show="getClass('home.assets')" class="dropdown">
-          <button dropdown-toggle="dropdown-toggle" class="btn btn-danger dropdown-toggle navbar-btn"><i class="fa fa-plus">&nbsp;Create Asset</i></button>
-          <ul role="menu" class="dropdown-menu">
-            <li>
-              <nodeims-file-upload onstart="upload.functions.onstart()" onprogress="upload.functions.onprogress(percentDone)" onerror="upload.functions.onerror(files, type, msg)" ondone="upload.functions.ondone(files, data)">Upload Files</nodeims-file-upload>
-            </li>
-            <li><a ng-click="upload.functions.link()" class="btn btn-link btn-block">Add a Link</a></li>
-            <li><a ng-click="upload.functions.configureGCalendar()" class="btn btn-link btn-block">Add Calendar</a></li>
-          </ul>
-        </li>
+        <li><a href="https://twitter.com/pisignage" target="_blank" translate="translate"><small class="text-info">follow us on&nbsp;<i class="fa fa-twitter-square text-info"></i>&nbsp;for latest updates and tips</small></a></li>
       </ul>
     </div>
   </div>

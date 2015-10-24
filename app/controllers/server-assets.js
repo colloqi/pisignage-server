@@ -192,3 +192,20 @@ exports.storeDetails = function (req, res) {
     });
     sendResponse(res);
 }
+
+exports.updateObject = function(req,res) {
+    Asset.load(req.body.dbdata._id, function (err, asset) {
+        if (err) {
+            return rest.sendError(res, 'Categories saving error', err);
+        } else {
+            delete req.body.dbdata.__v;        //do not copy version key
+            asset = _.extend(asset, req.body.dbdata);
+            asset.save(function (err, data) {
+                if (err)
+                    return rest.sendError(res, 'Categories saving error', err);
+
+                return rest.sendSuccess(res, 'Categories saved', data);
+            });
+        }
+    })
+}

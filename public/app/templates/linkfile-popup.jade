@@ -6,7 +6,7 @@
     ul.list-group
         li.list-group-item.list-group-item-info
             input.form-control(type="text",placeholder="Filter by Name",ng-model="search")
-        li.list-group-item(ng-repeat="file in allAssets['All'].assets | filter:search ",ng-click="linkFileSave(file.fileDetails.name)")
+        li.list-group-item(ng-repeat="file in asset.allAssets.assets | filter:search ",ng-click="linkFileSave(file.fileDetails.name)")
             .media
                 .media-left
                     a.pull-left(href="#" , ng-if="file.fileDetails.thumbnail")

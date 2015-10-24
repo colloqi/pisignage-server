@@ -10,6 +10,7 @@ var GroupSchema = new Schema({
     lastDeployed:           String,
 
     orientation:            {type: String,default: 'landscape'},
+    animationEnable:        {type: Boolean, default: false},
     resolution:             {type: String,default: '720p'},
 
     createdAt:              {type: Date, default: Date.now},

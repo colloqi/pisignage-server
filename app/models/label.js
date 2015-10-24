@@ -14,9 +14,7 @@ var mongoose = require('mongoose'),
  */
 var LabelSchema= new Schema({
     name:                   {type: String,unique: true, index: true},
-    
-    installation:           {type: String,default:'default'},
-    
+
     createdAt:              {type: Date, default: Date.now},
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}
 })

@@ -1,0 +1,47 @@
+.modal-header
+    h3.text-warning() Ticker for the Play-list
+.modal-body
+    form(name='playlist.popForm')
+        .row
+            .col-xs-4
+                .checkbox
+                    label
+                        input(type='checkbox',name='ticker_checkbox', ng-model='playlist.selectedPlaylist.settings.ticker.enable')
+                        span Enable Ticker
+            .col-xs-2(ng-show='playlist.selectedPlaylist.settings.ticker.enable')
+                .radio
+                    label.text-muted.pull-right: small() Type
+            .col-xs-2(ng-show='playlist.selectedPlaylist.settings.ticker.enable')
+                .radio
+                    label
+                        input(type='radio',value='scroll',ng-model='playlist.selectedPlaylist.settings.ticker.behavior')
+                        span() Scroll
+            .col-xs-2(ng-show='playlist.selectedPlaylist.settings.ticker.enable')
+                .radio
+                    label
+                        input(type='radio',value='slide',ng-model='playlist.selectedPlaylist.settings.ticker.behavior')
+                        span() Slide
+        .row(ng-show='playlist.selectedPlaylist.settings.ticker.enable')
+            .col-xs-4
+                .checkbox
+                    label
+                        input(type='checkbox',name='rss_checkbox', ng-model='playlist.selectedPlaylist.settings.ticker.rss.enable')
+                        span() Use RSS feed
+            .col-xs-2
+                label.text-muted.pull-right: small() CSS
+            .col-xs-6
+                input.form-control(type='text',placeholder='e.g. color:#eee; font-style:italic; ',
+                                        ng-model='playlist.selectedPlaylist.settings.ticker.style')
+        .form-group
+            .col-xs-12 &nbsp;
+        .form-group(ng-show="playlist.selectedPlaylist.settings.ticker.enable && playlist.selectedPlaylist.settings.ticker.rss.enable")
+            label.control-label() RSS feed Link
+            input.form-control(type='text',ng-model='playlist.selectedPlaylist.settings.ticker.rss.link',
+                                    placeholder="enter your rss link ....")
+        .form-group(ng-show="playlist.selectedPlaylist.settings.ticker.enable && !playlist.selectedPlaylist.settings.ticker.rss.enable")
+            label.control-label() Add Messages for the ticker
+            textarea.form-control( name='ticker_messages',rows=5,
+                                    ng-model='playlist.selectedPlaylist.settings.ticker.messages',
+                                    placeholder="Enter messages here")
+        .form-group
+            button.btn.btn-success(ng-click='saveSettings()') SAVE

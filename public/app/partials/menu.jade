@@ -8,34 +8,18 @@ nav.navbar.navbar-default.navbar-fixed-top
                 img(src="app/img/pisignage-logo.png",height="32px")
         #navbar.navbar-collapse.collapse
             ul.nav.navbar-nav(style="margin-left:20px;")
-                li(ng-class="getClass('home.assets.asset')")
-                    a(ui-sref="home.assets.assets",ui-sref-opts="{reload: true}") Assets
                 li(ng-class="getClass('home.assets.playlist')")
-                    a(ui-sref="home.assets.playlists",ui-sref-opts="{reload: true}") Playlists
+                    a(ui-sref="home.assets.main",ui-sref-opts="{reload: true}") Assets
                 li(ng-class="getClass('home.players')")
                     a(ui-sref="home.players.players",ui-sref-opts="{reload: true}") Players
                 li(ng-class="getClass('home.license')")
-                    a(ui-sref="home.license",ui-sref-opts="{reload: true}") Settings
+                    a(ui-sref="home.settings",ui-sref-opts="{reload: true}") Settings
             ul.nav.navbar-nav.navbar-right
                 li
-                    form.navbar-form
-                        input.form-control(type="text",placeholder="Search",ng-model="search.$")
-                li.dropdown(dropdown,ng-show="getClass('home.assets')")
-                    button.btn.btn-danger.dropdown-toggle.navbar-btn(dropdown-toggle)
-                        i.fa.fa-plus &nbsp;Create Asset
-                    ul.dropdown-menu(role="menu")
-                        li
-                            nodeims-file-upload(onstart='upload.functions.onstart()',
-                                                    onprogress='upload.functions.onprogress(percentDone)',
-                                                    onerror='upload.functions.onerror(files, type, msg)',
-                                                    ondone='upload.functions.ondone(files, data)')
-                                | Upload Files
-                        li
-                            a.btn.btn-link.btn-block(ng-click="upload.functions.link()")
-                                | Add a Link
-                        li
-                            a.btn.btn-link.btn-block(ng-click="upload.functions.configureGCalendar()")
-                                | Add Calendar
+                    a(href="https://twitter.com/pisignage", target="_blank",translate)
+                        small.text-info follow us on&nbsp;
+                            i.fa.fa-twitter-square.text-info
+                            | &nbsp;for latest updates and tips
 
 
 
