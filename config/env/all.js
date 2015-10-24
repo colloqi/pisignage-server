@@ -13,6 +13,7 @@ module.exports = {
     releasesDir: dataDir+'/releases',
 
     uploadDir: assetDir,
+    licenseDir: dataDir+'/licenses',
     licenseDirPath: dataDir+'/licenses/',
 
     syncDir: path.join(dataDir, '/sync_folders'),

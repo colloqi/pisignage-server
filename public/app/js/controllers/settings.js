@@ -68,6 +68,7 @@ angular.module('piSettings.controllers', []).
             })
 
         $scope.saveSettings= function(){
+            $scope.settingsForm.$setPristine();
             $http.post(piUrls.settings, $scope.settings)
                 .success(function(data, status) {
                     if (data.success) {

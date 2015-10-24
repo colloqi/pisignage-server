@@ -99,19 +99,27 @@ exports.getSettings = function(req,res) {
 }
 
 exports.updateSettings = function(req,res) {
+    var restart;
     Settings.findOne(function (err, settings) {
         if (err)
             return rest.sendError(res, 'Unable to update Settings', err);
 
+        if (settings.installation != req.body.installation)
+            restart = true;
         if (settings)
             settings = _.extend(settings, req.body)
         else
             settings = new Settings(req.body);
         settings.save(function (err, data) {
             if (err) {
-                return rest.sendError(res, 'Unable to update Settings', err);
+                rest.sendError(res, 'Unable to update Settings', err);
             } else {
-                return rest.sendSuccess(res, 'Settings Saved', data);
+                rest.sendSuccess(res, 'Settings Saved', data);
+            }
+            if (restart)  {
+                console.log("restarting server")
+                require('child_process').fork(require.main.filename);
+                process.exit(0);
             }
         });
     })

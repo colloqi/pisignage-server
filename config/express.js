@@ -109,6 +109,8 @@ module.exports = function (app) {
 
     app.use('/sync_folders',serveIndex(config.syncDir));
     app.use('/sync_folders',express.static(config.syncDir));
+    app.use('/releases',express.static(config.releasesDir));
+    app.use('/licenses',express.static(config.licenseDir));
 
     app.use('/media', express.static(path.join(config.mediaDir)));
     app.use(express.static(path.join(config.root, 'public')));
