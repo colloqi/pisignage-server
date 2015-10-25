@@ -81,7 +81,7 @@ var sendConfig = function (player, group, periodic) {
     }
     retObj.installation = installation;
     retObj.TZ = player.TZ;
-    retObj.baseUrl = '/sync_folders/';
+    retObj.baseUrl = '/sync_folders/' + installation + '/';
     retObj.assets = group.assets;
     retObj.lastDeployed = group.lastDeployed;
     retObj.name = player.name;
