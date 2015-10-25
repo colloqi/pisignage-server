@@ -6,7 +6,7 @@
   <form name="shellform" ng-submit="execute()" class="row">
     <div class="form-group">
       <div class="input-group col-xs-12">
-        <input type="text" ng-model="msg.cmd" class="form-control"/><span class="input-group-btn">
+        <input type="text" ng-model="msg.cmd" ng-keydown="oldEntry($event)" class="form-control"/><span class="input-group-btn">
           <button type="submit" class="btn btn-success">EXECUTE</button></span>
       </div>
     </div>

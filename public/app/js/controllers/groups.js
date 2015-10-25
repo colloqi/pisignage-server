@@ -294,8 +294,7 @@ angular.module('piGroups.controllers', [])
         };
     })
 
-    .controller('ServerPlayerCtrl', function($scope,$http,piUrls,$stateParams,$interval,$modal,TZNames, playerLoader) {
-
+    .controller('ServerPlayerCtrl', function($scope,$http,piUrls,$stateParams,$interval,$modal,TZNames, playerLoader,commands) {
         $scope.player = playerLoader.player;
         $scope.group = playerLoader.group;
         $scope.playlist = playerLoader.playlist;
@@ -318,6 +317,7 @@ angular.module('piGroups.controllers', [])
         $scope.shellCommand = function(player) {
             if (player.statusClass == "text-danger")
                 return console.log("Player is offline");
+            
             $scope.msg = {player:player,cmd:'',err:"Type a shell command..."};
             $scope.modal = $modal.open({
                 templateUrl: '/app/templates/shell-popup.html',
@@ -329,6 +329,8 @@ angular.module('piGroups.controllers', [])
             $scope.msg.err = "Please wait..."
             $scope.msg.stderr = null;
             $scope.msg.stdout = null;
+            commands.save($scope.msg.cmd); // save commands
+
             $http
                 .post(piUrls.pishell+$scope.msg.player._id, {cmd: $scope.msg.cmd})
                 .success(function(data, status) {
@@ -358,6 +360,14 @@ angular.module('piGroups.controllers', [])
                 })
                 .error(function(data, status) {
                 });
+        }
+
+        $scope.oldEntry = function(event){ // handle every key-press event to check and  save commands
+            if(event.keyIdentifier == 'Up')
+                $scope.msg.cmd = commands.previous();
+            else if(event.keyIdentifier == 'Down'){
+                $scope.msg.cmd = commands.next();
+            }
         }
 
         $interval(playerLoader.getPlayers,60000);

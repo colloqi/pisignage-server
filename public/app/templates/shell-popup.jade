@@ -4,7 +4,7 @@
     form.row(name="shellform",ng-submit='execute()')
         .form-group
             .input-group.col-xs-12
-                input.form-control(type='text', ng-model='msg.cmd')
+                input.form-control(type='text', ng-model='msg.cmd',ng-keydown="oldEntry($event)")
                 span.input-group-btn
                     button.btn.btn-success(type="submit") EXECUTE
     .alert.alert-info
