@@ -117,28 +117,4 @@ angular.module('piPlayers.services', [])
         }
         loadAllModels();
         return playerLoader;
-    }).factory('commands',function(){ // get cached commands 
-        var storedArry =['*** Top of List Reached ***','tail -200 /home/pi/forever_out.log'], // favorite list
-            current = 0;
-
-        return {
-            previous: function(){ // get previous command
-                --current;
-                if(current <= 0) 
-                    current = 0 ;
-                
-                return storedArry[current];
-            },
-            next: function(){ // get next command
-                ++current;
-                if(current >= storedArry.length)
-                     current = storedArry.length;
-                
-                return storedArry[current];
-            },
-            save: function(cmd){ // save command
-                storedArry.push(cmd);
-                current = storedArry.length;
-            }
-        }
-    })
+    });

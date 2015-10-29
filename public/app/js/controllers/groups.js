@@ -362,13 +362,13 @@ angular.module('piGroups.controllers', [])
                 });
         }
 
-        $scope.oldEntry = function(event){ // handle every key-press event to check and  save commands
-            if(event.keyIdentifier == 'Up')
+        $scope.getOldEntry = function(event){ // handle every key-press event to check and  save commands
+            if(event.keyCode == 38)
                 $scope.msg.cmd = commands.previous();
-            else if(event.keyIdentifier == 'Down'){
+            else if(event.keyCode == 40)
                 $scope.msg.cmd = commands.next();
-            }
         }
+
 
         $interval(playerLoader.getPlayers,60000);
     })
