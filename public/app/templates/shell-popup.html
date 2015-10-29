@@ -1,14 +1,14 @@
 
 <div class="modal-header">
-  <h3 class="text-warning">Pi Shell</h3>
+  <h4 class="text-warning">Pi Shell</h4>
 </div>
 <div class="modal-body">
   <form name="shellform" ng-submit="execute()" class="row">
     <div class="form-group">
       <div class="input-group col-xs-12">
-        <input type="text" ng-model="msg.cmd" class="form-control"/><span class="input-group-btn">
+        <input type="text" ng-model="msg.cmd" ng-keydown="getOldEntry($event)" class="form-control"/><span class="input-group-btn">
           <button type="submit" class="btn btn-success">EXECUTE</button></span>
-      </div>
+      </div><small><i class="text-success">Use arrow keys &nbsp &#8593; &nbsp and &nbsp &#8595; &nbsp to check Commands history</i></small>
     </div>
   </form>
   <div class="alert alert-info">

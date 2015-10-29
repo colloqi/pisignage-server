@@ -117,4 +117,4 @@ angular.module('piPlayers.services', [])
         }
         loadAllModels();
         return playerLoader;
-    })
+    });

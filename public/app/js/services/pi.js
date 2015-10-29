@@ -229,4 +229,33 @@ angular.module('pisignage.services',[]).
                 }
             };
         }
-    ]);
+    ]).factory('commands',function(){ // get commands 
+        var storedArry =['*** Top of List Reached ***',
+                            'uptime',
+                            'date',
+                            'ifconfig',
+                            'tail -200 /home/pi/forever_err.log',
+                            'tail -200 /home/pi/forever_out.log'
+                            ],
+            current = storedArry.length;
+
+        return {
+            previous: function(){ // get previous command
+                --current;
+                if(current <= 0) 
+                    current = 0 ;
+                return storedArry[current];
+            },
+            next: function(){ // get next command
+                ++current;
+                if(current >= storedArry.length)
+                     current = storedArry.length;
+                
+                return storedArry[current];
+            },
+            save: function(cmd){ // save command
+                storedArry.push(cmd);
+                current = storedArry.length;
+            }
+        }
+    });

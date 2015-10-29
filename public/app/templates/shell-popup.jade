@@ -1,12 +1,14 @@
 .modal-header
-    h3.text-warning Pi Shell
+    h4.text-warning Pi Shell
 .modal-body
     form.row(name="shellform",ng-submit='execute()')
         .form-group
             .input-group.col-xs-12
-                input.form-control(type='text', ng-model='msg.cmd')
+                input.form-control(type='text', ng-model='msg.cmd',ng-keydown='getOldEntry($event)')
                 span.input-group-btn
                     button.btn.btn-success(type="submit") EXECUTE
+            small
+                i.text-success Use arrow keys &nbsp &#8593; &nbsp and &nbsp &#8595; &nbsp to check Commands history
     .alert.alert-info
         pre(ng-if="msg.err"): small.text-danger {{msg.err}}
         pre(ng-if="msg.stdout"): small.text-info stdout: {{msg.stdout}}
