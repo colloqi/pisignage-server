@@ -9,7 +9,8 @@ var	config = require('../../config/config'),
 	rest = require('../others/restware');
 
 var mongoose = require('mongoose'),
-    Settings = mongoose.model('Settings')
+    Settings = mongoose.model('Settings'),
+    settingsModel = null;
 
 var licenseDir = config.licenseDirPath
 
@@ -72,8 +73,12 @@ exports.deleteLicense = function(req,res){ // delete particular license and retu
 exports.getSettingsModel = function(cb) {
     Settings.findOne(function (err, settings) {
         if (err || !settings) {
-            settings = new Settings();
-            settings.save(cb);
+            if (settingsModel) {
+                cb(null, settingsModel)
+            } else {
+                settingsModel = new Settings();
+                settingsModel.save(cb);
+            }
         } else {
             cb(null,settings);
         }

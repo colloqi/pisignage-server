@@ -77,7 +77,7 @@ var sendConfig = function (player, group, periodic) {
         else
             retObj.currentPlaylist = group.playlists[0];
     } else {
-        retObj.playlists = group.playlists;
+        retObj.playlists = group.playlists || [];
     }
     retObj.installation = installation;
     retObj.TZ = player.TZ;

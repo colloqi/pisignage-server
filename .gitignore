@@ -3,3 +3,5 @@ node_modules
 
 public/app/bower_components
 data/sync_folders
+
+data/releases/pi-image.zip
