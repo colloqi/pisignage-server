@@ -1,7 +1,7 @@
 'use strict;'
 
 angular.module('piAssets.controllers',[])
-    .controller('AssetsCtrl',function($scope,$state,piUrls,$http, assetLoader) {
+    .controller('AssetsCtrl',function($scope,piUrls,$http, assetLoader) {
 
         $scope.asset = assetLoader.asset;
         $scope.playlist = assetLoader.playlist;
@@ -432,19 +432,19 @@ angular.module('piAssets.controllers',[])
         })
     })
 
-    .controller('AssetViewCtrl', function($scope, $rootScope,$window, $http, piUrls, $stateParams, assetLoader){
+    .controller('AssetViewCtrl', function($scope, $rootScope,$window, $http, piUrls, $state, assetLoader){
 
         //merge the apis for the three
         $scope.fileType;
         $scope.selectedLabels = [];
-        switch($stateParams.file.slice($stateParams.file.lastIndexOf('.')+1)) {
+        switch($state.params.file.slice($state.params.file.lastIndexOf('.')+1)) {
             case 'gcal':
                 $scope.fileType = 'gcal';
-                $scope.calendarname = $stateParams.file;
+                $scope.calendarname = $state.params.file;
 
-                if($stateParams.file != "new"){
+                if($state.params.file != "new"){
                     $http
-                        .get(piUrls.calendars+$stateParams.file)
+                        .get(piUrls.calendars+$state.params.file)
                         .success(function(data, status) {
                             if (data.success) {
                                 $scope.calendar = data.data;
@@ -458,7 +458,7 @@ angular.module('piAssets.controllers',[])
             case 'tv':
                 $scope.fileType = 'link';
                 $http
-                    .get(piUrls.links+$stateParams.file)
+                    .get(piUrls.links+$state.params.file)
                     .success(function(data,status){
                         if(data.success){
                             $scope.urlLink = JSON.parse(data.data);
@@ -470,7 +470,7 @@ angular.module('piAssets.controllers',[])
                 break;
             default:
                 $scope.fileType = 'other';
-                $http.get(piUrls.files + $stateParams.file)
+                $http.get(piUrls.files + $state.params.file)
                     .success(function(data, status) {
                         if (data.success) {
                             $scope.filedetails = data.data;
@@ -487,7 +487,7 @@ angular.module('piAssets.controllers',[])
 
         $scope.selectedCalendar = function(value) {
             $http
-                .post(piUrls.calendars+$stateParams.file, {email: value})
+                .post(piUrls.calendars+$state.params.file, {email: value})
                 .success(function(data, status) {
                     if (data.success) {
                         console.log(data);
@@ -500,7 +500,7 @@ angular.module('piAssets.controllers',[])
         $scope.save = function() {
             if ($scope.filedetails && $scope.filedetails.dbdata) {
                 $scope.filedetails.dbdata.labels = $scope.selectedLabels;
-                $http.post(piUrls.files + $stateParams.file, {dbdata: $scope.filedetails.dbdata})
+                $http.post(piUrls.files + $state.params.file, {dbdata: $scope.filedetails.dbdata})
                     .success(function (data, status) {
                         if (data.success) {
                             $scope.asset.filesDetails[data.data.name].labels = data.data.labels;

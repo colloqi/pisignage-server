@@ -1,7 +1,6 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Group = mongoose.model('Group'),
     Player = mongoose.model('Player'),
     rest = require('../others/restware'),
     config = require('../../config/config'),

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('piLabels.controllers', [])
-    .controller('LabelsCtrl', function ($scope,$stateParams, $http,$location,piUrls, assetLoader,piPopup) {
+    .controller('LabelsCtrl', function ($scope, $http,$location,piUrls, assetLoader,piPopup) {
 
         $scope.label = assetLoader.label;
 

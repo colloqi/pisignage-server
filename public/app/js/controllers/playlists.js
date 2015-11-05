@@ -1,7 +1,7 @@
 'use strict;'
 
 angular.module('piPlaylists.controllers', [])
-    .controller('PlaylistsCtrl',function($scope, $http, $state,$stateParams, piUrls,assetLoader,piPopup){
+    .controller('PlaylistsCtrl',function($scope, $http, $state, piUrls,assetLoader,piPopup){
 
         $scope.fn = {};
         $scope.fn.editMode = false;
@@ -116,7 +116,7 @@ angular.module('piPlaylists.controllers', [])
 
 
     .controller('PlaylistViewCtrl',
-        function($scope, $http, $rootScope, piUrls, $window,$state, $stateParams,$modal, assetLoader){
+        function($scope, $http, $rootScope, piUrls, $window,$state,$modal, assetLoader){
 
             //modal for layout
             $scope.layouts = {
@@ -231,7 +231,7 @@ angular.module('piPlaylists.controllers', [])
 
         })
 
-    .controller('PlaylistAddCtrl',function($scope, $http,  piUrls,$state, $stateParams,$modal, assetLoader){
+    .controller('PlaylistAddCtrl',function($scope, $http,  piUrls,$state,$modal, assetLoader){
 
         $scope.sortListName = "playlistAssets"
         if (!$scope.asset.showAssets)

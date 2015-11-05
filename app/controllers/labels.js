@@ -27,7 +27,7 @@ exports.loadObject = function (req, res, next, id) {
 //list of objects
 exports.index = function (req, res) {
 
-    var criteria = {installation: req.installation};
+    var criteria = {};
 
     if (req.query['string']) {
         var str = new RegExp(req.query['string'], "i")
@@ -65,7 +65,7 @@ exports.getObject = function (req, res) {
 exports.createObject = function (req, res) {
 
     var object = new Label(req.body);
-    object.installation = req.installation;
+    //object.installation = req.installation;
     if (req.user) {
         object.createdBy = req.user._id;  //creator of entity
     }

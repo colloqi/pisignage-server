@@ -71,6 +71,7 @@ function checkPlayersWatchdog() {
 var sendConfig = function (player, group, periodic) {
     var retObj = {};
     retObj.secret = group.name;
+    group.playlists = group.playlists || [];
     if (!player.version || player.version.charAt(0) == "0") {
         if (group.playlists[0] && group.playlists[0].name)
             retObj.currentPlaylist = group.playlists[0].name

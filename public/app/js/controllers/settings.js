@@ -28,8 +28,6 @@ angular.module('piSettings.controllers', []).
             },
             onerror: function (files, type, msg) {
                 $scope.statusMsg = 'Upload Error,' + type + ': ' + msg;
-                ;
-                ;
             }
         };
         $scope.deleteEntry = function (filename) { // delete license
