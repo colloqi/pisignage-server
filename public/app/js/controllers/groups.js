@@ -2,7 +2,7 @@
 
 angular.module('piGroups.controllers', [])
 
-    .controller('GroupsCtrl', function ($scope, $stateParams, $http, piUrls, $location, piPopup,playerLoader) {
+    .controller('GroupsCtrl', function ($scope, $http, piUrls, $location, piPopup,playerLoader) {
 
         $scope.fn = {};
         $scope.fn.editMode = false;
@@ -104,7 +104,7 @@ angular.module('piGroups.controllers', [])
         }
     })
 
-    .controller('GroupDetailCtrl', function ($scope, $rootScope, $http, piUrls, $stateParams, $location, $modal,
+    .controller('GroupDetailCtrl', function ($scope, $rootScope, $http, piUrls,$state, $location, $modal,
                                                     weeks, days,playerLoader,$timeout) {
 
         $scope.sortable = {
@@ -121,9 +121,9 @@ angular.module('piGroups.controllers', [])
 
         $scope.group = playerLoader.group;
         var initSortArray = function(){
-            if ($stateParams.group) {
+            if ($state.params.group) {
                 for (var i= 0,len=$scope.group.groups.length;i<len;i++) {
-                    if ($stateParams.group == $scope.group.groups[i]._id) {
+                    if ($state.params.group == $scope.group.groups[i]._id) {
                         $scope.group.selectedGroup = $scope.group.groups[i];
                         $scope.sortable.playlistArray = $scope.group.selectedGroup.playlists
                         break;
@@ -160,7 +160,7 @@ angular.module('piGroups.controllers', [])
             }
 
             $http
-                .post(piUrls.groups + $stateParams.group, $scope.group.selectedGroup)
+                .post(piUrls.groups + $state.params.group, $scope.group.selectedGroup)
                 .success(function (data, status) {
                     if (data.success) {
                         $scope.group.selectedGroup = data.data;
@@ -294,7 +294,7 @@ angular.module('piGroups.controllers', [])
         };
     })
 
-    .controller('ServerPlayerCtrl', function($scope,$http,piUrls,$stateParams,$interval,$modal,TZNames, playerLoader,commands) {
+    .controller('ServerPlayerCtrl', function($scope,$http,piUrls,$interval,$modal,TZNames, playerLoader,commands) {
         $scope.player = playerLoader.player;
         $scope.group = playerLoader.group;
         $scope.playlist = playerLoader.playlist;
