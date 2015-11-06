@@ -13,11 +13,6 @@ var favicon = require('serve-favicon'),             //express middleware
     cookieParser = require('cookie-parser');
 
 
-var auth = require('http-auth'),
-    digest = auth.basic({
-        realm:  "pisignage",
-        file:   path.join(config.dataDir,"/htpasswd")
-    });
 
 //CORS middleware  , add more controls for security like site names, timeout etc.
 var allowCrossDomain = function (req, res, next) {

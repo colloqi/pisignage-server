@@ -4,6 +4,7 @@ var scheduler = require('node-schedule'),
 var http = require('http'),
     fs = require('fs'),
     path = require('path'),
+    async = require('async'),
     config = require('../../config/config'),
     serverFile = path.join(config.releasesDir,"server-package.json"),
     packageJsonFile = path.join(config.releasesDir,"package.json")
@@ -27,22 +28,49 @@ var download = function(url, dest, cb) {
 };
 
 var checkAndDownloadImage = function() {
-    //download pisignage.com/releases/package.json
-    download("http://pisignage.com/releases/package.json",serverFile, function(err){
-        if (err)
-            console.log(err);
-        //read version, different from local one
-        try {
-            var serverdata = fs.readFileSync(serverFile),
-                localData = fs.readFileSync(packageJsonFile)
-            var serverVersion = JSON.parse(serverdata).version,
+    var serverVersion,
+        localVersion,
+        update = false;
+    async.series([
+        function(async_cb) {
+            //download pisignage.com/releases/package.json
+            download("http://pisignage.com/releases/package.json",serverFile, function(err){
+                if (err)
+                    console.log(err);
+                async_cb(err);
+            })
+        },
+        function(async_cb) {
+            try {
+                var serverdata = fs.readFileSync(serverFile);
+                serverVersion = JSON.parse(serverdata).version;
+            } catch (e) {
+                return async_cb(true)
+            }
+
+            fs.stat(packageJsonFile, function(err) {
+                if (err)
+                    update = true;
+                async_cb(err)
+            })
+        },
+        function(async_cb) {
+            //read version, different from local one
+            try {
+                var localData = fs.readFileSync(packageJsonFile)
                 localVersion = JSON.parse(localData).version
-        } catch(e) {
-            return;
+            } catch (e) {
+                return async_cb(true)
+            }
+            if (serverVersion != localVersion) {
+                update = true;
+            }
+            async_cb()
         }
-        if (serverVersion == localVersion) {
+    ], function(err){
+        if (!update)
             return;
-        }
+
         console.log("New version is available: "+serverVersion)
         var serverLink = "http://pisignage.com/releases/piimage"+serverVersion+".zip",
             imageFile = path.join(config.releasesDir,"piimage"+serverVersion+".zip"),
@@ -54,11 +82,18 @@ var checkAndDownloadImage = function() {
                     console.log(err)
                 } else {
                     //create the symbolic link pi-image.zip to the the donwloaded zip file
-                    fs.unlinkSync(linkFile)
-                    fs.symlinkSync(imageFile,linkFile)
+                    fs.unlink(linkFile, function(err){
+                        fs.symlink(imageFile,linkFile, function(err){
+                            if (err) console.log(err)
+                        })
+
+                    })
                     // update local package.json with the downloaded one
-                    fs.unlinkSync(packageJsonFile)
-                    fs.renameSync(serverFile,packageJsonFile)
+                    fs.unlink(packageJsonFile, function(err) {
+                        fs.rename(serverFile, packageJsonFile, function(err){
+                            if (err) console.log(err)
+                        })
+                    })
                     console.log("piSignage image updated to "+serverVersion);
                 }
             })

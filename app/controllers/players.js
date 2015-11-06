@@ -150,9 +150,17 @@ exports.index = function (req, res) {
                 pages: Math.ceil(count / perPage),
                 count: count
             };
-            pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
-            data.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version};
-            return rest.sendSuccess(res, 'sending Player list', data);
+            fs.readFile('data/releases/package.json', 'utf8', function(err,pkgdata){
+                try {
+                    pipkgjson = JSON.parse(pkgdata)
+                } catch(e) {
+                    err = true;
+                }
+                if (!err) {
+                    data.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version};
+                }
+                return rest.sendSuccess(res, 'sending Player list', data);
+            })
         })
     })
 }
