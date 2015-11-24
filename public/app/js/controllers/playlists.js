@@ -123,6 +123,14 @@ angular.module('piPlaylists.controllers', [])
                 "1": {title: "Single Zone Display", description: "main Zone:1280x720"},
                 "2a": {title: "Two Zones with Main Zone on right", description: "main Zone:960x720, side Zone:320x720"},
                 "2b": {title: "Two Zones with Main Zone on left", description: "main Zone:960x720, side Zone:320x720"},
+                "2c": {
+                    title: "Two Equal Size Zones with Video Zone on left",
+                    disabled:$rootScope.serverConfig.newLayoutsEnable,
+                    description: "main Zone:640x720, side Zone:640x720"},
+                "2d": {
+                    title: "Two Equal Size Zones with Video Zone on right",
+                    disabled:$rootScope.serverConfig.newLayoutsEnable,
+                    description: "main Zone:640x720, side Zone:640x720"},
                 "3a": {
                     title: "Three Zones(full bottom) with Main Zone on right",
                     description: "main Zone:960x540, side Zone:320x540, bottom Zone:1280x180"
@@ -157,7 +165,12 @@ angular.module('piPlaylists.controllers', [])
                     disabled:$rootScope.serverConfig.newLayoutsEnable,
                     description: "main Zone:960x540, side Zone:320x720, banner Zone:960x180"
                 },
-                "2ap": {title: "Portrait Mode", description: "top Zone:720x540,bottom zone:720x740"}
+                "2ap": {title: "Single Zone Portrait Mode", description: "main Zone:720x1280"},
+                "2bp": {
+                    title: "Two Zones Portrait Mode",
+                    disabled:$rootScope.serverConfig.newLayoutsEnable,
+                    description: "top Zone:720x540,bottom zone:720x740"
+                }
             }
 
 

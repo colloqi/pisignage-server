@@ -107,7 +107,7 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
                 tElement.attr("multiple", "multiple");
             }        
             if (!tAttrs.maxFileSizeMb) {
-                tAttrs.maxFileSizeMb = 150;
+                tAttrs.maxFileSizeMb = 500;
             }        
             return function postLink(scope, el, attrs, ctl) {                
                 scope.files = [];

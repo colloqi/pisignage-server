@@ -89,6 +89,8 @@ var sendConfig = function (player, group, periodic) {
     retObj.resolution = group.resolution || '720p';
     retObj.orientation = group.orientation || 'landscape';
     retObj.animationEnable =  group.animationEnable || false;
+    retObj.sleep = group.sleep || {enable: false, ontime: null , offtime: null };
+    retObj.signageBackgroundColor =  group.signageBackgroundColor || "#000";
     if (!pipkgjson)
         pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
     retObj.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version};
@@ -101,6 +103,7 @@ var sendConfig = function (player, group, periodic) {
 
     retObj.authCredentials = settings.authCredentials;
     retObj.assetLogEnable = settings.assetLogEnable;
+    retObj.currentTime = Date.now();
     socketio.emitMessage(player.socket, 'config', retObj);
 }
 
@@ -342,6 +345,7 @@ exports.upload = function (cpuId, filename, data) {
                     logData.playerId = player._id.toString();
                 } catch (e) {
                     //corrupt file
+                    console.log("corrupt log file: "+filename);
                 }
             } else if (path.extname(filename) == '.events') {
                 var lines = data.split('\n'),
@@ -350,11 +354,14 @@ exports.upload = function (cpuId, filename, data) {
                     //console.log(lines[i]);
                     try {
                         logData = JSON.parse(lines[i]);
+                        if (logData.category == "file")
+                            continue;
                         logData.installation = player.installation;
                         logData.playerId = player._id.toString();
                         events.push(logData);
                     } catch (e) {
                         //corrupt file
+                        console.log("corrupt log file: "+filename);
                     }
                 }
             }

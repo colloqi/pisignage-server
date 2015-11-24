@@ -11,7 +11,13 @@ var GroupSchema = new Schema({
 
     orientation:            {type: String,default: 'landscape'},
     animationEnable:        {type: Boolean, default: false},
+    signageBackgroundColor: {type: String, default: "#000"},
     resolution:             {type: String,default: '720p'},
+    sleep: {
+                            enable: {type: Boolean, default: false},
+                            ontime: {type: String},
+                            offtime: {type: String}
+    },
 
     createdAt:              {type: Date, default: Date.now},
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}

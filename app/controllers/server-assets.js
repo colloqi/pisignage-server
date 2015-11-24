@@ -195,7 +195,7 @@ exports.storeDetails = function (req, res) {
 
 exports.updateObject = function(req,res) {
     Asset.load(req.body.dbdata._id, function (err, asset) {
-        if (err) {
+        if (err || !asset) {
             return rest.sendError(res, 'Categories saving error', err);
         } else {
             delete req.body.dbdata.__v;        //do not copy version key
@@ -209,3 +209,4 @@ exports.updateObject = function(req,res) {
         }
     })
 }
+

@@ -50,7 +50,7 @@ exports.index = function (req, res) {
                         playlist.settings = obj.settings || {};
                         playlist.assets = obj.assets || [];
                         playlist.layout = obj.layout || '1';
-                        playlist.videoWindow = obj.videoWindow;
+                        playlist.videoWindow = obj.videoWindow || null;
                         list.push(playlist);
                     }
                     cb();
@@ -94,7 +94,7 @@ exports.getPlaylist = function (req, res) {
                 playlist.settings = obj.settings || {};
                 playlist.assets = obj.assets || [];
                 playlist.layout = obj.layout || '1';
-                playlist.videoWindow = obj.videoWindow;
+                playlist.videoWindow = obj.videoWindow || null;
             }
 
             return rest.sendSuccess(res, ' Sending playlist content', playlist);
@@ -144,7 +144,7 @@ exports.savePlaylist = function (req, res) {
             }
             if (req.body.layout) {
                 fileData.layout = req.body.layout;
-                fileData.videoWindow = req.body.videoWindow;
+                fileData.videoWindow = req.body.videoWindow|| null;
                 dirty = true;
             }
 

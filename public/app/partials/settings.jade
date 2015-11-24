@@ -39,7 +39,7 @@
                                 a.btn.btn-success(type="button",ng-click='saveSettings()',
                                                 ng-disabled="!settingsForm.user.$dirty") SAVE
                         small.text-danger {{loadMsg}}
-                .form-group
+                //.form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',id="log", name='checkbox', ng-model='settings.assetLogEnable', ng-change="saveSettings()")

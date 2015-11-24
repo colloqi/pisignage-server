@@ -142,6 +142,8 @@ angular.module('piGroups.controllers', [])
                 if ($scope.group.selectedGroup.playlists[i].name && $scope.group.selectedGroup.playlists[i].name.length > 0) {
                     var playlist = $scope.playlist.playlists[$scope.playlist.playlistNames.indexOf($scope.group.selectedGroup.playlists[i].name)];
                     playlist.assets.forEach(function (asset) {
+                        if (asset.filename.indexOf("_system") == 0)  //system files, no need to copy
+                            return;
                         if (asset.filename && $scope.group.selectedGroup.assets.indexOf(asset.filename) == -1) {
                             $scope.group.selectedGroup.assets.push(asset.filename);
                         }

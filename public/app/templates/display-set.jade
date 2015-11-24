@@ -1,54 +1,82 @@
 .modal-header
-	h4 Select Display Orientation and Resolution
+    h4 Select Display Orientation and Resolution
 .modal-body
-	form(role="form", name="formdisplay")
-		.form-group.row
-			.col-sm-4.text-right
-				.radio
-					label.text-muted(translate) Resolution
-			.col-sm-4
-				.radio
-					label
-						input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[0].value")
-						small {{resolutions[0].name}}
-			.col-sm-4
-				.radio
-					label
-						input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[1].value")
-						small {{resolutions[1].name}}
-		.form-group.row
-			.col-sm-4.text-right
-				.radio
-					label.text-muted(translate) Orientation
-			.col-sm-4
-				.radio
-					label
-						input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="orientations[0].value")
-						small {{orientations[0].name}}
-			.col-sm-4
-				.radio
-					label
-						input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="orientations[1].value")
-						small {{orientations[1].name}}
-		.form-group.row
-			.col-sm-4.text-right
-				.radio
-					label.text-muted
-						span(translate) Animation
-						| <br>
-						span(translate) (only in pi 2)
-			.col-sm-4
-				.radio
-					label
-						input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[0].value")
-						small {{animations[0].name}}
-			.col-sm-4
-				.radio
-					label
-						input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[1].value")
-						small {{animations[1].name}}
+    form(role="form", name="formdisplay")
+        .form-group.row
+            .col-sm-4.text-right
+                .radio
+                    label.text-muted(translate) Resolution
+            .col-sm-4
+                .radio
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[0].value")
+                        small {{resolutions[0].name}}
+            .col-sm-4
+                .radio
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[1].value")
+                        small {{resolutions[1].name}}
+        .form-group.row
+            .col-sm-4.text-right
+                .radio
+                    label.text-muted(translate) Orientation
+            .col-sm-4
+                .radio
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="orientations[0].value")
+                        small {{orientations[0].name}}
+            .col-sm-4
+                .radio
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="orientations[1].value")
+                        small {{orientations[1].name}}
+        .form-group.row
+            .col-sm-4.text-right
+                .radio
+                    label.text-muted
+                        span(translate) Animation
+                        | <br>
+                        span(translate) (only in pi 2)
+            .col-sm-4
+                .radio
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[0].value")
+                        small {{animations[0].name}}
+            .col-sm-4
+                .radio
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[1].value")
+                        small {{animations[1].name}}
+        .form-group.row
+            .col-xs-4.text-right
+                .radio
+                    label.text-muted: span Signage Background CSS Color
+            .col-xs-4
+                input.form-control(type='text',placeholder='e.g. #666',ng-model='group.selectedGroup.signageBackgroundColor')
+
+
+        .form-group.row
+            .col-sm-4.text-right
+                .radio
+                    label.text-muted
+                        span Schedule Display OFF
+            .col-sm-4
+                .checkbox
+                    label
+                        input(type='checkbox',name='sleep_checkbox', ng-model='group.selectedGroup.sleep.enable')
+                        span Enable
+        .form-group.row(ng-show='group.selectedGroup.sleep.enable')
+            .col-sm-4.col-sm-offset-4
+                label
+                    small ON at
+                    input.form-control(type='time',ng-model="group.selectedGroup.sleep.ontime")
+            .col-sm-4
+                label
+                    small OFF at
+                    input.form-control(type='time',ng-model="group.selectedGroup.sleep.offtime")
+
 
 
 .modal-footer
-	button.btn(ng-click='displayModal.close()') Cancel
-	button.btn.btn-danger(ng-click='saveSettings()') OK
+    button.btn(ng-click='displayModal.close()') Cancel
+    button.btn.btn-danger(ng-click='saveSettings()') OK

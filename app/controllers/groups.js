@@ -117,6 +117,12 @@ exports.updateObject = function (req, res) {
 
     var object = req.object;
     delete req.body.__v;        //do not copy version key
+    if (object.name != req.body.name) {
+        fs.mkdir(path.join(config.syncDir, installation, req.body.name), function (err) {
+            if (err && (err.code != 'EEXIST'))
+                console.log('Unable to create a group folder in server: ' + err);
+        });
+    }
     object = _.extend(object, req.body);
 
     object.save(function (err, data) {

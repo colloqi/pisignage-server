@@ -41,7 +41,8 @@ exports.index = function (req, res) {
         if (err)
             rest.sendError(res,err);
         else
-            rest.sendSuccess(res, "Sending media directory files: ", {files: files, dbdata: dbdata})
+            rest.sendSuccess(res, "Sending media directory files: ",
+                {files: files, dbdata: dbdata, systemAssets: config.systemAssets})
 
     });
 }

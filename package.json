@@ -1,6 +1,6 @@
 {
   "name": "pisignage-server",
-  "version": "0.8.0",
+  "version": "0.9.5",
   "description": "Server to manage piSignage players in a LAN or Private Network.",
   "author": "colloqi <info@pisignage.com>",
   "engines": {

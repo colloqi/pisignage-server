@@ -51,5 +51,6 @@ module.exports = {
         CLIENT_SECRET: '',
         REDIRECT_URL: '',
         REDIRECT_BASE_URL: ''
-    }
+    },
+    systemAssets: ["_system_notice.html"]
 };

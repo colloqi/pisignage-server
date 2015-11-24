@@ -300,6 +300,8 @@ angular.module('piAssets.controllers',[])
                         if (data.success) {
                             //$scope.Filestatus = data.stat_message;
                             $scope.modal.close();
+                            assetLoader.reload();
+                            $state.reload();
                         }
                     })
                     .error(function (data, status) {
