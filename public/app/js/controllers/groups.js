@@ -144,13 +144,16 @@ angular.module('piGroups.controllers', [])
                     playlist.assets.forEach(function (asset) {
                         if (asset.filename.indexOf("_system") == 0)  //system files, no need to copy
                             return;
-                        if (asset.filename && $scope.group.selectedGroup.assets.indexOf(asset.filename) == -1) {
+                        if (asset.filename && $scope.group.selectedGroup.assets.indexOf(asset.filename) == -1
+                                            && asset.filename.indexOf("_system") != 0) {
                             $scope.group.selectedGroup.assets.push(asset.filename);
                         }
-                        if (asset.side && $scope.group.selectedGroup.assets.indexOf(asset.side) == -1) {
+                        if (asset.side && $scope.group.selectedGroup.assets.indexOf(asset.side) == -1
+                                            && asset.side.indexOf("_system") != 0) {
                             $scope.group.selectedGroup.assets.push(asset.side);
                         }
-                        if (asset.bottom && $scope.group.selectedGroup.assets.indexOf(asset.bottom) == -1) {
+                        if (asset.bottom && $scope.group.selectedGroup.assets.indexOf(asset.bottom) == -1
+                                            && asset.bottom.indexOf("_system") != 0) {
                             $scope.group.selectedGroup.assets.push(asset.bottom);
                         }
                     });
