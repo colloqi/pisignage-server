@@ -17,7 +17,9 @@ var GroupSchema = new Schema({
     sleep: {
                             enable: {type: Boolean, default: false},
                             ontime: {type: String},
-                            offtime: {type: String}
+                            offtime: {type: String},
+                            ontimeObj: {type: String},
+                            offtimeObj: {type: String}
     },
 
     createdAt:              {type: Date, default: Date.now},
