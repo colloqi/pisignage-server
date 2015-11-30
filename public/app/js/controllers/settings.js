@@ -70,11 +70,11 @@ angular.module('piSettings.controllers', []).
                 .success(function(data, status) {
                     if (data.success) {
                     }
-                    if ($scope.settingsForm.user.$dirty) {
+                    //if ($scope.settingsForm.user.$dirty) {
                         $scope.settingsForm.$setPristine();
                         $scope.loadMsg = "reloading..."
                         setTimeout($window.location.reload.bind($window.location), 2000);
-                    }
+                    //}
                 })
                 .error(function(data, status) {
                 });

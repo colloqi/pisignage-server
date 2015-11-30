@@ -91,6 +91,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.animationEnable =  group.animationEnable || false;
     retObj.sleep = group.sleep || {enable: false, ontime: null , offtime: null };
     retObj.signageBackgroundColor =  group.signageBackgroundColor || "#000";
+    retObj.urlReloadDisable =  group.urlReloadDisable || false;
     if (!pipkgjson)
         pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
     retObj.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version};

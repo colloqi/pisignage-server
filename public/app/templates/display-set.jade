@@ -54,6 +54,16 @@
             .col-xs-4
                 input.form-control(type='text',placeholder='e.g. #666',ng-model='group.selectedGroup.signageBackgroundColor')
 
+        .form-group.row
+            .col-sm-4.text-right
+                .radio
+                    label.text-muted
+                        span Do not Reload URL for links every time
+            .col-sm-4
+                .checkbox
+                    label
+                        input(type='checkbox',name='reload_checkbox', ng-model='group.selectedGroup.urlReloadDisable')
+                        span Enable
 
         .form-group.row
             .col-sm-4.text-right

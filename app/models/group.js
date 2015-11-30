@@ -12,6 +12,7 @@ var GroupSchema = new Schema({
     orientation:            {type: String,default: 'landscape'},
     animationEnable:        {type: Boolean, default: false},
     signageBackgroundColor: {type: String, default: "#000"},
+    urlReloadDisable:       {type: Boolean, default: false},
     resolution:             {type: String,default: '720p'},
     sleep: {
                             enable: {type: Boolean, default: false},

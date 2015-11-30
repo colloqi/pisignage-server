@@ -78,7 +78,11 @@
             <button type="submit" ng-click="saveSettings()" ng-disabled="downloadAccessForm.$invalid" translate="translate" class="btn btn-success"> Save</button>
           </div>
         </div>
-        <p ng-show="!downloadAccessForm.$dirty" class="text-danger">{{confirmMsg}}</p>
+        <div class="form-group">
+          <div class="col-xs-4 col-xs-offset-4">
+            <p class="text-danger">{{loadMsg}}</p>
+          </div>
+        </div>
       </form>
     </div>
   </div>

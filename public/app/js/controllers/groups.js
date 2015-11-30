@@ -107,6 +107,11 @@ angular.module('piGroups.controllers', [])
     .controller('GroupDetailCtrl', function ($scope, $rootScope, $http, piUrls,$state, $location, $modal,
                                                     weeks, days,playerLoader,$timeout) {
 
+        //make sure state.params.group is set
+        if ($scope.group.selectedGroup && !($state.params.group)) {
+            playerLoader.selectGroup($scope.group.selectedGroup)
+        }
+
         $scope.sortable = {
             options: {
                 orderChanged: function (event) {

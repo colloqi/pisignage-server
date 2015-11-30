@@ -68,5 +68,7 @@
                     div.col-xs-4
                         button.btn.btn-success(type='submit', ng-click='saveSettings()',
                         ng-disabled='downloadAccessForm.$invalid',translate)  Save
-                p.text-danger(ng-show='!downloadAccessForm.$dirty') {{confirmMsg}}
+                .form-group
+                    .col-xs-4.col-xs-offset-4
+                        p.text-danger {{loadMsg}}
 

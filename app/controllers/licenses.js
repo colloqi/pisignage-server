@@ -101,8 +101,8 @@ exports.updateSettings = function(req,res) {
         if (err)
             return rest.sendError(res, 'Unable to update Settings', err);
 
-        if (settings.installation != req.body.installation)
-            restart = true;
+        //if (settings.installation != req.body.installation)
+        restart = true;
         if (settings)
             settings = _.extend(settings, req.body)
         else
