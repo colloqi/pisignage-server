@@ -265,6 +265,23 @@ angular.module('piGroups.controllers', [])
                 {value: true, name: 'Enable Animation'}
             ];
 
+            $scope.scheduleCalendar = function (playlist) {
+                $scope.forPlaylist = playlist;
+
+                if ($scope.group.selectedGroup.sleep) {
+                    if ($scope.group.selectedGroup.sleep.ontime) {
+                        $scope.group.selectedGroup.sleep.ontime = new Date($scope.group.selectedGroup.sleep.ontime)
+                    }
+                    if ($scope.group.selectedGroup.sleep.offtime) {
+                        $scope.group.selectedGroup.sleep.offtime = new Date($scope.group.selectedGroup.sleep.offtime)
+                    }
+                }
+                $scope.scheduleCalendarModal = $modal.open({
+                    templateUrl: '/app/templates/schedule-calendar.html',
+                    scope: $scope
+                });
+            }
+
             $scope.displayModal = $modal.open({
                 templateUrl: '/app/templates/display-set.html',
                 scope: $scope
@@ -273,6 +290,16 @@ angular.module('piGroups.controllers', [])
         }
         $scope.saveSettings = function () {
             $scope.displayModal.close();
+            if ($scope.group.selectedGroup.sleep) {
+                if ($scope.group.selectedGroup.sleep.ontime) {
+                    var time = $scope.group.selectedGroup.sleep.ontime.toTimeString().split(' ')[0].slice(0,5)
+                    $scope.group.selectedGroup.sleep.ontime = time
+                }
+                if ($scope.group.selectedGroup.sleep.offtime) {
+                    var time = $scope.group.selectedGroup.sleep.offtime.toTimeString().split(' ')[0].slice(0,5)
+                    $scope.group.selectedGroup.sleep.offtime = time
+                }
+            }
             $scope.updateGroup();
         }
 
