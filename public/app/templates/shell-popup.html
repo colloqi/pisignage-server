@@ -1,6 +1,8 @@
 
 <div class="modal-header">
-  <h4 class="text-warning">Pi Shell</h4>
+  <h4><span class="text-warning">Pi Shell</span><span class="pull-right btn-group">
+      <button ng-class="msg.player.tvStatus? 'btn-primary':'btn-default'" ng-click="changeTvState(false)" class="btn btn-sm">Tv On</button>
+      <button ng-class="!msg.player.tvStatus? 'btn-primary':'btn-default'" ng-click="changeTvState(true)" class="btn btn-sm">Tv OFF</button></span></h4><small ng-if="confirmmsg" class="text-danger pull-right">{{confirmmsg}}</small>
 </div>
 <div class="modal-body">
   <form name="shellform" ng-submit="execute()" class="row">

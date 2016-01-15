@@ -19,7 +19,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-3"><i ng-class="item.statusClass" class="fa fa-circle fa-lg"></i><span class="text-primary">&nbsp;{{item.currentPlaylist}}</span></div>
+        <div class="col-sm-3"><i ng-class="item.statusClass" title="{{item.isConnected?(item.playlistOn?'online &amp; playing, tv-on:'+item.tvStatus:'online &amp; not playing, tv-on:'+item.tvStatus):'offline'}}" class="fa fa-circle fa-lg"></i><span class="text-primary">&nbsp;{{item.currentPlaylist}}</span></div>
         <div class="col-sm-2">
           <select ng-model="item.group.name" ng-change="assignGroup(item)" ng-options="gr for gr in group.groupNames" class="form-control select-xs"></select>
         </div>

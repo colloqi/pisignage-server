@@ -204,15 +204,25 @@ angular.module('piAssets.controllers',[])
                 $scope.msg.msg = percentDone + "% done";
             },
             ondone: function (files, data) {           //called when upload is done
-                $scope.msg.msg = "Upload Complete";
-                $scope.msg.buttonText = "Continue";
-                $scope.msg.disable = false;
                 $scope.uploadedFiles = files;
                 if (data.data) {
                     data.data.forEach(function (item) {
                         if ($scope.asset.files.indexOf(item.name) == -1)
                             $scope.asset.files.push(item.name);
                     });
+                }
+                if (data.success) {
+                    $scope.msg = {
+                        msg: "Upload Complete",
+                        buttonText: "Continue",
+                        disable: false
+                    };
+                } else {
+                    $scope.msg = {
+                        msg: "Upload Error",
+                        buttonText: "Dismiss",
+                        disable: false
+                    };
                 }
             },
             onerror: function(files, type, msg) {

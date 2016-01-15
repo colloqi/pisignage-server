@@ -31,7 +31,7 @@
     <li ng-repeat="file in assetConfig.assets.assets | filter:labelFilter | filter:search track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" style="margin:0px;min-height:70px;" class="list-group-item">
       <div as-sortable-item-handle="as-sortable-item-handle" class="row">
         <div class="col-sm-2"><a ng-click="fn.showDetails(file.fileDetails.name)"><img ng-if="file.fileDetails.thumbnail" ng-src="{{file.fileDetails.thumbnail}}" class="media-object img-rounded"/>
-            <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object img-rounded">{{file.fileDetails.type.slice(0,1) || 'N'}}</div></a></div>
+            <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object img-rounded"><span ng-if="file.filesDetails.type == &quot;audio&quot;"><i class="fa fa-music"></i></span><span ng-if="file.filesDetails.type != &quot;audio&quot;">{{file.fileDetails.type.slice(0,1) || 'N'}}</span></div></a></div>
         <div class="col-sm-10">
           <div class="row">
             <div class="col-sm-6"><small>{{file.fileDetails.name }}<small ng-if="playlist.selectedPlaylist &amp;&amp; !assetConfig.allAssets">&nbsp;{{file.playlistDetails.side}} &nbsp;{{file.playlistDetails.bottom}}</small></small></div>

@@ -1,5 +1,10 @@
 .modal-header
-    h4.text-warning Pi Shell
+    h4
+        span.text-warning Pi Shell
+        span.pull-right.btn-group
+            button.btn.btn-sm(ng-class="msg.player.tvStatus? 'btn-primary':'btn-default'",ng-click="changeTvState(false)") Tv On
+            button.btn.btn-sm(ng-class="!msg.player.tvStatus? 'btn-primary':'btn-default'",ng-click="changeTvState(true)") Tv OFF
+    small.text-danger.pull-right(ng-if="confirmmsg") {{confirmmsg}}
 .modal-body
     form.row(name="shellform",ng-submit='execute()')
         .form-group

@@ -31,6 +31,7 @@ angular.module('piConfig', [])
             labels:          base + 'api/labels/' ,
 
             pishell:         base + 'api/pishell/',
+            pitv:            base + 'api/pitv/',
             swupdate:        base + 'api/swupdate/'
 
         }

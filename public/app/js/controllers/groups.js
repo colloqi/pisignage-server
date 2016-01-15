@@ -29,7 +29,7 @@ angular.module('piGroups.controllers', [])
                 .post(piUrls.groups, $scope.newGroup)
                 .success(function (data, status) {
                     if (data.success) {
-                        $scope.group.groups.push(data.data);
+                        $scope.group.groups.unshift(data.data);
                         $scope.newGroup = {}
                     }
                 })
@@ -143,6 +143,7 @@ angular.module('piGroups.controllers', [])
 
         $scope.updateGroup = function (cb) {
             $scope.group.selectedGroup.assets = [];
+            $scope.emptyPlExist = false;
             for (var i=$scope.group.selectedGroup.playlists.length -1;i>=0;i--) {
                 if ($scope.group.selectedGroup.playlists[i].name && $scope.group.selectedGroup.playlists[i].name.length > 0) {
                     var playlist = $scope.playlist.playlists[$scope.playlist.playlistNames.indexOf($scope.group.selectedGroup.playlists[i].name)];
@@ -164,6 +165,10 @@ angular.module('piGroups.controllers', [])
                     });
                     if ($scope.group.selectedGroup.assets.indexOf('__' + playlist.name + '.json') == -1)
                         $scope.group.selectedGroup.assets.push('__' + playlist.name + '.json');
+                    $scope.group.selectedGroup.playlists[i].settings = $scope.group.selectedGroup.playlists[i].settings || {}
+                    angular.extend($scope.group.selectedGroup.playlists[i].settings, playlist.settings)
+                    if(playlist.assets.length == 0)
+                        $scope.emptyPlExist = true;
                 } else {
                     $scope.group.selectedGroup.playlists.splice(i,1);
                 }
@@ -196,7 +201,7 @@ angular.module('piGroups.controllers', [])
                 return;
             }
             //$scope.deployform.$setDirty(); //  inform user  of new changes
-            $scope.group.selectedGroup.playlists.push({
+            $scope.group.selectedGroup.playlists.unshift({
                 name: $scope.group.selectedGroup.playlists[0].name ,
                 settings: {durationEnable: false, timeEnable: false, weekday: 0, monthday: 0}
             });
@@ -252,7 +257,9 @@ angular.module('piGroups.controllers', [])
         $scope.displaySet = function () {
             $scope.resolutions = [
                 {value: '720p', name: "HD(720p) Video & Browser 1280x720"},
-                {value: '1080p', name: "Full HD(1080p) Video & Browser 1920x1080"}
+                {value: '1080p', name: "Full HD(1080p) Video & Browser 1920x1080"},
+                {value: 'PAL',name: 'PAL (RCA), 720x576 Video and Browser'},
+                {value: 'NTSC',name: 'NTSC (RCA), 720x480 Video and Browser' }
             ];
 
             $scope.orientations = [
@@ -330,6 +337,7 @@ angular.module('piGroups.controllers', [])
         $scope.closeWindow = function () {
             playerLoader.selectGroup();
         };
+
     })
 
     .controller('ServerPlayerCtrl', function($scope,$http,piUrls,$interval,$modal,TZNames, playerLoader,commands) {
@@ -364,8 +372,8 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.shellCommand = function(player) {
-            if (player.statusClass == "text-danger")
-                return console.log("Player is offline");
+            //if (player.statusClass == "text-danger")
+            //    return console.log("Player is offline");
             
             $scope.msg = {player:player,cmd:'',err:"Type a shell command..."};
             $scope.modal = $modal.open({
@@ -389,6 +397,19 @@ angular.module('piGroups.controllers', [])
                 })
                 .error(function(data, status) {
                 });
+        }
+
+        $scope.changeTvState = function(flag){
+            $scope.confirmmsg = "Your request has been sent, Please refesh page after 10 sec"
+            $http
+                .post(piUrls.pitv+$scope.msg.player._id, {status: flag})
+                .success(function(data,status){
+                    //console.log(data,status);
+                    $scope.modal.dismiss()
+                })
+                .error(function(data,status){
+
+                })
         }
 
         $scope.swUpdate = function(player) {

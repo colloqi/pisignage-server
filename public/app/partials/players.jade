@@ -16,7 +16,8 @@
                                                                             ng-options="tz for tz in tzNames")
                                 option(value="", selected,translate)  --No TZ--
                 .col-sm-3
-                    i.fa.fa-circle.fa-lg(ng-class="item.statusClass")
+                    i.fa.fa-circle.fa-lg(ng-class="item.statusClass",
+                        title="{{item.isConnected?(item.playlistOn?'online & playing, tv-on:'+item.tvStatus:'online & not playing, tv-on:'+item.tvStatus):'offline'}}")
                     span.text-primary &nbsp;{{item.currentPlaylist}}
                 .col-sm-2
                     select.form-control.select-xs(ng-model="item.group.name",ng-change="assignGroup(item)",

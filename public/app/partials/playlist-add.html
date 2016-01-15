@@ -15,7 +15,7 @@
     <li ng-repeat="file in asset.showAssets.assets" as-sortable-item="as-sortable-item" style="margin:0px;" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" class="list-group-item">
       <div as-sortable-item-handle="as-sortable-item-handle" class="row">
         <div class="col-sm-2"><a ng-click="fn.showDetails(file.fileDetails.name)" class="pull-right"><img ng-if="file.fileDetails.thumbnail" ng-src="{{file.fileDetails.thumbnail}}" class="media-object img-rounded"/>
-            <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object img-rounded">{{file.fileDetails.type.slice(0,1) || 'N'}}</div></a></div>
+            <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object img-rounded"><span ng-if="file.fileDetails.type == &quot;audio&quot;"><i class="fa fa-music"></i></span><span ng-if="file.fileDetails.type != &quot;audio&quot;">{{file.fileDetails.type.slice(0,1) || 'N'}}</span></div></a></div>
         <div class="col-sm-10">
           <div class="row">
             <div class="col-sm-8">
@@ -29,10 +29,15 @@
               <button ng-click="removeAsset($index)" class="btn btn-xs btn-warning">X</button>
             </div>
           </div>
-          <div ng-show="asset.showAssets.playlist.layout &amp;&amp; asset.showAssets.playlist.layout != '1'" class="row text-danger">
-            <div class="col-sm-12"><span ng-show="asset.showAssets.playlist.layout != '2ap'">
+          <div ng-show="asset.showAssets.playlist.layout &amp;&amp; asset.showAssets.playlist.layout != '1'" class="row">
+            <div class="col-sm-3">
+              <label ng-class="{'label-danger':file.playlistDetails.fullscreen,'label-default':!file.playlistDetails.fullscreen}" class="label">
+                <input type="checkbox" name="fullscreen" ng-model="file.playlistDetails.fullscreen"/><span translate="translate">&nbsp;show fullscreen</span>
+              </label>
+            </div>
+            <div class="col-sm-9"><span ng-show="asset.showAssets.playlist.layout != '2ap' &amp;&amp; asset.showAssets.playlist.layout != '2bp'">
                 <button ng-click="linkFile(file.playlistDetails,'side')" class="btn btn-xs btn-info"><span>Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}</span></button>
-                <button ng-if="file.playlistDetails.side" ng-click="removeLinkFile(file,'side')" class="btn btn-xs btn-warning">X</button></span><span ng-show="asset.showAssets.playlist.layout != '2a' &amp;&amp; asset.showAssets.playlist.layout != '2b'">
+                <button ng-if="file.playlistDetails.side" ng-click="removeLinkFile(file,'side')" class="btn btn-xs btn-warning">X</button></span><span ng-show="asset.showAssets.playlist.layout != '2a' &amp;&amp; asset.showAssets.playlist.layout != '2b' &amp;&amp; asset.showAssets.playlist.layout != '2c' &amp;&amp; asset.showAssets.playlist.layout != '2d' &amp;&amp; asset.showAssets.playlist.layout != '2ap'">
                 <button ng-click="linkFile(file.playlistDetails,'bottom')" class="btn btn-xs btn-info"><span>Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}</span></button>
                 <button ng-if="file.playlistDetails.bottom" ng-click="removeLinkFile(file,'bottom')" class="btn btn-xs btn-warning">X</button></span></div>
           </div>
