@@ -116,7 +116,7 @@ module.exports = function (app) {
 
     app.set('views', config.viewDir);
 
-    app.use(logger('dev'));
+    //app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(methodOverride());

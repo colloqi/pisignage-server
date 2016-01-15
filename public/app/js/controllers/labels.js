@@ -29,7 +29,7 @@ angular.module('piLabels.controllers', [])
                 .post(piUrls.labels, $scope.newLabel)
                 .success(function(data, status) {
                     if (data.success) {
-                        $scope.label.labels.push(data.data);
+                        $scope.label.labels.unshift(data.data);
                         $scope.newLabel = {}
                     }
                 })
