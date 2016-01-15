@@ -31,8 +31,8 @@
           </div>
           <div ng-show="asset.showAssets.playlist.layout &amp;&amp; asset.showAssets.playlist.layout != '1'" class="row">
             <div class="col-sm-3">
-              <label ng-class="{'label-danger':file.fileDetails.fullscreen,'label-default':!file.fileDetails.fullscreen}" class="label">
-                <input type="checkbox" name="fullscreen" ng-model="file.fileDetails.fullscreen"/><span translate="translate">&nbsp;show fullscreen</span>
+              <label ng-class="{'label-danger':file.playlistDetails.fullscreen,'label-default':!file.playlistDetails.fullscreen}" class="label">
+                <input type="checkbox" name="fullscreen" ng-model="file.playlistDetails.fullscreen"/><span translate="translate">&nbsp;show fullscreen</span>
               </label>
             </div>
             <div class="col-sm-9"><span ng-show="asset.showAssets.playlist.layout != '2ap'">
