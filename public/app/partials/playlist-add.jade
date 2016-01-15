@@ -41,12 +41,12 @@
                                 input(type='checkbox',name='fullscreen', ng-model='file.playlistDetails.fullscreen')
                                 span(translate) &nbsp;show fullscreen
                         .col-sm-9
-                            span(ng-show="asset.showAssets.playlist.layout != '2ap'")
+                            span(ng-show="asset.showAssets.playlist.layout != '2ap' && asset.showAssets.playlist.layout != '2bp'")
                                 button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")
                                     span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}
                                 button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.side",
                                 ng-click="removeLinkFile(file,'side')") X
-                            span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b'")
+                            span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b' && asset.showAssets.playlist.layout != '2c' && asset.showAssets.playlist.layout != '2d' && asset.showAssets.playlist.layout != '2ap'")
                                 button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'bottom')")
                                     span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}
                                 button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",

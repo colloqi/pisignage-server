@@ -35,9 +35,9 @@
                 <input type="checkbox" name="fullscreen" ng-model="file.playlistDetails.fullscreen"/><span translate="translate">&nbsp;show fullscreen</span>
               </label>
             </div>
-            <div class="col-sm-9"><span ng-show="asset.showAssets.playlist.layout != '2ap'">
+            <div class="col-sm-9"><span ng-show="asset.showAssets.playlist.layout != '2ap' &amp;&amp; asset.showAssets.playlist.layout != '2bp'">
                 <button ng-click="linkFile(file.playlistDetails,'side')" class="btn btn-xs btn-info"><span>Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}</span></button>
-                <button ng-if="file.playlistDetails.side" ng-click="removeLinkFile(file,'side')" class="btn btn-xs btn-warning">X</button></span><span ng-show="asset.showAssets.playlist.layout != '2a' &amp;&amp; asset.showAssets.playlist.layout != '2b'">
+                <button ng-if="file.playlistDetails.side" ng-click="removeLinkFile(file,'side')" class="btn btn-xs btn-warning">X</button></span><span ng-show="asset.showAssets.playlist.layout != '2a' &amp;&amp; asset.showAssets.playlist.layout != '2b' &amp;&amp; asset.showAssets.playlist.layout != '2c' &amp;&amp; asset.showAssets.playlist.layout != '2d' &amp;&amp; asset.showAssets.playlist.layout != '2ap'">
                 <button ng-click="linkFile(file.playlistDetails,'bottom')" class="btn btn-xs btn-info"><span>Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}</span></button>
                 <button ng-if="file.playlistDetails.bottom" ng-click="removeLinkFile(file,'bottom')" class="btn btn-xs btn-warning">X</button></span></div>
           </div>
