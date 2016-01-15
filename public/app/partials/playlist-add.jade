@@ -17,7 +17,10 @@
                     a.pull-right(ng-click='fn.showDetails(file.fileDetails.name)')
                         img.media-object.img-rounded(ng-if='file.fileDetails.thumbnail',ng-src='{{file.fileDetails.thumbnail}}')
                         .letter-box.media-object.img-rounded(ng-if='!file.fileDetails.thumbnail')
-                            | {{file.fileDetails.type.slice(0,1) || 'N'}}
+                            span(ng-if='file.fileDetails.type == "audio"')
+                                i.fa.fa-music
+                            span(ng-if='file.fileDetails.type != "audio"')
+                                | {{file.fileDetails.type.slice(0,1) || 'N'}}
 
                 .col-sm-10
                     .row
@@ -32,8 +35,12 @@
                                                                 ng-change="saveData()")
                         .col-sm-1
                             button.btn.btn-xs.btn-warning(ng-click="removeAsset($index)") X
-                    .row.text-danger(ng-show="asset.showAssets.playlist.layout && asset.showAssets.playlist.layout != '1'")
-                        .col-sm-12
+                    .row(ng-show="asset.showAssets.playlist.layout && asset.showAssets.playlist.layout != '1'")
+                        .col-sm-3
+                            label.label(ng-class="{'label-danger':file.fileDetails.fullscreen,'label-default':!file.fileDetails.fullscreen}")
+                                input(type='checkbox',name='fullscreen', ng-model='file.fileDetails.fullscreen')
+                                span(translate) &nbsp;show fullscreen
+                        .col-sm-9
                             span(ng-show="asset.showAssets.playlist.layout != '2ap'")
                                 button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")
                                     span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}
@@ -43,7 +50,7 @@
                                 button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'bottom')")
                                     span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}
                                 button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",
-                                ng-click="removeLinkFile(file,'bottom')") X
+                                                    ng-click="removeLinkFile(file,'bottom')") X
 
 
         li.list-group-item(ng-if="!asset.showAssets.assets.length")

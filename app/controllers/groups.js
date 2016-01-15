@@ -25,17 +25,24 @@ licenses.getSettingsModel(function(err,settings){
 
 exports.newGroup = function (group, cb) {
 
-    var object = new Group(group);
-    //create a sync folder under sync_folder
-    fs.mkdir(path.join(config.syncDir,installation, object.name), function (err) {
-        if (err && (err.code != 'EEXIST'))
-            return cb('Unable to create a group folder in server: ' + err);
-        else {
-            object.save(function (err, data) {
-                cb(err, data);
-            })
+    var object;
+    Group.findOne({name:group.name}, function(err,data) {
+        if (err || !data) {
+            object = new Group(group);
+        } else {
+            object = _.extend(data, group);
         }
-    });
+        //create a sync folder under sync_folder
+        fs.mkdir(path.join(config.syncDir,group.installation, object.name),function(err){
+            if (err && (err.code != 'EEXIST'))
+                return cb('Unable to create a group folder in server: '+err);
+            else {
+                object.save(function (err, data) {
+                    cb(err,data);
+                })
+            }
+        });
+    })
 }
 
 //Load a object

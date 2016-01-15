@@ -13,6 +13,7 @@ var PlayerSchema = new Schema({
     myIpAddress:            String,
     ip:                     String,
     location:               String,
+    configLocation:         String,
     playlistOn:             Boolean,
     currentPlaylist:        String,
     playlistStarttime:      String,

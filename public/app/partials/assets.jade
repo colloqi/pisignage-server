@@ -48,7 +48,10 @@
                     a(ng-click='fn.showDetails(file.fileDetails.name)')
                         img.media-object.img-rounded(ng-if='file.fileDetails.thumbnail',ng-src='{{file.fileDetails.thumbnail}}')
                         .letter-box.media-object.img-rounded(ng-if='!file.fileDetails.thumbnail')
-                            | {{file.fileDetails.type.slice(0,1) || 'N'}}
+                            span(ng-if='file.filesDetails.type == "audio"')
+                                i.fa.fa-music
+                            span(ng-if='file.filesDetails.type != "audio"')
+                                | {{file.fileDetails.type.slice(0,1) || 'N'}}
                 .col-sm-10
                     .row
                         .col-sm-6

@@ -12,7 +12,7 @@ var handleClient = function (socket) {
         var statusObject = _.extend(
             {
                 lastReported: Date.now(),
-                ip: socket.handshake.address.address,
+                ip: socket.handshake.headers['x-forwarded-for'] || socket.handshake.address.address,
                 socket: socket.id
             },
             settings,
@@ -34,13 +34,13 @@ var handleClient = function (socket) {
     });
 
     socket.on('disconnect', function () {
-        console.log("disconnect event: "+socket.id);
+        //console.log("disconnect event: "+socket.id);
     });
 };
 
 exports.startSIO = function (io) {
     io.sockets.on('connection', handleClient);
-    io.set('log level', 1);
+    io.set('log level', 0);
     iosockets = io.sockets;
 }
 

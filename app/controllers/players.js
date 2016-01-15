@@ -18,7 +18,8 @@ var installation,
 var pipkgjson,
     fs = require('fs');
 
-var activePlayers = {};
+var activePlayers = {},
+    lastCommunicationFromPlayers = {};
 Player.find({"isConnected": true}, function (err, players) {
     if (err)
         return;
@@ -82,6 +83,7 @@ var sendConfig = function (player, group, periodic) {
     }
     retObj.installation = installation;
     retObj.TZ = player.TZ;
+    retObj.location = player.configLocation || player.location ;
     retObj.baseUrl = '/sync_folders/' + installation + '/';
     retObj.assets = group.assets;
     retObj.lastDeployed = group.lastDeployed;
@@ -201,6 +203,13 @@ exports.createObject = function (req, res) {
 
         player.installation = installation;
         console.log(player);
+        Group.findById(player.group._id, function(err,group) {
+            if (!err && group) {
+                sendConfig(player,group,true)
+            } else {
+                console.log("unable to find group for the player");
+            }
+        })
         player.save(function (err, obj) {
             if (err) {
                 return rest.sendError(res, 'Error in saving new Player', err || "");
@@ -286,7 +295,15 @@ exports.updatePlayerStatus = function (obj) {
             if (!player.registered || obj.request ) {
                 Group.findById(player.group._id, function (err, group) {
                     if (!err && group) {
-                        sendConfig(player, group, (updatePlayerCount[obj.cpuSerialNumber] === 1));
+                        var now = Date.now(),
+                            pid = player._id.toString();
+                        //throttle messages
+                        if (!lastCommunicationFromPlayers[pid] || (now - lastCommunicationFromPlayers[pid]) > 60000) {
+                            lastCommunicationFromPlayers[pid] = now;
+                            sendConfig(player,group, (updatePlayerCount[obj.cpuSerialNumber] === 1));
+                        } else {
+                            //console.log("communication to "+player.name+" at "+now+", last "+ lastCommunicationFromPlayers[pid]+" did not happen")
+                        }
                     } else {
                         console.log("unable to find group for the player");
                     }
@@ -362,7 +379,7 @@ exports.upload = function (cpuId, filename, data) {
                         events.push(logData);
                     } catch (e) {
                         //corrupt file
-                        console.log("corrupt log file: "+filename);
+                        //console.log("corrupt log file: "+filename);
                     }
                 }
             }
@@ -371,5 +388,12 @@ exports.upload = function (cpuId, filename, data) {
             console.log("ignoring file upload: " + filename);
         }
     })
+}
+
+exports.tvPower = function(req,res){
+    var status = req.body.status;
+    var object = req.object;
+    socketio.emitMessage(object.socket,'cmd','tvpower',{off: status} );
+    return rest.sendSuccess(res,'TV command issued');
 }
 

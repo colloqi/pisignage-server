@@ -59,6 +59,7 @@ router.delete('/api/players/:playerid', players.deleteObject)
 
 router.post('/api/pishell/:playerid', players.shell)
 router.post('/api/swupdate/:playerid', players.swupdate)
+router.post('/api/pitv/:playerid',players.tvPower);
 
 router.param('playerid', players.loadObject)
 

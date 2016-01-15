@@ -28,7 +28,7 @@ angular.module('piPlaylists.controllers', [])
                 .post(piUrls.playlists, {file: $scope.newPlaylist.name})
                 .success(function (data, status) {
                     if (data.success) {
-                        $scope.playlist.playlists.push(data.data);
+                        $scope.playlist.playlists.unshift(data.data);
                         assetLoader.selectPlaylist(data.data);
                         assetLoader.assemblePlaylistAssets();
                         $scope.newPlaylist = {}
@@ -289,6 +289,10 @@ angular.module('piPlaylists.controllers', [])
         }
 
         $scope.saveData = function (cb) {
+            $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.assets.forEach(function(item){
+                if ($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.layout == "1")
+                    item.fullscreen = true;
+            });
             $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name,
                 {assets: $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.assets})
                     .success(function (data, status) {
