@@ -95,7 +95,7 @@
         
    - For more info on node installation, please refer [here](https://github.com/joyent/node/wiki/Installation)
      
-3.Install ffmpeg
+3. Install ffmpeg using below steps OR download from [here](https://www.ffmpeg.org/download.html)
    - **Ubuntu**
       
       ```
@@ -153,7 +153,6 @@
       
       ```
    - **Mac**
-   - 
       ```
       brew install ffmpeg
       ```
