@@ -23,7 +23,7 @@
     "jade": "^1.9.2",
     "lodash": "^3.5.0",
     "method-override": "~2.3.2",
-    "mongoose": "~3.8.25",
+    "mongoose": "^4.4.3",
     "morgan": "~1.5.2",
     "multer": "^1.0.1",
     "node-ffprobe": "^1.2.2",
@@ -37,5 +37,6 @@
   },
   "scripts": {
     "start": "./node_modules/.bin/nodemon server.js"
-  }
+  },
+  "license": "(MIT OR Apache-2.0)"
 }
