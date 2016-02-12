@@ -14,13 +14,18 @@ nav.navbar.navbar-default.navbar-fixed-top
                     a(ui-sref="home.players.players",ui-sref-opts="{reload: true}") Players
                 li(ng-class="getClass('home.license')")
                     a(ui-sref="home.settings",ui-sref-opts="{reload: true}") Settings
+            button.btn.btn-link.pull-right(ng-click="launchCastApp()", ng-show="castStatus.devicesAvailable")
+                img.img-thumbanail(ng-show="castStatus.deviceState == '0'",src="/app/img/ic_cast_black_24dp.png",
+                title="Chromecast devices available, add them to piSignage")
+                img.img-thumbanail(ng-show="castStatus.deviceState != '0'",src="/app/img/ic_cast_connected_black_24dp.png",
+                title="Chromecast device connected")
+
             ul.nav.navbar-nav.navbar-right
                 li
                     a(href="https://twitter.com/pisignage", target="_blank",translate)
                         small.text-info follow us on&nbsp;
                             i.fa.fa-twitter-square.text-info
                             | &nbsp;for latest updates and tips
-
 
 
 .container.height100.overflow-hidden(ui-view="main",autoscroll="false")

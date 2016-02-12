@@ -20,6 +20,7 @@
     "fluent-ffmpeg": "^2.0.0-rc3",
     "gm": "^1.17.0",
     "http-auth": "~2.2.5",
+    "ip": "^1.1.0",
     "jade": "^1.9.2",
     "lodash": "^3.5.0",
     "method-override": "~2.3.2",

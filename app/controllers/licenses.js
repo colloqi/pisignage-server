@@ -5,6 +5,8 @@ var fs = require('fs'),
 	async = require('async'),
     _ = require('lodash');
 
+var serverIp = require('ip').address();
+
 var	config = require('../../config/config'),
 	rest = require('../others/restware');
 
@@ -90,7 +92,9 @@ exports.getSettings = function(req,res) {
         if (err) {
             return rest.sendError(res, 'Unable to access Settings', err);
         } else {
-            return rest.sendSuccess(res, 'Settings', data);
+            var obj = data.toObject()
+            obj.serverIp = serverIp;
+            return rest.sendSuccess(res, 'Settings', obj);
         }
     })
 }

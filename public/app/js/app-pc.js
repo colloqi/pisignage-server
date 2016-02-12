@@ -170,7 +170,7 @@ angular.module('piServerApp', [
         });
 
     })
-    .run(function ($window,$modal,piUrls,$http, $rootScope) {
+    .run(function ($window,$modal,piUrls,$http, $rootScope,castApi) {
         var currentBrowser = $window.navigator.userAgent.toLowerCase();
         if(currentBrowser.indexOf('chrome') == -1){
             $modal.open({
@@ -233,4 +233,6 @@ angular.module('piServerApp', [
                 console.log(err);
                 $rootScope.serverConfig = {installation:"local"};
             })
+
+        castApi.init();
     });
