@@ -130,7 +130,7 @@ exports.deploy = function (installation,group, cb) {
                 return cb(err, group);
             }
             players[group._id.toString()].forEach(function (player) {
-                socketio.emitMessage(player.socket, 'sync', group.playlists, group.assets);
+                socketio.emitMessage(player.socket, 'sync', group.playlists, group.assets,group.deployedTicker);
             });
             console.log("sending sync event to players");
             cb(null, group);

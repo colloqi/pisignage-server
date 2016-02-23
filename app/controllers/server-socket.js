@@ -44,9 +44,9 @@ exports.startSIO = function (io) {
     iosockets = io.sockets;
 }
 
-exports.emitMessage = function (sid, cmd, msg, msg1) {
+exports.emitMessage = function (sid, cmd, msg, msg1, msg2) {
     if (iosockets.sockets[sid]) {
-        iosockets.sockets[sid].emit(cmd, msg, msg1);
+        iosockets.sockets[sid].emit(cmd, msg, msg1, msg2);
     }
 }
 

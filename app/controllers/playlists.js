@@ -6,6 +6,14 @@ var config = require('../../config/config'),
     path = require('path'),
     async = require('async');
 
+var systemPlaylists = [
+    {
+        name:"TV_OFF" ,
+        settings: {},
+        assets:[],
+        layout:"1"
+    }
+]
 
 var isPlaylist = function (file) {
     return (file.charAt(0) == '_' && file.charAt(1) == '_');
@@ -61,7 +69,7 @@ exports.index = function (req, res) {
                 if (err) {
                     return rest.sendError(res, 'playlist read error', err);
                 } else {
-                    return rest.sendSuccess(res, ' Sending playlist list', list);
+                    return rest.sendSuccess(res, ' Sending playlist list', list.concat(systemPlaylists));
                 }
             })
 

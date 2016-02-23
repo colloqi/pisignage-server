@@ -1,6 +1,9 @@
 'use strict';
 
 var sendSuccess = function (res, msg, data) {
+    if (!res)
+        return;
+
     var out = {};
     out.stat_message = msg;
     out.data = data;
@@ -11,6 +14,9 @@ var sendSuccess = function (res, msg, data) {
 }
 
 var sendError = function (res, msg, err) {
+    if (!res)
+        return;
+
     var out = {},
         errmsg = err ? err.toString() : "";
     out.stat_message = msg + errmsg;

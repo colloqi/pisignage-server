@@ -28,7 +28,7 @@
     <div class="form-group row">
       <div class="col-sm-4 text-right">
         <div class="radio">
-          <label translate="translate" class="text-muted">Orientation</label>
+          <label translate="translate" class="text-muted">TV Orientation</label>
         </div>
       </div>
       <div class="col-sm-4">
@@ -39,9 +39,9 @@
         </div>
       </div>
       <div class="col-sm-4">
-        <div class="radio">
+        <div ng-repeat="type in orientations" ng-if="$index &gt; 0" class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.orientation" ng-value="orientations[1].value"/><small>{{orientations[1].name}}</small>
+            <input type="radio" ng-model="group.selectedGroup.orientation" ng-value="type.value"/><small>{{type.name}}</small>
           </label>
         </div>
       </div>

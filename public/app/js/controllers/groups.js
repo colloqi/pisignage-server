@@ -116,6 +116,7 @@ angular.module('piGroups.controllers', [])
             options: {
                 orderChanged: function (event) {
                     $scope.updateGroup();
+                    $scope.needToDeploy = true;
                 }
             },
             playlistArray: []
@@ -123,6 +124,7 @@ angular.module('piGroups.controllers', [])
 
         $scope.weeklist = weeks; // get all week list and code
         $scope.dayslist = days;
+        $scope.needToDeploy = false;
 
         $scope.group = playerLoader.group;
         var initSortArray = function(){
@@ -142,6 +144,7 @@ angular.module('piGroups.controllers', [])
         initSortArray();
 
         $scope.updateGroup = function (cb) {
+            $scope.needToDeploy = true;
             $scope.group.selectedGroup.assets = [];
             $scope.emptyPlExist = false;
             for (var i=$scope.group.selectedGroup.playlists.length -1;i>=0;i--) {
@@ -166,7 +169,7 @@ angular.module('piGroups.controllers', [])
                     if ($scope.group.selectedGroup.assets.indexOf('__' + playlist.name + '.json') == -1)
                         $scope.group.selectedGroup.assets.push('__' + playlist.name + '.json');
                     $scope.group.selectedGroup.playlists[i].settings = $scope.group.selectedGroup.playlists[i].settings || {}
-                    angular.extend($scope.group.selectedGroup.playlists[i].settings, playlist.settings)
+                    $scope.group.selectedGroup.playlists[i].settings.ads = playlist.settings.ads
                     if(playlist.assets.length == 0)
                         $scope.emptyPlExist = true;
                 } else {
@@ -264,7 +267,8 @@ angular.module('piGroups.controllers', [])
 
             $scope.orientations = [
                 {value: 'landscape', name: "Landscape Mode"},
-                {value: 'portrait', name: "Portrait Mode"}
+                {value: 'portrait', name: "Portrait Right (Hardware)"},
+                {value: 'portrait270', name: "Portrait Left (Hardware)"}
             ];
 
             $scope.animations = [
@@ -311,6 +315,22 @@ angular.module('piGroups.controllers', [])
             $scope.updateGroup();
         }
 
+        $scope.groupTicker = function() {
+            var ticker = $scope.group.selectedGroup.ticker
+            ticker.enable = ticker.enable || false
+            ticker.behavior = ticker.behavior || 'slide'
+            ticker.rss = ticker.rss || { enable: false , link: null }
+            $scope.tickerModal = $modal.open({
+                templateUrl: '/app/templates/group-ticker-popup.html',
+                scope: $scope
+            });
+        }
+        $scope.tickerSave = function() {
+            $scope.tickerModal.close();
+            updateGroup();
+            $scope.needToDeploy = true;
+        }
+
         $scope.deploy = function () {
             for (var i = $scope.group.selectedGroup.playlists.length - 1; i >= 0; i--) {
                 if (!$scope.group.selectedGroup.playlists[i].name || !$scope.group.selectedGroup.playlists[i].name.length) {
@@ -325,6 +345,7 @@ angular.module('piGroups.controllers', [])
             $scope.updateGroup(function (err,msg) {
                 if (!err) {
                     $scope.msg = {msg: 'Deployed! Request has been sent to all Players.', title: 'Deploy Success'};
+                    $scope.needToDeploy = false;
                 } else {
                     $scope.msg = {msg: msg, title: 'Deploy Failed'};
                 }

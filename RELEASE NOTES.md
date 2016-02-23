@@ -7,3 +7,4 @@
 1. Option to set name & location for each player
 1. Auto deploy when group config screen is exited
 1. Calendar view for multiple playlists scheduling under Group
+1. Link edit

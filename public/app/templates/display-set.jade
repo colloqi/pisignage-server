@@ -19,17 +19,17 @@
         .form-group.row
             .col-sm-4.text-right
                 .radio
-                    label.text-muted(translate) Orientation
+                    label.text-muted(translate) TV Orientation
             .col-sm-4
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="orientations[0].value")
                         small {{orientations[0].name}}
             .col-sm-4
-                .radio
+                .radio(ng-repeat="type in orientations", ng-if="$index > 0")
                     label
-                        input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="orientations[1].value")
-                        small {{orientations[1].name}}
+                        input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="type.value")
+                        small {{type.name}}
         .form-group.row
             .col-sm-4.text-right
                 .radio

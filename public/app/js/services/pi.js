@@ -201,7 +201,7 @@ angular.module('pisignage.services',[]).
                     window.onbeforeunload = confirmExit;
 
                     // calling this function later will unbind this, acting as $off()
-                    removeFunction = $rootScope.$on('$locationChangeStart', function(event, next, current) {
+                    removeFunction = $rootScope.$on('stateChangeStart', function(event, next, current) {
 
                         //console.log('ROUTE CHANGE detected');
 
@@ -230,11 +230,11 @@ angular.module('pisignage.services',[]).
             };
         }
     ]).factory('commands',function(){ // get commands 
-        var storedArry =['*** Top of List Reached ***',
+        var storedArry =['*** Or use any bash command ***',
                             'uptime',
                             'date',
                             'ifconfig',
-                            'tail -200 /home/pi/forever_err.log',
+                            'ls ../media',
                             'tail -200 /home/pi/forever_out.log'
                             ],
             current = storedArry.length;

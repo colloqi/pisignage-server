@@ -1,9 +1,11 @@
 .panel.panel-info(ng-show="group.selectedGroup")
     .panel-heading
         .row
-            .col-sm-6
+            .col-sm-5
                 h3.panel-title {{group.selectedGroup.name}}
-            .col-sm-3
+            .col-sm-2
+                a.btn.btn-link.btn-sm.pull-right(ng-click='groupTicker()'): em.text-danger Set Group Ticker
+            .col-sm-2
                 a.btn.btn-link.btn-sm.pull-right(ng-click='displaySet()'): em.text-danger Set Display Mode
             .col-sm-2
                 a.btn.btn-success.btn-sm.pull-right(ng-disabled="!group.selectedGroup.playlists.length",ng-click='deploy()') Deploy to {{group.selectedGroup.name}}

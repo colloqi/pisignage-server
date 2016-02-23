@@ -132,6 +132,12 @@ exports.updateObject = function (req, res) {
     }
     object = _.extend(object, req.body);
 
+    if (req.body.deploy) {
+        object.deployedPlaylists = object.playlists;
+        object.deployedAssets = object.assets;
+        object.deployedTicker = object.ticker;
+    }
+
     object.save(function (err, data) {
         if (!err && req.body.deploy) {
             serverMain.deploy(installation,object, saveObject);

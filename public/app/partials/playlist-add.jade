@@ -35,18 +35,18 @@
                                                                 ng-change="saveData()")
                         .col-sm-1
                             button.btn.btn-xs.btn-warning(ng-click="removeAsset($index)") X
-                    .row(ng-show="asset.showAssets.playlist.layout && asset.showAssets.playlist.layout != '1'")
+                    .row(ng-show="asset.showAssets.playlist.layout && asset.showAssets.playlist.layout != '1' && asset.showAssets.playlist.layout != '2ap' && asset.showAssets.playlist.layout != '2ap270'")
                         .col-sm-3
                             label.label(ng-class="{'label-danger':file.playlistDetails.fullscreen,'label-default':!file.playlistDetails.fullscreen}")
                                 input(type='checkbox',name='fullscreen', ng-model='file.playlistDetails.fullscreen')
                                 span(translate) &nbsp;show fullscreen
                         .col-sm-9
-                            span(ng-show="asset.showAssets.playlist.layout != '2ap' && asset.showAssets.playlist.layout != '2bp'")
+                            span(ng-show="asset.showAssets.playlist.layout != '2bp' && asset.showAssets.playlist.layout != '2bp270'")
                                 button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")
                                     span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}
                                 button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.side",
                                 ng-click="removeLinkFile(file,'side')") X
-                            span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b' && asset.showAssets.playlist.layout != '2c' && asset.showAssets.playlist.layout != '2d' && asset.showAssets.playlist.layout != '2ap'")
+                            span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b' && asset.showAssets.playlist.layout != '2c' && asset.showAssets.playlist.layout != '2d'")
                                 button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'bottom')")
                                     span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}
                                 button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",

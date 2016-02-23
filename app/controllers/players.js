@@ -71,22 +71,38 @@ function checkPlayersWatchdog() {
 
 var sendConfig = function (player, group, periodic) {
     var retObj = {};
-    retObj.secret = group.name;
-    group.playlists = group.playlists || [];
-    if (!player.version || player.version.charAt(0) == "0") {
-        if (group.playlists[0] && group.playlists[0].name)
-            retObj.currentPlaylist = group.playlists[0].name
-        else
-            retObj.currentPlaylist = group.playlists[0];
+
+    var groupPlaylists,
+        groupAssets,
+        groupTicker;
+
+    if (group.deployedPlaylists && group.deployedPlaylists.length >0) {
+        groupPlaylists = group.deployedPlaylists;
+        groupAssets = group.deployedAssets;
+        groupTicker = group.deployedTicker;
     } else {
-        retObj.playlists = group.playlists || [];
+        groupPlaylists = group.playlists;
+        groupAssets = group.assets;
+        groupTicker = group.ticker;
     }
+
+    retObj.secret = group.name;
+    groupPlaylists = groupPlaylists || [];
+    if (!player.version || player.version.charAt(0) == "0") {
+        if (groupPlaylists[0] && groupPlaylists[0].name)
+            retObj.currentPlaylist = groupPlaylists[0].name
+        else
+            retObj.currentPlaylist = groupPlaylists[0];
+    } else {
+        retObj.playlists = groupPlaylists;
+    }
+    retObj.assets = groupAssets;
+    retObj.groupTicker = groupTicker;
+    retObj.lastDeployed = group.lastDeployed;
     retObj.installation = installation;
     retObj.TZ = player.TZ;
     retObj.location = player.configLocation || player.location ;
     retObj.baseUrl = '/sync_folders/' + installation + '/';
-    retObj.assets = group.assets;
-    retObj.lastDeployed = group.lastDeployed;
     retObj.name = player.name;
     retObj.resolution = group.resolution || '720p';
     retObj.orientation = group.orientation || 'landscape';
@@ -340,8 +356,10 @@ exports.shell = function (req, res) {
 
 exports.shellAck = function (sid, response) {
 
-    if (pendingCommands[sid])
-        return rest.sendSuccess(pendingCommands[sid], 'Shell cmd response', response);
+    if (pendingCommands[sid]) {
+        rest.sendSuccess(pendingCommands[sid], 'Shell cmd response', response);
+        pendingCommands[sid] = null;
+    }
 
 }
 

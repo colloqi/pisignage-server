@@ -2,10 +2,11 @@
 <div ng-show="group.selectedGroup" class="panel panel-info">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-5">
         <h3 class="panel-title">{{group.selectedGroup.name}}</h3>
       </div>
-      <div class="col-sm-3"><a ng-click="displaySet()" class="btn btn-link btn-sm pull-right"><em class="text-danger">Set Display Mode</em></a></div>
+      <div class="col-sm-2"><a ng-click="groupTicker()" class="btn btn-link btn-sm pull-right"><em class="text-danger">Set Group Ticker</em></a></div>
+      <div class="col-sm-2"><a ng-click="displaySet()" class="btn btn-link btn-sm pull-right"><em class="text-danger">Set Display Mode</em></a></div>
       <div class="col-sm-2"><a ng-disabled="!group.selectedGroup.playlists.length" ng-click="deploy()" class="btn btn-success btn-sm pull-right">Deploy to {{group.selectedGroup.name}}</a></div>
       <div class="col-sm-1"><a ng-click="closeWindow()" class="pull-right close">&times</a></div>
     </div>

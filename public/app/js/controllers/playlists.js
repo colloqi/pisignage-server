@@ -165,10 +165,18 @@ angular.module('piPlaylists.controllers', [])
                     disabled:!$rootScope.serverConfig.newLayoutsEnable,
                     description: "main Zone:960x540, side Zone:320x720, banner Zone:960x180"
                 },
-                "2ap": {title: "Single Zone Portrait Mode", description: "main Zone:720x1280"},
+                "2ap": {title: "Single Zone Portrait Mode, Orient clockwise", description: "main Zone:720x1280"},
                 "2bp": {
-                    title: "Two Zones Portrait Mode",
+                    title: "Two Zones Portrait Mode, Orient clockwise",
                     disabled:!$rootScope.serverConfig.newLayoutsEnable,
+                    description: "top Zone:720x540,bottom zone:720x740"
+                },
+                "2ap270": {
+                    title:"Single Zone Portrait Mode,Orient anti-clockwise",
+                    description:"main Zone: 720x1280 "
+                },
+                "2bp270": {
+                    title: "Two Zone Portrait Mode,Orient anti-clockwise",
                     description: "top Zone:720x540,bottom zone:720x740"
                 }
             }

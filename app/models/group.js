@@ -7,6 +7,12 @@ var GroupSchema = new Schema({
 
     playlists:              [],
     assets:                 [],
+    ticker:                 {},
+
+    deployedPlaylists:      [],
+    deployedAssets:         [],
+    deployedTicker:         {},
+
     lastDeployed:           String,
 
     orientation:            {type: String,default: 'landscape'},
