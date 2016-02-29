@@ -127,9 +127,9 @@ module.exports = function (app) {
 
     // custom error handler
     app.use(function (err, req, res, next) {
-        if (~err.message.indexOf('not found')) return next();
+        if (err.message.indexOf('not found') >=0) return next();
         //ignore range error as well
-        if (~err.message.indexOf('Requested Range Not Satisfiable')) return res.send();
+        if (err.message.indexOf('Range Not Satisfiable') >=0 ) return res.send();
         console.error(err.stack)
         res.status(500).render('500')
     })
