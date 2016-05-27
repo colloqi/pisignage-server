@@ -40,22 +40,24 @@ module.exports = function(){
 			})
 		},
 		function(cb){
-			exec('which ffprobe',function(err,stdout,stderr){
+			exec('ffprobe -version',function(err,stdout,stderr){
 				if(err){
 					console.log('****************************************************************');
 					console.log('*  Please install ffmpeg, videos cannot be uploaded otherwise  *');
 					console.log('****************************************************************\n');
+                    console.log(err)
                     errors++;
                 }
 				cb();
 			})
 		},
 		function(cb){
-			exec('which convert',function(err,stdout,stderr){
-				if(err){
+			exec('convert -version',function(err,stdout,stderr){
+                if(err){
 					console.log('*********************************************************************');
 					console.log('* Please install imagemagik, otherwise thumbnails cannot be created *');
 					console.log('*********************************************************************\n');
+                    console.log(err)
                     errors++;
                 }
 				cb();
