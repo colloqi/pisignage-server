@@ -127,7 +127,6 @@ module.exports = function (app) {
 
     // custom error handler
     app.use(function (err, req, res, next) {
-        //console.log(err.name+":"+err.message);
         if (err.message.indexOf('not found') >= 0)
             return next();
         //ignore range error as well
