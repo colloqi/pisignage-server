@@ -4,6 +4,8 @@ angular.module('piGroups.controllers', [])
 
     .controller('GroupsCtrl', function ($scope, $http, piUrls, $location, piPopup,playerLoader) {
 
+        
+        
         $scope.fn = {};
         $scope.fn.editMode = false;
         $scope.fn.edit = function () {
@@ -398,6 +400,9 @@ angular.module('piGroups.controllers', [])
     })
 
     .controller('ServerPlayerCtrl', function($scope,$http,piUrls,$interval,$modal,TZNames, playerLoader,commands) {
+        
+        playerLoader.reload();
+        
         $scope.player = playerLoader.player;
         $scope.group = playerLoader.group;
         $scope.playlist = playerLoader.playlist;

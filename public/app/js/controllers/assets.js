@@ -32,7 +32,7 @@ angular.module('piAssets.controllers',[])
             },
             itemMoved: function (event) {
                 console.log("item moved");
-               var srcScope = event.source.sortableScope.$parent,
+                var srcScope = event.source.sortableScope.$parent,
                    dstScope = event.dest.sortableScope.$parent;
 
                 var srcIndex = event.source.index,
