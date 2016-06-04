@@ -11,7 +11,7 @@
  */
 
 angular.module('piAssets.services', [])
-    .factory('assetLoader', function ($http,$state,piUrls,piConstants) {
+    .factory('assetLoader', function ($http,$state,piUrls,piConstants,$rootScope) {
         var observerCallbacks = {};
         var notifyObservers = function(){
             if (!assetLoader.asset.groupWiseAssets)        //not yet loaded
@@ -130,7 +130,7 @@ angular.module('piAssets.services', [])
                 obj.playlistDetails.isVideo = !(filename.match(piConstants.videoRegex) == null);
                 if (assetLoader.asset.filesDetails[filename])
                     obj.playlistDetails.duration = parseInt(assetLoader.asset.filesDetails[filename].duration);
-                obj.playlistDetails.duration = obj.playlistDetails.duration || 10;
+                obj.playlistDetails.duration = obj.playlistDetails.duration || $rootScope.serverConfig.defaultDuration;
                 assetLoader.asset.allAssets.assets.push(obj)
                 //}
             })

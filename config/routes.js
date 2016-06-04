@@ -27,6 +27,7 @@ router.get('/api/files', assets.index);
 router.get('/api/files/:file', assets.getFileDetails);
 router.post('/api/files', upload.fields([{name:'assets',maxCount: 10}]), assets.createFiles);
 router.post('/api/postupload', assets.updateFileDetails);
+router.post('/api/playlistfiles', assets.updatePlaylist);
 router.post('/api/files/:file', assets.updateAsset);
 router.delete('/api/files/:file', assets.deleteFile);
 
@@ -58,6 +59,7 @@ router.post('/api/players/:playerid', players.updateObject)
 router.delete('/api/players/:playerid', players.deleteObject)
 
 router.post('/api/pishell/:playerid', players.shell)
+router.post('/api/snapshot/:playerid',players.takeSnapshot)
 router.post('/api/swupdate/:playerid', players.swupdate)
 router.post('/api/pitv/:playerid',players.tvPower);
 

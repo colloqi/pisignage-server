@@ -17,6 +17,7 @@ angular.module('piConfig', [])
             base:            base,
             files:           base + 'api/files/' ,
             filespostupload: base + 'api/postupload',
+            playlistfiles:   base + 'api/playlistfiles',
             calendars:       base + 'api/calendars/',
             links:           base + 'api/links/',
             licenses:        base + 'api/licensefiles/',
@@ -31,6 +32,7 @@ angular.module('piConfig', [])
             labels:          base + 'api/labels/' ,
 
             pishell:         base + 'api/pishell/',
+            snapshot:        base + 'api/snapshot/',
             pitv:            base + 'api/pitv/',
             swupdate:        base + 'api/swupdate/'
 

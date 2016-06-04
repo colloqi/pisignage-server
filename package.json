@@ -1,6 +1,6 @@
 {
   "name": "pisignage-server",
-  "version": "0.9.3",
+  "version": "1.6.4",
   "description": "Server to manage piSignage players in a LAN or Private Network.",
   "author": "colloqi <info@pisignage.com>",
   "engines": {
@@ -31,7 +31,8 @@
     "node-schedule": "^0.2.9",
     "serve-favicon": "~2.2.0",
     "serve-index": "~1.6.3",
-    "socket.io": "~0.9.16"
+    "socket.io": "~0.9.16",
+    "sanitize-html": "^1.11.1"
   },
   "devDependencies": {
     "nodemon": "latest"

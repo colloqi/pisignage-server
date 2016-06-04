@@ -291,13 +291,17 @@ angular.module('piAssets.controllers',[])
 
         //Add link releated for uploading links
         $scope.link = {
-            types: [{name: 'YouTube or Streaming', ext: '.tv'}, {name: 'Web Link', ext: '.link'}],
+            types: [{name: 'YouTube or Streaming', ext: '.tv'},
+                {name: 'Web Link(shown in iframe)', ext: '.link'},
+                {name: 'Web Page(supports cross origin links)', ext: '.weblink'}
+            ],
             obj: {
                 name: null,
                 type: '.link',
                 link: null
             },
             showPopup: function () {
+                $scope.linkCategories = []
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/link-popup.html',
                     scope: $scope
@@ -305,7 +309,7 @@ angular.module('piAssets.controllers',[])
             },
             save: function () {
                 $http
-                    .post(piUrls.links, {details: $scope.link.obj})
+                    .post(piUrls.links, {details: $scope.link.obj, categories: $scope.linkCategories})
                     .success(function (data, status) {
                         if (data.success) {
                             //$scope.Filestatus = data.stat_message;
@@ -467,13 +471,14 @@ angular.module('piAssets.controllers',[])
                 }
                 break;
             case 'link':
+            case 'weblink':
             case 'tv':
                 $scope.fileType = 'link';
                 $http
                     .get(piUrls.links+$state.params.file)
                     .success(function(data,status){
                         if(data.success){
-                            $scope.urlLink = JSON.parse(data.data);
+                            $scope.urlLink = JSON.parse(data.data.data);
                         }
                     })
                     .error(function(data,status){

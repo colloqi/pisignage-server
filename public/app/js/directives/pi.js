@@ -91,12 +91,10 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
         },
         template: function(tElem,tAttrs){
             return (
-                '<div>'+
-                    '<button class="btn btn-link btn-block">'+
+                '<button class="btn btn-link btn-block">'+
                         '<input type="file" multiple="" style="position:absolute;top:0;left:0;opacity: 0;width:100%;height:50px;z-index: 100"/>'+
-                        '<span ng-transclude>'+
-                    '</button></span>'+
-               '</div>'
+                        '<span ng-transclude></span>'+
+                    '</button>'
             )
         },
         compile: function compile(tElement, tAttrs, transclude) {            
@@ -308,3 +306,15 @@ directive('unsavedChangesWarning', ['saveChangesPrompt', '$parse', function(save
         };
     }
 ])
+
+.directive('errSrc', function() {
+    return {
+        link: function(scope, element, attrs) {
+            element.bind('error', function() {
+                if (attrs.src != attrs.errSrc) {
+                    attrs.$set('src', attrs.errSrc);
+                }
+            });
+        }
+    }
+})

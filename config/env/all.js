@@ -45,6 +45,7 @@ module.exports = {
     repofileRegex: /\.repo/i,
     liveStreamRegex: /\.tv/i,
     linkUrlRegex: /\.link/i,
+    CORSLink:  /\.weblink/i,
     gcalRegex: /\.gcal/i,
     gCalendar: {
         CLIENT_ID: '',

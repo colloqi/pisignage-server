@@ -30,6 +30,7 @@ body {
     font-size: 32px;
     line-height: 64px;
     color: #f8f8ff;
+    text-decoration: none !important;
 }
 
 
@@ -44,4 +45,9 @@ body {
 .media-object {
     max-height: 64px;
 }
+
+.subtle-text {
+    color: #b8b8b8 !important;
+}
+
 

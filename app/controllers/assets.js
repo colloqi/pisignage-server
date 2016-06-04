@@ -4,7 +4,8 @@ var fs = require('fs'),
     path = require('path'),
     async = require('async'),
     util = require('util'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    fileUtil = require('../others/file-util');
 
 var mongoose = require('mongoose'),
     Asset = mongoose.model('Asset'),
@@ -69,6 +70,9 @@ exports.createFiles = function (req, res) {
             if (err) {
                 next(err);
             } else {
+                if((fileObj.originalname).match('custom_layout.html')){
+                    fileUtil.modifyHTML(config.mediaDir)
+                }
                 data.push({
                     name: fileObj.originalname,
                     size: fileObj.size,
@@ -284,22 +288,52 @@ exports.updateCalendar = function (req, res) {
 exports.createLinkFile = function (req, res) {
     var details = req.body.details;
 
-    fs.writeFile(config.mediaPath + details.name + details.type, JSON.stringify(details, null, 4), 'utf8', function (err) {
-        if (err)
-            return rest.sendError(res, 'error in creating link file', err);
-        else
-            return rest.sendSuccess(res, 'Link file created for the link as ' + details.name + details.type);
-    })
+    async.series([
+        function (next) {
+            fs.writeFile(config.mediaPath + details.name + details.type, JSON.stringify(details, null, 4), 'utf8', function (err) {
+                next(err);
+            })
+        },function(next) {
+                require('./server-assets').storeLinkDetails(details.name+details.type,
+                    'link',
+                    req.body.categories,
+                    next
+                );
+        }], function(err) {
+                if (err)
+                    return rest.sendError(res, 'error in creating link file', err);
+                else
+                    return rest.sendSuccess(res, 'Link file created for the link as ' + details.name + details.type);
+        })
 }
 
 exports.getLinkFileDetails = function (req, res) {
     var fileToRead = req.params['file'];
 
-    fs.readFile(config.mediaPath + fileToRead, 'utf-8', function (err, data) {
+    var retData = {}
+
+    async.series([
+        function (next) {
+            fs.readFile(config.mediaPath + fileToRead, 'utf-8', function (err, data) {
+                retData.data = data
+                next(err)
+            })
+        }, function (next) {
+            Asset.findOne({name: fileToRead}, function (err, dbdata) {
+                retData.dbdata = dbdata
+                next()
+            })
+    }], function (err) {
         if (err) {
             return rest.sendError(res, 'unable to read link file, error:' + err);
         } else {
-            return rest.sendSuccess(res, 'link file details', data);
+            return rest.sendSuccess(res, 'link file details', retData);
         }
     })
+}
+
+exports.updatePlaylist = function (req,res) {
+    //req.body contain playlist name and assets, for deleted playlist send playlist name and empty assets
+    require('./server-assets').updatePlaylist(req.body.playlist, req.body.assets);
+    return rest.sendSuccess(res, 'asset update has been queued');
 }

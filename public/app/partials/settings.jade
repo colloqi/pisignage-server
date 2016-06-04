@@ -39,12 +39,18 @@
                                 a.btn.btn-success(type="button",ng-click='saveSettings()',
                                                 ng-disabled="!settingsForm.user.$dirty") SAVE
                         small.text-danger {{loadMsg}}
+                .form-group
+                    label.col-xs-4.control-label(translate) Default Duration for Slides
+                    div.col-xs-2
+                        input.form-control(type='text', name='duration', ng-model='settings.defaultDuration')
+                    div.col-xs-2
+                        button.btn.btn-success(type='submit', ng-click='saveSettings()',translate)  Save
                 //.form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',id="log", name='checkbox', ng-model='settings.assetLogEnable', ng-change="saveSettings()")
                             span(translate) Enable Log for Files Play Statistics
-                .form-group
+                //.form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',id="layout", name='checkbox', ng-model='settings.newLayoutsEnable', ng-change="saveSettings()")

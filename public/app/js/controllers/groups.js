@@ -168,9 +168,11 @@ angular.module('piGroups.controllers', [])
                     });
                     if ($scope.group.selectedGroup.assets.indexOf('__' + playlist.name + '.json') == -1)
                         $scope.group.selectedGroup.assets.push('__' + playlist.name + '.json');
+                    if($scope.group.selectedGroup.logo && $scope.group.selectedGroup.assets.indexOf($scope.group.selectedGroup.logo) == -1)
+                        $scope.group.selectedGroup.assets.push($scope.group.selectedGroup.logo);
                     $scope.group.selectedGroup.playlists[i].settings = $scope.group.selectedGroup.playlists[i].settings || {}
                     $scope.group.selectedGroup.playlists[i].settings.ads = playlist.settings.ads
-                    if(playlist.assets.length == 0)
+                    if(playlist.name != 'TV_OFF' && playlist.assets.length == 0)
                         $scope.emptyPlExist = true;
                 } else {
                     $scope.group.selectedGroup.playlists.splice(i,1);
@@ -326,6 +328,10 @@ angular.module('piGroups.controllers', [])
             });
         }
         $scope.tickerSave = function() {
+            if ($scope.group.selectedGroup.ticker.style)
+                $scope.group.selectedGroup.ticker.style = $scope.group.selectedGroup.ticker.style.replace(/\"/g,'');
+            if ($scope.group.selectedGroup.ticker.messages)
+                $scope.group.selectedGroup.ticker.messages = $scope.group.selectedGroup.ticker.messages.replace(/'/g, "`")
             $scope.tickerModal.close();
             updateGroup();
             $scope.needToDeploy = true;
@@ -392,6 +398,11 @@ angular.module('piGroups.controllers', [])
                 });
         }
 
+        $scope.snapshot = {
+            image: "/app/img/snapshot.png",
+            buttonTxt: "Take Snapshot"
+        }
+
         $scope.shellCommand = function(player) {
             //if (player.statusClass == "text-danger")
             //    return console.log("Player is offline");
@@ -401,6 +412,7 @@ angular.module('piGroups.controllers', [])
                 templateUrl: '/app/templates/shell-popup.html',
                 scope: $scope
             });
+            $scope.getSnapshot()
         }
 
         $scope.execute = function() {
@@ -420,6 +432,24 @@ angular.module('piGroups.controllers', [])
                 });
         }
 
+        $scope.getSnapshot = function() {
+            $scope.snapshot.buttonTxt = "Please Wait";
+            $http
+                .post(piUrls.snapshot+$scope.msg.player._id)
+                .success(function(data, status) {
+                    if (data.success) {
+                        $scope.snapshot.image = (data.data.url) + "?" + Date.now()
+                        $scope.snapshot.lastTaken = data.data.lastTaken
+                        $scope.snapshot.buttonTxt = "Take Snapshot";
+                    } else {
+                        $scope.snapshot.buttonTxt = data.stat_message;
+                    }
+                })
+                .error(function(data, status) {
+
+                });
+        }
+
         $scope.changeTvState = function(flag){
             $scope.confirmmsg = "Your request has been sent, Please refesh page after 10 sec"
             $http
@@ -436,16 +466,17 @@ angular.module('piGroups.controllers', [])
         $scope.swUpdate = function(player) {
             if (player.statusClass == "text-danger")
                 return console.log("Player is offline");
-            $scope.msg = {player:player,curVer:player.version,newVer:$scope.player.currentVersion.version};
+            $scope.msg = {player:player,curVer:player.version,
+                newVer:$scope.currentVersion.version, beta:$scope.currentVersion.beta};
             $scope.modal = $modal.open({
                 templateUrl: '/app/templates/swupdate-popup.html',
                 scope: $scope
             });
         }
 
-        $scope.confirmUpdate = function() {
+        $scope.confirmUpdate = function(version) {
             $http
-                .post(piUrls.swupdate+$scope.msg.player._id, {})
+                .post(piUrls.swupdate+$scope.msg.player._id, {version: version})
                 .success(function(data, status) {
                     $scope.modal.close();
                 })

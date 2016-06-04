@@ -29,6 +29,10 @@ var handleClient = function (socket) {
         players.shellAck(socket.id, response);
     });
 
+    socket.on('snapshot', function (response) {
+        players.piScreenShot(socket.id,response);
+    });
+
     socket.on('upload', function (player, filename, data) {
         players.upload(player, filename, data);
     });
@@ -44,9 +48,9 @@ exports.startSIO = function (io) {
     iosockets = io.sockets;
 }
 
-exports.emitMessage = function (sid, cmd, msg, msg1, msg2) {
+exports.emitMessage = function (sid, cmd, msg, msg1, msg2,msg3,msg4,msg5) {
     if (iosockets.sockets[sid]) {
-        iosockets.sockets[sid].emit(cmd, msg, msg1, msg2);
+        iosockets.sockets[sid].emit(cmd, msg, msg1, msg2, msg3,msg4,msg5);
     }
 }
 

@@ -138,6 +138,8 @@ exports.updateObject = function (req, res) {
         object.deployedTicker = object.ticker;
     }
 
+    //disable animation for the timebeing
+    object.animationEnable = false;
     object.save(function (err, data) {
         if (!err && req.body.deploy) {
             serverMain.deploy(installation,object, saveObject);

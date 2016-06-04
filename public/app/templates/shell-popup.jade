@@ -1,6 +1,6 @@
 .modal-header
     h4
-        span.text-warning Pi Shell
+        span.text-warning {{msg.player.statusClass == "text-danger"?"Player is OFFLINE":"Pi Shell"}}
         span.pull-right.btn-group
             button.btn.btn-sm(ng-class="msg.player.tvStatus? 'btn-primary':'btn-default'",ng-click="changeTvState(false)") Tv On
             button.btn.btn-sm(ng-class="!msg.player.tvStatus? 'btn-primary':'btn-default'",ng-click="changeTvState(true)") Tv OFF
@@ -18,6 +18,15 @@
         pre(ng-if="msg.err"): small.text-danger {{msg.err}}
         pre(ng-if="msg.stdout"): small.text-info stdout: {{msg.stdout}}
         pre(ng-if="msg.stderr"): small.text-warning stderr: {{msg.stderr}}
+    .row
+        .col-sm-10
+            a.thumbnail(href="#",ng-click="getSnapshot()")
+                img(ng-src="{{snapshot.image}}",err-src="/app/img/snapshot.png")
+                small last taken: {{snapshot.lastTaken | date: "MMM dd, hh:mm a"}}
+                button.btn.btn-block.btn-success {{snapshot.buttonTxt}}&nbsp;(needs v1.6.0+)
 
-.modal-footer
+        .col-sm-2
+            button.btn.btn-warning.pull-right(ng-click='modal.dismiss()',translate) Dismiss
+
+//.modal-footer
     button.btn.btn-warning(ng-click='modal.dismiss()') Dismiss

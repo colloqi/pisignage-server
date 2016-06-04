@@ -27,6 +27,9 @@ var GroupSchema = new Schema({
                             ontimeObj: {type: String},
                             offtimeObj: {type: String}
     },
+    logo:                   {type: String,default: null},
+    logox:                  {type: Number,default: 10},
+    logoy:                  {type: Number,default: 10},
 
     createdAt:              {type: Date, default: Date.now},
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}

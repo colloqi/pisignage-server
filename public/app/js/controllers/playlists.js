@@ -52,6 +52,13 @@ angular.module('piPlaylists.controllers', [])
                         })
                         .error(function (data, status) {
                         });
+                    $http.post(piUrls.playlistfiles,{playlist:$scope.playlist.playlists[index].name,assets:[]})
+                        .success(function(data, status) {
+                            console.log(data);
+                        })
+                        .error(function(data, status) {
+                            console.log(status);
+                        });
                 })
             } else {
                 $scope.fn.selected($scope.playlist.playlists[index])
@@ -125,11 +132,11 @@ angular.module('piPlaylists.controllers', [])
                 "2b": {title: "Two Zones with Main Zone on left", description: "main Zone:960x720, side Zone:320x720"},
                 "2c": {
                     title: "Two Equal Size Zones with Video Zone on left",
-                    disabled:!$rootScope.serverConfig.newLayoutsEnable,
+                    //disabled:!$rootScope.serverConfig.newLayoutsEnable,
                     description: "main Zone:640x720, side Zone:640x720"},
                 "2d": {
                     title: "Two Equal Size Zones with Video Zone on right",
-                    disabled:!$rootScope.serverConfig.newLayoutsEnable,
+                    //disabled:!$rootScope.serverConfig.newLayoutsEnable,
                     description: "main Zone:640x720, side Zone:640x720"},
                 "3a": {
                     title: "Three Zones(full bottom) with Main Zone on right",
@@ -157,18 +164,18 @@ angular.module('piPlaylists.controllers', [])
                 },
                 "4c": {
                     title: "Three Zones(full side) with Main Zone on right (enable in settings)",
-                    disabled:!$rootScope.serverConfig.newLayoutsEnable,
+                    //disabled:!$rootScope.serverConfig.newLayoutsEnable,
                     description: "main Zone:960x540, side Zone:320x720, banner Zone:960x180"
                 },
                 "4d": {
                     title: "Three Zones(full side) with Main Zone on left (enable in settings)",
-                    disabled:!$rootScope.serverConfig.newLayoutsEnable,
+                    //disabled:!$rootScope.serverConfig.newLayoutsEnable,
                     description: "main Zone:960x540, side Zone:320x720, banner Zone:960x180"
                 },
                 "2ap": {title: "Single Zone Portrait Mode, Orient clockwise", description: "main Zone:720x1280"},
                 "2bp": {
                     title: "Two Zones Portrait Mode, Orient clockwise",
-                    disabled:!$rootScope.serverConfig.newLayoutsEnable,
+                    //disabled:!$rootScope.serverConfig.newLayoutsEnable,
                     description: "top Zone:720x540,bottom zone:720x740"
                 },
                 "2ap270": {
@@ -178,7 +185,23 @@ angular.module('piPlaylists.controllers', [])
                 "2bp270": {
                     title: "Two Zone Portrait Mode,Orient anti-clockwise",
                     description: "top Zone:720x540,bottom zone:720x740"
+                },
+                "custom": {
+                    title: "Custom Layout in Landscape Mode (v1.6.0+)",
+                    disabled:($scope.asset.files.indexOf("custom_layout.html") == -1),
+                    description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g. "
+                },
+                "customp": {
+                    title: "Custom Layout in Portrait Mode, Orient clockwise",
+                    disabled:($scope.asset.files.indexOf("custom_layout.html") == -1),
+                    description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g."
+                },
+                "customp270": {
+                    title: "Custom Layout in Portrait Mode,Orient anti-clockwise",
+                    disabled:($scope.asset.files.indexOf("custom_layout.html") == -1),
+                    description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g."
                 }
+
             }
 
 
@@ -232,6 +255,8 @@ angular.module('piPlaylists.controllers', [])
 
                 if (pl.settings.ticker.style)
                     pl.settings.ticker.style = pl.settings.ticker.style.replace(/\"/g,'');
+                if (pl.settings.ticker.messages)
+                    pl.settings.ticker.messages = pl.settings.ticker.messages.replace(/'/g, "`")
 
                 $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name, {settings: pl.settings})
                     .success(function(data, status) {
@@ -312,6 +337,21 @@ angular.module('piPlaylists.controllers', [])
                     .error(function (data, status) {
                         console.log(status);
                     });
+            var assetFiles = []
+            $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.assets.forEach(function(item){
+                assetFiles.push(item.filename)
+                if (item.side && assetFiles.indexOf(item.side) == -1)
+                    assetFiles.push(item.side);
+                if (item.bottom && assetFiles.indexOf(item.bottom) == -1)
+                    assetFiles.push(item.bottom);
+            })
+            $http.post(piUrls.playlistfiles,{playlist:$scope.playlist.selectedPlaylist.name,assets: assetFiles})
+                .success(function(data, status) {
+                    //console.log(data);
+                })
+                .error(function(data, status) {
+                    console.log(status);
+                });
         }
 
         $scope.done = function()  {

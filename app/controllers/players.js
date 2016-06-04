@@ -16,6 +16,7 @@ var installation,
     settings;
 
 var pipkgjson,
+    pipkgjsonBeta,
     fs = require('fs');
 
 var activePlayers = {},
@@ -106,9 +107,13 @@ var sendConfig = function (player, group, periodic) {
     retObj.name = player.name;
     retObj.resolution = group.resolution || '720p';
     retObj.orientation = group.orientation || 'landscape';
-    retObj.animationEnable =  group.animationEnable || false;
+    //retObj.animationEnable =  group.animationEnable || false;
+    retObj.animationEnable = false;
     retObj.sleep = group.sleep || {enable: false, ontime: null , offtime: null };
     retObj.signageBackgroundColor =  group.signageBackgroundColor || "#000";
+    retObj.logo =  group.logo;
+    retObj.logox =  group.logox;
+    retObj.logoy =  group.logoy;
     retObj.urlReloadDisable =  group.urlReloadDisable || false;
     if (!pipkgjson)
         pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
@@ -178,8 +183,14 @@ exports.index = function (req, res) {
                 } catch(e) {
                     err = true;
                 }
+                try {
+                    pipkgjsonBeta = JSON.parse(fs.readFileSync('data/releases/package-beta.json', 'utf8'))
+                } catch(e) {
+                    pipkgjsonBeta = null;
+                }
                 if (!err) {
-                    data.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version};
+                    data.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version,
+                        beta: pipkgjsonBeta?pipkgjsonBeta.version:null};
                 }
                 return rest.sendSuccess(res, 'sending Player list', data);
             })
@@ -364,9 +375,12 @@ exports.shellAck = function (sid, response) {
 }
 
 exports.swupdate = function (req, res) {
-    var object = req.object;
+    var object = req.object,
+        version = req.body.version || null;
     pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
-    socketio.emitMessage(object.socket, 'swupdate', 'piimage' + pipkgjson.version + '.zip');
+    socketio.emitMessage(object.socket, 'swupdate',
+        version?version:'piimage'+pipkgjson.version+'.zip');
+    //console.log("updating to "+(version?version:'piimage'+pipkgjson.version+'.zip'));
     return rest.sendSuccess(res, 'SW update command issued');
 }
 
@@ -414,4 +428,64 @@ exports.tvPower = function(req,res){
     socketio.emitMessage(object.socket,'cmd','tvpower',{off: status} );
     return rest.sendSuccess(res,'TV command issued');
 }
+
+
+
+var snapShotTimer = {};
+var pendingSnapshots = {};
+var alreadyReplied = false;
+
+exports.piScreenShot = function (sid,data) { // save screen shot in  _screenshots directory
+    clearTimeout(snapShotTimer[sid])
+    var img = (new Buffer(data.data,"base64")).toString("binary")
+    fs.writeFile(path.join(config.thumbnailDir,data.playerInfo.cpuSerialNumber + '.jpeg'), img, 'binary',function (err) {
+        if (err)
+            console.log('error in  saving screenshot for ' + data.playerInfo.cpuSerialNumber, err);
+        if (pendingSnapshots[sid]) {
+            alreadyReplied = true;
+            rest.sendSuccess(pendingSnapshots[sid], 'screen shot received',
+                {
+                    url: "/media/_thumbnails/"+data.playerInfo.cpuSerialNumber+".jpeg",
+                    lastTaken: Date.now()
+                }
+            );
+            pendingSnapshots[sid] = null;
+        }
+    })
+}
+
+exports.takeSnapshot = function (req, res) { // send socket.io event
+    var object = req.object;
+    if (pendingSnapshots[object.socket])
+        rest.sendError(res, 'snapshot taking in progress');
+    else if (!object.isConnected) {
+        fs.stat(path.join(config.thumbnailDir, object.cpuSerialNumber + '.jpeg'), function (err, stats) {
+            rest.sendSuccess(res, 'player is offline, sending previous snapshot',
+                {
+                    url: "/media/_thumbnails/" + object.cpuSerialNumber + ".jpeg",
+                    lastTaken: stats ? stats.mtime : "NA"
+                }
+            );
+        })
+    } else {
+        pendingSnapshots[object.socket] = res;
+        alreadyReplied = false;
+        snapShotTimer[object.socket] = setTimeout(function () {
+            pendingSnapshots[object.socket] = null;
+            fs.stat(path.join(config.thumbnailDir, object.cpuSerialNumber + '.jpeg'), function (err, stats) {
+                if (!alreadyReplied) {
+                    alreadyReplied = true;
+                    rest.sendSuccess(res, 'screen shot command timeout',
+                        {
+                            url: "/media/_thumbnails/" + object.cpuSerialNumber + ".jpeg",
+                            lastTaken: stats ? stats.mtime : "NA"
+                        }
+                    );
+                }
+            })
+        }, 60000)
+        socketio.emitMessage(object.socket, 'snapshot');
+    }
+}
+
 

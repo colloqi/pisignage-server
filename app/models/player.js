@@ -34,7 +34,8 @@ var PlayerSchema = new Schema({
     serverServiceDisabled:  {type: Boolean, default: false},
 
     createdAt:              {type: Date, default: Date.now},
-    createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}
+    createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String},
+    licensed:               {type: Boolean, default: false}
 })
 
 

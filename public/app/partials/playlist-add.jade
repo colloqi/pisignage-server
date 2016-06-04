@@ -27,9 +27,10 @@
                         .col-sm-8
                             h6 {{file.fileDetails.name }}
                         .col-sm-3
-                            h6(ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) && file.fileDetails.duration > 0")
+                            //h6(ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) && file.fileDetails.duration > 0")
                                 strong {{file.fileDetails.duration}} seconds
-                            input.form-control.input-sm(ng-if="file.playlistDetails && !file.playlistDetails.isVideo",
+                            //input.form-control.input-sm(ng-if="file.playlistDetails && !file.playlistDetails.isVideo",
+                            input.form-control.input-sm(
                                                                 type='number', ng-model='file.playlistDetails.duration',min="5",
                                                                 ng-model-options="{ updateOn: 'blur' }",
                                                                 ng-change="saveData()")
