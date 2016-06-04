@@ -27,8 +27,14 @@
     <div class="form-group row">
       <label class="col-sm-4 control-label">Link Address</label>
       <div class="col-sm-8">
-        <input type="url" name="linkUrl" ng-model="link.obj.link" placeholder="Actual link" required="" class="form-control"/>
+        <input type="text" name="linkUrl" ng-model="link.obj.link" ng-pattern="/^(http(s?)|rtsp):///" placeholder="{{'e.g. http(s)://site.com or rtsp://'}}" required="" class="form-control"/>
       </div>
     </div>
   </form>
+</div>
+<div class="modal-footer">
+  <h5 class="pull-left text-muted">Select Categories for the link</h5>
+  <p class="pull-left">
+    <categories selected-labels="linkCategories"></categories>
+  </p>
 </div>

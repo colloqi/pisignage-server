@@ -1,0 +1,17 @@
+.panel.panel-primary(style="margin-bottom:0px;")
+    .panel-heading
+        h4
+            span Available Files
+            button.btn.btn-default.pull-right(ng-click="fileDisplayModal.close()") Cancel
+    ul.list-group
+        li.list-group-item.list-group-item-info
+            input.form-control(type="text",placeholder="{{'Filter by Name' }}",ng-model="search")
+        li.list-group-item(ng-repeat="file in assetFiles | filter:'.png' | filter:search ",ng-click="saveAssetFile(file)")
+            .media
+                .media-left
+                    a.pull-left(href="#" , ng-if="filesDetails[file].thumbnail")
+                        img.media-object(src="{{filesDetails[file].thumbnail}}")
+                    .media-object.letter-box.img-rounded.pull-left(ng-if="!filesDetails[file].thumbnail")
+                        | {{filesDetails[file].type.slice(0,1) || 'N' }}
+                .media-body
+                    .media-heading &nbsp;{{file}}

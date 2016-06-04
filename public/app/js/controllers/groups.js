@@ -365,6 +365,36 @@ angular.module('piGroups.controllers', [])
             playerLoader.selectGroup();
         };
 
+        $scope.showFileList = function() {
+            $http.get(piUrls.files,{})
+                .success(function(data, status) {
+                    if (data.success) {
+                        $scope.assetFiles = data.data.files;
+                        if (data.data.dbdata) {
+                            $scope.filesDetails = {};
+                            data.data.dbdata.forEach(function(dbdata){
+                                if ($scope.assetFiles.indexOf(dbdata.name) >=0){
+                                    $scope.filesDetails[dbdata.name] = dbdata;
+                                }
+                            })
+                        }
+                    }
+                })
+                .error(function(data, status) {
+                });
+            $scope.fileDisplayModal = $modal.open({
+                templateUrl: '/app/templates/listFilePopup.html',
+                scope: $scope,
+                keyboard: false
+            });
+        }
+
+        $scope.saveAssetFile = function(filename) {
+            $scope.group.selectedGroup.logo = filename;
+            $scope.fileDisplayModal.close();
+        }
+
+
     })
 
     .controller('ServerPlayerCtrl', function($scope,$http,piUrls,$interval,$modal,TZNames, playerLoader,commands) {

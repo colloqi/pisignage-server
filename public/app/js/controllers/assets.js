@@ -292,8 +292,8 @@ angular.module('piAssets.controllers',[])
         //Add link releated for uploading links
         $scope.link = {
             types: [{name: 'YouTube or Streaming', ext: '.tv'},
-                {name: 'Web Link(shown in iframe)', ext: '.link'},
-                {name: 'Web Page(supports cross origin links)', ext: '.weblink'}
+                {name: 'Web link (shown in iframe)', ext: '.link'},
+                {name: 'Web page (supports cross origin links)', ext: '.weblink'}
             ],
             obj: {
                 name: null,
@@ -464,6 +464,9 @@ angular.module('piAssets.controllers',[])
                         .success(function(data, status) {
                             if (data.success) {
                                 $scope.calendar = data.data;
+                                $scope.filedetails = data.data;
+                                if ($scope.filedetails.dbdata)
+                                    $scope.selectedLabels = $scope.filedetails.dbdata.labels;
                             }
                         })
                         .error(function(data, status) {
@@ -479,6 +482,9 @@ angular.module('piAssets.controllers',[])
                     .success(function(data,status){
                         if(data.success){
                             $scope.urlLink = JSON.parse(data.data.data);
+                            $scope.filedetails = data.data;
+                            if ($scope.filedetails.dbdata)
+                                $scope.selectedLabels = $scope.filedetails.dbdata.labels;
                         }
                     })
                     .error(function(data,status){

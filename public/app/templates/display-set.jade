@@ -35,8 +35,8 @@
                 .radio
                     label.text-muted
                         span(translate) Animation
-                        | <br>
-                        span(translate) (only in pi 2)
+                        //| <br>
+                        //span(translate) (only in pi 2)
             .col-sm-4
                 .radio
                     label
@@ -45,7 +45,7 @@
             .col-sm-4
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[1].value")
+                        input(disabled,type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[1].value")
                         small {{animations[1].name}}
         .form-group.row
             .col-xs-4.text-right
@@ -53,6 +53,21 @@
                     label.text-muted: span Signage Background CSS Color
             .col-xs-4
                 input.form-control(type='text',placeholder='e.g. #666',ng-model='group.selectedGroup.signageBackgroundColor')
+
+        .form-group.row
+            .col-xs-4.text-right
+                .radio
+                    label.text-muted Display a Logo
+            .col-xs-4
+                button.btn.btn-sm.btn-link(ng-click="showFileList()")
+                    span {{group.selectedGroup.logo || "Select a png image from Assets"}}
+                button.btn.btn-xs.btn-warning(ng-if="group.selectedGroup.logo",ng-click="group.selectedGroup.logo=null") X
+            .col-xs-2
+                .form-group
+                    input.input-sm.form-control(type='text',placeholder="x pos",ng-model="group.selectedGroup.logox")
+            .col-xs-2
+                .form-group
+                    input.input-sm.form-control(type='text',placeholder="y pos",ng-model="group.selectedGroup.logoy")
 
         .form-group.row
             .col-sm-4.text-right

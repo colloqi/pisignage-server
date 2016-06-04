@@ -49,7 +49,10 @@
     <div class="form-group row">
       <div class="col-sm-4 text-right">
         <div class="radio">
-          <label class="text-muted"><span translate="translate">Animation</span><br><span translate="translate">(only in pi 2)</span></label>
+          <label class="text-muted"><span translate="translate">Animation</span>
+            <!--| <br>-->
+            <!--span(translate) (only in pi 2)-->
+          </label>
         </div>
       </div>
       <div class="col-sm-4">
@@ -62,7 +65,7 @@
       <div class="col-sm-4">
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.animationEnable" ng-value="animations[1].value"/><small>{{animations[1].name}}</small>
+            <input disabled="disabled" type="radio" ng-model="group.selectedGroup.animationEnable" ng-value="animations[1].value"/><small>{{animations[1].name}}</small>
           </label>
         </div>
       </div>
@@ -75,6 +78,27 @@
       </div>
       <div class="col-xs-4">
         <input type="text" placeholder="e.g. #666" ng-model="group.selectedGroup.signageBackgroundColor" class="form-control"/>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-xs-4 text-right">
+        <div class="radio">
+          <label class="text-muted">Display a Logo</label>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <button ng-click="showFileList()" class="btn btn-sm btn-link"><span>{{group.selectedGroup.logo || "Select a png image from Assets"}}</span></button>
+        <button ng-if="group.selectedGroup.logo" ng-click="group.selectedGroup.logo=null" class="btn btn-xs btn-warning">X</button>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <input type="text" placeholder="x pos" ng-model="group.selectedGroup.logox" class="input-sm form-control"/>
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <input type="text" placeholder="y pos" ng-model="group.selectedGroup.logoy" class="input-sm form-control"/>
+        </div>
       </div>
     </div>
     <div class="form-group row">

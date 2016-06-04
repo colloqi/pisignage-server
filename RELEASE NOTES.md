@@ -9,6 +9,10 @@
 1. Calendar view for multiple playlists scheduling under Group
 1. Link edit
 
-1.6.0
+- 1.6.0
 1. customized logo and url (directly change at public/app/img/pisignage-logo.png and public/app/partials/menu.jade)
 2. UI changes (specific to pisignage.com)
+3. editing of links
+4. Showing playlists associated with Asset in Asset List and Edit screens, thumbnail in Edit assets
+5. License Status, player name change, location display
+
