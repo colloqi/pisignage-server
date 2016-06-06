@@ -126,86 +126,98 @@ angular.module('piPlaylists.controllers', [])
         function($scope, $http, $rootScope, piUrls, $window,$state,$modal, assetLoader){
 
             //modal for layout
-            $scope.layouts = {
-                "1": {title: "Single Zone Display", description: "main Zone:1280x720"},
-                "2a": {title: "Two Zones with Main Zone on right", description: "main Zone:960x720, side Zone:320x720"},
-                "2b": {title: "Two Zones with Main Zone on left", description: "main Zone:960x720, side Zone:320x720"},
-                "2c": {
-                    title: "Two Equal Size Zones with Video Zone on left",
-                    //disabled:!$rootScope.serverConfig.newLayoutsEnable,
-                    description: "main Zone:640x720, side Zone:640x720"},
-                "2d": {
-                    title: "Two Equal Size Zones with Video Zone on right",
-                    //disabled:!$rootScope.serverConfig.newLayoutsEnable,
-                    description: "main Zone:640x720, side Zone:640x720"},
-                "3a": {
-                    title: "Three Zones(full bottom) with Main Zone on right",
-                    description: "main Zone:960x540, side Zone:320x540, bottom Zone:1280x180"
-                },
-                "3b": {
-                    title: "Three Zones(full bottom) with Main Zone on left",
-                    description: "main Zone:960x540, side Zone:320x540, bottom Zone:1280x180"
-                },
-                "3c": {
-                    title: "Three Zones(full top) with Main Zone on right (enable in settings)",
-                    description: "main Zone:960x540, side Zone:320x540, banner Zone:1280x180"
-                },
-                "3d": {
-                    title: "Three Zones(full top) with Main Zone on left (enable in settings)",
-                    description: "main Zone:960x540, side Zone:320x540, banner Zone:1280x180"
-                },
-                "4a": {
-                    title: "Three Zones(full side) with Main Zone on right",
-                    description: "main Zone:960x540, side Zone:320x720, bottom Zone:960x180"
-                },
-                "4b": {
-                    title: "Three Zones(full side) with Main Zone on left",
-                    description: "main Zone:960x540, side Zone:320x720, bottom Zone:960x180"
-                },
-                "4c": {
-                    title: "Three Zones(full side) with Main Zone on right (enable in settings)",
-                    //disabled:!$rootScope.serverConfig.newLayoutsEnable,
-                    description: "main Zone:960x540, side Zone:320x720, banner Zone:960x180"
-                },
-                "4d": {
-                    title: "Three Zones(full side) with Main Zone on left (enable in settings)",
-                    //disabled:!$rootScope.serverConfig.newLayoutsEnable,
-                    description: "main Zone:960x540, side Zone:320x720, banner Zone:960x180"
-                },
-                "2ap": {title: "Single Zone Portrait Mode, Orient clockwise", description: "main Zone:720x1280"},
-                "2bp": {
-                    title: "Two Zones Portrait Mode, Orient clockwise",
-                    //disabled:!$rootScope.serverConfig.newLayoutsEnable,
-                    description: "top Zone:720x540,bottom zone:720x740"
-                },
-                "2ap270": {
-                    title:"Single Zone Portrait Mode,Orient anti-clockwise",
-                    description:"main Zone: 720x1280 "
-                },
-                "2bp270": {
-                    title: "Two Zone Portrait Mode,Orient anti-clockwise",
-                    description: "top Zone:720x540,bottom zone:720x740"
-                },
-                "custom": {
-                    title: "Custom Layout in Landscape Mode (v1.6.0+)",
-                    disabled:($scope.asset.files.indexOf("custom_layout.html") == -1),
-                    description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g. "
-                },
-                "customp": {
-                    title: "Custom Layout in Portrait Mode, Orient clockwise",
-                    disabled:($scope.asset.files.indexOf("custom_layout.html") == -1),
-                    description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g."
-                },
-                "customp270": {
-                    title: "Custom Layout in Portrait Mode,Orient anti-clockwise",
-                    disabled:($scope.asset.files.indexOf("custom_layout.html") == -1),
-                    description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g."
-                }
+            function loadLayoutStructure () {
+                $scope.layouts = {
+                    "1": {title: "Single Zone Display", description: "main Zone:1280x720"},
+                    "2a": {
+                        title: "Two Zones with Main Zone on right",
+                        description: "main Zone:960x720, side Zone:320x720"
+                    },
+                    "2b": {
+                        title: "Two Zones with Main Zone on left",
+                        description: "main Zone:960x720, side Zone:320x720"
+                    },
+                    "2c": {
+                        title: "Two Equal Size Zones with Video Zone on left",
+                        //disabled:!$rootScope.serverConfig.newLayoutsEnable,
+                        description: "main Zone:640x720, side Zone:640x720"
+                    },
+                    "2d": {
+                        title: "Two Equal Size Zones with Video Zone on right",
+                        //disabled:!$rootScope.serverConfig.newLayoutsEnable,
+                        description: "main Zone:640x720, side Zone:640x720"
+                    },
+                    "3a": {
+                        title: "Three Zones(full bottom) with Main Zone on right",
+                        description: "main Zone:960x540, side Zone:320x540, bottom Zone:1280x180"
+                    },
+                    "3b": {
+                        title: "Three Zones(full bottom) with Main Zone on left",
+                        description: "main Zone:960x540, side Zone:320x540, bottom Zone:1280x180"
+                    },
+                    "3c": {
+                        title: "Three Zones(full top) with Main Zone on right (enable in settings)",
+                        description: "main Zone:960x540, side Zone:320x540, banner Zone:1280x180"
+                    },
+                    "3d": {
+                        title: "Three Zones(full top) with Main Zone on left (enable in settings)",
+                        description: "main Zone:960x540, side Zone:320x540, banner Zone:1280x180"
+                    },
+                    "4a": {
+                        title: "Three Zones(full side) with Main Zone on right",
+                        description: "main Zone:960x540, side Zone:320x720, bottom Zone:960x180"
+                    },
+                    "4b": {
+                        title: "Three Zones(full side) with Main Zone on left",
+                        description: "main Zone:960x540, side Zone:320x720, bottom Zone:960x180"
+                    },
+                    "4c": {
+                        title: "Three Zones(full side) with Main Zone on right (enable in settings)",
+                        //disabled:!$rootScope.serverConfig.newLayoutsEnable,
+                        description: "main Zone:960x540, side Zone:320x720, banner Zone:960x180"
+                    },
+                    "4d": {
+                        title: "Three Zones(full side) with Main Zone on left (enable in settings)",
+                        //disabled:!$rootScope.serverConfig.newLayoutsEnable,
+                        description: "main Zone:960x540, side Zone:320x720, banner Zone:960x180"
+                    },
+                    "2ap": {title: "Single Zone Portrait Mode, Orient clockwise", description: "main Zone:720x1280"},
+                    "2bp": {
+                        title: "Two Zones Portrait Mode, Orient clockwise",
+                        //disabled:!$rootScope.serverConfig.newLayoutsEnable,
+                        description: "top Zone:720x540,bottom zone:720x740"
+                    },
+                    "2ap270": {
+                        title: "Single Zone Portrait Mode,Orient anti-clockwise",
+                        description: "main Zone: 720x1280 "
+                    },
+                    "2bp270": {
+                        title: "Two Zone Portrait Mode,Orient anti-clockwise",
+                        description: "top Zone:720x540,bottom zone:720x740"
+                    },
+                    "custom": {
+                        title: "Custom Layout in Landscape Mode (v1.6.0+)",
+                        disabled: ($scope.asset.files.indexOf("custom_layout.html") == -1),
+                        description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g. "
+                    },
+                    "customp": {
+                        title: "Custom Layout in Portrait Mode, Orient clockwise",
+                        disabled: ($scope.asset.files.indexOf("custom_layout.html") == -1),
+                        description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g."
+                    },
+                    "customp270": {
+                        title: "Custom Layout in Portrait Mode,Orient anti-clockwise",
+                        disabled: ($scope.asset.files.indexOf("custom_layout.html") == -1),
+                        description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g."
+                    }
 
+                }
             }
+            loadLayoutStructure();
 
 
             $scope.openLayout = function(){
+                loadLayoutStructure();
                 $scope.videoWindow = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.videoWindow || {}
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/layout-popup.html',
