@@ -37,7 +37,7 @@ module.exports = {
         secret: 'piSignage'
     },
 
-    videoRegex: /(mp4|mov|m4v|avi|webm|wmv|flv)$/i,
+    videoRegex: /(mp4|mov|m4v|avi|webm|wmv|flv|mkv)$/i,
     audioRegex: /(mp3)$/i,
     imageRegex: /(jpg|jpeg|png|gif)$/i,
     htmlRegex: /\.html$/,
