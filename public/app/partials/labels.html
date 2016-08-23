@@ -12,7 +12,7 @@
     </form>
   </div>
   <ul ng-hide="collapsed" class="nav nav-pills nav-stacked">
-    <li ng-repeat="tag in label.labels" ng-class="fn.getClass(tag.name)"><a ng-click="fn.selected(tag.name)"><small>{{ tag.name }}</small><span ng-if="!fn.editMode &amp;&amp; !fn.getClass(tag.name)" class="pull-right">{{label.labelsCount[tag.name] || '0'}}</span>
-        <button ng-click="fn.delete($index); $event.stopPropagation()" ng-if="fn.editMode || fn.getClass(tag.name)" class="close"><i ng-class="{'text-danger': fn.editMode}" class="fa fa-times-circle fa-lg"></i></button></a></li>
+    <li ng-repeat="tag in label.labels | orderBy:'name'" ng-class="fn.getClass(tag.name)"><a ng-click="fn.selected(tag.name)"><small>{{ tag.name }}</small><span ng-if="!fn.editMode &amp;&amp; !fn.getClass(tag.name)" class="pull-right">{{label.labelsCount[tag.name] || '0'}}</span>
+        <button ng-click="fn.delete(tag); $event.stopPropagation()" ng-if="fn.editMode || fn.getClass(tag.name)" class="close"><i ng-class="{'text-danger': fn.editMode}" class="fa fa-times-circle fa-lg"></i></button></a></li>
   </ul>
 </div>

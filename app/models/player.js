@@ -5,6 +5,7 @@ var PlayerSchema = new Schema({
     name:                   String,
     group:                  {_id: {type: Schema.ObjectId, ref: 'Group', index: true},
                                         name: {type: String, default: 'default'}},
+    selfGroupId:            String,
     note:                   String,
     TZ:                     String,
     version:                String,
@@ -35,7 +36,9 @@ var PlayerSchema = new Schema({
 
     createdAt:              {type: Date, default: Date.now},
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String},
-    licensed:               {type: Boolean, default: false}
+    licensed:               {type: Boolean, default: false},
+    ethMac:                 String,
+    wifiMac:                String
 })
 
 

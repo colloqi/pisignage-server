@@ -8,7 +8,7 @@
         categories(selected-labels="upload.selectedLabels", labels="upload.labels")
         form.form-inline
             .form-group
-                label: small(translate) new
+                label: small new
                 input.form-control.input-sm(type="text", ng-model="newLabel.name")
             button.btn.btn-success.btn-xs(type="submit", ng-click="upload.addLabel()")
                 i.fa.fa-plus

@@ -7,7 +7,7 @@
     <div class="form-group row">
       <div class="col-sm-4 text-right">
         <div class="radio">
-          <label translate="translate" class="text-muted">Resolution</label>
+          <label class="text-muted">Resolution</label>
         </div>
       </div>
       <div class="col-sm-4">
@@ -28,7 +28,7 @@
     <div class="form-group row">
       <div class="col-sm-4 text-right">
         <div class="radio">
-          <label translate="translate" class="text-muted">TV Orientation</label>
+          <label class="text-muted">TV Orientation</label>
         </div>
       </div>
       <div class="col-sm-4">
@@ -46,30 +46,24 @@
         </div>
       </div>
     </div>
-    <div class="form-group row">
-      <div class="col-sm-4 text-right">
-        <div class="radio">
-          <label class="text-muted"><span translate="translate">Animation</span>
-            <!--| <br>-->
-            <!--span(translate) (only in pi 2)-->
-          </label>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="radio">
-          <label>
-            <input type="radio" ng-model="group.selectedGroup.animationEnable" ng-value="animations[0].value"/><small>{{animations[0].name}}</small>
-          </label>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="radio">
-          <label>
-            <input disabled="disabled" type="radio" ng-model="group.selectedGroup.animationEnable" ng-value="animations[1].value"/><small>{{animations[1].name}}</small>
-          </label>
-        </div>
-      </div>
-    </div>
+    <!--.form-group.row
+    .col-sm-4.text-right
+        .radio
+            label.text-muted
+                span(translate) Animation
+                //| <br>
+                //span(translate) (only in pi 2)
+    .col-sm-4
+        .radio
+            label
+                input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[0].value")
+                small {{animations[0].name}}
+    .col-sm-4
+        .radio
+            label
+                input(disabled,type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[1].value")
+                small {{animations[1].name}}
+    -->
     <div class="form-group row">
       <div class="col-xs-4 text-right">
         <div class="radio">
@@ -78,6 +72,14 @@
       </div>
       <div class="col-xs-4">
         <input type="text" placeholder="e.g. #666" ng-model="group.selectedGroup.signageBackgroundColor" class="form-control"/>
+      </div>
+      <div class="col-sm-2">
+        <div title="{{'Default volume output is 100%' }}" class="radio">
+          <label class="text-muted"><span title="needs v1.7.0+">Volume(%)</span></label>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <input type="number" min="0" max="100" ng-model="group.selectedGroup.omxVolume" class="form-control"/>
       </div>
     </div>
     <div class="form-group row">

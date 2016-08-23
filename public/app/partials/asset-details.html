@@ -1,7 +1,9 @@
 
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <div class="panel-title">{{filedetails.name || urlLink.name+urlLink.type || "Google User Account Details"}}</div>
+    <div class="panel-title">{{filedetails.name || urlLink.name+urlLink.type || "Google User Account Details"}}
+      <button ng-click="delete()" class="btn btn-link btn-sm pull-right"><i class="fa fa-trash fa-lg text-danger"></i></button>
+    </div>
   </div>
   <div class="panel-body"><img ng-if="filedetails.type==&quot;image&quot;" ng-src="{{ filedetails.path }}" class="img-responsive img-rounded"/>
     <video ng-if="filedetails.type==&quot;video&quot;" controls="controls" ng-src="{{ filedetails.path }}" class="img-responsive img-rounded"></video>
@@ -22,9 +24,10 @@
         <div class="col-xs-2 col-xs-offset-1">
           <h4 class="text-muted">Type</h4>
         </div>
-        <div class="col-xs-8">
-          <h4>{{urlLink.type == ".tv"?"You Tube":"Web"}}</h4>
+        <div class="col-xs-7">
+          <h4>{{urlLink.type == ".tv"?"You Tube":urlLink.type.slice(1)}}</h4>
         </div>
+        <div class="col-xs-2"><small ng-show="urlLink.type=='.mrss' &amp;&amp; urlLink.hideTitle">Hide Title Text</small></div>
       </div>
     </div>
     <div ng-if="(fileType==&quot;gcal&quot;) &amp;&amp; calendar.list.length">

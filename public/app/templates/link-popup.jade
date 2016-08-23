@@ -15,6 +15,11 @@
             label.col-sm-4.control-label Link Type
             .col-sm-8
                 select.form-control(ng-options='entry.ext as entry.name for entry in link.types',name='linktype', ng-model='link.obj.type', required='')
+            .col-xs-4.col-xs-offset-4(ng-show="link.obj.type=='.mrss'")
+                .checkbox
+                    label
+                        input(type='checkbox',name='title_checkbox', ng-model='link.obj.hideTitle')
+                        span Hide Title text
         .form-group.row
             label.col-sm-4.control-label Link Address
             .col-sm-8

@@ -68,8 +68,12 @@ exports.index = function (req, res) {
         criteria['name'] = str;
     }
 
+    if (req.param('all')) {
+        criteria['all'] = true;
+    }
+
     var page = req.query['page'] > 0 ? req.query['page'] : 0
-    var perPage = req.query['per_page'] || 50
+    var perPage = req.query['per_page'] || 500
 
     var options = {
         perPage: perPage,
@@ -112,11 +116,15 @@ exports.updateObject = function (req, res) {
 
     var saveObject = function (err, group) {
         if (err) {
-            return rest.sendError(res, 'Unable to deploy to Group', err);
+            return rest.sendError(res, err);
         } else {
             if (req.body.deploy) {
                 group.lastDeployed = Date.now();
-                Group.update({_id: group._id}, {$set: {lastDeployed: group.lastDeployed}}).exec();
+                Group.update({ _id: group._id }, { $set: {
+                    lastDeployed: group.lastDeployed,
+                    assets: group.assets,
+                    deployedAssets: group.deployedAssets
+                }}).exec();
             }
             return rest.sendSuccess(res, 'updated Group details', group);
         }

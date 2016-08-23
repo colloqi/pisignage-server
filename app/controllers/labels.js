@@ -35,7 +35,7 @@ exports.index = function (req, res) {
     }
 
     var page = req.query['page'] > 0 ? req.query['page'] : 0
-    var perPage = req.query['per_page'] || 50
+    var perPage = req.query['per_page'] || 500
 
     var options = {
         perPage: perPage,

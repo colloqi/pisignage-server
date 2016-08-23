@@ -27,11 +27,11 @@
 
     .panel.panel-info
         .panel-heading
-            h4(translate) Installation Settings
+            h4 Installation Settings
         .panel-body
             form.form-horizontal(role='form', name='settingsForm')
                 .form-group
-                    label.col-xs-4.control-label(for="user",translate) username at pisignage.com
+                    label.col-xs-4.control-label(for="user") username at pisignage.com
                     div.col-xs-4
                         .input-group
                             input.form-control(type='text', name='user', ng-model='settings.installation', required='')
@@ -40,11 +40,11 @@
                                                 ng-disabled="!settingsForm.user.$dirty") SAVE
                         small.text-danger {{loadMsg}}
                 .form-group
-                    label.col-xs-4.control-label(translate) Default Duration for Slides
+                    label.col-xs-4.control-label Default Duration for Slides
                     div.col-xs-2
                         input.form-control(type='text', name='duration', ng-model='settings.defaultDuration')
                     div.col-xs-2
-                        button.btn.btn-success(type='submit', ng-click='saveSettings()',translate)  Save
+                        button.btn.btn-success(type='submit', ng-click='saveSettings()')  Save
                 //.form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
@@ -64,16 +64,16 @@
         .panel-body
             form.form-horizontal(role='form', name='downloadAccessForm')
                 .form-group
-                    label.col-xs-4.control-label(for="user",translate) Username
+                    label.col-xs-4.control-label(for="user") Username
                     div.col-xs-4
                         input.form-control(type='text', name='user', ng-model='settings.authCredentials.user', required='')
                 .form-group
-                    label.col-xs-4.control-label(for="password",translate) Password
+                    label.col-xs-4.control-label(for="password") Password
                     div.col-xs-4
                         input.form-control.col-xs-5(type='password', name='password', ng-model='settings.authCredentials.password', required='')
                     div.col-xs-4
                         button.btn.btn-success(type='submit', ng-click='saveSettings()',
-                        ng-disabled='downloadAccessForm.$invalid',translate)  Save
+                        ng-disabled='downloadAccessForm.$invalid')  Save
                 .form-group
                     .col-xs-4.col-xs-offset-4
                         p.text-danger {{loadMsg}}

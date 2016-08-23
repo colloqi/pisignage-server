@@ -59,6 +59,24 @@ angular.module('piServerApp', [
                 }
             })
 
+            .state("home.players.players_details", {
+                url: "players/:player?group",
+                views: {
+                    "left": {
+                        templateUrl: '/app/partials/groups.html',
+                        controller: 'GroupsCtrl'
+                    },
+                    "details": {
+                        templateUrl: '/app/partials/player-details.html',
+                        controller: 'PlayerDetailCtrl'
+                    },
+                    "list": {
+                        templateUrl: '/app/partials/group-details.html',
+                        controller: 'GroupDetailCtrl'
+                    }
+                }
+            })
+
             .state("home.assets", {
                 abstract: true,
                 url: "assets/",
@@ -176,10 +194,11 @@ angular.module('piServerApp', [
             $modal.open({
                 template: [
                     '<div class="modal-header">',
-                    '<h3 class="modal-title">Please Switch to Chrome Browser</h3>',
+                    '<h3 class="modal-title">We prefer Chrome Browser</h3>',
                     '</div>',
                     '<div class="modal-body">',
-                    '<p>Things may not work as expected with other Browsers :(</p>',
+                    '<p>Work in progress for making pisignage work with Firefox & Safari, ' +
+                    'please report the issues at support@pisignage.com</p>',
                     '</div>',
                     '<div class="modal-footer">',
                     '<button ng-click="cancel()" class="btn btn-warning">Got it!</button>',

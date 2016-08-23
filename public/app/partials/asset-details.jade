@@ -1,6 +1,7 @@
 .panel.panel-primary
     .panel-heading
         .panel-title {{filedetails.name || urlLink.name+urlLink.type || "Google User Account Details"}}
+            button.btn.btn-link.btn-sm.pull-right(ng-click="delete()"): i.fa.fa-trash.fa-lg.text-danger
     .panel-body
         img.img-responsive.img-rounded(ng-if='filedetails.type=="image"', ng-src='{{ filedetails.path }}')
         video.img-responsive.img-rounded(ng-if='filedetails.type=="video"', controls, ng-src='{{ filedetails.path }}')
@@ -16,8 +17,10 @@
             .row
                 .col-xs-2.col-xs-offset-1
                     h4.text-muted Type
-                .col-xs-8
-                    h4 {{urlLink.type == ".tv"?"You Tube":"Web"}}
+                .col-xs-7
+                    h4 {{urlLink.type == ".tv"?"You Tube":urlLink.type.slice(1)}}
+                .col-xs-2
+                    small(ng-show="urlLink.type=='.mrss' && urlLink.hideTitle") Hide Title Text
 
         div(ng-if='(fileType=="gcal") && calendar.list.length')
             h4: strong  Profile

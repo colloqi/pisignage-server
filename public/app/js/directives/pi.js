@@ -91,10 +91,10 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
         },
         template: function(tElem,tAttrs){
             return (
-                '<button class="btn btn-link btn-block">'+
+                '<label class="btn btn-link btn-block">'+
                         '<input type="file" multiple="" style="position:absolute;top:0;left:0;opacity: 0;width:100%;height:50px;z-index: 100"/>'+
                         '<span ng-transclude></span>'+
-                    '</button>'
+                    '</label>'
             )
         },
         compile: function compile(tElement, tAttrs, transclude) {            
@@ -105,7 +105,7 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
                 tElement.attr("multiple", "multiple");
             }        
             if (!tAttrs.maxFileSizeMb) {
-                tAttrs.maxFileSizeMb = 1500;
+                tAttrs.maxFileSizeMb = 3000;
             }        
             return function postLink(scope, el, attrs, ctl) {                
                 scope.files = [];

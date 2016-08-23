@@ -6,6 +6,7 @@ var GroupSchema = new Schema({
     description:            String,
 
     playlists:              [],
+    combineDefaultPlaylist: {type: Boolean , default: false},
     assets:                 [],
     ticker:                 {},
 
@@ -27,6 +28,7 @@ var GroupSchema = new Schema({
                             ontimeObj: {type: String},
                             offtimeObj: {type: String}
     },
+    omxVolume:              {type: Number , default: 100 },
     logo:                   {type: String,default: null},
     logox:                  {type: Number,default: 10},
     logoy:                  {type: Number,default: 10},
@@ -50,6 +52,11 @@ GroupSchema.statics = {
     list: function (options, cb) {
         var criteria = options.criteria || {}
 
+        if (!criteria.all) {
+            criteria.name = {"$not": /__player__/}
+        } else {
+            delete criteria.all
+        }
         this.find(criteria)
             .sort({_id: -1}) // sort by date
             .limit(options.perPage)

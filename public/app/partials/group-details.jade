@@ -14,19 +14,25 @@
     .panel-body
         form(role='form',name='deployform',as-sortable="sortable.options",ng-model="sortable.playlistArray")
             .row.form-group
-                label.control-label.col-sm-4 Default Playlist for the group
+                label.control-label.col-sm-3 Default Playlist for the group
                 .col-sm-5
                     select.form-control(ng-model="group.selectedGroup.playlists[0].name",
                                             ng-options="pl for pl in playlist.playlistNames track by pl",
                                             ng-change="updateGroup()")
                                                 option(value="") --
+                .col-sm-4
+                    .checkbox
+                        label
+                            input(type="checkbox",title="Default playlist assets will be played along with selected playlist",
+                                            ng-model="group.selectedGroup.combineDefaultPlaylist")
+                            small Play together with scheduled playlist (v1.7.0+)
             .row.form-group(ng-show="group.selectedGroup.playlists[0].name.length")
                 h5.col-sm-12 You can select additional Playlists for Scheduling/Advt purposes
                     //a.btn.btn-link(ng-click="collapsed = !collapsed;")
                         i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
                     a.btn.btn-info.btn-xs(ng-click="add()")
                         i.fa.fa-lg.fa-plus add
-                    span.text-info(ng-show="showMaxErr") &nbsp&nbsp {{'Maximum allowed Playlist Schedules (10)'}}
+                    span.text-info(ng-show="showMaxErr") &nbsp&nbsp {{'Maximum allowed Playlist Schedules (20)'}}
 
             .row.form-group(ng-repeat='pl in group.selectedGroup.playlists' ng-if="$index > 0",as-sortable-item)
                 .col-sm-1.text-right(as-sortable-item-handle)
@@ -39,18 +45,18 @@
                 .col-sm-6
                     a.btn.btn-link(ng-show="pl.name",ng-click="scheduleCalendar(pl)")
                         i.fa.fa-calendar.fa-lg.text-info
-                    small(ng-if='pl.name && !(pl.settings.durationEnable || pl.settings.timeEnable || pl.settings.weekday || pl.settings.monthday)')
-                        | Click the icon to Schedule
+                    small(ng-if='pl.name && !(pl.settings.durationEnable || pl.settings.timeEnable || pl.settings.weekdays.length || pl.settings.monthdays.length)')
+                        | Click the icon to Schedule&nbsp;
                     small(ng-if='pl.settings.durationEnable')
                         | {{pl.settings.startdate | date:'MMM d'}} -
                         | {{pl.settings.enddate | date:'MMM d'}} &nbsp&nbsp
                     small(ng-if='pl.settings.timeEnable')
                         | {{pl.settings.starttime | date: 'hh:mm a'}} -
                         | {{pl.settings.endtime | date: 'hh:mm a'}}
-                    small(ng-if='pl.settings.weekday')
-                        | on {{weeklist[pl.settings.weekday]}} &nbsp;&nbsp;
-                    small(ng-if='pl.settings.monthday')
-                        | on date: {{dayslist[pl.settings.monthday]}} &nbsp&nbsp
+                    small
+                        | {{weekDaysText[$index]}} &nbsp;&nbsp;
+                    small
+                        | {{monthDaysText[$index]}} &nbsp&nbsp
                 .col-sm-1(ng-show="pl.name.length")
                     a.btn.btn-link(ng-click='delete($index)')
                         i.fa.fa-times.text-danger

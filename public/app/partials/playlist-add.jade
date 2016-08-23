@@ -40,7 +40,7 @@
                         .col-sm-3
                             label.label(ng-class="{'label-danger':file.playlistDetails.fullscreen,'label-default':!file.playlistDetails.fullscreen}")
                                 input(type='checkbox',name='fullscreen', ng-model='file.playlistDetails.fullscreen')
-                                span(translate) &nbsp;show fullscreen
+                                span &nbsp;show fullscreen
                         .col-sm-9
                             span(ng-show="asset.showAssets.playlist.layout != '2bp' && asset.showAssets.playlist.layout != '2bp270'")
                                 button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")

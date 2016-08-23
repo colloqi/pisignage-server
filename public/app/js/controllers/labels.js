@@ -37,22 +37,22 @@ angular.module('piLabels.controllers', [])
                 });
         }
 
-        $scope.fn.delete= function(index){
+        $scope.fn.delete= function(label){
             if($scope.fn.editMode){
-                piPopup.confirm("Label "+$scope.label.labels[index].name, function() {
+                piPopup.confirm("Label "+label.name, function() {
 
                     $http
-                        .delete(piUrls.labels + $scope.label.labels[index]._id)
+                        .delete(piUrls.labels + label._id)
                         .success(function (data, status) {
                             if (data.success) {
-                                $scope.label.labels.splice(index, 1);
+                                $scope.label.labels.splice($scope.label.labels.indexOf(label), 1);
                             }
                         })
                         .error(function (data, status) {
                         });
                 })
             } else {
-                $scope.fn.selected($scope.label.labels[index].name)
+                $scope.fn.selected(label.name)
             }
         }
         

@@ -293,7 +293,8 @@ angular.module('piAssets.controllers',[])
         $scope.link = {
             types: [{name: 'YouTube or Streaming', ext: '.tv'},
                 {name: 'Web link (shown in iframe)', ext: '.link'},
-                {name: 'Web page (supports cross origin links)', ext: '.weblink'}
+                {name: 'Web page (supports cross origin links)', ext: '.weblink'},
+                {name: 'Media RSS (needs v1.7.0) ', ext: '.mrss'}
             ],
             obj: {
                 name: null,
@@ -448,7 +449,7 @@ angular.module('piAssets.controllers',[])
         })
     })
 
-    .controller('AssetViewCtrl', function($scope, $rootScope,$window, $http, piUrls, $state, assetLoader){
+    .controller('AssetViewCtrl', function($scope, $rootScope,$window, $http, piUrls, $state, piPopup,assetLoader){
 
         //merge the apis for the three
         $scope.fileType;
@@ -476,6 +477,7 @@ angular.module('piAssets.controllers',[])
             case 'link':
             case 'weblink':
             case 'tv':
+            case 'mrss':
                 $scope.fileType = 'link';
                 $http
                     .get(piUrls.links+$state.params.file)
@@ -535,6 +537,22 @@ angular.module('piAssets.controllers',[])
             } else {
                 $window.history.back();
             }
+        }
+
+        $scope.delete= function(index){
+            piPopup.confirm("File "+$state.params.file, function() {
+                $http
+                    .delete(piUrls.files+$state.params.file)
+                    .success(function(data, status) {
+                        if (data.success) {
+                            delete $scope.asset.filesDetails[$state.params.file];
+                            $scope.asset.files.splice($scope.asset.files.indexOf($state.params.file),1);
+                            $window.history.back();
+                        }
+                    })
+                    .error(function(data, status) {
+                    });
+            })
         }
 
     })

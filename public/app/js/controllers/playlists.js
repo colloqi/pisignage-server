@@ -289,7 +289,7 @@ angular.module('piPlaylists.controllers', [])
 
         })
 
-    .controller('PlaylistAddCtrl',function($scope, $http,  piUrls,$state,$modal, assetLoader){
+    .controller('PlaylistAddCtrl',function($scope, $http,  piUrls,$state,$modal, assetLoader,piConstants){
 
         $scope.sortListName = "playlistAssets"
         if (!$scope.asset.showAssets)
@@ -316,6 +316,24 @@ angular.module('piPlaylists.controllers', [])
             $scope.selectedAsset = item;
             $scope.selectedZone = zone;
 
+            $http
+                .get(piUrls.playlists, {})
+                .success(function(data, status) {
+                    if (data.success && Array.isArray(data.data)) {
+                        $scope.playlistsList = data.data.map(function(entry){
+                            return {displayName: entry.name,plName: '__'+entry.name+'.json'};
+                        })
+                    }
+                })
+                .error(function(data, status) {
+                });
+
+            $scope.filteredAssets = $scope.asset.allAssets.assets.filter(function(fileObj){
+                var file = fileObj.fileDetails.name
+                return !(file.match(piConstants.videoRegex) ||  file.match(piConstants.audioRegex) ||
+                file.match(piConstants.liveStreamRegex) || file.match(piConstants.CORSLink));
+            })
+
             $scope.modal = $modal.open({
                 templateUrl: '/app/templates/linkfile-popup.html',
                 scope: $scope
@@ -337,6 +355,8 @@ angular.module('piPlaylists.controllers', [])
             $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.assets.forEach(function(item){
                 if ($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.layout == "1")
                     item.fullscreen = true;
+                if (item.duration < 2)
+                    item.duration = 2; //force duration to 2 sec minimum
             });
             $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name,
                 {assets: $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.assets})

@@ -23,6 +23,13 @@
       <div class="col-sm-8">
         <select ng-options="entry.ext as entry.name for entry in link.types" name="linktype" ng-model="link.obj.type" required="" class="form-control"></select>
       </div>
+      <div ng-show="link.obj.type=='.mrss'" class="col-xs-4 col-xs-offset-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="title_checkbox" ng-model="link.obj.hideTitle"/><span>Hide Title text</span>
+          </label>
+        </div>
+      </div>
     </div>
     <div class="form-group row">
       <label class="col-sm-4 control-label">Link Address</label>

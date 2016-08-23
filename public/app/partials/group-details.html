@@ -14,17 +14,24 @@
   <div class="panel-body">
     <form role="form" name="deployform" as-sortable="sortable.options" ng-model="sortable.playlistArray">
       <div class="row form-group">
-        <label class="control-label col-sm-4">Default Playlist for the group</label>
+        <label class="control-label col-sm-3">Default Playlist for the group</label>
         <div class="col-sm-5">
           <select ng-model="group.selectedGroup.playlists[0].name" ng-options="pl for pl in playlist.playlistNames track by pl" ng-change="updateGroup()" class="form-control">
             <option value="">--</option>
           </select>
         </div>
+        <div class="col-sm-4">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" title="Default playlist assets will be played along with selected playlist" ng-model="group.selectedGroup.combineDefaultPlaylist"/><small>Play together with scheduled playlist (v1.7.0+)</small>
+            </label>
+          </div>
+        </div>
       </div>
       <div ng-show="group.selectedGroup.playlists[0].name.length" class="row form-group">
         <h5 class="col-sm-12">You can select additional Playlists for Scheduling/Advt purposes
           <!--a.btn.btn-link(ng-click="collapsed = !collapsed;")i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
-          --><a ng-click="add()" class="btn btn-info btn-xs"><i class="fa fa-lg fa-plus">add</i></a><span ng-show="showMaxErr" class="text-info">&nbsp&nbsp {{'Maximum allowed Playlist Schedules (10)'}}</span>
+          --><a ng-click="add()" class="btn btn-info btn-xs"><i class="fa fa-lg fa-plus">add</i></a><span ng-show="showMaxErr" class="text-info">&nbsp&nbsp {{'Maximum allowed Playlist Schedules (20)'}}</span>
         </h5>
       </div>
       <div ng-repeat="pl in group.selectedGroup.playlists" ng-if="$index &gt; 0" as-sortable-item="as-sortable-item" class="row form-group">
@@ -36,11 +43,11 @@
             <option value="">--</option>
           </select>
         </div>
-        <div class="col-sm-6"><a ng-show="pl.name" ng-click="scheduleCalendar(pl)" class="btn btn-link"><i class="fa fa-calendar fa-lg text-info"></i></a><small ng-if="pl.name &amp;&amp; !(pl.settings.durationEnable || pl.settings.timeEnable || pl.settings.weekday || pl.settings.monthday)">Click the icon to Schedule</small><small ng-if="pl.settings.durationEnable">
+        <div class="col-sm-6"><a ng-show="pl.name" ng-click="scheduleCalendar(pl)" class="btn btn-link"><i class="fa fa-calendar fa-lg text-info"></i></a><small ng-if="pl.name &amp;&amp; !(pl.settings.durationEnable || pl.settings.timeEnable || pl.settings.weekdays.length || pl.settings.monthdays.length)">Click the icon to Schedule&nbsp;</small><small ng-if="pl.settings.durationEnable">
             {{pl.settings.startdate | date:'MMM d'}} -
             {{pl.settings.enddate | date:'MMM d'}} &nbsp&nbsp</small><small ng-if="pl.settings.timeEnable">
             {{pl.settings.starttime | date: 'hh:mm a'}} -
-            {{pl.settings.endtime | date: 'hh:mm a'}}</small><small ng-if="pl.settings.weekday">on {{weeklist[pl.settings.weekday]}} &nbsp;&nbsp;</small><small ng-if="pl.settings.monthday">on date: {{dayslist[pl.settings.monthday]}} &nbsp&nbsp</small></div>
+            {{pl.settings.endtime | date: 'hh:mm a'}}</small><small>{{weekDaysText[$index]}} &nbsp;&nbsp;</small><small>{{monthDaysText[$index]}} &nbsp&nbsp</small></div>
         <div ng-show="pl.name.length" class="col-sm-1"><a ng-click="delete($index)" class="btn btn-link"><i class="fa fa-times text-danger"></i></a></div>
       </div>
     </form>

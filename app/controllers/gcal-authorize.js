@@ -46,6 +46,8 @@ exports.gCalAuthorize = function (req, res, next) {
 exports.gCalCallback = function (req, res, next) {
     passport.authenticate('google', {session: false, failureRedirect: '/login'}, function (err, user, info) {
         //store the tokens in a file using assets controller
+        if (!user || !user.profile || !user.profile.email)
+            return res.redirect('/assets');
         var fname = req.installation + '/' + user.profile.email.slice(0, user.profile.email.indexOf('@')) + '.gcal';
         assets.createAssetFileFromContent(fname, user, function (err) {
             if (err)

@@ -26,7 +26,8 @@ exports.storeDetails = function (req, res) {
     var files = req.body.files;
 
     async.eachSeries(files, function (fileObj, array_cb) {
-        processFile.processFile(fileObj.name, fileObj.size,  req.body.categories, array_cb)
+        var filename = fileObj.name.replace(config.filenameRegex, '');
+        processFile.processFile(filename, fileObj.size,  req.body.categories, array_cb)
     }, function () {
         console.log("processed " + files.length + " files")
     });

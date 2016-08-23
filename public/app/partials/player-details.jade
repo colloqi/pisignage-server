@@ -1,0 +1,11 @@
+.panel.panel-warning
+    .panel-heading
+        .row
+            .col-sm-6
+                label.text-primary
+                    span Selected Group for the Player
+                    span &nbsp;{{player.name}}
+            .col-sm-6
+                select.form-control(ng-model="selectedGroup",ng-change="assignGroup()",
+                                                ng-options="group for group in group.groupNames")
+                    option(value="") -- none --

@@ -3,6 +3,7 @@
 var mongoose = require('mongoose'),
     Player = mongoose.model('Player'),
     Group = mongoose.model('Group'),
+    groups = require('./groups'),
     rest = require('../others/restware'),
     _ = require('lodash'),
     path = require('path'),
@@ -15,9 +16,24 @@ var socketio = require('./server-socket'),
 var installation,
     settings;
 
-var pipkgjson,
-    pipkgjsonBeta,
+var pipkgjson ={},
+    pipkgjsonBeta = {},
     fs = require('fs');
+
+var readVersions = function() {
+    try {
+        pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
+    } catch(e) {
+        pipkgjson = {};
+    }
+    try {
+        pipkgjsonBeta = JSON.parse(fs.readFileSync('data/releases/package-beta.json', 'utf8'))
+    } catch(e) {
+        pipkgjsonBeta = {};
+    }
+}
+readVersions();
+
 
 var activePlayers = {},
     lastCommunicationFromPlayers = {};
@@ -66,6 +82,7 @@ function checkPlayersWatchdog() {
             cb();
         }
     }, function (err) {
+        readVersions() //update version of software
         setTimeout(checkPlayersWatchdog, 600000);    //cleanup every 10 minutes
     })
 }
@@ -111,12 +128,14 @@ var sendConfig = function (player, group, periodic) {
     retObj.animationEnable = false;
     retObj.sleep = group.sleep || {enable: false, ontime: null , offtime: null };
     retObj.signageBackgroundColor =  group.signageBackgroundColor || "#000";
+    retObj.omxVolume = group.omxVolume || 100;
     retObj.logo =  group.logo;
     retObj.logox =  group.logox;
     retObj.logoy =  group.logoy;
+    retObj.combineDefaultPlaylist = group.combineDefaultPlaylist || false;
     retObj.urlReloadDisable =  group.urlReloadDisable || false;
-    if (!pipkgjson)
-        pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
+    //if (!pipkgjson)
+        //pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
     retObj.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version};
     retObj.gcal = {
         id: config.gCalendar.CLIENT_ID,
@@ -169,32 +188,20 @@ exports.index = function (req, res) {
     }
 
     Player.list(options, function (err, objects) {
-        if (err) return rest.sendError(res, 'Unable to get Player list', err);
-        Player.count(options.criteria).exec(function (err, count) {
-            var data = {
-                objects: objects,
-                page: page,
-                pages: Math.ceil(count / perPage),
-                count: count
-            };
-            fs.readFile('data/releases/package.json', 'utf8', function(err,pkgdata){
-                try {
-                    pipkgjson = JSON.parse(pkgdata)
-                } catch(e) {
-                    err = true;
-                }
-                try {
-                    pipkgjsonBeta = JSON.parse(fs.readFileSync('data/releases/package-beta.json', 'utf8'))
-                } catch(e) {
-                    pipkgjsonBeta = null;
-                }
-                if (!err) {
-                    data.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version,
-                        beta: pipkgjsonBeta?pipkgjsonBeta.version:null};
-                }
-                return rest.sendSuccess(res, 'sending Player list', data);
-            })
-        })
+        if (err)
+            return rest.sendError(res, 'Unable to get Player list', err);
+
+        objects = objects || []
+
+        var data = {
+            objects: objects,
+            page: page,
+            pages: Math.ceil(objects.length / perPage),
+            count: objects.length
+        };
+        data.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version,
+                    beta: pipkgjsonBeta.version};
+        return rest.sendSuccess(res, 'sending Player list', data);
     })
 }
 
@@ -254,19 +261,49 @@ exports.updateObject = function (req, res) {
         req.body.registered = false;
     }
     delete req.body.__v;        //do not copy version key
-    object = _.extend(object, req.body)
-    object.save(function (err, data) {
-        if (err)
-            return rest.sendError(res, 'Unable to update Player data', err);
-        return rest.sendSuccess(res, 'updated Player details', data);
-    });
+    async.series([
+        function (next) {
+            var playerGroup = {
+                name: "__player__"+ object.cpuSerialNumber,
+                installation: req.installation,
+                _id: object.selfGroupId
+            }
 
-    Group.findById(object.group._id, function (err, group) {
-        if (!err && group) {
-            sendConfig(object, group, true)
-        } else {
-            console.log("unable to find group for the player");
-        }
+            if (req.body.group && req.body.group._id) {
+                next()
+            } else if (playerGroup._id){
+                req.body.group = playerGroup
+                next()
+            } else {
+                delete playerGroup._id;
+                groups.newGroup(playerGroup,function(err,data){
+                    if (err) {
+                        console.log(err)
+                    }
+                    req.body.group = data.toObject()
+                    object.selfGroupId = data._id;
+                    next()
+                })
+            }
+        },
+        function (next) {
+            object = _.extend(object, req.body)
+            object.save(function (err, data) {
+                if (err)
+                    rest.sendError(res, 'Unable to update Player data', err);
+                else
+                    rest.sendSuccess(res, 'updated Player details', data);
+                next()
+            });
+        }], function() {
+
+            Group.findById(object.group._id, function (err, group) {
+                if (!err && group) {
+                    sendConfig(object, group, true)
+                } else {
+                    console.log("unable to find group for the player");
+                }
+            })
     })
 };
 
@@ -377,9 +414,10 @@ exports.shellAck = function (sid, response) {
 exports.swupdate = function (req, res) {
     var object = req.object,
         version = req.body.version || null;
-    pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
-    socketio.emitMessage(object.socket, 'swupdate',
-        version?version:'piimage'+pipkgjson.version+'.zip');
+    if (!version) {
+        version = 'piimage'+pipkgjson.version+'.zip'
+    }
+    socketio.emitMessage(object.socket, 'swupdate',version);
     //console.log("updating to "+(version?version:'piimage'+pipkgjson.version+'.zip'));
     return rest.sendSuccess(res, 'SW update command issued');
 }
@@ -404,7 +442,7 @@ exports.upload = function (cpuId, filename, data) {
                     //console.log(lines[i]);
                     try {
                         logData = JSON.parse(lines[i]);
-                        if (logData.category == "file")
+                        if (logData.category == "file" || logData.description == "connected to server")
                             continue;
                         logData.installation = player.installation;
                         logData.playerId = player._id.toString();
@@ -433,55 +471,55 @@ exports.tvPower = function(req,res){
 
 var snapShotTimer = {};
 var pendingSnapshots = {};
-var alreadyReplied = false;
 
 exports.piScreenShot = function (sid,data) { // save screen shot in  _screenshots directory
-    clearTimeout(snapShotTimer[sid])
-    var img = (new Buffer(data.data,"base64")).toString("binary")
-    fs.writeFile(path.join(config.thumbnailDir,data.playerInfo.cpuSerialNumber + '.jpeg'), img, 'binary',function (err) {
+    var img = (new Buffer(data.data,"base64")).toString("binary"),
+        cpuId = data.playerInfo["cpuSerialNumber"];
+
+    clearTimeout(snapShotTimer[cpuId])
+    delete snapShotTimer[cpuId];
+
+    fs.writeFile(path.join(config.thumbnailDir,cpuId + '.jpeg'), img, 'binary',function (err) {
         if (err)
-            console.log('error in  saving screenshot for ' + data.playerInfo.cpuSerialNumber, err);
-        if (pendingSnapshots[sid]) {
-            alreadyReplied = true;
-            rest.sendSuccess(pendingSnapshots[sid], 'screen shot received',
+            console.log('error in  saving screenshot for ' + cpuId, err);
+        if (pendingSnapshots[cpuId]) {
+            rest.sendSuccess(pendingSnapshots[cpuId], 'screen shot received',
                 {
-                    url: "/media/_thumbnails/"+data.playerInfo.cpuSerialNumber+".jpeg",
+                    url: "/media/_thumbnails/"+cpuId+".jpeg",
                     lastTaken: Date.now()
                 }
             );
-            pendingSnapshots[sid] = null;
+            delete pendingSnapshots[cpuId];
         }
     })
 }
 
 exports.takeSnapshot = function (req, res) { // send socket.io event
-    var object = req.object;
-    if (pendingSnapshots[object.socket])
+    var object = req.object,
+        cpuId = object.cpuSerialNumber;
+    if (pendingSnapshots[cpuId])
         rest.sendError(res, 'snapshot taking in progress');
     else if (!object.isConnected) {
-        fs.stat(path.join(config.thumbnailDir, object.cpuSerialNumber + '.jpeg'), function (err, stats) {
+        fs.stat(path.join(config.thumbnailDir, cpuId + '.jpeg'), function (err, stats) {
             rest.sendSuccess(res, 'player is offline, sending previous snapshot',
                 {
-                    url: "/media/_thumbnails/" + object.cpuSerialNumber + ".jpeg",
+                    url: "/media/_thumbnails/" + cpuId + ".jpeg",
                     lastTaken: stats ? stats.mtime : "NA"
                 }
             );
         })
     } else {
-        pendingSnapshots[object.socket] = res;
-        alreadyReplied = false;
-        snapShotTimer[object.socket] = setTimeout(function () {
-            pendingSnapshots[object.socket] = null;
-            fs.stat(path.join(config.thumbnailDir, object.cpuSerialNumber + '.jpeg'), function (err, stats) {
-                if (!alreadyReplied) {
-                    alreadyReplied = true;
-                    rest.sendSuccess(res, 'screen shot command timeout',
-                        {
-                            url: "/media/_thumbnails/" + object.cpuSerialNumber + ".jpeg",
-                            lastTaken: stats ? stats.mtime : "NA"
-                        }
-                    );
-                }
+        pendingSnapshots[cpuId] = res;
+        snapShotTimer[cpuId] = setTimeout(function () {
+            delete snapShotTimer[cpuId];
+            delete pendingSnapshots[cpuId];
+            fs.stat(path.join(config.thumbnailDir, cpuId + '.jpeg'), function (err, stats) {
+                rest.sendSuccess(res, 'screen shot command timeout',
+                    {
+                        url: "/media/_thumbnails/" + cpuId + ".jpeg",
+                        lastTaken: stats ? stats.mtime : "NA"
+                    }
+                );
             })
         }, 60000)
         socketio.emitMessage(object.socket, 'snapshot');

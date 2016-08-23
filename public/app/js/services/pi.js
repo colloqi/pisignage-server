@@ -119,7 +119,11 @@ angular.module('pisignage.services',[]).
                     $modal.open({
                         templateUrl: '/app/templates/confirm-popup.html',
                         controller: ['$scope', '$modalInstance', 'msg', function ($scope, $modalInstance, msg) {
-                            $scope.deleteText = msg;
+                            if (msg.indexOf("--") == 0) {
+                                $scope.noPrepend = true;
+                                $scope.deleteText = msg.slice(2);
+                            } else
+                                $scope.deleteText = msg;
                             $scope.ok = function () {
                                 $modalInstance.close('ok');
                                 cb();

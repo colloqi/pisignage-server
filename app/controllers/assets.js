@@ -66,15 +66,16 @@ exports.createFiles = function (req, res) {
 
     function renameFile(fileObj, next) {
         console.log("Uploaded file: "+fileObj.path);
-        fs.rename(fileObj.path, path.join(config.mediaDir, fileObj.originalname), function (err) {
+        var filename = fileObj.originalname.replace(config.filenameRegex, '');
+        fs.rename(fileObj.path, path.join(config.mediaDir, filename), function (err) {
             if (err) {
                 next(err);
             } else {
-                if((fileObj.originalname).match('custom_layout.html')){
+                if((filename).match('custom_layout.html')){
                     fileUtil.modifyHTML(config.mediaDir)
                 }
                 data.push({
-                    name: fileObj.originalname,
+                    name: filename,
                     size: fileObj.size,
                     type: fileObj.mimetype
                 });

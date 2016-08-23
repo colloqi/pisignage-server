@@ -42,9 +42,14 @@ angular.module('piConfig', [])
     .constant('piConstants', (function() {
         return {
             videoRegex:     /(mp4|mov|m4v|avi|webm|wmv|flv|mkv)$/i,
+            audioRegex:     /(mp3)$/i,
             imageRegex:     /(jpg|jpeg|png|gif)$/i,
             noticeRegex:    /\.html$/i,
-            zipfileRegex:   /(.zip|.gz|.bz2)/i
+            zipfileRegex:   /(.zip|.gz|.bz2)$/i,
+            repofileRegex:          /\.repo$/i,
+            liveStreamRegex :       /\.tv$/i,
+            linkURL:                /\.link$/i,
+            CORSLink:               /\.weblink$/i
         }
     })())
 
@@ -71,6 +76,37 @@ angular.module('piConfig', [])
             '25', '26', '27',
             '28', '29', '30',
             '31'
+        ]
+
+    })())
+
+    .constant('weeksObject',(function(){ // all weeks for playlist time setting
+        return [
+            //{id: 0,label: 'All Days'},
+            {id: 1,label: 'Sunday'},
+            {id: 2,label: 'Monday'},
+            {id: 3,label: 'Tuesday'},
+            {id: 4,label: 'Wednesday'},
+            {id: 5,label: 'Thursday'},
+            {id: 6,label: 'Friday'},
+            {id: 7,label: 'Saturday'}
+        ]
+    })())
+
+    .constant('daysObject',(function(){ // all days in month for playlist time setting
+        return [
+            //{id: 0,label: 'All Dates'},
+            {id: 1,label: '1'}, {id: 2,label: '2'}, {id: 3,label: '3'},
+            {id: 4,label: '4'}, {id: 5,label: '5'}, {id: 6,label: '6'},
+            {id: 7,label: '7'}, {id: 8,label: '8'}, {id: 9,label: '9'},
+            {id: 10,label: '10'}, {id: 11,label: '11'}, {id: 12,label: '12'},
+            {id: 13,label: '13'}, {id: 14,label: '14'},{id: 15,label:  '15'},
+            {id: 16,label: '16'}, {id: 17,label: '17'},{id: 18,label:  '18'},
+            {id: 19,label: '19'}, {id: 20,label: '20'}, {id: 21,label: '21'},
+            {id: 22,label: '22'}, {id: 23,label: '23'}, {id: 24,label: '24'},
+            {id: 25,label: '25'}, {id: 26,label: '26'}, {id: 27,label: '27'},
+            {id: 28,label: '28'}, {id: 29,label: '29'}, {id: 30,label: '30'},
+            {id: 31,label: '31'}
         ]
 
     })())

@@ -41,6 +41,15 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                     img_cb();
                                 });
                         },
+                        function(img_cb){ // resize image
+                            imageMagick(src)
+                                .resize(2560,2560,'>')
+                                .write(src,function(err,op1){
+                                    if(err)
+                                        console.log("Image resize error for : "+src +"  "+err);
+                                    img_cb();
+                                })
+                        },
                         function (img_cb) {
                             imageMagick(src).size(function (err, value) {
                                 if (err)
@@ -126,7 +135,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                 .takeScreenshots({
                                     size: '64x64',
                                     count: 1,
-                                    timemarks: ['10'],
+                                    timemarks: ['8'],
                                     filename: filename + '.png'
                                 }, config.thumbnailDir);
                         }
@@ -163,7 +172,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                         size: ~~(filesize / 1000) + ' KB',
                         labels: categories,
                         thumbnail: thumbnail,
-                        createdAt: Date.now(),
+                        createdAt: Date.now()
                     };
                 if (object.duration == 10)      //hack for default avoidance
                     object.duration = 11;

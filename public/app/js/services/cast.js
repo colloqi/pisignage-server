@@ -164,6 +164,9 @@ angular.module('pisignage.services')
         }
 
         function castInit(){
+            if (typeof chrome === "undefined")    //for other browsers
+                return;
+
             if (!chrome.cast || !chrome.cast.isAvailable) {
                 $timeout(castInit,1000)
                 return;

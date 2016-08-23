@@ -8,12 +8,13 @@ var players = require('./players'),
 var handleClient = function (socket) {
 
     //console.log("connection event: "+socket.id);
-    socket.on('status', function (settings, status) {
+    socket.on('status', function (settings, status, priority) {
         var statusObject = _.extend(
             {
                 lastReported: Date.now(),
                 ip: socket.handshake.headers['x-forwarded-for'] || socket.handshake.address.address,
-                socket: socket.id
+                socket: socket.id,
+                priority: priority
             },
             settings,
             status
@@ -48,9 +49,10 @@ exports.startSIO = function (io) {
     iosockets = io.sockets;
 }
 
-exports.emitMessage = function (sid, cmd, msg, msg1, msg2,msg3,msg4,msg5) {
+exports.emitMessage = function (sid) {
     if (iosockets.sockets[sid]) {
-        iosockets.sockets[sid].emit(cmd, msg, msg1, msg2, msg3,msg4,msg5);
+        var args = Array.prototype.slice.call(arguments,1);
+        iosockets.sockets[sid].emit.apply(iosockets.sockets[sid], args);
     }
 }
 

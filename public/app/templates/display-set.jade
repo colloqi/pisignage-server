@@ -5,7 +5,7 @@
         .form-group.row
             .col-sm-4.text-right
                 .radio
-                    label.text-muted(translate) Resolution
+                    label.text-muted Resolution
             .col-sm-4
                 .radio
                     label
@@ -19,7 +19,7 @@
         .form-group.row
             .col-sm-4.text-right
                 .radio
-                    label.text-muted(translate) TV Orientation
+                    label.text-muted TV Orientation
             .col-sm-4
                 .radio
                     label
@@ -30,7 +30,7 @@
                     label
                         input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="type.value")
                         small {{type.name}}
-        .form-group.row
+        //.form-group.row
             .col-sm-4.text-right
                 .radio
                     label.text-muted
@@ -53,6 +53,11 @@
                     label.text-muted: span Signage Background CSS Color
             .col-xs-4
                 input.form-control(type='text',placeholder='e.g. #666',ng-model='group.selectedGroup.signageBackgroundColor')
+            .col-sm-2
+                .radio(title="{{'Default volume output is 100%' }}")
+                    label.text-muted: span( title="needs v1.7.0+") Volume(%)
+            .col-sm-2
+                input.form-control(type='number',min=0,max=100,ng-model='group.selectedGroup.omxVolume')
 
         .form-group.row
             .col-xs-4.text-right

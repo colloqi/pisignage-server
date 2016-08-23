@@ -11,17 +11,22 @@
         </div>
         <div class="col-sm-3">
           <div class="row">
-            <div style="padding-right:3px;" class="col-sm-6"><small class="text-primary truncate"> {{item.myIpAddress || "IP:NA"}}</small></div>
+            <div style="padding-right:3px;" popover-placement="right" popover="{{player.ethMac+'
+'+player.wifiMac}}" class="col-sm-6"><small class="text-primary truncate"> {{item.myIpAddress || "IP:NA"}}</small></div>
             <div style="padding:3px;" class="col-sm-6">
               <select ng-model="item.TZ" ng-change="changeTZ(item)" ng-options="tz for tz in tzNames" class="form-control select-xs">
-                <option value="" selected="selected" translate="translate"> --No TZ--</option>
+                <option value="" selected="selected"> --No TZ--</option>
               </select>
             </div>
           </div>
         </div>
         <div class="col-sm-3"><i ng-class="item.statusClass" title="{{item.isConnected?(item.playlistOn?'online &amp; playing, tv-on:'+item.tvStatus:'online &amp; not playing, tv-on:'+item.tvStatus):'offline'}}" class="fa fa-circle fa-lg"></i><span class="text-primary">&nbsp;{{item.currentPlaylist}}</span></div>
+        <!--.col-sm-2
+        select.form-control.select-xs(ng-model="item.group.name",ng-change="assignGroup(item)",
+                                                            ng-options="gr for gr in group.groupNames")
+        -->
         <div class="col-sm-2">
-          <select ng-model="item.group.name" ng-change="assignGroup(item)" ng-options="gr for gr in group.groupNames" class="form-control select-xs"></select>
+          <button ng-click="loadPlayerDetails(item)" class="btn btn-xs btn-info">{{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}</button>
         </div>
       </div>
       <div class="row">

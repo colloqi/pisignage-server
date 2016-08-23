@@ -106,8 +106,8 @@ angular.module('piGroups.controllers', [])
         }
     })
 
-    .controller('GroupDetailCtrl', function ($scope, $rootScope, $http, piUrls,$state, $location, $modal,
-                                                    weeks, days,playerLoader,$timeout) {
+    .controller('GroupDetailCtrl', function ($scope, $rootScope, $http, piUrls,$state, $modal,
+                                                    weeks, days,weeksObject,daysObject,playerLoader,$timeout) {
 
         //make sure state.params.group is set
         if ($scope.group.selectedGroup && !($state.params.group)) {
@@ -153,20 +153,30 @@ angular.module('piGroups.controllers', [])
                 if ($scope.group.selectedGroup.playlists[i].name && $scope.group.selectedGroup.playlists[i].name.length > 0) {
                     var playlist = $scope.playlist.playlists[$scope.playlist.playlistNames.indexOf($scope.group.selectedGroup.playlists[i].name)];
                     playlist.assets.forEach(function (asset) {
-                        if (asset.filename.indexOf("_system") == 0)  //system files, no need to copy
-                            return;
                         if (asset.filename && $scope.group.selectedGroup.assets.indexOf(asset.filename) == -1
                                             && asset.filename.indexOf("_system") != 0) {
                             $scope.group.selectedGroup.assets.push(asset.filename);
                         }
-                        if (asset.side && $scope.group.selectedGroup.assets.indexOf(asset.side) == -1
-                                            && asset.side.indexOf("_system") != 0) {
-                            $scope.group.selectedGroup.assets.push(asset.side);
-                        }
-                        if (asset.bottom && $scope.group.selectedGroup.assets.indexOf(asset.bottom) == -1
-                                            && asset.bottom.indexOf("_system") != 0) {
-                            $scope.group.selectedGroup.assets.push(asset.bottom);
-                        }
+                        ["side","bottom"].forEach(function(zone) {
+                            if (asset[zone] && $scope.group.selectedGroup.assets.indexOf(asset[zone]) == -1 &&
+                                                asset[zone].indexOf("_system") != 0){
+                                $scope.group.selectedGroup.assets.push(asset[zone]);
+                                if(asset[zone].indexOf('__') == 0){ // for nested playlist
+                                    var playlistName = asset[zone].slice(2,asset[zone].indexOf(".json")),
+                                        nestedPlaylistIndex = $scope.playlist.playlistNames.indexOf(playlistName);
+
+                                    if (nestedPlaylistIndex != -1 &&
+                                        Array.isArray(playlistsObj[nestedPlaylistIndex].assets)) {
+                                        $scope.playlist.playlists[nestedPlaylistIndex].assets.forEach(function(plfile){
+                                            if($scope.group.selectedGroup.assets.indexOf(plfile.filename) == -1 &&
+                                                plfile.filename.indexOf("_system") != 0){
+                                                $scope.group.selectedGroup.assets.push(plfile.filename);
+                                            }
+                                        })
+                                    }
+                                }
+                            }
+                        })
                     });
                     if ($scope.group.selectedGroup.assets.indexOf('__' + playlist.name + '.json') == -1)
                         $scope.group.selectedGroup.assets.push('__' + playlist.name + '.json');
@@ -186,6 +196,8 @@ angular.module('piGroups.controllers', [])
                 .success(function (data, status) {
                     if (data.success) {
                         $scope.group.selectedGroup = data.data;
+                        $scope.group.selectedGroup.omxVolume = $scope.group.selectedGroup.omxVolume || 100
+                        $scope.showDates()
                     }
                     if (cb)
                         cb(!data.success,data.stat_message)
@@ -200,7 +212,7 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.add = function () {
-            if ($scope.group.selectedGroup.playlists.length >= 10) {
+            if ($scope.group.selectedGroup.playlists.length >= 20) {
                 $timeout(function () {
                     $scope.showMaxErr = false;
                 }, 5000);
@@ -210,7 +222,7 @@ angular.module('piGroups.controllers', [])
             //$scope.deployform.$setDirty(); //  inform user  of new changes
             $scope.group.selectedGroup.playlists.unshift({
                 name: $scope.group.selectedGroup.playlists[0].name ,
-                settings: {durationEnable: false, timeEnable: false, weekday: 0, monthday: 0}
+                settings: { durationEnable: false, timeEnable: false}
             });
             $scope.updateGroup();
         }
@@ -223,8 +235,72 @@ angular.module('piGroups.controllers', [])
             //});
         }
 
+        $scope.weekDaysText = {}
+        $scope.monthDaysText = {}
+        $scope.showDates = function() {
+            for (var i=1,len=$scope.group.selectedGroup.playlists.length;i<len;i++) {
+                var playlist = $scope.group.selectedGroup.playlists[i]
+                if (!playlist.settings || !playlist.settings.weekdays || playlist.settings.weekdays.length >= 7)
+                    $scope.weekDaysText[i] = "All days"
+                else if (playlist.settings.weekdays.length > 0) {
+                    $scope.weekDaysText[i] = "week days: "
+                    playlist.settings.weekdays.forEach(function (day) {
+                        $scope.weekDaysText[i] = $scope.weekDaysText[i] +
+                            " " + $scope.ngDropdown.weekdays.list[day - 1].label.slice(0, 2)
+                    })
+                } else {
+                    $scope.weekDaysText[i] = "Not Scheduled"
+                }
+                if (!playlist.settings || !playlist.settings.monthdays || playlist.settings.monthdays.length >= 31)
+                    $scope.monthDaysText[i] = "All dates"
+                else if (playlist.settings.monthdays.length > 0) {
+                    $scope.monthDaysText[i] = "dates: "
+                    playlist.settings.monthdays.forEach(function (day) {
+                        $scope.monthDaysText[i] = $scope.monthDaysText[i] + day + ','
+                    })
+                } else {
+                    $scope.monthDaysText[i] = "Not Scheduled"
+                }
+            }
+        }
+
+
         $scope.scheduleCalendar = function (playlist) {
             $scope.forPlaylist = playlist;
+            if (!$scope.forPlaylist.settings.weekdays &&
+                $scope.forPlaylist.settings.weekday &&
+                $scope.forPlaylist.settings.weekday != 0
+            )
+                $scope.forPlaylist.settings.weekdays = [$scope.forPlaylist.settings.weekday]
+            else if (!$scope.forPlaylist.settings.weekdays) {
+                $scope.forPlaylist.settings.weekdays = $scope.ngDropdown.weekdays.list.map(function(obj){
+                    return obj.id
+                })
+            }
+            $scope.ngDropdown.weekdays.selectedDays = $scope.ngDropdown.weekdays.list.filter(function(obj){
+                if ($scope.forPlaylist.settings.weekdays.indexOf(obj.id) >= 0)
+                    return true;
+                else
+                    return false;
+            })
+
+            if (!$scope.forPlaylist.settings.monthdays &&
+                $scope.forPlaylist.settings.monthday &&
+                $scope.forPlaylist.settings.monthday != 0
+            )
+                $scope.forPlaylist.settings.monthdays = [$scope.forPlaylist.settings.monthday]
+            else if (!$scope.forPlaylist.settings.monthdays) {
+                $scope.forPlaylist.settings.monthdays = $scope.ngDropdown.monthdays.list.map(function(obj){
+                    return obj.id
+                })
+            }
+            $scope.ngDropdown.monthdays.selectedDays = $scope.ngDropdown.monthdays.list.filter(function(obj){
+                if ($scope.forPlaylist.settings.monthdays.indexOf(obj.id) >= 0)
+                    return true;
+                else
+                    return false;
+            })
+
             if ($scope.forPlaylist.settings) {
                 if ($scope.forPlaylist.settings.startdate) {
                     $scope.forPlaylist.settings.startdate = new Date($scope.forPlaylist.settings.startdate)
@@ -243,22 +319,98 @@ angular.module('piGroups.controllers', [])
                 templateUrl: '/app/templates/schedule-calendar.html',
                 scope: $scope
             });
+            $scope.scheduleCalendarModal.result.finally(function() {
+                //for backward compatibility
+                if (playlist.settings.weekdays && playlist.settings.weekdays.length < 7)
+                    $scope.forPlaylist.settings.weekday = $scope.forPlaylist.settings.weekdays[0]
+                else
+                    delete $scope.forPlaylist.settings.weekday
+                if (playlist.settings.monthdays && playlist.settings.monthdays.length < 31)
+                    $scope.forPlaylist.settings.monthday = $scope.forPlaylist.settings.monthdays[0]
+                else
+                    delete $scope.forPlaylist.settings.monthday
+                $scope.showDates()
+                if ($scope.forPlaylist.settings) {
+                    if ($scope.forPlaylist.settings.starttimeObj) {
+                        var time = $scope.forPlaylist.settings.starttimeObj.toTimeString().split(' ')[0].slice(0,5)
+                        $scope.forPlaylist.settings.starttime = time;
+                    }
+                    if ($scope.forPlaylist.settings.endtimeObj) {
+                        var time = $scope.forPlaylist.settings.endtimeObj.toTimeString().split(' ')[0].slice(0,5)
+                        $scope.forPlaylist.settings.endtime = time;
+                    }
+                }
+                $scope.updateGroup();
+                //formcontroller.$dirty? $scope.deployform.$setDirty(): ''; //  inform user  of new changes
+            })
+        }
+
+        $scope.ngDropdown = {
+            weekdays: {
+                list:weeksObject,
+                selectedDays: [],
+                extraSettings: {
+                    smartButtonMaxItems:7,
+                    smartButtonTextConverter: function(itemText, originalItem) {
+                        return itemText.slice(0,2);
+                    },
+                    displayProp: 'label', idProp: 'id', externalIdProp: 'id',
+                    //scrollableHeight: '200px', scrollable: true,
+                    showCheckAll: true, showUncheckAll: true
+                },
+                customTexts: {buttonDefaultText: "Select Days"},
+                events: {
+                    onSelectAll: function () {
+                        $scope.forPlaylist.settings.weekdays = $scope.ngDropdown.weekdays.list.map(function(obj){
+                            return obj.id
+                        })
+                    },
+                    onDeselectAll: function () {
+                        $scope.forPlaylist.settings.weekdays = []
+                    },
+                    onItemSelect: function (day) {
+                        if ($scope.forPlaylist.settings.weekdays.indexOf(day.id) == -1)
+                            $scope.forPlaylist.settings.weekdays.push(day.id)
+                    },
+                    onItemDeselect: function (day) {
+                        $scope.forPlaylist.settings.weekdays.splice(
+                            $scope.forPlaylist.settings.weekdays.indexOf(day.id),1)
+                    }
+                }
+            },
+            monthdays: {
+                list:daysObject,
+                selectedDays: [],
+                extraSettings: {
+                    smartButtonMaxItems:7,
+                    displayProp: 'label', idProp: 'id', externalIdProp: 'id',
+                    //scrollableHeight: '200px', scrollable: true,
+                    showCheckAll: true, showUncheckAll: true
+                },
+                customTexts: {buttonDefaultText: "Select Days"},
+                events: {
+                    onSelectAll: function () {
+                        $scope.forPlaylist.settings.monthdays = $scope.ngDropdown.monthdays.list.map(function(obj){
+                            return obj.id
+                        })
+                    },
+                    onDeselectAll: function () {
+                        $scope.forPlaylist.settings.monthdays = []
+                    },
+                    onItemSelect: function (day) {
+                        if ($scope.forPlaylist.settings.monthdays.indexOf(day.id) == -1)
+                            $scope.forPlaylist.settings.monthdays.push(day.id)
+                    },
+                    onItemDeselect: function (day) {
+                        $scope.forPlaylist.settings.monthdays.splice(
+                            $scope.forPlaylist.settings.monthdays.indexOf(day.id),1)
+                    }
+                }
+            }
         }
 
         $scope.saveSchedules = function(formcontroller) {
-            //formcontroller.$dirty? $scope.deployform.$setDirty(): ''; //  inform user  of new changes
             $scope.scheduleCalendarModal.close();
-            if ($scope.forPlaylist.settings) {
-                if ($scope.forPlaylist.settings.starttimeObj) {
-                    var time = $scope.forPlaylist.settings.starttimeObj.toTimeString().split(' ')[0].slice(0,5)
-                    $scope.forPlaylist.settings.starttime = time;
-                }
-                if ($scope.forPlaylist.settings.endtimeObj) {
-                    var time = $scope.forPlaylist.settings.endtimeObj.toTimeString().split(' ')[0].slice(0,5)
-                    $scope.forPlaylist.settings.endtime = time;
-                }
-            }
-            $scope.updateGroup();
         }
 
         $scope.displaySet = function () {
@@ -399,7 +551,7 @@ angular.module('piGroups.controllers', [])
 
     })
 
-    .controller('ServerPlayerCtrl', function($scope,$http,piUrls,$interval,$modal,TZNames, playerLoader,commands) {
+    .controller('ServerPlayerCtrl', function($scope,$http,$state,piUrls,$interval,$modal,TZNames, playerLoader,commands) {
         
         playerLoader.reload();
         
@@ -502,7 +654,7 @@ angular.module('piGroups.controllers', [])
             if (player.statusClass == "text-danger")
                 return console.log("Player is offline");
             $scope.msg = {player:player,curVer:player.version,
-                newVer:$scope.currentVersion.version, beta:$scope.currentVersion.beta};
+                newVer:$scope.player.currentVersion.version, beta:$scope.player.currentVersion.beta};
             $scope.modal = $modal.open({
                 templateUrl: '/app/templates/swupdate-popup.html',
                 scope: $scope
@@ -519,6 +671,12 @@ angular.module('piGroups.controllers', [])
                 });
         }
 
+
+        $scope.loadPlayerDetails = function(player) {
+            $state.go("home.players.players_details",{player:player._id,group: player.group._id})
+        }
+
+
         $scope.getOldEntry = function(event){ // handle every key-press event to check and  save commands
             if(event.keyCode == 38)
                 $scope.msg.cmd = commands.previous();
@@ -529,6 +687,52 @@ angular.module('piGroups.controllers', [])
 
         $interval(playerLoader.getPlayers,60000);
     })
+
+    .controller('PlayerDetailCtrl', function($scope,$http,$state,$stateParams,piUrls,$interval,$modal, playerLoader, piPopup) {
+
+        //playerLoader.reload();
+
+        //$scope.player = playerLoader.player;
+        $scope.group = playerLoader.group;
+
+        $http.get(piUrls.players+ $stateParams.player,{})
+            .success(function(data, status) {
+                if (data.success) {
+                    $scope.player = data.data;
+                    $scope.selectedGroup = $scope.player.group.name
+                }
+            })
+            .error(function(data, status) {
+            });
+
+        $scope.assignGroup = function() {
+            var player = $scope.player
+            var newGroup = $scope.selectedGroup || "__player__"
+            $scope.selectedGroup = player.group.name;
+            piPopup.confirm("--Do you want to Change the Group of the Player to "+newGroup, function() {
+                var index =  $scope.group.groupNames.indexOf(newGroup)
+                if (index == -1) {
+                    player.group = {name: newGroup};
+                } else {
+                    player.group = $scope.group.groups[index];
+                }
+                $http.post(piUrls.players+player._id,{group:player.group})
+                    .success(function(data, status) {
+                        if (data.success) {
+                            player = data.data;
+                            $scope.selectedGroup = player.group.name
+                            $state.go("home.players.players_details",{player:player._id,group: player.group._id})
+                        }
+                    })
+                    .error(function(data, status) {
+                    });
+            })
+        }
+
+
+    })
+
+
 
 
 

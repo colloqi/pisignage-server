@@ -16,6 +16,7 @@ var AssetSchema = new Schema({
     createdBy: {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}
 })
 
+AssetSchema.index({ installation: 1 });
 
 AssetSchema.statics = {
     load: function (id, cb) {

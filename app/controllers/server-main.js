@@ -25,10 +25,14 @@ exports.saveSettings = function () {
 exports.deploy = function (installation,group, cb) {
     async.series([
         function (async_cb) {
+
+            if (!group.playlists  || group.playlists.length == 0)
+                return async_cb("No Playlists assigned to the Group")
+
             Player.find({'group._id': group._id}, function (err, data) {
-                if (err) {
+                if (err || !data || data.length == 0) {
                     console.log("Unable to get Players list for deploy,", err);
-                    async_cb(err);
+                    async_cb("No Players associated, "+(err?err:""));
                 } else {
                     data.forEach(function (player) {
                         playersToBeSynced[player.cpuSerialNumber] = player;
@@ -142,7 +146,7 @@ exports.deploy = function (installation,group, cb) {
             players[group._id.toString()].forEach(function (player) {
                 socketio.emitMessage(player.socket, 'sync',
                     group.playlists, group.assets, group.deployedTicker,
-                    group.logo, group.logox, group.logoy);
+                    group.logo, group.logox, group.logoy,group.combineDefaultPlaylist,group.omxVolume);
             });
             console.log("sending sync event to players");
             cb(null, group);

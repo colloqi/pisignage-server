@@ -9,19 +9,23 @@
                     h6.text-primary.truncate  {{item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}
                 .col-sm-3
                     .row
-                        .col-sm-6(style="padding-right:3px;")
+                        .col-sm-6(style="padding-right:3px;", popover-placement = "right",
+                                popover = "{{player.ethMac+'\n'+player.wifiMac}}")
                             small.text-primary.truncate  {{item.myIpAddress || "IP:NA"}}
                         .col-sm-6(style="padding:3px;")
                             select.form-control.select-xs(ng-model="item.TZ", ng-change="changeTZ(item)",
                                                                             ng-options="tz for tz in tzNames")
-                                option(value="", selected,translate)  --No TZ--
+                                option(value="", selected)  --No TZ--
                 .col-sm-3
                     i.fa.fa-circle.fa-lg(ng-class="item.statusClass",
                         title="{{item.isConnected?(item.playlistOn?'online & playing, tv-on:'+item.tvStatus:'online & not playing, tv-on:'+item.tvStatus):'offline'}}")
                     span.text-primary &nbsp;{{item.currentPlaylist}}
-                .col-sm-2
+                //.col-sm-2
                     select.form-control.select-xs(ng-model="item.group.name",ng-change="assignGroup(item)",
                                                                         ng-options="gr for gr in group.groupNames")
+                .col-sm-2
+                    button.btn.btn-xs.btn-info(ng-click="loadPlayerDetails(item)")
+                        | {{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}
             .row
                 .col-sm-4
                     h6.text-primary: small {{item.cpuSerialNumber}}

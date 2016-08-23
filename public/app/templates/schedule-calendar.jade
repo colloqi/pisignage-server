@@ -13,21 +13,21 @@
                         .checkbox
                             label
                                 input(type="checkbox",ng-model="forPlaylist.settings.durationEnable")
-                                small(translate,ng-show='!forPlaylist.settings.durationEnable') Schedule
-                                small(translate,ng-show='forPlaylist.settings.durationEnable') Begin
+                                small(ng-show='!forPlaylist.settings.durationEnable') Schedule
+                                small(ng-show='forPlaylist.settings.durationEnable') Begin
                     .col-xs-5
                         input.form-control.input-sm(type='date', ng-model='forPlaylist.settings.startdate',
                         ng-show='forPlaylist.settings.durationEnable',
                         placeholder="Starting on",
                         name='startdate', title='Enter Start Date')
                     .col-xs-1
-                        small(translate,ng-show='forPlaylist.settings.durationEnable') till
+                        small(ng-show='forPlaylist.settings.durationEnable') till
                     .col-xs-4
                         input.form-control.input-sm(type='date', ng-model='forPlaylist.settings.enddate',
                         ng-show='forPlaylist.settings.durationEnable',
                         placeholder="Till date",
                         name='enddate', title='Enter End Date')
-        .panel.panel-info
+        //.panel.panel-info
             .panel-heading
                 h4
                     strong Only on Specific Day
@@ -46,6 +46,38 @@
                         select.form-control(ng-model='forPlaylist.settings.monthday',
                         ng-options="dayslist.indexOf(day) as day for day in dayslist",
                         title='Enter playing date')
+        .panel.panel-info
+            .panel-heading
+                h4
+                    strong Only on Selected Days
+                    small &nbsp;&nbsp;Schedule on specific week days or month days (needs 1.7.0 for multiple days, previous versions take the first day only)
+            .panel-body
+                .form-group
+                    .col-xs-2
+                        label.control-label Week Day(s)
+                    .col-xs-4
+                        //select.form-control(ng-model='forPlaylist.settings.weekdays',
+                                            ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',
+                                            title='Select playing week days | translate')
+                        div.pull-right( ng-dropdown-multiselect="",
+                        options="ngDropdown.weekdays.list",
+                        selected-model="ngDropdown.weekdays.selectedDays",
+                        events = "ngDropdown.weekdays.events",
+                        translation-texts="ngDropdown.weekdays.customTexts",
+                        extra-settings="ngDropdown.weekdays.extraSettings",checkboxes="true")
+
+                    .col-xs-2
+                        label.control-label Day(s) of Month
+                    .col-xs-4
+                        //select.form-control(ng-model='forPlaylist.settings.monthdays',
+                                                ng-options="dayslist.indexOf(day) as day for day in dayslist",
+                                                title='Enter playing dates | translate')
+                        div.pull-right( ng-dropdown-multiselect="",
+                        options="ngDropdown.monthdays.list",
+                        selected-model="ngDropdown.monthdays.selectedDays",
+                        events = "ngDropdown.monthdays.events",
+                        translation-texts="ngDropdown.monthdays.customTexts",
+                        extra-settings="ngDropdown.monthdays.extraSettings",checkboxes="true")
         .panel.panel-info
             .panel-heading
                 h4
@@ -72,6 +104,6 @@
                                                 ng-model='forPlaylist.settings.endtimeObj',
                                                 name='endtime', title='Enter End Time')
 
-    button.btn(ng-click="scheduleCalendarModal.close()") Cancel
+    //button.btn(ng-click="scheduleCalendarModal.close()") Cancel
     button.btn.btn-success(ng-click="saveSchedules(schedulecal)") OK
 

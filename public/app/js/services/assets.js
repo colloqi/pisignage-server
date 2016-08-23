@@ -98,7 +98,8 @@ angular.module('piAssets.services', [])
                     var obj = {};
                     obj.fileDetails = assetLoader.asset.filesDetails[asset.filename] || {name: asset.filename};
                     obj.playlistDetails = asset;
-                    obj.deleted = (assetLoader.asset.files.indexOf(asset.filename) == -1);
+                    obj.deleted = (assetLoader.asset.files.indexOf(asset.filename) == -1) &&
+                                        (asset.filename.indexOf("_system") != 0);
                     assetLoader.asset.groupWiseAssets[playlist.name].assets.push(obj)
 
                     /*if (asset.side) {
