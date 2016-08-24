@@ -170,12 +170,16 @@ exports.deleteFile = function (req, res) {
         function(next) {
             var thumbnailPath = path.join(config.thumbnailDir, file);
             if (file.match(config.videoRegex))
-                thumbnailPath += '_1.png';
-            fs.unlink(thumbnailPath, function (err) {
-                if (err)
-                    util.log('unable to find/delete thumbnail: ' + err)
-                next();
-            })
+                thumbnailPath += '.png';
+            if(file.match(config.videoRegex) || file.match(config.imageRegex)){
+                fs.unlink(thumbnailPath, function (err) {
+                    if (err)
+                        util.log('unable to find/delete thumbnail: ' + err)
+                    next();
+                })
+            } else {
+                next()
+            }
         }
     ], function(err) {
         if (err)
