@@ -77,7 +77,7 @@ angular.module('piPlayers.services', [])
         var loadAllModels = function() {
             async.series([
                     function (next) {
-                        $http.get(piUrls.groups, {})
+                        $http.get(piUrls.groups, {params:{all: "all"}})
                             .success(function (data, status) {
                                 if (data.success) {
                                     playerLoader.group.groups = data.data;

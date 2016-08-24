@@ -9,6 +9,7 @@
 1. Calendar view for multiple playlists scheduling under Group
 1. Link edit
 1. Availability of beta version
+1. System Notice as part of playlist
 
 **1.6.0**
 1. customized logo and url (directly change at public/app/img/pisignage-logo.png and public/app/partials/menu.jade)

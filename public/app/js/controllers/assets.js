@@ -545,8 +545,9 @@ angular.module('piAssets.controllers',[])
                     .delete(piUrls.files+$state.params.file)
                     .success(function(data, status) {
                         if (data.success) {
-                            delete $scope.asset.filesDetails[$state.params.file];
-                            $scope.asset.files.splice($scope.asset.files.indexOf($state.params.file),1);
+                            //delete $scope.asset.filesDetails[$state.params.file];
+                            //$scope.asset.files.splice($scope.asset.files.indexOf($state.params.file),1);
+                            assetLoader.reload()
                             $window.history.back();
                         }
                     })

@@ -10,7 +10,7 @@
                 .col-sm-3
                     .row
                         .col-sm-6(style="padding-right:3px;", popover-placement = "right",
-                                popover = "{{player.ethMac+'\n'+player.wifiMac}}")
+                                popover = "{{item.ethMac+'\n'+item.wifiMac}}")
                             small.text-primary.truncate  {{item.myIpAddress || "IP:NA"}}
                         .col-sm-6(style="padding:3px;")
                             select.form-control.select-xs(ng-model="item.TZ", ng-change="changeTZ(item)",

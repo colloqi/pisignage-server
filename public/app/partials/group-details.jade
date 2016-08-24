@@ -1,16 +1,16 @@
 .panel.panel-info(ng-show="group.selectedGroup")
     .panel-heading
         .row
-            .col-sm-5
+            .col-sm-4
                 h3.panel-title {{group.selectedGroup.name}}
-            .col-sm-2
-                a.btn.btn-link.btn-sm.pull-right(ng-click='groupTicker()'): em.text-danger Set Group Ticker
-            .col-sm-2
-                a.btn.btn-link.btn-sm.pull-right(ng-click='displaySet()'): em.text-danger Set Display Mode
-            .col-sm-2
-                a.btn.btn-success.btn-sm.pull-right(ng-disabled="!group.selectedGroup.playlists.length",ng-click='deploy()') Deploy to {{group.selectedGroup.name}}
-            .col-sm-1
-                a.pull-right.close(ng-click="closeWindow()") &times
+            .col-sm-8
+                .btn-toolbar.pull-right
+                    .btn-group
+                        a.btn.btn-default.btn-sm(ng-click='groupTicker()'): em.text-danger Set Group Ticker
+                        a.btn.btn-default.btn-sm(ng-click='displaySet()'): em.text-danger Set Display Mode
+                        a.btn.btn-success.btn-sm(ng-disabled="!group.selectedGroup.playlists.length",ng-click='deploy()') Deploy to {{group.selectedGroup.name}}
+                    .btn-group
+                        a.btn.btn-warning.btn-sm.pull-right(ng-click="closeWindow()") Close
     .panel-body
         form(role='form',name='deployform',as-sortable="sortable.options",ng-model="sortable.playlistArray")
             .row.form-group
@@ -19,7 +19,7 @@
                     select.form-control(ng-model="group.selectedGroup.playlists[0].name",
                                             ng-options="pl for pl in playlist.playlistNames track by pl",
                                             ng-change="updateGroup()")
-                                                option(value="") --
+                            option(value="") --
                 .col-sm-4
                     .checkbox
                         label

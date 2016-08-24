@@ -166,7 +166,7 @@ angular.module('piGroups.controllers', [])
                                         nestedPlaylistIndex = $scope.playlist.playlistNames.indexOf(playlistName);
 
                                     if (nestedPlaylistIndex != -1 &&
-                                        Array.isArray(playlistsObj[nestedPlaylistIndex].assets)) {
+                                        Array.isArray($scope.playlist.playlists[nestedPlaylistIndex].assets)) {
                                         $scope.playlist.playlists[nestedPlaylistIndex].assets.forEach(function(plfile){
                                             if($scope.group.selectedGroup.assets.indexOf(plfile.filename) == -1 &&
                                                 plfile.filename.indexOf("_system") != 0){
@@ -690,7 +690,7 @@ angular.module('piGroups.controllers', [])
 
     .controller('PlayerDetailCtrl', function($scope,$http,$state,$stateParams,piUrls,$interval,$modal, playerLoader, piPopup) {
 
-        //playerLoader.reload();
+        playerLoader.reload();
 
         //$scope.player = playerLoader.player;
         $scope.group = playerLoader.group;
