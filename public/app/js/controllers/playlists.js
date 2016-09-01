@@ -298,6 +298,8 @@ angular.module('piPlaylists.controllers', [])
     .controller('PlaylistAddCtrl',function($scope, $http,  piUrls,$state,$modal, assetLoader,piConstants,layoutOtherZones){
 
         $scope.sortListName = "playlistAssets"
+        $scope.layoutOtherZones = layoutOtherZones;
+
         if (!$scope.asset.showAssets)
             $state.go("home.assets.main")
         $scope.removeAsset = function(index) {
