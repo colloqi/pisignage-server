@@ -107,7 +107,7 @@ angular.module('piGroups.controllers', [])
     })
 
     .controller('GroupDetailCtrl', function ($scope, $rootScope, $http, piUrls,$state, $modal,
-                                                    weeks, days,weeksObject,daysObject,playerLoader,$timeout) {
+                                                    weeks, days,weeksObject,daysObject,playerLoader,$timeout,layoutOtherZones) {
 
         //make sure state.params.group is set
         if ($scope.group.selectedGroup && !($state.params.group)) {
@@ -157,7 +157,7 @@ angular.module('piGroups.controllers', [])
                                             && asset.filename.indexOf("_system") != 0) {
                             $scope.group.selectedGroup.assets.push(asset.filename);
                         }
-                        ["side","bottom"].forEach(function(zone) {
+                        layoutOtherZones[playlist.layout].forEach(function(zone) {
                             if (asset[zone] && $scope.group.selectedGroup.assets.indexOf(asset[zone]) == -1 &&
                                                 asset[zone].indexOf("_system") != 0){
                                 $scope.group.selectedGroup.assets.push(asset[zone]);
@@ -184,8 +184,15 @@ angular.module('piGroups.controllers', [])
                         $scope.group.selectedGroup.assets.push($scope.group.selectedGroup.logo);
                     $scope.group.selectedGroup.playlists[i].settings = $scope.group.selectedGroup.playlists[i].settings || {}
                     $scope.group.selectedGroup.playlists[i].settings.ads = playlist.settings.ads
-                    if(playlist.name != 'TV_OFF' && playlist.assets.length == 0)
-                        $scope.emptyPlExist = true;
+                    if(playlist.name != 'TV_OFF') {
+                        if (playlist.assets.length == 0) {
+                            $scope.emptyPlExist = true;
+                            $scope.group.selectedGroup.playlists[i].skipForSchedule = true;
+                        } else {
+                            $scope.group.selectedGroup.playlists[i].skipForSchedule = false;
+                        }
+                    }
+
                 } else {
                     $scope.group.selectedGroup.playlists.splice(i,1);
                 }

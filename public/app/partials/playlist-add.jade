@@ -36,22 +36,31 @@
                                                                 ng-change="saveData()")
                         .col-sm-1
                             button.btn.btn-xs.btn-warning(ng-click="removeAsset($index)") X
-                    .row(ng-show="asset.showAssets.playlist.layout && asset.showAssets.playlist.layout != '1' && asset.showAssets.playlist.layout != '2ap' && asset.showAssets.playlist.layout != '2ap270'")
+                    .row(ng-show="asset.showAssets.playlist.layout && layoutOtherZones[asset.showAssets.playlist.layout].length")
                         .col-sm-3
                             label.label(ng-class="{'label-danger':file.playlistDetails.fullscreen,'label-default':!file.playlistDetails.fullscreen}")
                                 input(type='checkbox',name='fullscreen', ng-model='file.playlistDetails.fullscreen')
                                 span &nbsp;show fullscreen
                         .col-sm-9
-                            span(ng-show="asset.showAssets.playlist.layout != '2bp' && asset.showAssets.playlist.layout != '2bp270'")
-                                button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")
-                                    span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}
-                                button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.side",
-                                ng-click="removeLinkFile(file,'side')") X
-                            span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b' && asset.showAssets.playlist.layout != '2c' && asset.showAssets.playlist.layout != '2d'")
-                                button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'bottom')")
-                                    span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}
-                                button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",
-                                                    ng-click="removeLinkFile(file,'bottom')") X
+                            small.text-primary(translate) Add other zone assets
+                                span(ng-repeat="zone in layoutOtherZones[asset.showAssets.playlist.layout]")
+                                    .btn-group
+                                        button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,zone)")
+                                            small {{zone}}: {{file.playlistDetails[zone]}}&nbsp;
+                                            i.fa.fa-paperclip(ng-if="!file.playlistDetails[zone]")
+                                        button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails[zone]",
+                                                                        ng-click="removeLinkFile(file,zone)") X
+
+                            //span(ng-show="asset.showAssets.playlist.layout != '2bp' && asset.showAssets.playlist.layout != '2bp270'")
+                            //    button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")
+                            //        span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}
+                            //    button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.side",
+                            //    ng-click="removeLinkFile(file,'side')") X
+                            //span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b' && asset.showAssets.playlist.layout != '2c' && asset.showAssets.playlist.layout != '2d'")
+                            //    button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'bottom')")
+                            //        span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}
+                            //    button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",
+                            //                        ng-click="removeLinkFile(file,'bottom')") X
 
 
         li.list-group-item(ng-if="!asset.showAssets.assets.length")

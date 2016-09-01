@@ -59,6 +59,7 @@ exports.index = function (req, res) {
                         playlist.assets = obj.assets || [];
                         playlist.layout = obj.layout || '1';
                         playlist.videoWindow = obj.videoWindow || null;
+                        playlist.zoneVideoWindow = obj.zoneVideoWindow || {};
                         list.push(playlist);
                     }
                     cb();
@@ -90,7 +91,8 @@ exports.getPlaylist = function (req, res) {
                 settings: {},
                 layout: '1',
                 assets: [],
-                videoWindow: null
+                videoWindow: null,
+                zoneVideoWindow: {}
             }
             if (data) {
                 var obj = {};
@@ -103,6 +105,7 @@ exports.getPlaylist = function (req, res) {
                 playlist.assets = obj.assets || [];
                 playlist.layout = obj.layout || '1';
                 playlist.videoWindow = obj.videoWindow || null;
+                playlist.zoneVideoWindow = obj.zoneVideoWindow? obj.zoneVideoWindow : {};
             }
 
             return rest.sendSuccess(res, ' Sending playlist content', playlist);
@@ -153,6 +156,7 @@ exports.savePlaylist = function (req, res) {
             if (req.body.layout) {
                 fileData.layout = req.body.layout;
                 fileData.videoWindow = req.body.videoWindow|| null;
+                fileData.zoneVideoWindow = req.body.zoneVideoWindow || null;
                 dirty = true;
             }
 

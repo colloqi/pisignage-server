@@ -123,7 +123,7 @@ angular.module('piPlaylists.controllers', [])
 
 
     .controller('PlaylistViewCtrl',
-        function($scope, $http, $rootScope, piUrls, $window,$state,$modal, assetLoader){
+        function($scope, $http, $rootScope, piUrls, $window,$state,$modal, assetLoader, layoutOtherZones){
 
             //modal for layout
             function loadLayoutStructure () {
@@ -215,10 +215,11 @@ angular.module('piPlaylists.controllers', [])
             }
             loadLayoutStructure();
 
-
+            $scope.layoutOtherZones = layoutOtherZones;
             $scope.openLayout = function(){
                 loadLayoutStructure();
                 $scope.videoWindow = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.videoWindow || {}
+                $scope.zoneVideoWindow = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.zoneVideoWindow || {}
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/layout-popup.html',
                     scope: $scope
@@ -228,7 +229,7 @@ angular.module('piPlaylists.controllers', [])
             $scope.saveLayout = function(){  // get new layout value
                 var pl = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
                 $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name,
-                                {layout : pl.layout, videoWindow: pl.videoWindow})
+                                {layout : pl.layout, videoWindow: pl.videoWindow, zoneVideoWindow: pl.zoneVideoWindow})
                     .success(function(data, status) {
                         if (data.success) {
                             $scope.modal.close();
@@ -241,6 +242,11 @@ angular.module('piPlaylists.controllers', [])
 
             $scope.setVideoWindow = function(obj){ // SET/RESET video window options
                 $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.videoWindow = obj;
+                $scope.saveLayout();
+            }
+
+            $scope.setZoneVideoWindow = function(zone,obj){ // SET/RESET video window options
+                $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.zoneVideoWindow[zone] = obj;
                 $scope.saveLayout();
             }
 
@@ -289,7 +295,7 @@ angular.module('piPlaylists.controllers', [])
 
         })
 
-    .controller('PlaylistAddCtrl',function($scope, $http,  piUrls,$state,$modal, assetLoader,piConstants){
+    .controller('PlaylistAddCtrl',function($scope, $http,  piUrls,$state,$modal, assetLoader,piConstants,layoutOtherZones){
 
         $scope.sortListName = "playlistAssets"
         if (!$scope.asset.showAssets)
@@ -330,7 +336,7 @@ angular.module('piPlaylists.controllers', [])
 
             $scope.filteredAssets = $scope.asset.allAssets.assets.filter(function(fileObj){
                 var file = fileObj.fileDetails.name
-                return !(file.match(piConstants.videoRegex) ||  file.match(piConstants.audioRegex) ||
+                return !(file.match(piConstants.audioRegex) ||
                 file.match(piConstants.liveStreamRegex) || file.match(piConstants.CORSLink));
             })
 
@@ -369,13 +375,18 @@ angular.module('piPlaylists.controllers', [])
                     .error(function (data, status) {
                         console.log(status);
                     });
-            var assetFiles = []
+            var assetFiles = [],
+                layout = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.layout
             $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.assets.forEach(function(item){
                 assetFiles.push(item.filename)
-                if (item.side && assetFiles.indexOf(item.side) == -1)
-                    assetFiles.push(item.side);
-                if (item.bottom && assetFiles.indexOf(item.bottom) == -1)
-                    assetFiles.push(item.bottom);
+                layoutOtherZones[layout].forEach(function(zone){
+                    if (item[zone] && assetFiles.indexOf(item[zone]) == -1)
+                        assetFiles.push(item[zone]);
+                })
+                // if (item.side && assetFiles.indexOf(item.side) == -1)
+                //     assetFiles.push(item.side);
+                // if (item.bottom && assetFiles.indexOf(item.bottom) == -1)
+                //     assetFiles.push(item.bottom);
             })
             $http.post(piUrls.playlistfiles,{playlist:$scope.playlist.selectedPlaylist.name,assets: assetFiles})
                 .success(function(data, status) {

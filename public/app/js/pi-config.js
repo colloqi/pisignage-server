@@ -53,6 +53,31 @@ angular.module('piConfig', [])
         }
     })())
 
+    .constant('layoutOtherZones', (function() {
+        return {
+            '1'         : [],
+            '2a'        : ["side"],
+            '2b'        : ["side"],
+            '2c'        : ["side"],
+            '2d'        : ["side"],
+            '3a'        : ["side","bottom"],
+            '3b'        : ["side","bottom"],
+            '3c'        : ["side","bottom"],
+            '3d'        : ["side","bottom"],
+            '4a'        : ["side","bottom"],
+            '4b'        : ["side","bottom"],
+            '4c'        : ["side","bottom"],
+            '4d'        : ["side","bottom"],
+            '2ap'       : [],
+            '2bp'       : ["bottom"],
+            '2ap270'    : [],
+            '2bp270'    : ["bottom"],
+            'custom'    : ["side","bottom","zone4","zone5","zone6"],
+            'customp'   : ["side","bottom","zone4","zone5","zone6"],
+            'customp270': ["side","bottom","zone4","zone5","zone6"]
+        }
+    })())
+
     .constant('weeks',(function(){ // all weeks for playlist time setting
         return [
             'All Days',  'Sunday',

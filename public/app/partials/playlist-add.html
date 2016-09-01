@@ -31,17 +31,29 @@
               <button ng-click="removeAsset($index)" class="btn btn-xs btn-warning">X</button>
             </div>
           </div>
-          <div ng-show="asset.showAssets.playlist.layout &amp;&amp; asset.showAssets.playlist.layout != '1' &amp;&amp; asset.showAssets.playlist.layout != '2ap' &amp;&amp; asset.showAssets.playlist.layout != '2ap270'" class="row">
+          <div ng-show="asset.showAssets.playlist.layout &amp;&amp; layoutOtherZones[asset.showAssets.playlist.layout].length" class="row">
             <div class="col-sm-3">
               <label ng-class="{'label-danger':file.playlistDetails.fullscreen,'label-default':!file.playlistDetails.fullscreen}" class="label">
                 <input type="checkbox" name="fullscreen" ng-model="file.playlistDetails.fullscreen"/><span>&nbsp;show fullscreen</span>
               </label>
             </div>
-            <div class="col-sm-9"><span ng-show="asset.showAssets.playlist.layout != '2bp' &amp;&amp; asset.showAssets.playlist.layout != '2bp270'">
-                <button ng-click="linkFile(file.playlistDetails,'side')" class="btn btn-xs btn-info"><span>Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}</span></button>
-                <button ng-if="file.playlistDetails.side" ng-click="removeLinkFile(file,'side')" class="btn btn-xs btn-warning">X</button></span><span ng-show="asset.showAssets.playlist.layout != '2a' &amp;&amp; asset.showAssets.playlist.layout != '2b' &amp;&amp; asset.showAssets.playlist.layout != '2c' &amp;&amp; asset.showAssets.playlist.layout != '2d'">
-                <button ng-click="linkFile(file.playlistDetails,'bottom')" class="btn btn-xs btn-info"><span>Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}</span></button>
-                <button ng-if="file.playlistDetails.bottom" ng-click="removeLinkFile(file,'bottom')" class="btn btn-xs btn-warning">X</button></span></div>
+            <div class="col-sm-9"><small translate="translate" class="text-primary">Add other zone assets<span ng-repeat="zone in layoutOtherZones[asset.showAssets.playlist.layout]">
+                  <div class="btn-group">
+                    <button ng-click="linkFile(file.playlistDetails,zone)" class="btn btn-xs btn-info"><small>{{zone}}: {{file.playlistDetails[zone]}}&nbsp;</small><i ng-if="!file.playlistDetails[zone]" class="fa fa-paperclip"></i></button>
+                    <button ng-if="file.playlistDetails[zone]" ng-click="removeLinkFile(file,zone)" class="btn btn-xs btn-warning">X</button>
+                  </div></span></small>
+              <!--span(ng-show="asset.showAssets.playlist.layout != '2bp' && asset.showAssets.playlist.layout != '2bp270'")-->
+              <!--    button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")-->
+              <!--        span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}-->
+              <!--    button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.side",-->
+              <!--    ng-click="removeLinkFile(file,'side')") X-->
+              <!--span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b' && asset.showAssets.playlist.layout != '2c' && asset.showAssets.playlist.layout != '2d'")-->
+              <!--    button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'bottom')")-->
+              <!--        span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}-->
+              <!--    button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",-->
+              <!--                        ng-click="removeLinkFile(file,'bottom')") X-->
+              
+            </div>
           </div>
         </div>
       </div>
