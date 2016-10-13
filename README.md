@@ -201,7 +201,7 @@
 
 2. Once installed and Powered-ON Configure admin and media server to your local address and port using one of the below methods  
 
-   a. Using the webUI of the player at http://<player IP>:8000/settings
+   a. Using the webUI of the player at http://[player IP]:8000/settings
   
    b. Connect Keyboard and press Ctrl-N or F6    
       * Change config and media server to `http://[your server ip]:port` (ex: 192.168.1.30:3000, 10.50.16.110:3000)   
