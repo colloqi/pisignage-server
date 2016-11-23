@@ -59,24 +59,24 @@ angular.module('piServerApp', [
                 }
             })
 
-            .state("home.players.players_details", {
-                url: "players/:player?group",
-                views: {
-                    "left": {
-                        templateUrl: '/app/partials/groups.html',
-                        controller: 'GroupsCtrl'
-                    },
-                    "details": {
-                        templateUrl: '/app/partials/player-details.html',
-                        controller: 'PlayerDetailCtrl'
-                    },
-                    "list": {
-                        templateUrl: '/app/partials/group-details.html',
-                        controller: 'GroupDetailCtrl'
-                    }
-                }
-            })
-
+            // .state("home.players.players_details", {
+            //     url: "players/:player?group",
+            //     views: {
+            //         "left": {
+            //             templateUrl: '/app/partials/groups.html',
+            //             controller: 'GroupsCtrl'
+            //         },
+            //         "details": {
+            //             templateUrl: '/app/partials/player-details.html',
+            //             controller: 'PlayerDetailCtrl'
+            //         },
+            //         "list": {
+            //             templateUrl: '/app/partials/group-details.html',
+            //             controller: 'GroupDetailCtrl'
+            //         }
+            //     }
+            // })
+            //
             .state("home.assets", {
                 abstract: true,
                 url: "assets/",
@@ -95,10 +95,10 @@ angular.module('piServerApp', [
                         templateUrl: '/app/partials/playlists.html',
                         controller: 'PlaylistsCtrl'
                     },
-                    "left2": {
-                        templateUrl: '/app/partials/labels.html',
-                        controller: 'LabelsCtrl'
-                    },
+                    // "left2": {
+                    //     templateUrl: '/app/partials/labels.html',
+                    //     controller: 'LabelsCtrl'
+                    // },
                     "details": {
                         templateUrl: '/app/partials/playlist-details.html',
                         controller: 'PlaylistViewCtrl'
@@ -211,6 +211,21 @@ angular.module('piServerApp', [
                     }]
             })
         }
+        /**
+         * extends string prototype object to get a string with a number of characters from a string.
+         *
+         * @type {Function|*}
+         */
+        String.prototype.trunc = String.prototype.trunc ||
+            function(n){
+
+                // this will return a substring and
+                // if its larger than 'n' then truncate and append '...' to the string and return it.
+                // if its less than 'n' then return the 'string'
+                return this.length>n ? this.substr(0,n-1)+'...' : this.toString();
+            };
+
+
         $http.get(piUrls.serverConfig)
             .success(function(data){
                 if(data.success) {

@@ -125,8 +125,20 @@ angular.module('piPlaylists.controllers', [])
     .controller('PlaylistViewCtrl',
         function($scope, $http, $rootScope, piUrls, $window,$state,$modal, assetLoader, layoutOtherZones){
 
+            $scope.customTemplates = function(asset) {
+                return asset.match(/^custom_layout.*html$/i)
+            }
+
             //modal for layout
             function loadLayoutStructure () {
+                var customLayoutsPresent = false;
+                for (var i=0,len = $scope.asset.files.length;i<len;i++) {
+                    if ($scope.customTemplates($scope.asset.files[i])) {
+                        customLayoutsPresent = true;
+                        break;
+                    }
+                }
+
                 $scope.layouts = {
                     "1": {title: "Single Zone Display", description: "main Zone:1280x720"},
                     "2a": {
@@ -197,17 +209,17 @@ angular.module('piPlaylists.controllers', [])
                     },
                     "custom": {
                         title: "Custom Layout in Landscape Mode (v1.6.0+)",
-                        disabled: ($scope.asset.files.indexOf("custom_layout.html") == -1),
+                        disabled: !customLayoutsPresent,
                         description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g. "
                     },
                     "customp": {
                         title: "Custom Layout in Portrait Mode, Orient clockwise",
-                        disabled: ($scope.asset.files.indexOf("custom_layout.html") == -1),
+                        disabled: !customLayoutsPresent,
                         description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g."
                     },
                     "customp270": {
                         title: "Custom Layout in Portrait Mode,Orient anti-clockwise",
-                        disabled: ($scope.asset.files.indexOf("custom_layout.html") == -1),
+                        disabled: !customLayoutsPresent,
                         description: "Upload custom_layout.html under Assets Tab(otherwise this option is disabled), Use #main,#side, #bottom, #ticker html ID tags for content, see github e.g."
                     }
 
@@ -226,10 +238,19 @@ angular.module('piPlaylists.controllers', [])
                 });
             }
 
+            $scope.selectTemplate = function(asset, layout) {
+                var pl = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
+                pl.templateName = asset
+                pl.layout = layout
+                $scope.saveLayout();
+            }
+
+
             $scope.saveLayout = function(){  // get new layout value
                 var pl = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
                 $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name,
-                                {layout : pl.layout, videoWindow: pl.videoWindow, zoneVideoWindow: pl.zoneVideoWindow})
+                                {layout : pl.layout, videoWindow: pl.videoWindow, zoneVideoWindow: pl.zoneVideoWindow,
+                                    templateName: pl.templateName,})
                     .success(function(data, status) {
                         if (data.success) {
                             $scope.modal.close();
@@ -300,6 +321,25 @@ angular.module('piPlaylists.controllers', [])
         $scope.sortListName = "playlistAssets"
         $scope.layoutOtherZones = layoutOtherZones;
 
+        var enableCustomZones = function(templateName) {
+            $http.get("/media/"+templateName, {} )
+                .success(function(data, status) {
+                    if (data) {
+                        $scope.customZonesPresent = {}
+                        layoutOtherZones["custom"].forEach(function (zone) {
+                            $scope.customZonesPresent[zone] = (data.indexOf(zone) != -1)
+                        })
+                    }
+                })
+                .error(function(data, status) {
+                });
+        }
+
+        if ($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.templateName &&
+                ($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.layout.indexOf("custom") == 0)) {
+            enableCustomZones($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.templateName)
+        }
+
         if (!$scope.asset.showAssets)
             $state.go("home.assets.main")
         $scope.removeAsset = function(index) {
@@ -361,7 +401,9 @@ angular.module('piPlaylists.controllers', [])
 
         $scope.saveData = function (cb) {
             $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.assets.forEach(function(item){
-                if ($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.layout == "1")
+                //if ($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.layout == "1")
+                //    item.fullscreen = true;
+                if (layoutOtherZones[$scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.layout].length == 0)
                     item.fullscreen = true;
                 if (item.duration < 2)
                     item.duration = 2; //force duration to 2 sec minimum

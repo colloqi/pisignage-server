@@ -14,12 +14,14 @@
                     button.btn.btn-default(type="submit")
                         i.fa.fa-plus
     ul.nav.nav-pills.nav-stacked(ng-hide="collapsed")
-        li(ng-repeat="tag in label.labels | orderBy:'name'", ng-class="fn.getClass(tag.name)")
+        li(ng-repeat="tag in label.labels | orderBy:'name' | filter:modeFilter", ng-class="fn.getClass(tag.name)")
             a(ng-click="fn.selected(tag.name)")
                 small {{ tag.name }}
                 span.pull-right(ng-if="!fn.editMode && !fn.getClass(tag.name)") {{label.labelsCount[tag.name] || '0'}}
                 button.close(ng-click='fn.delete(tag); $event.stopPropagation()',ng-if="fn.editMode || fn.getClass(tag.name)")
                     i.fa.fa-times-circle.fa-lg(ng-class="{'text-danger': fn.editMode}")
+        li(ng-if="!label.labels.length")
+            a(translate) There are no categories, Add a Category
 
 
 

@@ -24,7 +24,7 @@
             label.col-sm-4.control-label Link Address
             .col-sm-8
                 input.form-control(type='text',name='linkUrl', ng-model='link.obj.link',
-                            ng-pattern="/^(http(s?)|rtsp)\:\/\//",
+                            ng-pattern="/^(http(s?)|rtsp|udp)\:\/\//",
                             placeholder="{{'e.g. http(s)://site.com or rtsp://'}}",required='')
 
 .modal-footer

@@ -21,7 +21,8 @@ var isPlaylist = function (file) {
 
 exports.newPlaylist = function ( playlist, cb) {
     var file = path.join(config.mediaDir, ("__" + playlist + '.json')),
-        data = {name:playlist,settings:{ticker:{enable:false},ads:{adPlaylist:false,adInterval:60}},assets:[],layout:'1'};
+        data = {name:playlist,settings:{ticker:{enable:false},ads:{adPlaylist:false,adInterval:60}},assets:[],layout:'1',
+            templateName:"custom_layout.html"};
 
     fs.writeFile(file, JSON.stringify(data, null, 4), function (err) {
         cb(err,data);
@@ -58,6 +59,7 @@ exports.index = function (req, res) {
                         playlist.settings = obj.settings || {};
                         playlist.assets = obj.assets || [];
                         playlist.layout = obj.layout || '1';
+                        playlist.templateName = obj.templateName || "custom_layout.html";
                         playlist.videoWindow = obj.videoWindow || null;
                         playlist.zoneVideoWindow = obj.zoneVideoWindow || {};
                         list.push(playlist);
@@ -92,7 +94,8 @@ exports.getPlaylist = function (req, res) {
                 layout: '1',
                 assets: [],
                 videoWindow: null,
-                zoneVideoWindow: {}
+                zoneVideoWindow: {},
+                templateName: "custom_layout.html"
             }
             if (data) {
                 var obj = {};
@@ -104,6 +107,7 @@ exports.getPlaylist = function (req, res) {
                 playlist.settings = obj.settings || {};
                 playlist.assets = obj.assets || [];
                 playlist.layout = obj.layout || '1';
+                playlist.templateName = obj.templateName || "custom_layout.html";
                 playlist.videoWindow = obj.videoWindow || null;
                 playlist.zoneVideoWindow = obj.zoneVideoWindow? obj.zoneVideoWindow : {};
             }
@@ -155,6 +159,7 @@ exports.savePlaylist = function (req, res) {
             }
             if (req.body.layout) {
                 fileData.layout = req.body.layout;
+                fileData.templateName = req.body.templateName;
                 fileData.videoWindow = req.body.videoWindow|| null;
                 fileData.zoneVideoWindow = req.body.zoneVideoWindow || null;
                 dirty = true;

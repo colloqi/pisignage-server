@@ -1,0 +1,22 @@
+.modal-header
+    h4
+        span(translate) Player settings for the player:&nbsp;
+        span {{selectedPlayer.name}}
+        button.btn.btn-info.btn-sm.pull-right(ng-click="settingsModal.close()",translate) Done
+.modal-body
+    form(role="form", name="playersettings")
+        .form-group.row
+            label.control-label.col-sm-3(translate) Selected Group
+            .col-sm-6
+                select.form-control(ng-model="selectedGroup",ng-change="assignGroup(selectedGroup)",
+                                    ng-options="group for group in group.groupNames")
+                    option(value="", translate) -- none --
+        .form-group.row(ng-show="playerLabels.length")
+            label.control-label.col-sm-3(translate)  Select Categories
+            .col-sm-6(ng-if="playerLabels")
+                div( ng-dropdown-multiselect="",
+                options="playerLabels",
+                selected-model="ngDropdown.selectedLabels",
+                events = "ngDropdown.events",
+                translation-texts="ngDropdown.customTexts",
+                extra-settings="ngDropdown.extraSettings",checkboxes="true")

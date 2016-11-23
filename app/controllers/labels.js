@@ -15,10 +15,9 @@ var mongoose = require('mongoose'),
 exports.loadObject = function (req, res, next, id) {
 
     Label.load(id, function (err, object) {
-        if (err)
-            return next(err)
-        if (!object)
-            return next(new Error('not found'))
+        if (err || !object)
+            return rest.sendError(res,'Unable to get group details',err);
+
         req.object = object;
         next();
     })
@@ -33,6 +32,7 @@ exports.index = function (req, res) {
         var str = new RegExp(req.query['string'], "i")
         criteria['name'] = str;
     }
+    //criteria['mode'] = req.param('mode') || null;
 
     var page = req.query['page'] > 0 ? req.query['page'] : 0
     var perPage = req.query['per_page'] || 500

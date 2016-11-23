@@ -3,8 +3,8 @@ var mongoose = require('mongoose'),
 
 var SettingsSchema = new Schema({
     installation: {type: String , default: "local"},
-    assetLogEnable: {type: Boolean , default: false},
     newLayoutsEnable: {type: Boolean , default: false},
+    systemMessagesHide: {type: Boolean, default: false},
     defaultDuration: {type: Number, default: 10},
     language: {type: String , default: 'en'},
     logo: {type: String},

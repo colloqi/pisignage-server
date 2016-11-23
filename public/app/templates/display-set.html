@@ -46,24 +46,49 @@
         </div>
       </div>
     </div>
-    <!--.form-group.row
-    .col-sm-4.text-right
-        .radio
-            label.text-muted
-                span(translate) Animation
-                //| <br>
-                //span(translate) (only in pi 2)
-    .col-sm-4
-        .radio
-            label
-                input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[0].value")
-                small {{animations[0].name}}
-    .col-sm-4
-        .radio
-            label
-                input(disabled,type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[1].value")
-                small {{animations[1].name}}
-    -->
+    <div class="form-group row">
+      <div class="col-sm-4 text-right">
+        <div class="radio">
+          <label class="text-muted"><span translate="translate">Animation</span></label>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.animationEnable" ng-change="group.selectedGroup.animationType = null;" ng-value="false"/><small translate="translate">Disable</small>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="fade"/><small translate="translate">Fade</small>
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="right"/><small translate="translate">Slide right</small>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="left"/><small translate="translate">Slide left</small>
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="up"/><small translate="translate">Slide up</small>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="down"/><small translate="translate">Slide down</small>
+          </label>
+        </div>
+      </div>
+    </div>
     <div class="form-group row">
       <div class="col-xs-4 text-right">
         <div class="radio">
@@ -106,13 +131,24 @@
     <div class="form-group row">
       <div class="col-sm-4 text-right">
         <div class="radio">
-          <label class="text-muted"><span>Do not Reload URL for links every time</span></label>
+          <label class="text-muted"><span>Stretch images to the screen</span></label>
         </div>
       </div>
+      <div class="col-sm-2">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="resize_image" ng-model="group.selectedGroup.resizeAssets"/><span translate="translate">Enable</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-2 text-right"></div>
+      <!--    .radio-->
+      <!--        label.text-muted-->
       <div class="col-sm-4">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="reload_checkbox" ng-model="group.selectedGroup.urlReloadDisable"/><span>Enable</span>
+            <input type="checkbox" name="reload_checkbox" ng-model="group.selectedGroup.urlReloadDisable" ng-true-value="false" ng-false-value="true" ng-checked="group.selectedGroup.urlReloadDisable !== true"/>
+            <!--span(translate) Enable--><small translate="translate">Reload link URLs each time<br>(appends ?ts in chromeapp)</small>
           </label>
         </div>
       </div>

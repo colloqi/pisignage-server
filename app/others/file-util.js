@@ -1,15 +1,20 @@
 var fs = require('fs'),
     sanitizeHtml = require('sanitize-html'),
+    path = require('path'),
     
     library = '\n\t<script src="../piSignagePro/templates/screen.min.js"></script>';
 
-exports.modifyHTML = function(assetsDir){
+exports.modifyHTML = function(assetsDir,templateName){
 	var titleIndex,
         modifiedData,
         scriptTag,
-        sanitize;
+        sanitize,
+        templatePath;
 
-    var templatePath = assetsDir+'/custom_layout.html';
+    if (!templateName)
+        return;
+
+    templatePath = path.join(assetsDir, templateName);
 
     fs.readFile(templatePath,'utf8',function(err,data){
         if(err)

@@ -15,13 +15,17 @@
         <ul class="list-group">
           <li ng-repeat="(ltype,item) in layouts" ng-class="{'list-group-item-success':playlist.selectedPlaylist.layout == ltype}" class="list-group-item">
             <div class="row">
-              <div class="col-sm-10">
+              <div dropdown="dropdown" class="col-sm-10 dropdown">
                 <div class="radio">
                   <label>
                     <input type="radio" value="{{ltype}}" ng-change="saveLayout()" ng-disabled="item.disabled" ng-model="playlist.selectedPlaylist.layout"/><strong class="text-primary">{{ltype}}: &nbsp;{{item.title}}</strong>
                     <p><small>({{item.description}})</small></p>
                   </label>
                 </div>
+                <button dropdown-toggle="dropdown-toggle" ng-if="ltype.indexOf('custom') === 0" class="btn btn-sm btn-link dropdown-toggle"><small class="text-muted">layout file:&nbsp;</small><small>{{playlist.selectedPlaylist.templateName || "Select a custom_layout*.html file from Assets"}}</small><i class="fa fa-caret-down"></i></button>
+                <ul role="menu" ng-if="ltype.indexOf('custom') === 0" class="dropdown-menu">
+                  <li ng-repeat="asset in asset.files | filter:customTemplates"><a href="#" ng-click="selectTemplate(asset,ltype)">&nbsp;&nbsp;{{asset}}</a></li>
+                </ul>
               </div>
               <div class="col-sm-2"><img height="40px" ng-src="/app/img/{{ltype}}.png"/></div>
             </div>

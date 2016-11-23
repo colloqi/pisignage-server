@@ -44,7 +44,7 @@
                         .col-sm-9
                             small.text-primary(translate) Add other zone assets
                                 span(ng-repeat="zone in layoutOtherZones[asset.showAssets.playlist.layout]")
-                                    .btn-group
+                                    .btn-group(ng-if="!customZonesPresent || customZonesPresent[zone]")
                                         button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,zone)")
                                             small {{zone}}: {{file.playlistDetails[zone]}}&nbsp;
                                             i.fa.fa-paperclip(ng-if="!file.playlistDetails[zone]")

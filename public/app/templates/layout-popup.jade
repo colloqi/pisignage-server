@@ -12,13 +12,20 @@
                 ul.list-group
                     li.list-group-item(ng-repeat="(ltype,item) in layouts",ng-class="{'list-group-item-success':playlist.selectedPlaylist.layout == ltype}")
                         .row
-                            .col-sm-10
+                            .col-sm-10.dropdown(dropdown)
                                 .radio
                                     label
                                         input(type="radio",value="{{ltype}}",ng-change="saveLayout()",
                                                     ng-disabled="item.disabled",ng-model="playlist.selectedPlaylist.layout")
                                         strong.text-primary {{ltype}}: &nbsp;{{item.title}}
                                         p: small ({{item.description}})
+                                button.btn.btn-sm.btn-link.dropdown-toggle(dropdown-toggle,ng-if="ltype.indexOf('custom') === 0")
+                                    small.text-muted layout file:&nbsp;
+                                    small {{playlist.selectedPlaylist.templateName || "Select a custom_layout*.html file from Assets"}}
+                                    i.fa.fa-caret-down
+                                ul.dropdown-menu(role="menu",ng-if="ltype.indexOf('custom') === 0")
+                                    li(ng-repeat="asset in asset.files | filter:customTemplates")
+                                        a(href="#",ng-click="selectTemplate(asset,ltype)") &nbsp;&nbsp;{{asset}}
                             .col-sm-2
                                 img(height="40px",ng-src="/app/img/{{ltype}}.png")
             tab(heading='Main Video Window')

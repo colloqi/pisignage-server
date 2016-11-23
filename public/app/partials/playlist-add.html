@@ -22,7 +22,7 @@
               <h6>{{file.fileDetails.name }}</h6>
             </div>
             <div class="col-sm-3">
-              <!--h6(ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) && file.fileDetails.duration > 0")strong {{file.fileDetails.duration}} seconds
+              <!--h6(ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) && file.fileDetails.duration > 0")<strong>{{file.fileDetails.duration}} seconds</strong>
               -->
               <!--input.form-control.input-sm(ng-if="file.playlistDetails && !file.playlistDetails.isVideo",-->
               <input type="number" ng-model="file.playlistDetails.duration" min="5" ng-model-options="{ updateOn: 'blur' }" ng-change="saveData()" class="form-control input-sm"/>
@@ -38,7 +38,7 @@
               </label>
             </div>
             <div class="col-sm-9"><small translate="translate" class="text-primary">Add other zone assets<span ng-repeat="zone in layoutOtherZones[asset.showAssets.playlist.layout]">
-                  <div class="btn-group">
+                  <div ng-if="!customZonesPresent || customZonesPresent[zone]" class="btn-group">
                     <button ng-click="linkFile(file.playlistDetails,zone)" class="btn btn-xs btn-info"><small>{{zone}}: {{file.playlistDetails[zone]}}&nbsp;</small><i ng-if="!file.playlistDetails[zone]" class="fa fa-paperclip"></i></button>
                     <button ng-if="file.playlistDetails[zone]" ng-click="removeLinkFile(file,zone)" class="btn btn-xs btn-warning">X</button>
                   </div></span></small>
@@ -52,7 +52,6 @@
               <!--        span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}-->
               <!--    button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",-->
               <!--                        ng-click="removeLinkFile(file,'bottom')") X-->
-              
             </div>
           </div>
         </div>

@@ -8,7 +8,13 @@
                     .btn-group
                         a.btn.btn-default.btn-sm(ng-click='groupTicker()'): em.text-danger Set Group Ticker
                         a.btn.btn-default.btn-sm(ng-click='displaySet()'): em.text-danger Set Display Mode
+                    .btn-group
                         a.btn.btn-success.btn-sm(ng-disabled="!group.selectedGroup.playlists.length",ng-click='deploy()') Deploy to {{group.selectedGroup.name}}
+                        &nbsp;
+                        .checkbox-inline
+                            label
+                                input(type="checkbox",ng-model="group.loadPlaylistOnCompletion")
+                                small.text-info(translate) Change at the end<br> of current cycle
                     .btn-group
                         a.btn.btn-warning.btn-sm.pull-right(ng-click="closeWindow()") Close
     .panel-body
@@ -34,7 +40,7 @@
                         i.fa.fa-lg.fa-plus add
                     span.text-info(ng-show="showMaxErr") &nbsp&nbsp {{'Maximum allowed Playlist Schedules (20)'}}
 
-            .row.form-group(ng-repeat='pl in group.selectedGroup.playlists' ng-if="$index > 0",as-sortable-item)
+            .row.form-group(ng-repeat='pl in group.selectedGroup.playlists', ng-if="$index > 0",as-sortable-item)
                 .col-sm-1.text-right(as-sortable-item-handle)
                     h6   {{$index+'.'}}
                 .col-sm-4

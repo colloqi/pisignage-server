@@ -34,6 +34,8 @@ var PlayerSchema = new Schema({
     registered:             {type: Boolean, default: false},
     serverServiceDisabled:  {type: Boolean, default: false},
 
+    labels:                 [],
+
     createdAt:              {type: Date, default: Date.now},
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String},
     licensed:               {type: Boolean, default: false},

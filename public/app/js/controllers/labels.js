@@ -1,9 +1,25 @@
 'use strict';
 
 angular.module('piLabels.controllers', [])
-    .controller('LabelsCtrl', function ($scope, $http,$location,piUrls, assetLoader,piPopup) {
+    .controller('LabelsCtrl', function ($scope,$state, $http,$location,piUrls, assetLoader,piPopup) {
 
         $scope.label = assetLoader.label;
+
+        //var options = {}
+        if ($state.current.data && $state.current.data.labelMode)
+            $scope.labelMode = $state.current.data.labelMode;
+
+        // if ($scope.labelMode == "players")  {
+        //     options = {params: {mode: "players"}}
+        // }
+
+        $scope.modeFilter = function(label) {
+            if ($scope.labelMode == "players")
+                return (label.mode && label.mode === "players")
+            else
+                return (!label.mode || label.mode !== "players")
+        }
+
 
         $scope.fn = {};
         $scope.fn.editMode = false;
@@ -24,6 +40,9 @@ angular.module('piLabels.controllers', [])
                     return;
                 }
             }
+            if ($scope.labelMode == "players")
+                $scope.newLabel.mode = $scope.labelMode;
+
 
             $http
                 .post(piUrls.labels, $scope.newLabel)
@@ -53,11 +72,12 @@ angular.module('piLabels.controllers', [])
                 })
             } else {
                 $scope.fn.selected(label.name)
+                if ($scope.labelModal) $scope.labelModal.close()
             }
         }
         
         $scope.fn.getClass = function(label) {
-            if ($scope.label.selectedLabel == label) {
+            if ($scope.label.selectedLabel == label || $scope.label.selectedPlayerLabel == label) {
                 return "bg-info"
             } else {
                 return ""
@@ -65,8 +85,13 @@ angular.module('piLabels.controllers', [])
         }
         
         $scope.fn.selected= function(label){
-            if(!$scope.fn.editMode)
-                assetLoader.selectLabel(($scope.label.selectedLabel==label) ? null: label);
+            if(!$scope.fn.editMode) {
+                if ($scope.labelMode == "players")
+                    assetLoader.selectPlayerLabel(($scope.label.selectedPlayerLabel == label) ? null : label);
+                else
+                    assetLoader.selectLabel(($scope.label.selectedLabel == label) ? null : label);
+            }
+            if ($scope.labelModal) $scope.labelModal.close()
         }
 
 })

@@ -124,8 +124,12 @@ var sendConfig = function (player, group, periodic) {
     retObj.name = player.name;
     retObj.resolution = group.resolution || '720p';
     retObj.orientation = group.orientation || 'landscape';
-    //retObj.animationEnable =  group.animationEnable || false;
-    retObj.animationEnable = false;
+    retObj.animationType =  group.animationType || "right";
+    if (!player.version || parseInt(player.version.replace(/\D/g,"")) < 180)
+        retObj.animationEnable =  false;
+    else
+        retObj.animationEnable =  group.animationEnable || false;
+    retObj.resizeAssets = group.resizeAssets || false;
     retObj.sleep = group.sleep || {enable: false, ontime: null , offtime: null };
     retObj.signageBackgroundColor =  group.signageBackgroundColor || "#000";
     retObj.omxVolume = group.omxVolume || 100;
@@ -134,6 +138,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.logoy =  group.logoy;
     retObj.combineDefaultPlaylist = group.combineDefaultPlaylist || false;
     retObj.urlReloadDisable =  group.urlReloadDisable || false;
+    retObj.loadPlaylistOnCompletion =  group.loadPlaylistOnCompletion || false;
     //if (!pipkgjson)
         //pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
     retObj.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version};
@@ -144,8 +149,8 @@ var sendConfig = function (player, group, periodic) {
     if (periodic) {
     }
 
+    retObj.systemMessagesHide = settings.systemMessagesHide;
     retObj.authCredentials = settings.authCredentials;
-    retObj.assetLogEnable = settings.assetLogEnable;
     retObj.currentTime = Date.now();
     socketio.emitMessage(player.socket, 'config', retObj);
 }
@@ -154,10 +159,10 @@ var sendConfig = function (player, group, periodic) {
 exports.loadObject = function (req, res, next, id) {
 
     Player.load(id, function (err, object) {
-        if (err)
-            return next(err)
-        if (!object)
-            return next(new Error('not found'))
+        if (err || !object)
+            return rest.sendError(res,'Unable to get group details',err);
+
+
         req.object = object;
         next();
     })
@@ -176,6 +181,15 @@ exports.index = function (req, res) {
     if (req.query['string']) {
         var str = new RegExp(req.query['string'], "i")
         criteria['name'] = str;
+    }
+
+
+    if (req.param('location')) {
+        criteria['$or'] = [ {'location':req.param('location')}, {'configLocation':req.param('location')} ];
+    }
+
+    if (req.param('label')) {
+        criteria['labels'] = req.param('label');
     }
 
     var page = req.query['page'] > 0 ? req.query['page'] : 0
@@ -269,7 +283,7 @@ exports.updateObject = function (req, res) {
                 _id: object.selfGroupId
             }
 
-            if (req.body.group && req.body.group._id) {
+            if (!req.body.group || (req.body.group && req.body.group._id)){
                 next()
             } else if (playerGroup._id){
                 req.body.group = playerGroup

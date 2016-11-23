@@ -1,13 +1,29 @@
 
 <div class="panel panel-info">
   <div class="panel-heading">
-    <h3 class="panel-title">Reported Players</h3>
+    <div class="row">
+      <div class="col-sm-3">
+        <h3 class="panel-title">Reported Players</h3>
+      </div>
+      <div class="col-sm-2"><span ng-attr-title="Click this button to select, edit and add labels" class="btn-group">
+          <button ng-click="loadCategory()" class="btn btn-info btn-sm"><i class="fa fa-tags">&nbsp;</i><span>{{label.selectedPlayerLabel.trunc(10) || "Labels"}}</span></button>
+          <button ng-show="label.selectedPlayerLabel" ng-click="clearCategory()" class="btn btn-info btn-sm"><i class="fa fa-close"></i></button></span></div>
+    </div>
   </div>
   <ul class="list-group">
-    <li ng-repeat="item in player.players | filter:search | orderBy:&quot;lastReported&quot;:true" class="list-group-item">
+    <li ng-repeat="item in player.players | filter:labelFilter | filter:search | orderBy:&quot;lastReported&quot;:true" class="list-group-item">
       <div class="row">
-        <div ng-click="shellCommand(item)" class="col-sm-4">
-          <h6 class="text-primary truncate"> {{item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}</h6>
+        <div class="col-sm-4">
+          <!--h6.text-primary.truncate  {{item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}--><a href="#">
+            <h6 ng-show="!nameEdit" ng-class="item.licensed ? 'text-primary': 'text-warning'" class="truncate"><span ng-click="nameEdit=true;">{{item.name || item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}</span>
+              <button ng-click="shellCommand(item)" class="btn btn-link btn-xs pull-right"><i class="fa fa-lg fa-terminal fa-border bg-info"></i></button>
+            </h6></a>
+          <div ng-show="nameEdit" class="input-group">
+            <input type="text" ng-model="item.name" class="input-sm form-control"/>
+            <div class="input-group-btn">
+              <button ng-click="saveName(item);nameEdit=false;" class="btn btn-sm btn-success"><i class="fa fa fa-check"></i></button>
+            </div>
+          </div>
         </div>
         <div class="col-sm-3">
           <div class="row">
@@ -20,13 +36,12 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-3"><i ng-class="item.statusClass" title="{{item.isConnected?(item.playlistOn?'online &amp; playing, tv-on:'+item.tvStatus:'online &amp; not playing, tv-on:'+item.tvStatus):'offline'}}" class="fa fa-circle fa-lg"></i><span class="text-primary">&nbsp;{{item.currentPlaylist}}</span></div>
+        <div class="col-sm-3"><i ng-class="item.statusClass" title="{{item.isConnected?(item.playlistOn?'online &amp; playing, tv-on:'+item.tvStatus:'online &amp; not playing, tv-on:'+item.tvStatus):'offline'}}" class="fa fa-circle fa-lg"></i><small class="text-primary">&nbsp;{{item.currentPlaylist}}</small></div>
         <!--.col-sm-2
-        select.form-control.select-xs(ng-model="item.group.name",ng-change="assignGroup(item)",
-                                                            ng-options="gr for gr in group.groupNames")
+        <select ng-model="item.group.name" ng-change="assignGroup(item)" ng-options="gr for gr in group.groupNames" class="form-control select-xs"></select>
         -->
-        <div class="col-sm-2">
-          <button ng-click="loadPlayerDetails(item)" class="btn btn-xs btn-info">{{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}</button>
+        <div class="col-sm-2"><small class="text-primary"> {{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}</small>
+          <button ng-click="loadPlayerDetails(item)" class="btn btn-default btn-xs pull-right"><i class="fa fa-cog fa-lg text-warning"></i></button>
         </div>
       </div>
       <div class="row">

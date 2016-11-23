@@ -43,6 +43,7 @@ angular.module('piAssets.services', [])
             label : {
                 labels: [],
                 selectedLabel: null,
+                selectedPlayerLabel: null,
                 labelsCount: {}
             },
 
@@ -56,7 +57,8 @@ angular.module('piAssets.services', [])
 
             updateLabelsCount: function() {
                 Object.keys(assetLoader.label.labelsCount).forEach(function (item) {
-                    assetLoader.label.labelsCount[item] = 0;
+                    if (!item.mode || item.mode !== "players")
+                        assetLoader.label.labelsCount[item] = 0;
                 });
                 for (var filename in assetLoader.asset.filesDetails) {
                     assetLoader.asset.filesDetails[filename].labels.forEach(function (item) {
@@ -67,6 +69,10 @@ angular.module('piAssets.services', [])
 
             selectLabel: function(label) {
                 assetLoader.label.selectedLabel = label;
+                notifyObservers();
+            },
+            selectPlayerLabel: function(label) {
+                assetLoader.label.selectedPlayerLabel = label;
                 notifyObservers();
             },
             selectPlaylist: function(playlist) {
@@ -187,6 +193,7 @@ angular.module('piAssets.services', [])
                     }
                 ], function (err) {
                     assetLoader.label.selectedLabel = null;
+                    assetLoader.label.selectedPlayerLabel = null;
                     assetLoader.playlist.selectedPlaylist = null;
                     assemblePlaylistAssets();
                 }

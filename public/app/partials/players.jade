@@ -1,12 +1,33 @@
 .panel.panel-info
     .panel-heading
-        h3.panel-title Reported Players
+        .row
+            .col-sm-3
+                h3.panel-title Reported Players
+            .col-sm-2
+                span.btn-group(ng-attr-title="Click this button to select, edit and add labels")
+                    button.btn.btn-info.btn-sm(ng-click="loadCategory()")
+                        i.fa.fa-tags &nbsp;
+                        span {{label.selectedPlayerLabel.trunc(10) || "Labels"}}
+                    button.btn.btn-info.btn-sm(ng-show="label.selectedPlayerLabel",ng-click="clearCategory()")
+                        i.fa.fa-close
+
     ul.list-group
 
-        li.list-group-item(ng-repeat='item in player.players | filter:search | orderBy:"lastReported":true')
+        li.list-group-item(ng-repeat='item in player.players | filter:labelFilter | filter:search | orderBy:"lastReported":true')
             .row
-                .col-sm-4(ng-click='shellCommand(item)')
-                    h6.text-primary.truncate  {{item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}
+                .col-sm-4
+                    //h6.text-primary.truncate  {{item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}
+                    a(href="#")
+                        h6.truncate(ng-show="!nameEdit",ng-class="item.licensed ? 'text-primary': 'text-warning'")
+                            span(ng-click="nameEdit=true;")
+                                | {{item.name || item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}
+                            button.btn.btn-link.btn-xs.pull-right(ng-click='shellCommand(item)')
+                                i.fa.fa-lg.fa-terminal.fa-border.bg-info
+                    .input-group(ng-show="nameEdit")
+                        input.input-sm.form-control(type="text",ng-model="item.name")
+                        .input-group-btn
+                            button.btn.btn-sm.btn-success(ng-click="saveName(item);nameEdit=false;"): i.fa.fa.fa-check
+
                 .col-sm-3
                     .row
                         .col-sm-6(style="padding-right:3px;", popover-placement = "right",
@@ -19,13 +40,15 @@
                 .col-sm-3
                     i.fa.fa-circle.fa-lg(ng-class="item.statusClass",
                         title="{{item.isConnected?(item.playlistOn?'online & playing, tv-on:'+item.tvStatus:'online & not playing, tv-on:'+item.tvStatus):'offline'}}")
-                    span.text-primary &nbsp;{{item.currentPlaylist}}
+                    small.text-primary &nbsp;{{item.currentPlaylist}}
                 //.col-sm-2
                     select.form-control.select-xs(ng-model="item.group.name",ng-change="assignGroup(item)",
                                                                         ng-options="gr for gr in group.groupNames")
                 .col-sm-2
-                    button.btn.btn-xs.btn-info(ng-click="loadPlayerDetails(item)")
-                        | {{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}
+                    small.text-primary  {{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}
+                    button.btn.btn-default.btn-xs.pull-right(ng-click="loadPlayerDetails(item)")
+                        i.fa.fa-cog.fa-lg.text-warning
+
             .row
                 .col-sm-4
                     h6.text-primary: small {{item.cpuSerialNumber}}
@@ -41,5 +64,7 @@
                     h6.text-primary.truncate: small ver:&nbsp;{{item.version}}/{{item.platform_version}}&nbsp;
                         button.btn.btn-warning.btn-xs(ng-if="item.version != player.currentVersion.version",ng-click="swUpdate(item)")
                             i.fa.fa-arrow-circle-up
+
+
 
 

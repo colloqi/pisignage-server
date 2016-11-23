@@ -146,7 +146,8 @@ exports.deploy = function (installation,group, cb) {
             players[group._id.toString()].forEach(function (player) {
                 socketio.emitMessage(player.socket, 'sync',
                     group.playlists, group.assets, group.deployedTicker,
-                    group.logo, group.logox, group.logoy,group.combineDefaultPlaylist,group.omxVolume);
+                    group.logo, group.logox, group.logoy,group.combineDefaultPlaylist,group.omxVolume,
+                    group.loadPlaylistOnCompletion);
             });
             console.log("sending sync event to players");
             cb(null, group);

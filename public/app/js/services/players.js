@@ -5,7 +5,7 @@
  */
 
 angular.module('piPlayers.services', [])
-    .factory('playerLoader', function ($http,piUrls,$state) {
+    .factory('playerLoader', function ($http,piUrls,$state,assetLoader) {
         var observerCallbacks = {};
         var notifyObservers = function(){
             angular.forEach(observerCallbacks, function(callback){
@@ -16,9 +16,17 @@ angular.module('piPlayers.services', [])
         var getPlayers = function(cb) {
             if (typeof cb !== 'function')
                 cb = angular.noop;
-            var options;
+            var options = {params: {}};
             if (playerLoader.group.selectedGroup)
-                options = {params: {group: playerLoader.group.selectedGroup._id}}
+                options.params['group'] = playerLoader.group.selectedGroup._id
+            if (assetLoader.label.selectedPlayerLabel)
+                options.params['label'] = assetLoader.label.selectedPlayerLabel
+
+            Object.keys(assetLoader.label.labelsCount).forEach(function (item) {
+                if (item.mode && item.mode === "players")
+                    assetLoader.label.labelsCount[item] = 0;
+            });
+
             $http.get(piUrls.players, options)
                 .success(function (data, status) {
                     if (data.success) {
@@ -33,6 +41,9 @@ angular.module('piPlayers.services', [])
                                 player.statusClass = "text-success"
                             if (!player.lastReported)
                                 player.lastReported = 0;    //never reported
+                            player.labels.forEach(function (item) {
+                                assetLoader.label.labelsCount[item] = (assetLoader.label.labelsCount[item] || 0) + 1;
+                            })
                         });
                     }
                     cb(!data.success);

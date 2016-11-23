@@ -208,11 +208,12 @@ directive('categories',['$http','piUrls', function($http,piUrls) {
         },
         restrict: 'E',
         replace: 'true',
-        template:   '<form><label ng-repeat="category in cat.categories" class="checkbox-inline">' +
+        template:   '<form><div class="row"><div ng-repeat="category in cat.categories" class="col-sm-3">'+
+                        '<label class="checkbox-inline">' +
                         '<input type="checkbox" value="{{category.name}}"'+
                                 'ng-checked="selectedLabels.indexOf(category.name) &gt; -1"'+
                                 'ng-click="cat.toggleSelection(category.name)"/>{{category.name}}' +
-                    '</label></form>',
+                    '</label></div></div></form>',
         link: function(scope, elem, attr){
             scope.cat = {}   //holds all the category related objects
             $http.get(piUrls.labels,{})

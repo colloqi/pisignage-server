@@ -88,6 +88,7 @@ angular.module('piAssets.controllers',[])
     controller('AssetsEditCtrl', function($scope,$rootScope,$state, $http,$modal, fileUploader, assetLoader,piUrls,piPopup){
 
         $scope.sortListName = "assets"
+        $scope.label = assetLoader.label
 
         $scope.assetConfig = {
             allAssets: false,
@@ -442,6 +443,15 @@ angular.module('piAssets.controllers',[])
                 $scope.ngDropdown.label.selectedLabels = [];
                 $scope.ngDropdown.playlist.selectedPlaylists = [];
             }
+        }
+
+        $scope.loadCategory = function(){
+            $scope.labelMode = "assets"
+            $scope.labelModal = $modal.open({
+                templateUrl: '/app/partials/labels.html',
+                controller: 'LabelsCtrl',
+                scope: $scope
+            })
         }
 
         $scope.$on("$destroy", function() {

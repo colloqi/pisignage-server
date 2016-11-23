@@ -33,6 +33,10 @@ exports.newGroup = function (group, cb) {
             object = _.extend(data, group);
         }
         //create a sync folder under sync_folder
+        if (!object.name) {
+            console.log("can not be null: "+object.name);
+            return cb('Unable to create a group folder in server: '+object.name);
+        }
         fs.mkdir(path.join(config.syncDir,installation, object.name),function(err){
             if (err && (err.code != 'EEXIST'))
                 return cb('Unable to create a group folder in server: '+err);
@@ -49,10 +53,9 @@ exports.newGroup = function (group, cb) {
 exports.loadObject = function (req, res, next, id) {
 
     Group.load(id, function (err, object) {
-        if (err)
-            return next(err)
-        if (!object)
-            return next(new Error('not found'))
+        if (err || !object)
+            return rest.sendError(res,'Unable to get group details',err);
+
         req.object = object;
         next();
     })
@@ -85,7 +88,7 @@ exports.index = function (req, res) {
         if (err)
             return rest.sendError(res, 'Unable to get Group list', err);
         else
-            return rest.sendSuccess(res, 'sending Group list', groups);
+            return rest.sendSuccess(res, 'sending Group list', groups || []);
     })
 }
 
@@ -147,7 +150,7 @@ exports.updateObject = function (req, res) {
     }
 
     //disable animation for the timebeing
-    object.animationEnable = false;
+    //object.animationEnable = false;
     object.save(function (err, data) {
         if (!err && req.body.deploy) {
             serverMain.deploy(installation,object, saveObject);
@@ -160,6 +163,8 @@ exports.updateObject = function (req, res) {
 
 
 exports.deleteObject = function (req, res) {
+    if (!req.object || req.object.name == "default")
+        return rest.sendError(res,'No group specified or can not remove default group');
 
     var object = req.object;
     object.remove(function (err) {

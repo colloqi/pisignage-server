@@ -30,23 +30,44 @@
                     label
                         input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="type.value")
                         small {{type.name}}
-        //.form-group.row
+        .form-group.row
             .col-sm-4.text-right
                 .radio
                     label.text-muted
                         span(translate) Animation
-                        //| <br>
-                        //span(translate) (only in pi 2)
-            .col-sm-4
+            .col-sm-2
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[0].value")
-                        small {{animations[0].name}}
-            .col-sm-4
+                        input(type="radio",ng-model="group.selectedGroup.animationEnable",
+                                    ng-change='group.selectedGroup.animationType = null;',ng-value="false")
+                        small(translate) Disable
                 .radio
                     label
-                        input(disabled,type="radio",ng-model="group.selectedGroup.animationEnable",ng-value="animations[1].value")
-                        small {{animations[1].name}}
+                        input(type="radio",ng-model="group.selectedGroup.animationType",
+                                    ng-change='group.selectedGroup.animationEnable = true;',value="fade")
+                        small(translate) Fade
+            .col-sm-3
+                .radio
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.animationType",
+                                    ng-change='group.selectedGroup.animationEnable = true;',value="right")
+                        small(translate) Slide right
+                .radio
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.animationType",
+                                    ng-change='group.selectedGroup.animationEnable = true;',value="left")
+                        small(translate) Slide left
+            .col-sm-3
+                .radio
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.animationType",
+                                    ng-change='group.selectedGroup.animationEnable = true;',value="up")
+                        small(translate) Slide up
+                .radio
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.animationType",
+                                    ng-change='group.selectedGroup.animationEnable = true;',value="down")
+                        small(translate) Slide down
         .form-group.row
             .col-xs-4.text-right
                 .radio
@@ -78,12 +99,25 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        span Do not Reload URL for links every time
+                        span Stretch images to the screen
+            .col-sm-2
+                .checkbox
+                    label
+                        input(type='checkbox',name='resize_image', ng-model='group.selectedGroup.resizeAssets')
+                        span(translate) Enable
+            .col-sm-2.text-right
+            //    .radio
+            //        label.text-muted
             .col-sm-4
                 .checkbox
                     label
-                        input(type='checkbox',name='reload_checkbox', ng-model='group.selectedGroup.urlReloadDisable')
-                        span Enable
+                        input(type='checkbox',name='reload_checkbox', ng-model='group.selectedGroup.urlReloadDisable',
+                            ng-true-value="false",
+                            ng-false-value="true",
+                            ng-checked="group.selectedGroup.urlReloadDisable !== true"
+                        )
+                        //span(translate) Enable
+                        small(translate) Reload link URLs each time<br>(appends ?ts in chromeapp)
 
         .form-group.row
             .col-sm-4.text-right

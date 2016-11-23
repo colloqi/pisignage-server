@@ -3,7 +3,14 @@
         .row
             .col-sm-2
                 h3.panel-title {{assetConfig.assets.assets.length}} Files in&nbsp;{{!assetConfig.allAssets && playlist.selectedPlaylist.name || "total"}}
-            .col-sm-4
+            .col-sm-2
+                span.btn-group(ng-attr-title="Click this button to select, edit and add labels")
+                    button.btn.btn-info.btn-sm(ng-click="loadCategory()")
+                        i.fa.fa-tags &nbsp;
+                        span {{label.selectedLabel.trunc(10) || "Labels"}}
+                    button.btn.btn-info.btn-sm(ng-show="label.selectedLabel",ng-click="label.selectedLabel=null;")
+                        i.fa.fa-close
+            .col-sm-2
                 form
                     input.form-control(type="text",placeholder="filter",ng-model="search.$")
             .col-sm-3.dropdown(dropdown,ng-if="!assetConfig.allAssets")
@@ -98,3 +105,4 @@
                 .col-xs-2
                     button.btn.btn-danger.pull-right(ng-click='fn.delete($index)')
                         i.fa.fa-times.fa-lg
+

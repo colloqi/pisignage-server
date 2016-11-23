@@ -71,8 +71,8 @@ exports.createFiles = function (req, res) {
             if (err) {
                 next(err);
             } else {
-                if((filename).match('custom_layout.html')){
-                    fileUtil.modifyHTML(config.mediaDir)
+                if((filename).match(/^custom_layout.*html$/i)){
+                    fileUtil.modifyHTML(config.mediaDir,filename)
                 }
                 data.push({
                     name: filename,

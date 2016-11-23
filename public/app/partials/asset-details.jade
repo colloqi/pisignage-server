@@ -7,13 +7,15 @@
         video.img-responsive.img-rounded(ng-if='filedetails.type=="video"', controls, ng-src='{{ filedetails.path }}')
         audio(ng-if='filedetails.type=="audio"',controls)
             source(ng-src='{{filedetails.path}}',type="audio/mpeg")
-        iframe(ng-if='filedetails.type=="html"' ng-src='{{ filedetails.path }}')
+        iframe(ng-if='filedetails.type=="html"', ng-src='{{ filedetails.path }}')
         div(ng-if='fileType=="link"')
             .row
                 .col-xs-2.col-xs-offset-1
                     h4.text-muted Address
                 .col-xs-8
                     h4 {{urlLink.link}}
+                        a.btn.btn-link(ng-disabled='!urlLink.link',href="{{urlLink.link}}",target="_blank")
+                            i.fa.fa-external-link
             .row
                 .col-xs-2.col-xs-offset-1
                     h4.text-muted Type
@@ -50,5 +52,6 @@
                 categories(selected-labels="selectedLabels")
             .col-sm-2.pull-right
                 button.btn.btn-success.pull-right(ng-click='save()') DONE
+
 
 

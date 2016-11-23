@@ -182,6 +182,9 @@ angular.module('piGroups.controllers', [])
                         $scope.group.selectedGroup.assets.push('__' + playlist.name + '.json');
                     if($scope.group.selectedGroup.logo && $scope.group.selectedGroup.assets.indexOf($scope.group.selectedGroup.logo) == -1)
                         $scope.group.selectedGroup.assets.push($scope.group.selectedGroup.logo);
+                    if($scope.group.selectedGroup.playlists[i].templateName &&
+                                    ($scope.group.selectedGroup.assets.indexOf($scope.group.selectedGroup.playlists[i].templateName) == -1))
+                        $scope.group.selectedGroup.assets.push($scope.group.selectedGroup.playlists[i].templateName)
                     $scope.group.selectedGroup.playlists[i].settings = $scope.group.selectedGroup.playlists[i].settings || {}
                     $scope.group.selectedGroup.playlists[i].settings.ads = playlist.settings.ads
                     if(playlist.name != 'TV_OFF') {
@@ -248,7 +251,7 @@ angular.module('piGroups.controllers', [])
             for (var i=1,len=$scope.group.selectedGroup.playlists.length;i<len;i++) {
                 var playlist = $scope.group.selectedGroup.playlists[i]
                 if (!playlist.settings || !playlist.settings.weekdays || playlist.settings.weekdays.length >= 7)
-                    $scope.weekDaysText[i] = "All days"
+                    $scope.weekDaysText[i] = ""
                 else if (playlist.settings.weekdays.length > 0) {
                     $scope.weekDaysText[i] = "week days: "
                     playlist.settings.weekdays.forEach(function (day) {
@@ -259,7 +262,7 @@ angular.module('piGroups.controllers', [])
                     $scope.weekDaysText[i] = "Not Scheduled"
                 }
                 if (!playlist.settings || !playlist.settings.monthdays || playlist.settings.monthdays.length >= 31)
-                    $scope.monthDaysText[i] = "All dates"
+                    $scope.monthDaysText[i] = ""
                 else if (playlist.settings.monthdays.length > 0) {
                     $scope.monthDaysText[i] = "dates: "
                     playlist.settings.monthdays.forEach(function (day) {
@@ -363,7 +366,8 @@ angular.module('piGroups.controllers', [])
                     },
                     displayProp: 'label', idProp: 'id', externalIdProp: 'id',
                     //scrollableHeight: '200px', scrollable: true,
-                    showCheckAll: true, showUncheckAll: true
+                    showCheckAll: true, showUncheckAll: true,
+                    buttonClasses: "btn btn-default group-multiselect"
                 },
                 customTexts: {buttonDefaultText: "Select Days"},
                 events: {
@@ -392,7 +396,8 @@ angular.module('piGroups.controllers', [])
                     smartButtonMaxItems:7,
                     displayProp: 'label', idProp: 'id', externalIdProp: 'id',
                     //scrollableHeight: '200px', scrollable: true,
-                    showCheckAll: true, showUncheckAll: true
+                    showCheckAll: true, showUncheckAll: true,
+                    buttonClasses: "btn btn-default group-multiselect"
                 },
                 customTexts: {buttonDefaultText: "Select Days"},
                 events: {
@@ -432,11 +437,6 @@ angular.module('piGroups.controllers', [])
                 {value: 'landscape', name: "Landscape Mode"},
                 {value: 'portrait', name: "Portrait Right (Hardware)"},
                 {value: 'portrait270', name: "Portrait Left (Hardware)"}
-            ];
-
-            $scope.animations = [
-                {value: false, name: 'Disable Animation'},
-                {value: true, name: 'Enable Animation'}
             ];
 
             $scope.scheduleCalendar = function (playlist) {
@@ -558,7 +558,8 @@ angular.module('piGroups.controllers', [])
 
     })
 
-    .controller('ServerPlayerCtrl', function($scope,$http,$state,piUrls,$interval,$modal,TZNames, playerLoader,commands) {
+    .controller('ServerPlayerCtrl', function($scope,$http,$state,piUrls,$interval,$modal,TZNames,
+                                             playerLoader,assetLoader,commands,piPopup) {
         
         playerLoader.reload();
         
@@ -567,20 +568,27 @@ angular.module('piGroups.controllers', [])
         $scope.playlist = playerLoader.playlist;
         $scope.tzNames = TZNames;
 
-        $scope.assignGroup = function(player) {
-            if (player.group.name) {
-                player.group = $scope.group.groups[$scope.group.groupNames.indexOf(player.group.name)];
-                $http.post(piUrls.players+player._id,{group:player.group})
-                    .success(function(data, status) {
-                        if (data.success) {
-                            player = data.data;
-                        }
-                    })
-                    .error(function(data, status) {
-                    });
-            }
+        $scope.labelFilter = function(player){
+            return (assetLoader.label.selectedPlayerLabel?
+                    (player.labels && player.labels.indexOf(assetLoader.label.selectedPlayerLabel) >= 0):
+                    true
+            )
         }
 
+        // $scope.assignGroup = function(player) {
+        //     if (player.group.name) {
+        //         player.group = $scope.group.groups[$scope.group.groupNames.indexOf(player.group.name)];
+        //         $http.post(piUrls.players+player._id,{group:player.group})
+        //             .success(function(data, status) {
+        //                 if (data.success) {
+        //                     player = data.data;
+        //                 }
+        //             })
+        //             .error(function(data, status) {
+        //             });
+        //     }
+        // }
+        //
         $scope.changeTZ = function(player) {
             $http.post(piUrls.players+player._id,{TZ:player.TZ})
                 .success(function(data, status) {
@@ -591,6 +599,18 @@ angular.module('piGroups.controllers', [])
                 .error(function(data, status) {
                 });
         }
+
+        $scope.saveName = function(player) {
+            $http.post(piUrls.players+player._id,{name:player.name})
+                .success(function(data, status) {
+                    if (data.success) {
+                        player = data.data;
+                    }
+                })
+                .error(function(data, status) {
+                });
+        }
+
 
         $scope.snapshot = {
             image: "/app/img/snapshot.png",
@@ -678,11 +698,22 @@ angular.module('piGroups.controllers', [])
                 });
         }
 
-
-        $scope.loadPlayerDetails = function(player) {
-            $state.go("home.players.players_details",{player:player._id,group: player.group._id})
+        $scope.label = assetLoader.label
+        $scope.loadCategory = function(){
+            $scope.labelMode = "players"
+            $scope.labelModal = $modal.open({
+                templateUrl: '/app/partials/labels.html',
+                controller: 'LabelsCtrl',
+                scope: $scope
+            })
+            $scope.labelModal.result.finally(function(){
+                playerLoader.getPlayers()
+            })
         }
-
+        $scope.clearCategory = function() {
+            $scope.label.selectedPlayerLabel=null;
+            playerLoader.getPlayers();
+        }
 
         $scope.getOldEntry = function(event){ // handle every key-press event to check and  save commands
             if(event.keyCode == 38)
@@ -691,10 +722,100 @@ angular.module('piGroups.controllers', [])
                 $scope.msg.cmd = commands.next();
         }
 
+        $scope.loadPlayerDetails = function(player) {
+            //$state.go("home.players.players_details",{player:player._id,group: player.group._id})
+            if(!player._id)
+                return;
 
-        $interval(playerLoader.getPlayers,60000);
+            $scope.selectedPlayer = player;
+            $scope.selectedGroup = $scope.selectedPlayer.group.name;
+
+            $scope.selectedPlayer.labels = $scope.selectedPlayer.labels || []
+
+            $scope.settingsModal = $modal.open({
+                templateUrl: '/app/templates/groupChangePopUp.html',
+                scope: $scope
+            });
+
+            $scope.playerLabels = assetLoader.label.labels.filter(function(label){
+                return (label.mode && label.mode === "players")
+            });
+            $scope.playerLabels.forEach(function(label){
+                if ($scope.selectedPlayer.labels.indexOf(label.name) >=0)
+                    $scope.ngDropdown.selectedLabels.push(label)
+            })
+
+        }
+
+        $scope.assignGroup = function(newGroupName) {
+            var player = $scope.selectedPlayer;
+            var newGroup = newGroupName || "__player__";
+            $scope.selectedGroup = player.group && player.group.name;
+            piPopup.confirm("--Do you want to Change the Group of the Player to "+newGroup, function() {
+                var index =  $scope.group.groupNames.indexOf(newGroup);
+                if (index == -1) {
+                    player.group = {name: newGroup};
+                } else {
+                    player.group = $scope.group.groups[index];
+                }
+                // $scope.modal.close();
+                $http.post(piUrls.players+player._id,{group:player.group})
+                    .success(function(data, status) {
+                        if (data.success) {
+                            player = data.data;
+                            $scope.selectedGroup = player.group.name
+                            $scope.settingsModal.close()
+                            $state.go($state.current,null,{reload: true, location:true});
+                            //$location.path("/players/details/"+player._id).search({"group": player.group._id});
+                        }
+                    })
+                    .error(function(data, status) {
+                    });
+            })
+        }
+
+        var saveLabels = function() {
+            $http.post(piUrls.players+$scope.selectedPlayer._id,{labels:$scope.selectedPlayer.labels})
+                .success(function(data, status) {
+                    if (data.success) {
+                    }
+                })
+                .error(function(data, status) {
+                });
+        }
+
+        $scope.ngDropdown = {
+            selectedLabels: [],
+            extraSettings: {
+                smartButtonMaxItems: 7,
+                displayProp: 'name', idProp: 'name', externalIdProp: 'name',
+                //scrollableHeight: '400px', scrollable: true,
+                showCheckAll: false, showUncheckAll: false,
+                enableSearch: true
+            },
+            customTexts: {buttonDefaultText: "Select Categories"},
+            events: {
+                onItemSelect: function (label) {
+                    if (label)
+                        $scope.selectedPlayer.labels.push(label.name)
+                    saveLabels()
+                },
+                onItemDeselect: function (label) {
+                    if (label)
+                        $scope.selectedPlayer.labels.splice($scope.selectedPlayer.labels.indexOf(label.name),1)
+                    saveLabels()
+                }
+            }
+        }
+
+        $scope.playerFetchTimer =$interval(playerLoader.getPlayers,60000);
+
+        $scope.$on("$destroy", function(){
+            $interval.cancel($scope.playerFetchTimer)
+        });
     })
 
+/*
     .controller('PlayerDetailCtrl', function($scope,$http,$state,$stateParams,piUrls,$interval,$modal, playerLoader, piPopup) {
 
         playerLoader.reload();
@@ -736,8 +857,21 @@ angular.module('piGroups.controllers', [])
             })
         }
 
+        var saveLabels = function() {
+            $http.post(piUrls.players+$scope.player._id,{labels:$scope.player.labels})
+                .success(function(data, status) {
+                    if (data.success) {
+                    }
+                })
+                .error(function(data, status) {
+                });
+        }
+
+
+
 
     })
+*/
 
 
 

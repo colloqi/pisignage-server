@@ -3,6 +3,7 @@ html {
 }
 
 body {
+    max-width: 1280px;
     margin: auto;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
     height:100%;
@@ -49,5 +50,26 @@ body {
 .subtle-text {
     color: #b8b8b8 !important;
 }
+
+.categories {
+    max-height: 300px;
+    overflow: auto;
+}
+
+body .modal-body {
+    max-height: 700px;
+}
+
+.modal-content > .panel {
+    margin-bottom: 0px;
+}
+
+.group-multiselect {
+    width: 160px;
+    font-size: 12px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
 
 

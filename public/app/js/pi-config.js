@@ -41,9 +41,9 @@ angular.module('piConfig', [])
 
     .constant('piConstants', (function() {
         return {
-            videoRegex:     /(mp4|mov|m4v|avi|webm|wmv|flv|mkv)$/i,
+            videoRegex:     /(mp4|mov|m4v|avi|webm|wmv|flv|mkv|mpg|mpeg)$/i,
             audioRegex:     /(mp3)$/i,
-            imageRegex:     /(jpg|jpeg|png|gif)$/i,
+            imageRegex:     /(jpg|jpeg|png|gif|bmp)$/i,
             noticeRegex:    /\.html$/i,
             zipfileRegex:   /(.zip|.gz|.bz2)$/i,
             repofileRegex:          /\.repo$/i,

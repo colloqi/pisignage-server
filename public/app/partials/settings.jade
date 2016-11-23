@@ -45,6 +45,11 @@
                         input.form-control(type='text', name='duration', ng-model='settings.defaultDuration')
                     div.col-xs-2
                         button.btn.btn-success(type='submit', ng-click='saveSettings()')  Save
+                .form-group
+                    .checkbox
+                        label.col-xs-8.col-xs-offset-4
+                            input(type='checkbox',name='systemshow', ng-model='settings.systemMessagesHide', ng-click="saveSettings()")
+                            span(translate) Hide system messages on TV Screen (e.g. Download in Progress)
                 //.form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4

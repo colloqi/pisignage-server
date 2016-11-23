@@ -19,10 +19,12 @@ exports.processFile = function (filename, filesize, categories, cb) {
         ext = path.extname(filename),
         destName = path.basename(filename, ext) + '_c.mp4',
         destPath = path.join(assetDir, destName),
+        mediaSize = parseInt(filesize / 1000) + 'KB',
         type,
         duration,
         resolution,
-        thumbnail;
+        thumbnail,
+        random = Math.floor(Math.random() * 10000) + '_';
 
     async.series([
             function (task_cb) {
@@ -33,11 +35,11 @@ exports.processFile = function (filename, filesize, categories, cb) {
                             imageMagick(src)
                                 .autoOrient()
                                 .resize(64)
-                                .write(path.join(config.thumbnailDir, filename), function (err) {
+                                .write(path.join(config.thumbnailDir, random+filename), function (err) {
                                     console.log(' imageKick write done: ' + filename + ';error:' + err);
                                     if (err)
                                         errorMessages.push(err);
-                                    thumbnail = "/media/_thumbnails/" + filename;
+                                    thumbnail = "/media/_thumbnails/" + random+filename;
                                     img_cb();
                                 });
                         },
@@ -49,6 +51,13 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                         console.log("Image resize error for : "+src +"  "+err);
                                     img_cb();
                                 })
+                        },
+                        function (img_cb) {
+                            imageMagick(src).filesize(function(err,value){
+                                if (value)
+                                    mediaSize = value;
+                                img_cb();
+                            })
                         },
                         function (img_cb) {
                             imageMagick(src).size(function (err, value) {
@@ -67,18 +76,26 @@ exports.processFile = function (filename, filesize, categories, cb) {
                     async.series([
                         function (video_cb) {
                             probe(src, function (err, metadata) {
-                                console.dir(metadata);
+                                //console.dir(metadata);
                                 if (metadata && metadata.streams) {
                                     var vdoInfo = _.find(metadata.streams, {'codec_type': 'video'});
                                     var formatName;
                                     if (metadata.format)
                                         formatName = metadata.format.format_name;
-                                    if ((vdoInfo && vdoInfo.codec_name != 'h264') || (formatName.indexOf('mp4') == -1)) {
+                                    if ((vdoInfo && vdoInfo.codec_name != 'h264') ||
+                                        (formatName.indexOf('mp4') == -1) ||
+                                        (vdoInfo && vdoInfo.pix_fmt == 'yuv422p')
+                                    ) {
                                         new FFmpeg({source: src})
                                             .audioCodec('libfdk_aac')
                                             .videoCodec('libx264')
                                             .size('?x720')
                                             .toFormat('mp4')
+                                            .outputOptions([
+                                                '-profile:v high',
+                                                '-level 4.0',
+                                                '-pix_fmt yuv420p'
+                                            ])
                                             .on('error', function (err, stdout, stderr) {
                                                 console.log('Conversion Err: ' + err);
                                                 console.log("stdout: " + stdout);
@@ -110,6 +127,9 @@ exports.processFile = function (filename, filesize, categories, cb) {
                             probe(filePath, function (err, metadata) {
                                 if (metadata) {
                                     duration = metadata.format.duration;
+                                    if (metadata.format.size)
+                                        mediaSize = parseInt(metadata.format.size / 1000) + 'KB';
+
                                     var vdoInfo = _.find(metadata.streams, {'codec_type': 'video'});
                                     if (vdoInfo) {
                                         resolution = {
@@ -129,14 +149,14 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                     video_cb()
                                 })
                                 .on('end', function (filenames) {
-                                    thumbnail = "/media/_thumbnails/" + filename + '.png';
+                                    thumbnail = "/media/_thumbnails/" + random+filename + '.png';
                                     video_cb()
                                 })
                                 .takeScreenshots({
                                     size: '64x64',
                                     count: 1,
                                     timemarks: ['8'],
-                                    filename: filename + '.png'
+                                    filename: random+filename + '.png'
                                 }, config.thumbnailDir);
                         }
                     ], function () {
@@ -152,6 +172,8 @@ exports.processFile = function (filename, filesize, categories, cb) {
                             errorMessages.push(err.message);
                         } else {
                             duration = metadata.format.duration;
+                            if (metadata.format.size)
+                                mediaSize = parseInt(metadata.format.size / 1000) + 'KB';
                         }
                         task_cb();
                     })
@@ -169,7 +191,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                         type: type,
                         resolution: resolution,
                         duration: ~~duration,
-                        size: ~~(filesize / 1000) + ' KB',
+                        size: mediaSize,
                         labels: categories,
                         thumbnail: thumbnail,
                         createdAt: Date.now()
