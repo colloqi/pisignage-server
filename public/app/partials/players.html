@@ -36,11 +36,11 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-3"><i ng-class="item.statusClass" title="{{item.isConnected?(item.playlistOn?'online &amp; playing, tv-on:'+item.tvStatus:'online &amp; not playing, tv-on:'+item.tvStatus):'offline'}}" class="fa fa-circle fa-lg"></i><small class="text-primary">&nbsp;{{item.currentPlaylist}}</small></div>
+        <div class="col-sm-3"><i ng-class="item.statusClass" title="{{item.isConnected?(item.playlistOn?'online &amp; playing, tv-on:'+item.tvStatus:'online &amp; not playing, tv-on:'+item.tvStatus):'offline'}}" class="fa fa-circle fa-lg"></i><a ng-href="#" ng-click="gotoPlaylist(item.currentPlaylist)">&nbsp;{{item.currentPlaylist}}</a></div>
         <!--.col-sm-2
         <select ng-model="item.group.name" ng-change="assignGroup(item)" ng-options="gr for gr in group.groupNames" class="form-control select-xs"></select>
         -->
-        <div class="col-sm-2"><small class="text-primary"> {{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}</small>
+        <div class="col-sm-2"><a ng-href="/#/players/players?group={{item.group._id}}"><small class="text-primary"> {{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}</small></a>
           <button ng-click="loadPlayerDetails(item)" class="btn btn-default btn-xs pull-right"><i class="fa fa-cog fa-lg text-warning"></i></button>
         </div>
       </div>

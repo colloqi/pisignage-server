@@ -99,7 +99,7 @@ angular.module('piPlaylists.controllers', [])
         $scope.fn.selected = function (playlist) {
             if (!$scope.fn.editMode) {
                 assetLoader.selectPlaylist(($scope.playlist.selectedPlaylist &&
-                                                        ($scope.playlist.selectedPlaylist.name == playlist.name)) ? null : playlist);
+                            ($scope.playlist.selectedPlaylist.name == playlist.name)) ? null : playlist);
             } else {
                 playlist.renameEnable = true;
                 playlist.newname = playlist.name;

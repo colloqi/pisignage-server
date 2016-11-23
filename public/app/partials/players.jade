@@ -40,12 +40,13 @@
                 .col-sm-3
                     i.fa.fa-circle.fa-lg(ng-class="item.statusClass",
                         title="{{item.isConnected?(item.playlistOn?'online & playing, tv-on:'+item.tvStatus:'online & not playing, tv-on:'+item.tvStatus):'offline'}}")
-                    small.text-primary &nbsp;{{item.currentPlaylist}}
+                    a(ng-href="#",ng-click="gotoPlaylist(item.currentPlaylist)") &nbsp;{{item.currentPlaylist}}
                 //.col-sm-2
                     select.form-control.select-xs(ng-model="item.group.name",ng-change="assignGroup(item)",
                                                                         ng-options="gr for gr in group.groupNames")
                 .col-sm-2
-                    small.text-primary  {{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}
+                    a(ng-href='/#/players/players?group={{item.group._id}}')
+                        small.text-primary  {{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}
                     button.btn.btn-default.btn-xs.pull-right(ng-click="loadPlayerDetails(item)")
                         i.fa.fa-cog.fa-lg.text-warning
 

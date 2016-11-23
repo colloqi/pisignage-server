@@ -722,6 +722,14 @@ angular.module('piGroups.controllers', [])
                 $scope.msg.cmd = commands.next();
         }
 
+        $scope.gotoPlaylist = function(plname) {
+            var pl = assetLoader.playlist.playlists.find(function(item){
+                return (item.name == plname)
+            })
+            assetLoader.selectPlaylist(pl)
+            $state.go("home.assets.main");
+        }
+
         $scope.loadPlayerDetails = function(player) {
             //$state.go("home.players.players_details",{player:player._id,group: player.group._id})
             if(!player._id)
