@@ -97,7 +97,7 @@ module.exports = function (app) {
     }
 
     if (process.env.NODE_ENV == 'production') {
-        app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
+        app.use(favicon(path.join(config.root, 'public/app/img', 'favicon.ico')));
     };
 
     //app.use(auth.connect(digest));      //can specify specific routes for auth also

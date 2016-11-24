@@ -47,7 +47,7 @@ if (config.https) {
     };
     server = require('https').createServer(https_options, app);
 
-    require('http').createServer(app).listen(80);
+    //require('http').createServer(app).listen(80);
 }
 else {
     server = require('http').createServer(app);

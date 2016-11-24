@@ -7,6 +7,6 @@ module.exports = {
     mongo: {
         uri: process.env.MONGOLAB_URI ||
         process.env.MONGOHQ_URL ||
-        'mongodb://localhost/pisignage'
+        'mongodb://localhost/pisignage-server'
     }
 };
