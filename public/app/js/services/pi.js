@@ -143,7 +143,7 @@ angular.module('pisignage.services',[]).
             status: function (objString) {
                 return (
                     $modal.open({
-                        templateUrl: '/app/templates/statusPopup.html',
+                        templateUrl: '/app/templates/status-popup.html',
                         controller: ['$scope', '$modalInstance', 'msg', function ($scope, $modalInstance, msg) {
                             $scope.msg = msg;
                             $scope.cancel = function () {
