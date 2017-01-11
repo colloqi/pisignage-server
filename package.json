@@ -1,6 +1,6 @@
 {
   "name": "pisignage-server",
-  "version": "1.8.2",
+  "version": "1.8.5",
   "description": "Server to manage piSignage players in a LAN or Private Network.",
   "author": "colloqi <info@pisignage.com>",
   "engines": {
@@ -24,7 +24,7 @@
     "jade": "^1.9.2",
     "lodash": "^3.5.0",
     "method-override": "~2.3.2",
-    "mongoose": "^4.4.3",
+    "mongoose": "4.7.2",
     "morgan": "~1.5.2",
     "multer": "^1.0.1",
     "node-ffprobe": "^1.2.2",

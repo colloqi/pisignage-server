@@ -292,7 +292,8 @@ angular.module('piAssets.controllers',[])
 
         //Add link releated for uploading links
         $scope.link = {
-            types: [{name: 'YouTube or Streaming', ext: '.tv'},
+            types: [{name: 'Livestreaming or YouTube', ext: '.tv'},
+                {name: 'Streaming', ext: '.stream'},
                 {name: 'Web link (shown in iframe)', ext: '.link'},
                 {name: 'Web page (supports cross origin links)', ext: '.weblink'},
                 {name: 'Media RSS (needs v1.7.0) ', ext: '.mrss'}
@@ -486,6 +487,7 @@ angular.module('piAssets.controllers',[])
                 break;
             case 'link':
             case 'weblink':
+            case 'stream':
             case 'tv':
             case 'mrss':
                 $scope.fileType = 'link';

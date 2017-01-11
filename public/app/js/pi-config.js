@@ -48,8 +48,10 @@ angular.module('piConfig', [])
             zipfileRegex:   /(.zip|.gz|.bz2)$/i,
             repofileRegex:          /\.repo$/i,
             liveStreamRegex :       /\.tv$/i,
+            omxStreamRegex :        /\.stream$/i,
             linkURL:                /\.link$/i,
-            CORSLink:               /\.weblink$/i
+            CORSLink:               /\.weblink$/i,
+            mediaRss:               /\.mrss$/i
         }
     })())
 

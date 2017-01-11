@@ -26,3 +26,7 @@
 5. Player MAC address display on the server page    
 6. font download from Google for offline use    
 7. tooltips    
+
+**1.8.5**
+1. drag and drop of assets to upload
+2. 

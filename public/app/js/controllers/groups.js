@@ -736,7 +736,7 @@ angular.module('piGroups.controllers', [])
                 return;
 
             $scope.selectedPlayer = player;
-            $scope.selectedGroup = $scope.selectedPlayer.group.name;
+            $scope.selectedGroup = $scope.selectedPlayer.group && $scope.selectedPlayer.group.name;
 
             $scope.selectedPlayer.labels = $scope.selectedPlayer.labels || []
 

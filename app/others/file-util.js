@@ -2,12 +2,11 @@ var fs = require('fs'),
     sanitizeHtml = require('sanitize-html'),
     path = require('path'),
     
-    library = '\n\t<script src="../piSignagePro/templates/screen.min.js"></script>';
+    library = '\n<script src="../piSignagePro/templates/screen.min.js"></script>\n';
 
 exports.modifyHTML = function(assetsDir,templateName){
-	var titleIndex,
+	var closingBodyIndex,
         modifiedData,
-        scriptTag,
         sanitize,
         templatePath;
 
@@ -32,8 +31,8 @@ exports.modifyHTML = function(assetsDir,templateName){
         // insert css and js files
         //sanitize = '<!DOCTYPE html>'+sanitize;
         sanitize = data;
-        titleIndex = sanitize.indexOf('</title>');
-        modifiedData = sanitize.substr(0,titleIndex+8)+library+sanitize.substr(titleIndex+8);
+        closingBodyIndex = sanitize.lastIndexOf('</body>');
+        modifiedData = sanitize.slice(0,closingBodyIndex)+library+sanitize.slice(closingBodyIndex);
         
         fs.writeFile(templatePath,modifiedData,function(err){
             // template modification successful

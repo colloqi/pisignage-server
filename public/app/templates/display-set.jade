@@ -99,6 +99,16 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
+                        span(translate) Show Clock
+            .col-sm-4
+                .checkbox
+                    label
+                        input(type='checkbox',name='show_clock', ng-model='group.selectedGroup.showClock.enable')
+                        span(translate) Enable
+        .form-group.row
+            .col-sm-4.text-right
+                .radio
+                    label.text-muted
                         span Stretch images to the screen
             .col-sm-2
                 .checkbox

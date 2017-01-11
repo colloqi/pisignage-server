@@ -35,6 +35,9 @@ var GroupSchema = new Schema({
     logo:                   {type: String,default: null},
     logox:                  {type: Number,default: 10},
     logoy:                  {type: Number,default: 10},
+    showClock:              {
+                                enable: {type: Boolean, default: false}
+                            },
 
     createdAt:              {type: Date, default: Date.now},
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}

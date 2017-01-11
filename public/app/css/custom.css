@@ -56,6 +56,22 @@ body {
     overflow: auto;
 }
 
+.drop-notification {
+    position: fixed;
+    z-index: 10;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color:#111;
+    color:#fff;
+    padding:30px;
+}
+.dim {
+    opacity: 0.5;
+}
+
+
+
 body .modal-body {
     max-height: 700px;
 }

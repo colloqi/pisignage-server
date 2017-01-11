@@ -45,6 +45,7 @@ module.exports = {
     zipfileRegex: /(.zip|.gz|.bz2)$/i,
     repofileRegex: /\.repo$/i,
     liveStreamRegex: /\.tv$/i,
+    omxStreamRegex:  /\.stream$/i,
     linkUrlRegex: /\.link$/i,
     CORSLink:  /\.weblink$/i,
     mediaRss:               /\.mrss$/i,

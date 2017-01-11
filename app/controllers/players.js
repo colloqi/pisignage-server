@@ -136,6 +136,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.logo =  group.logo;
     retObj.logox =  group.logox;
     retObj.logoy =  group.logoy;
+    retObj.showClock = group.showClock || {enable: false};
     retObj.combineDefaultPlaylist = group.combineDefaultPlaylist || false;
     retObj.urlReloadDisable =  group.urlReloadDisable || false;
     retObj.loadPlaylistOnCompletion =  group.loadPlaylistOnCompletion || false;

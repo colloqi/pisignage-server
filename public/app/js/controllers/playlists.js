@@ -239,6 +239,8 @@ angular.module('piPlaylists.controllers', [])
             }
 
             $scope.selectTemplate = function(asset, layout) {
+                if (!asset)
+                    return;
                 var pl = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
                 pl.templateName = asset
                 pl.layout = layout
@@ -336,7 +338,8 @@ angular.module('piPlaylists.controllers', [])
         }
 
         if ($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.templateName &&
-                ($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.layout.indexOf("custom") == 0)) {
+                ($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.layout.indexOf("custom") == 0) &&
+            ($scope.asset.files.indexOf($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.templateName) >=0)) {
             enableCustomZones($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.templateName)
         }
 
