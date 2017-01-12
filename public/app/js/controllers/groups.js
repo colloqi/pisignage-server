@@ -782,6 +782,22 @@ angular.module('piGroups.controllers', [])
             })
         }
 
+        $scope.deregister = function() {
+            piPopup.confirm("--Do you want to deregister the player", function() {
+                $http
+                    .delete(piUrls.players+$scope.selectedPlayer._id)
+                    .success(function(data, status) {
+                        if (data.success) {
+                            playerLoader.reload();
+                            $scope.settingsModal.close()
+                        }
+                    })
+                    .error(function(data, status) {
+                    });
+            })
+        }
+
+
         var saveLabels = function() {
             $http.post(piUrls.players+$scope.selectedPlayer._id,{labels:$scope.selectedPlayer.labels})
                 .success(function(data, status) {

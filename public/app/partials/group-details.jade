@@ -7,14 +7,14 @@
                 .btn-toolbar.pull-right
                     .btn-group
                         a.btn.btn-default.btn-sm(ng-click='groupTicker()'): em.text-danger Set Group Ticker
-                        a.btn.btn-default.btn-sm(ng-click='displaySet()'): em.text-danger Set Display Mode
+                        a.btn.btn-default.btn-sm(ng-click='displaySet()'): em.text-danger Group Settings
                     .btn-group
                         a.btn.btn-success.btn-sm(ng-disabled="!group.selectedGroup.playlists.length",ng-click='deploy()') Deploy to {{group.selectedGroup.name}}
-                        &nbsp;
+                        | &nbsp;
                         .checkbox-inline
                             label
                                 input(type="checkbox",ng-model="group.loadPlaylistOnCompletion")
-                                small.text-info(translate) Change at the end<br> of current cycle
+                                small.text-info Change at the end<br> of current cycle
                     .btn-group
                         a.btn.btn-warning.btn-sm.pull-right(ng-click="closeWindow()") Close
     .panel-body

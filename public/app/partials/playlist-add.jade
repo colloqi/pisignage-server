@@ -42,7 +42,7 @@
                                 input(type='checkbox',name='fullscreen', ng-model='file.playlistDetails.fullscreen')
                                 span &nbsp;show fullscreen
                         .col-sm-9
-                            small.text-primary(translate) Add other zone assets
+                            small.text-primary Add other zone assets
                                 span(ng-repeat="zone in layoutOtherZones[asset.showAssets.playlist.layout]")
                                     .btn-group(ng-if="!customZonesPresent || customZonesPresent[zone]")
                                         button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,zone)")

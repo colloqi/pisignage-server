@@ -34,40 +34,40 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        span(translate) Animation
+                        span Animation
             .col-sm-2
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationEnable",
                                     ng-change='group.selectedGroup.animationType = null;',ng-value="false")
-                        small(translate) Disable
+                        small Disable
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationType",
                                     ng-change='group.selectedGroup.animationEnable = true;',value="fade")
-                        small(translate) Fade
+                        small Fade
             .col-sm-3
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationType",
                                     ng-change='group.selectedGroup.animationEnable = true;',value="right")
-                        small(translate) Slide right
+                        small Slide right
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationType",
                                     ng-change='group.selectedGroup.animationEnable = true;',value="left")
-                        small(translate) Slide left
+                        small Slide left
             .col-sm-3
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationType",
                                     ng-change='group.selectedGroup.animationEnable = true;',value="up")
-                        small(translate) Slide up
+                        small Slide up
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationType",
                                     ng-change='group.selectedGroup.animationEnable = true;',value="down")
-                        small(translate) Slide down
+                        small Slide down
         .form-group.row
             .col-xs-4.text-right
                 .radio
@@ -99,12 +99,12 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        span(translate) Show Clock
+                        span Show Clock
             .col-sm-4
                 .checkbox
                     label
                         input(type='checkbox',name='show_clock', ng-model='group.selectedGroup.showClock.enable')
-                        span(translate) Enable
+                        span Enable
         .form-group.row
             .col-sm-4.text-right
                 .radio
@@ -114,7 +114,7 @@
                 .checkbox
                     label
                         input(type='checkbox',name='resize_image', ng-model='group.selectedGroup.resizeAssets')
-                        span(translate) Enable
+                        span Enable
             .col-sm-2.text-right
             //    .radio
             //        label.text-muted
@@ -126,8 +126,8 @@
                             ng-false-value="true",
                             ng-checked="group.selectedGroup.urlReloadDisable !== true"
                         )
-                        //span(translate) Enable
-                        small(translate) Reload link URLs each time<br>(appends ?ts in chromeapp)
+                        //span Enable
+                        small Reload link URLs each time<br>(appends ?ts in chromeapp)
 
         .form-group.row
             .col-sm-4.text-right

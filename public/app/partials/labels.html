@@ -14,6 +14,6 @@
   <ul ng-hide="collapsed" class="nav nav-pills nav-stacked">
     <li ng-repeat="tag in label.labels | orderBy:'name' | filter:modeFilter" ng-class="fn.getClass(tag.name)"><a ng-click="fn.selected(tag.name)"><small>{{ tag.name }}</small><span ng-if="!fn.editMode &amp;&amp; !fn.getClass(tag.name)" class="pull-right">{{label.labelsCount[tag.name] || '0'}}</span>
         <button ng-click="fn.delete(tag); $event.stopPropagation()" ng-if="fn.editMode || fn.getClass(tag.name)" class="close"><i ng-class="{'text-danger': fn.editMode}" class="fa fa-times-circle fa-lg"></i></button></a></li>
-    <li ng-if="!label.labels.length"><a translate="translate">There are no categories, Add a Category</a></li>
+    <li ng-if="!label.labels.length"><a>There are no categories, Add a Category</a></li>
   </ul>
 </div>

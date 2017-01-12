@@ -37,7 +37,7 @@
                 <input type="checkbox" name="fullscreen" ng-model="file.playlistDetails.fullscreen"/><span>&nbsp;show fullscreen</span>
               </label>
             </div>
-            <div class="col-sm-9"><small translate="translate" class="text-primary">Add other zone assets<span ng-repeat="zone in layoutOtherZones[asset.showAssets.playlist.layout]">
+            <div class="col-sm-9"><small class="text-primary">Add other zone assets<span ng-repeat="zone in layoutOtherZones[asset.showAssets.playlist.layout]">
                   <div ng-if="!customZonesPresent || customZonesPresent[zone]" class="btn-group">
                     <button ng-click="linkFile(file.playlistDetails,zone)" class="btn btn-xs btn-info"><small>{{zone}}: {{file.playlistDetails[zone]}}&nbsp;</small><i ng-if="!file.playlistDetails[zone]" class="fa fa-paperclip"></i></button>
                     <button ng-if="file.playlistDetails[zone]" ng-click="removeLinkFile(file,zone)" class="btn btn-xs btn-warning">X</button>

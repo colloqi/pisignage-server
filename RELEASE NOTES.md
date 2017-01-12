@@ -29,4 +29,4 @@
 
 **1.8.5**
 1. drag and drop of assets to upload
-2. 
+
