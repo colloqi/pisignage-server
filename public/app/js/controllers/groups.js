@@ -479,7 +479,12 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.groupTicker = function() {
-            var ticker = $scope.group.selectedGroup.ticker
+            var ticker = $scope.group.selectedGroup.ticker ||
+                                    {
+                                        enable:false,
+                                        behavior: 'scroll',
+                                        rss: { enable: false , link: null }
+                                    }
             ticker.enable = ticker.enable || false
             ticker.behavior = ticker.behavior || 'slide'
             ticker.rss = ticker.rss || { enable: false , link: null }
@@ -494,7 +499,7 @@ angular.module('piGroups.controllers', [])
             if ($scope.group.selectedGroup.ticker.messages)
                 $scope.group.selectedGroup.ticker.messages = $scope.group.selectedGroup.ticker.messages.replace(/'/g, "`")
             $scope.tickerModal.close();
-            updateGroup();
+            $scope.updateGroup();
             $scope.needToDeploy = true;
         }
 
