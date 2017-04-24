@@ -6,26 +6,29 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
     assets = require('./assets');
 
 
-passport.use(new GoogleStrategy({
-        clientID: config.gCalendar.CLIENT_ID,
-        clientSecret: config.gCalendar.CLIENT_SECRET,
-        callbackURL: config.gCalendar.REDIRECT_URL,
-        scope: ['openid', 'email', 'https://www.googleapis.com/auth/calendar']
-    },
-    function (accessToken, refreshToken, params, profile, done) {
-        var data = {
-            tokens: {
-                access_token: accessToken,
-                refresh_token: refreshToken,
-                expiry_date: ((new Date()).getTime() + (params.expires_in * 1000)),
-                token_type: params.token_type
-            },
-            profile: profile._json,
-            selectedEmail: profile._json.email
+if(config.gCalendar.CLIENT_ID && config.gCalendar.CLIENT_SECRET ){
+
+    passport.use(new GoogleStrategy({
+            clientID: config.gCalendar.CLIENT_ID,
+            clientSecret: config.gCalendar.CLIENT_SECRET,
+            callbackURL: config.gCalendar.REDIRECT_URL,
+            scope: ['openid', 'email', 'https://www.googleapis.com/auth/calendar']
+        },
+        function (accessToken, refreshToken, params, profile, done) {
+            var data = {
+                tokens: {
+                    access_token: accessToken,
+                    refresh_token: refreshToken,
+                    expiry_date: ((new Date()).getTime() + (params.expires_in * 1000)),
+                    token_type: params.token_type
+                },
+                profile: profile._json,
+                selectedEmail: profile._json.email
+            }
+            return done(null, data);
         }
-        return done(null, data);
-    }
-));
+    ));
+}
 
 exports.gCalAuthorize = function (req, res, next) {
     //hack as there is no parameter to change it
@@ -47,12 +50,12 @@ exports.gCalCallback = function (req, res, next) {
     passport.authenticate('google', {session: false, failureRedirect: '/login'}, function (err, user, info) {
         //store the tokens in a file using assets controller
         if (!user || !user.profile || !user.profile.email)
-            return res.redirect('/assets');
-        var fname = req.installation + '/' + user.profile.email.slice(0, user.profile.email.indexOf('@')) + '.gcal';
+            return res.redirect('/');
+        var fname = user.profile.email.slice(0, user.profile.email.indexOf('@')) + '.gcal';
         assets.createAssetFileFromContent(fname, user, function (err) {
             if (err)
                 console.log(err);
-            res.redirect('/assets');
+            res.redirect('/');
         })
 
     })(req, res, next);

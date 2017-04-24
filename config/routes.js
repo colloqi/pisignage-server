@@ -12,16 +12,18 @@ var assets = require('../app/controllers/assets'),
     players = require('../app/controllers/players'),
     groups = require('../app/controllers/groups'),
     labels = require('../app/controllers/labels'),
-    licenses  = require('../app/controllers/licenses');
-    //gcalAuthorize = require('../app/controllers/gcal-authorize');
+    licenses  = require('../app/controllers/licenses'),
+    gcalAuthorize = require('../app/controllers/gcal-authorize');
 
 /**
  * Application routes
  */
 
 //Server Routes
-//router.get('/auth/gcal/callback', gcalAuthorize.gCalCallback)     // from Google
-//router.post('/api/gcal/authorize', gcalAuthorize.gCalAuthorize)   //from client
+if(config.gCalendar.CLIENT_ID && config.gCalendar.CLIENT_SECRET){
+    router.get('/auth/gcal/callback', gcalAuthorize.gCalCallback)     // from Google
+    router.post('/api/gcal/authorize', gcalAuthorize.gCalAuthorize)   //from client    
+}
 
 router.get('/api/files', assets.index);
 router.get('/api/files/:file', assets.getFileDetails);

@@ -19,6 +19,7 @@
     "express": "~4.13.4",
     "fluent-ffmpeg": "^2.0.0-rc3",
     "gm": "^1.17.0",
+    "googleapis": "^14.1.0",
     "http-auth": "~2.2.5",
     "ip": "^1.1.0",
     "jade": "^1.9.2",
@@ -29,10 +30,12 @@
     "multer": "^1.0.1",
     "node-ffprobe": "^1.2.2",
     "node-schedule": "^0.2.9",
+    "passport": "0.2.0",
+    "passport-google-oauth": "~0.1.5",
+    "sanitize-html": "^1.11.1",
     "serve-favicon": "~2.2.0",
     "serve-index": "~1.6.3",
-    "socket.io": "~0.9.16",
-    "sanitize-html": "^1.11.1"
+    "socket.io": "~0.9.16"
   },
   "devDependencies": {
     "nodemon": "latest"
