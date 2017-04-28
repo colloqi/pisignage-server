@@ -15,6 +15,7 @@ angular.module('piServerApp', [
     'piPlaylists.controllers',
     'piLabels.controllers',
     'pisignage.directives',
+    'pisignage.filters',
     'pisignage.services'
 ])
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {

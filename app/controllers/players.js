@@ -130,14 +130,17 @@ var sendConfig = function (player, group, periodic) {
     else
         retObj.animationEnable =  group.animationEnable || false;
     retObj.resizeAssets = group.resizeAssets || false;
+    retObj.videoKeepAspect = group.videoKeepAspect || false;
     retObj.sleep = group.sleep || {enable: false, ontime: null , offtime: null };
     retObj.signageBackgroundColor =  group.signageBackgroundColor || "#000";
-    retObj.omxVolume = group.omxVolume || 100;
+    retObj.omxVolume = (group.omxVolume || group.omxVolume == 0)?group.omxVolume:100;
+    retObj.timeToStopVideo = group.timeToStopVideo || 0;
     retObj.logo =  group.logo;
     retObj.logox =  group.logox;
     retObj.logoy =  group.logoy;
     retObj.showClock = group.showClock || {enable: false};
     retObj.combineDefaultPlaylist = group.combineDefaultPlaylist || false;
+    retObj.playAllEligiblePlaylists = group.playAllEligiblePlaylists || false;
     retObj.urlReloadDisable =  group.urlReloadDisable || false;
     retObj.loadPlaylistOnCompletion =  group.loadPlaylistOnCompletion || false;
     //if (!pipkgjson)

@@ -71,10 +71,12 @@
         .form-group.row
             .col-xs-4.text-right
                 .radio
-                    label.text-muted: span Signage Background CSS Color
-            .col-xs-4
-                input.form-control(type='text',placeholder='e.g. #666',ng-model='group.selectedGroup.signageBackgroundColor')
-            .col-sm-2
+                    label.text-muted Screen Background
+            .col-xs-3
+                .input-group.input-group-sm
+                    input.form-control(type='color',ng-model='group.selectedGroup.signageBackgroundColor')
+                    small.input-group-addon {{group.selectedGroup.signageBackgroundColor}}
+            .col-sm-2.col-sm-offset-1
                 .radio(title="{{'Default volume output is 100%' }}")
                     label.text-muted: span( title="needs v1.7.0+") Volume(%)
             .col-sm-2
@@ -128,6 +130,26 @@
                         )
                         //span Enable
                         small Reload link URLs each time<br>(appends ?ts in chromeapp)
+
+        .form-group.row
+            .col-sm-4.text-right
+                .radio
+                    label.text-muted
+                        span Stretch videos to fit screen
+            .col-sm-2
+                .checkbox
+                    label
+                        input(type='checkbox',name='fill_video', ng-model='group.selectedGroup.videoKeepAspect',
+                                ng-true-value="false", ng-false-value="true",
+                                ng-checked="group.videoKeepAspect !== true"
+                        )
+                        span Enable
+            .col-sm-4
+                small Stop video every seconds to show adverts (0 to disable)
+            .col-sm-2
+                input.input-sm.form-control(type='number',placeholder="secs",ng-model='group.timeToStopVideo')
+
+
 
         .form-group.row
             .col-sm-4.text-right

@@ -38,7 +38,8 @@ module.exports = {
     },
 
     filenameRegex:          /[&\/\\#,+()$~%'":*?<>{}]/g,
-    videoRegex: /(mp4|mov|m4v|avi|webm|wmv|flv|mkv|mpg|mpeg)$/i,
+    groupNameRegEx:         /[&\/\\#,+()$~%'":*?<>{}\^]/g,
+    videoRegex: /(mp4|mov|m4v|avi|webm|wmv|flv|mkv|mpg|mpeg|3gp)$/i,
     audioRegex: /(mp3)$/i,
     imageRegex: /(jpg|jpeg|png|gif|bmp)$/i,
     htmlRegex: /\.html$/,
@@ -46,6 +47,8 @@ module.exports = {
     repofileRegex: /\.repo$/i,
     liveStreamRegex: /\.tv$/i,
     omxStreamRegex:  /\.stream$/i,
+    pdffileRegex:           /\.pdf$/i,
+    txtFileRegex:           /\.txt$/i,
     linkUrlRegex: /\.link$/i,
     CORSLink:  /\.weblink$/i,
     mediaRss:               /\.mrss$/i,

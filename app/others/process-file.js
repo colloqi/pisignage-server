@@ -142,6 +142,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                             });
                         },
                         function (video_cb) {
+                            var snaptime = duration >= 10 ? 8 : 2;
                             new FFmpeg({source: filePath})
                                 .on('error', function (err) {
                                     console.log('ffmpeg, An error occurred: ' + err.message);
@@ -155,7 +156,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                 .takeScreenshots({
                                     size: '64x64',
                                     count: 1,
-                                    timemarks: ['8'],
+                                    timemarks: [snaptime],
                                     filename: random+filename + '.png'
                                 }, config.thumbnailDir);
                         }
@@ -180,6 +181,10 @@ exports.processFile = function (filename, filesize, categories, cb) {
                 } else {
                     if (filename.match(config.noticeRegex))
                         type = 'notice';
+                    else if(filename.match(config.txtFileRegex))
+                        type= 'text';
+                    else if(filename.match(config.pdffileRegex))
+                        type = 'pdf';
                     task_cb();
                 }
             }],

@@ -11,8 +11,9 @@
       <source ng-src="{{filedetails.path}}" type="audio/mpeg"/>
     </audio>
     <iframe ng-if="filedetails.type==&quot;html&quot;" ng-src="{{ filedetails.path }}"></iframe>
+    <iframe ng-if="filedetails.type==&quot;pdf&quot;" height="300px" width="100%" ng-src="{{filedetails.path}}"></iframe>
     <div ng-if="fileType==&quot;link&quot;">
-      <div class="row">
+      <div ng-if="urlLink.type != '.txt'" class="row">
         <div class="col-xs-2 col-xs-offset-1">
           <h4 class="text-muted">Address</h4>
         </div>
@@ -28,6 +29,22 @@
           <h4>{{urlLink.type == ".tv"?"You Tube":urlLink.type.slice(1)}}</h4>
         </div>
         <div class="col-xs-2"><small ng-show="urlLink.type=='.mrss' &amp;&amp; urlLink.hideTitle">Hide Title Text</small></div>
+      </div>
+      <div ng-if="urlLink.type == '.txt'" class="row">
+        <div class="col-sm-2 text-right">
+          <label translate="translate" class="control-label">Optional CSS</label>
+        </div>
+        <div class="col-sm-6">
+          <input type="text" name="style" placeholder="e.g. color:#eee; font-style:italic;" ng-model="urlLink.style" class="form-control"/>
+        </div>
+      </div>
+      <div ng-if="urlLink.type == '.txt'" class="row">
+        <div class="col-sm-2 text-right">
+          <label translate="translate" class="control-label">Message</label>
+        </div>
+        <div class="col-sm-6">
+          <textarea rows="4" cols="50" name="message" ng-model="urlLink.message" required="" class="form-control"></textarea>
+        </div>
       </div>
     </div>
     <div ng-if="(fileType==&quot;gcal&quot;) &amp;&amp; calendar.list.length">

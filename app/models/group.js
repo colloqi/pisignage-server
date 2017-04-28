@@ -7,6 +7,9 @@ var GroupSchema = new Schema({
 
     playlists:              [],
     combineDefaultPlaylist: {type: Boolean , default: false},
+    playAllEligiblePlaylists: {type: Boolean , default: false},
+    timeToStopVideo:        {type: Number , default: 0 },
+    
     assets:                 [],
     ticker:                 {},
 
@@ -19,7 +22,8 @@ var GroupSchema = new Schema({
     orientation:            {type: String,default: 'landscape'},
     animationEnable:        {type: Boolean, default: false},
     animationType:          {type: String, default: null},
-    resizeAssets:           {type: Boolean, default: false},
+    resizeAssets:           {type: Boolean, default: true},
+    videoKeepAspect:        {type: Boolean, default: false},
     signageBackgroundColor: {type: String, default: "#000"},
     urlReloadDisable:       {type: Boolean, default: true},
     loadPlaylistOnCompletion:{type: Boolean, default: false},

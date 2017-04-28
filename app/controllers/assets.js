@@ -110,10 +110,19 @@ exports.getFileDetails = function (req, res) {
                         fileData.type = 'audio';
                     else if (file.match(config.htmlRegex))
                         fileData.type = 'html';
-                    else if (file.match(config.liveStreamRegex) || file.match(config.linkUrlRegex))
+                    else if (file.match(config.liveStreamRegex)
+                                || file.match(config.omxStreamRegex)
+                                || file.match(config.mediaRss)
+                                || file.match(config.CORSLink)
+                                || file.match(config.linkUrlRegex)
+                    )
                         fileData.type = 'link';
                     else if (file.match(config.gcalRegex))
                         fileData.type = 'gcal';
+                    else if (file.match(config.pdffileRegex))
+                        fileData.type = 'pdf';
+                    else if (file.match(config.txtFileRegex))
+                        fileData.type = 'text';
                     else
                         fileData.type = 'other';
                     next();

@@ -20,14 +20,21 @@
       <div ng-show="playlist.selectedPlaylist.settings.ticker.enable" class="col-xs-2">
         <div class="radio">
           <label>
-            <input type="radio" value="scroll" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><span>Scroll</span>
+            <input type="radio" value="slide" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><span>Slide</span>
           </label>
         </div>
       </div>
       <div ng-show="playlist.selectedPlaylist.settings.ticker.enable" class="col-xs-2">
         <div class="radio">
           <label>
-            <input type="radio" value="slide" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><span>Slide</span>
+            <input type="radio" value="scroll" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><span>Scroll left</span>
+          </label>
+        </div>
+      </div>
+      <div ng-show="playlist.selectedPlaylist.settings.ticker.enable" class="col-xs-2">
+        <div class="radio">
+          <label>
+            <input type="radio" value="scrollRight" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><span>Scroll right</span>
           </label>
         </div>
       </div>

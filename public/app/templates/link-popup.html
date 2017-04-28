@@ -2,7 +2,8 @@
 <div class="modal-header">
   <div class="row">
     <div class="col-xs-8">
-      <h4>Stream From Internet</h4>
+      <h4 ng-show="link.obj.type != '.txt'">Stream From Internet</h4>
+      <h4 ng-show="link.obj.type == '.txt'">Add a Message</h4>
     </div>
     <div class="col-xs-4 pull-right">
       <button ng-disabled="Utubeform.$invalid" ng-click="link.save()" class="btn btn-success btn-block">Save</button>
@@ -11,15 +12,15 @@
 </div>
 <div class="modal-body">
   <p ng-if="errorMessage" class="text-danger">{{errorMessage}}</p>
-  <form role="form" name="Utubeform">
-    <div class="form-group row">
+  <form role="form" name="Utubeform" class="form-horizontal">
+    <div class="form-group">
       <label class="col-sm-4 control-label">File Name</label>
       <div class="col-sm-8">
-        <input type="text" name="linkname" ng-model="link.obj.name" placeholder="link will be saved in this file" required="" class="form-control"/>
+        <input type="text" name="linkname" ng-model="link.obj.name" placeholder="Data will be saved in this file" required="" class="form-control"/>
       </div>
     </div>
-    <div class="form-group row">
-      <label class="col-sm-4 control-label">Link Type</label>
+    <div class="form-group">
+      <label class="col-sm-4 control-label">File Type</label>
       <div class="col-sm-8">
         <select ng-options="entry.ext as entry.name for entry in link.types" name="linktype" ng-model="link.obj.type" required="" class="form-control"></select>
       </div>
@@ -31,10 +32,22 @@
         </div>
       </div>
     </div>
-    <div class="form-group row">
+    <div ng-if="link.obj.type != '.txt'" class="form-group">
       <label class="col-sm-4 control-label">Link Address</label>
       <div class="col-sm-8">
         <input type="text" name="linkUrl" ng-model="link.obj.link" ng-pattern="/^(http(s?)|rtsp|udp):///" placeholder="{{'e.g. http(s)://site.com or rtsp://'}}" required="" class="form-control"/>
+      </div>
+    </div>
+    <div ng-if="link.obj.type == '.txt'" class="form-group">
+      <label class="col-sm-4 control-label">Optional CSS</label>
+      <div class="col-sm-8">
+        <input type="text" name="style" placeholder="e.g. color:#eee; font-style:italic;" ng-model="link.obj.style" class="form-control"/>
+      </div>
+    </div>
+    <div ng-if="link.obj.type == '.txt'" class="form-group">
+      <label class="col-sm-4 control-label">Message</label>
+      <div class="col-sm-8">
+        <textarea rows="4" cols="50" name="message" ng-model="link.obj.message" required="" class="form-control"></textarea>
       </div>
     </div>
   </form>

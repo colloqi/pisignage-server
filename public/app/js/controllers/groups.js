@@ -2,7 +2,7 @@
 
 angular.module('piGroups.controllers', [])
 
-    .controller('GroupsCtrl', function ($scope, $http, piUrls, $location, piPopup,playerLoader) {
+    .controller('GroupsCtrl', function ($scope, $http, piUrls, $location, piPopup,playerLoader,piConstants) {
 
         
         
@@ -19,6 +19,7 @@ angular.module('piGroups.controllers', [])
             if (!$scope.newGroup.name) {
                 return;
             }
+            $scope.newGroup.name = $scope.newGroup.name.replace(piConstants.groupNameRegEx,'');
 
             for (var i = 0; i < $scope.group.groups.length; i++) {
                 if ($scope.group.groups[i].name == $scope.newGroup.name) {
@@ -206,7 +207,9 @@ angular.module('piGroups.controllers', [])
                 .success(function (data, status) {
                     if (data.success) {
                         $scope.group.selectedGroup = data.data;
-                        $scope.group.selectedGroup.omxVolume = $scope.group.selectedGroup.omxVolume || 100
+                        $scope.group.selectedGroup.omxVolume =
+                            ($scope.group.selectedGroup.omxVolume ||
+                                $scope.group.selectedGroup.omxVolume == 0)?$scope.group.selectedGroup.omxVolume:100;
                         $scope.showDates()
                     }
                     if (cb)
@@ -222,7 +225,7 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.add = function () {
-            if ($scope.group.selectedGroup.playlists.length >= 20) {
+            if ($scope.group.selectedGroup.playlists.length >= 30) {
                 $timeout(function () {
                     $scope.showMaxErr = false;
                 }, 5000);

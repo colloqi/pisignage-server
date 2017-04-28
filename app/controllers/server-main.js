@@ -110,7 +110,7 @@ exports.deploy = function (installation,group, cb) {
             })
         },
         function(async_cb){ // brand video check
-            var specialFiles = ["brand_intro.mp4","welcome.ejs","custom_layout.html","iot.zip"]
+            var specialFiles = ["brand_intro.mp4","welcome.ejs","iot.zip"]
             var filesAdded = []
             async.eachSeries(specialFiles,
                 function(file,iterative_cb){

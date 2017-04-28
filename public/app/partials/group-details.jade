@@ -33,12 +33,18 @@
                                             ng-model="group.selectedGroup.combineDefaultPlaylist")
                             small Play together with scheduled playlist (v1.7.0+)
             .row.form-group(ng-show="group.selectedGroup.playlists[0].name.length")
-                h5.col-sm-12 You can select additional Playlists for Scheduling/Advt purposes
+                h5.col-sm-8 You can select additional Playlists for Scheduling/Advt purposes
                     //a.btn.btn-link(ng-click="collapsed = !collapsed;")
                         i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
                     a.btn.btn-info.btn-xs(ng-click="add()")
                         i.fa.fa-lg.fa-plus add
-                    span.text-info(ng-show="showMaxErr") &nbsp&nbsp {{'Maximum allowed Playlist Schedules (20)'}}
+                    span.text-info(ng-show="showMaxErr") &nbsp&nbsp {{'Maximum allowed Playlist Schedules (30)'}}
+                .col-sm-4
+                    .checkbox
+                        label
+                            input(type="checkbox",title="Content from all the eligible playlists will be combined",
+                            ng-model="group.selectedGroup.playAllEligiblePlaylists")
+                            small Combine content of all scheduled playlists
 
             .row.form-group(ng-repeat='pl in group.selectedGroup.playlists', ng-if="$index > 0",as-sortable-item)
                 .col-sm-1.text-right(as-sortable-item-handle)

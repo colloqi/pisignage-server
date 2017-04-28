@@ -38,10 +38,17 @@
         </div>
       </div>
       <div ng-show="group.selectedGroup.playlists[0].name.length" class="row form-group">
-        <h5 class="col-sm-12">You can select additional Playlists for Scheduling/Advt purposes
+        <h5 class="col-sm-8">You can select additional Playlists for Scheduling/Advt purposes
           <!--a.btn.btn-link(ng-click="collapsed = !collapsed;")<i ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}" class="fa fa-lg"></i>
-          --><a ng-click="add()" class="btn btn-info btn-xs"><i class="fa fa-lg fa-plus">add</i></a><span ng-show="showMaxErr" class="text-info">&nbsp&nbsp {{'Maximum allowed Playlist Schedules (20)'}}</span>
+          --><a ng-click="add()" class="btn btn-info btn-xs"><i class="fa fa-lg fa-plus">add</i></a><span ng-show="showMaxErr" class="text-info">&nbsp&nbsp {{'Maximum allowed Playlist Schedules (30)'}}</span>
         </h5>
+        <div class="col-sm-4">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" title="Content from all the eligible playlists will be combined" ng-model="group.selectedGroup.playAllEligiblePlaylists"/><small>Combine content of all scheduled playlists</small>
+            </label>
+          </div>
+        </div>
       </div>
       <div ng-repeat="pl in group.selectedGroup.playlists" ng-if="$index &gt; 0" as-sortable-item="as-sortable-item" class="row form-group">
         <div as-sortable-item-handle="as-sortable-item-handle" class="col-sm-1 text-right">

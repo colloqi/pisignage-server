@@ -14,13 +14,18 @@
             .col-xs-2(ng-show='playlist.selectedPlaylist.settings.ticker.enable')
                 .radio
                     label
-                        input(type='radio',value='scroll',ng-model='playlist.selectedPlaylist.settings.ticker.behavior')
-                        span() Scroll
+                        input(type='radio',value='slide',ng-model='playlist.selectedPlaylist.settings.ticker.behavior')
+                        span() Slide
             .col-xs-2(ng-show='playlist.selectedPlaylist.settings.ticker.enable')
                 .radio
                     label
-                        input(type='radio',value='slide',ng-model='playlist.selectedPlaylist.settings.ticker.behavior')
-                        span() Slide
+                        input(type='radio',value='scroll',ng-model='playlist.selectedPlaylist.settings.ticker.behavior')
+                        span() Scroll left
+            .col-xs-2(ng-show='playlist.selectedPlaylist.settings.ticker.enable')
+                .radio
+                    label
+                        input(type='radio',value='scrollRight',ng-model='playlist.selectedPlaylist.settings.ticker.behavior')
+                        span() Scroll right
         .row(ng-show='playlist.selectedPlaylist.settings.ticker.enable')
             .col-xs-4
                 .checkbox

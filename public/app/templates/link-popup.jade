@@ -1,18 +1,19 @@
 .modal-header
     .row
         .col-xs-8
-            h4 Stream From Internet
+            h4(ng-show="link.obj.type != '.txt'") Stream From Internet
+            h4(ng-show="link.obj.type == '.txt'") Add a Message
         .col-xs-4.pull-right
             button.btn.btn-success.btn-block(ng-disabled='Utubeform.$invalid',ng-click='link.save()') Save
 .modal-body
     p.text-danger(ng-if="errorMessage") {{errorMessage}}
-    form(role='form',name='Utubeform')
-        .form-group.row
+    form.form-horizontal(role='form',name='Utubeform')
+        .form-group
             label.col-sm-4.control-label File Name
             .col-sm-8
-                input.form-control(type='text',name='linkname' , ng-model='link.obj.name',placeholder='link will be saved in this file',required='')
-        .form-group.row
-            label.col-sm-4.control-label Link Type
+                input.form-control(type='text',name='linkname' , ng-model='link.obj.name',placeholder='Data will be saved in this file',required='')
+        .form-group
+            label.col-sm-4.control-label File Type
             .col-sm-8
                 select.form-control(ng-options='entry.ext as entry.name for entry in link.types',name='linktype', ng-model='link.obj.type', required='')
             .col-xs-4.col-xs-offset-4(ng-show="link.obj.type=='.mrss'")
@@ -20,12 +21,25 @@
                     label
                         input(type='checkbox',name='title_checkbox', ng-model='link.obj.hideTitle')
                         span Hide Title text
-        .form-group.row
+        .form-group(ng-if="link.obj.type != '.txt'")
             label.col-sm-4.control-label Link Address
             .col-sm-8
                 input.form-control(type='text',name='linkUrl', ng-model='link.obj.link',
                             ng-pattern="/^(http(s?)|rtsp|udp)\:\/\//",
                             placeholder="{{'e.g. http(s)://site.com or rtsp://'}}",required='')
+
+        .form-group(ng-if="link.obj.type == '.txt'")
+            label.col-sm-4.control-label Optional CSS
+            .col-sm-8
+                input.form-control(type='text',name='style' ,placeholder='e.g. color:#eee; font-style:italic;',
+                        ng-model='link.obj.style')
+
+        .form-group(ng-if="link.obj.type == '.txt'")
+            label.col-sm-4.control-label Message
+            .col-sm-8
+                textarea.form-control( rows="4",cols="50",name='message', ng-model='link.obj.message', required='')
+
+
 
 .modal-footer
     h5.pull-left.text-muted Select Categories for the link

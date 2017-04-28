@@ -296,14 +296,22 @@ angular.module('piAssets.controllers',[])
                 {name: 'Streaming', ext: '.stream'},
                 {name: 'Web link (shown in iframe)', ext: '.link'},
                 {name: 'Web page (supports cross origin links)', ext: '.weblink'},
-                {name: 'Media RSS (needs v1.7.0) ', ext: '.mrss'}
+                {name: 'Media RSS (needs v1.7.0) ', ext: '.mrss'},
+                {name: 'Message', ext: '.txt'}
             ],
             obj: {
                 name: null,
-                type: '.link',
+                type: '.tv',
                 link: null
             },
-            showPopup: function () {
+            showPopup: function (type) {
+                if (type) {
+                    $scope.link.obj.type = _.find($scope.link.types, function (obj) {
+                        return obj.ext.slice(1) == type
+                    }).ext;
+                } else {
+                    $scope.link.obj.type = ".tv"
+                }
                 $scope.linkCategories = []
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/link-popup.html',
@@ -490,6 +498,7 @@ angular.module('piAssets.controllers',[])
             case 'stream':
             case 'tv':
             case 'mrss':
+            case 'txt':
                 $scope.fileType = 'link';
                 $http
                     .get(piUrls.links+$state.params.file)

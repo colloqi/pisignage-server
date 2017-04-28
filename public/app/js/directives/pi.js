@@ -200,7 +200,7 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
     }
 }]).
 
-directive('categories',['$http','piUrls', function($http,piUrls) {
+directive('categories',['$http','piUrls', function($http,piUrls,truncate) {
     return {
         scope: {
             selectedLabels: '=',
@@ -212,7 +212,8 @@ directive('categories',['$http','piUrls', function($http,piUrls) {
                         '<label class="checkbox-inline">' +
                         '<input type="checkbox" value="{{category.name}}"'+
                                 'ng-checked="selectedLabels.indexOf(category.name) &gt; -1"'+
-                                'ng-click="cat.toggleSelection(category.name)"/>{{category.name}}' +
+                                'ng-click="cat.toggleSelection(category.name)"/>'+
+                                '<small class="text-muted">{{category.name | truncate:18}}</small>' +
                     '</label></div></div></form>',
         link: function(scope, elem, attr){
             scope.cat = {}   //holds all the category related objects

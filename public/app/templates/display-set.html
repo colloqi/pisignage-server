@@ -92,13 +92,15 @@
     <div class="form-group row">
       <div class="col-xs-4 text-right">
         <div class="radio">
-          <label class="text-muted"><span>Signage Background CSS Color</span></label>
+          <label class="text-muted">Screen Background</label>
         </div>
       </div>
-      <div class="col-xs-4">
-        <input type="text" placeholder="e.g. #666" ng-model="group.selectedGroup.signageBackgroundColor" class="form-control"/>
+      <div class="col-xs-3">
+        <div class="input-group input-group-sm">
+          <input type="color" ng-model="group.selectedGroup.signageBackgroundColor" class="form-control"/><small class="input-group-addon">{{group.selectedGroup.signageBackgroundColor}}</small>
+        </div>
       </div>
-      <div class="col-sm-2">
+      <div class="col-sm-2 col-sm-offset-1">
         <div title="{{'Default volume output is 100%' }}" class="radio">
           <label class="text-muted"><span title="needs v1.7.0+">Volume(%)</span></label>
         </div>
@@ -165,6 +167,24 @@
             <!--span Enable--><small>Reload link URLs each time<br>(appends ?ts in chromeapp)</small>
           </label>
         </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-4 text-right">
+        <div class="radio">
+          <label class="text-muted"><span>Stretch videos to fit screen</span></label>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="fill_video" ng-model="group.selectedGroup.videoKeepAspect" ng-true-value="false" ng-false-value="true" ng-checked="group.videoKeepAspect !== true"/><span>Enable</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-4"><small>Stop video every seconds to show adverts (0 to disable)</small></div>
+      <div class="col-sm-2">
+        <input type="number" placeholder="secs" ng-model="group.timeToStopVideo" class="input-sm form-control"/>
       </div>
     </div>
     <div class="form-group row">

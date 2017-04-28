@@ -73,7 +73,7 @@ body {
 
 
 body .modal-body {
-    max-height: 700px;
+    max-height: 1000px;
 }
 
 .modal-content > .panel {
@@ -86,6 +86,16 @@ body .modal-body {
     padding-left: 3px;
     padding-right: 3px;
 }
+
+
+.text-left {
+    text-align: left;
+}
+
+.text-white {
+    color:#fff;
+}
+
 
 
 

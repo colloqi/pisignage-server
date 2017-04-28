@@ -123,7 +123,7 @@ angular.module('piPlaylists.controllers', [])
 
 
     .controller('PlaylistViewCtrl',
-        function($scope, $http, $rootScope, piUrls, $window,$state,$modal, assetLoader, layoutOtherZones){
+        function($scope, $http, $rootScope, piUrls, $window,$state,$modal, assetLoader, layoutOtherZones,$timeout){
 
             $scope.customTemplates = function(asset) {
                 return asset.match(/^custom_layout.*html$/i)
@@ -294,6 +294,14 @@ angular.module('piPlaylists.controllers', [])
             $scope.saveSettings = function() {
                 var pl = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
 
+                if (pl.settings.ticker.rss && pl.settings.ticker.rss.enable && !pl.settings.ticker.rss.link) {
+                    $scope.tickerPopupErrMessage = "Please enter RSS link address";
+                    $timeout(function(){
+                        $scope.tickerPopupErrMessage = ""
+                        return;
+                    },3000)
+                    return;
+                }
                 if (pl.settings.ticker.style)
                     pl.settings.ticker.style = pl.settings.ticker.style.replace(/\"/g,'');
                 if (pl.settings.ticker.messages)

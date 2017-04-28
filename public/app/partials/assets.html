@@ -20,6 +20,7 @@
             <nodeims-file-upload onstart="upload.onstart()" onprogress="upload.onprogress(percentDone)" onerror="upload.onerror(files, type, msg)" ondone="upload.ondone(files, data)">Upload Files</nodeims-file-upload>
           </li>
           <li><a ng-click="link.showPopup()" class="btn btn-link btn-block">Add a Link</a></li>
+          <li><a ng-click="link.showPopup('txt')" class="btn btn-link btn-block">Add a Message</a></li>
           <li><a ng-click="configureGCalendar()" class="btn btn-link btn-block">Add Calendar</a></li>
         </ul>
       </div>
