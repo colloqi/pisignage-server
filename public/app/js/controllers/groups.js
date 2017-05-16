@@ -183,9 +183,8 @@ angular.module('piGroups.controllers', [])
                         $scope.group.selectedGroup.assets.push('__' + playlist.name + '.json');
                     if($scope.group.selectedGroup.logo && $scope.group.selectedGroup.assets.indexOf($scope.group.selectedGroup.logo) == -1)
                         $scope.group.selectedGroup.assets.push($scope.group.selectedGroup.logo);
-                    if($scope.group.selectedGroup.playlists[i].templateName &&
-                                    ($scope.group.selectedGroup.assets.indexOf($scope.group.selectedGroup.playlists[i].templateName) == -1))
-                        $scope.group.selectedGroup.assets.push($scope.group.selectedGroup.playlists[i].templateName)
+                    if(playlist.templateName &&($scope.group.selectedGroup.assets.indexOf(playlist.templateName) == -1))
+                        $scope.group.selectedGroup.assets.push(playlist.templateName)
                     $scope.group.selectedGroup.playlists[i].settings = $scope.group.selectedGroup.playlists[i].settings || {}
                     $scope.group.selectedGroup.playlists[i].settings.ads = playlist.settings.ads
                     if(playlist.name != 'TV_OFF') {
