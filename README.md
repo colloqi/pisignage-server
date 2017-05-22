@@ -2,8 +2,8 @@
 **Server to manage piSignage players in a LAN or Private Network**
 
 
-##New version 0.9.0 has been released!      
-###Upgrading to 0.9.0 from existing versions  
+## New version 0.9.0 has been released!      
+### Upgrading to 0.9.0 from existing versions  
 1. git pull origin master and apply your code changes if any 
 2. start the pisignage-server and go to url localhost:3000
 3. Enter the account name of yours at pisignage.com
@@ -13,7 +13,7 @@
 7. Upload new licenses bought to the local server so that they are automatically installed in the pi
 8. Authentication has been added to the server UI which can be changed under settings (default pi:pi)
 
-##Getting Started
+## Getting Started
 1.Install mongodb
 
    - **Ubuntu**
@@ -193,7 +193,7 @@
     - authentication is pi & pi, you can change this under settings
 
 **NOTE:** Please make sure **mongod** process is running and **/data/db** owenership is changed to regular user. If not use, ``` sudo chown -R your-username:user-group /data```
-###Configure Pi
+### Configure Pi
 
 ***Please do not forget to give PORT number of server (default 3000)***
 
@@ -211,7 +211,7 @@
       * Edit `/home/pi/piSignagePro/package.json` for admin and media server configuration    
       * delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory    
 
-##Features  
+## Features  
 
 1.Player management  
     - Auto discovery of players in a network  
@@ -243,7 +243,7 @@
 5.Reports & Logs  
     - Not planned (Feature requests welcome)  
 
-###Points to remember
+### Points to remember
 
 1.angularjs-dropdown-multiselect is taken directly from   
     https://github.com/dotansimha/angularjs-dropdown-multiselect/pull/23/files instead of bower (for close-on-select to work)  
@@ -257,7 +257,7 @@
 3.Two directories are created by the program ../media and ../media/_thumbnails. If these directories are not created server won't work as expected (for e.g. thumbnails won't be created if _thumbnails directory does not exit). In that case create those directories manually.
 
 
-####You can also manage players using Browser(http://playerip:8000) or downloading Chrome app  
+#### You can also manage players using Browser(http://playerip:8000) or downloading Chrome app  
 
     
-####The code is still in early release, Please raise an issue for problems or send an email to info@pisignage.com  
+#### The code is still in early release, Please raise an issue for problems or send an email to info@pisignage.com  
