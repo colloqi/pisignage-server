@@ -36,9 +36,9 @@ angular.module('piPlayers.services', [])
                             if (!player.isConnected)
                                 player.statusClass = "text-danger"
                             else if (!player.playlistOn)
-                                player.statusClass = "text-warning"
+                                player.statusClass = "text-lightyellow"
                             else
-                                player.statusClass = "text-success"
+                                player.statusClass = "text-lightgreen"
                             if (!player.lastReported)
                                 player.lastReported = 0;    //never reported
                             player.labels.forEach(function (item) {
