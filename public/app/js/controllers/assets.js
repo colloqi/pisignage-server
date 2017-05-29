@@ -181,7 +181,11 @@ angular.module('piAssets.controllers',[])
             }
 
             $scope.fn.showDetails = function(file) {
-                $state.go("home.assets.assetDetails",{file:file})
+                console.log(file)
+                if(file.match(/^custom_layout.*html$/))
+                    piPopup.status({msg: 'Looks like you are trying to open custom_layout template.'});
+                else
+                    $state.go("home.assets.assetDetails",{file:file});
             }
 
         //upload assets related
@@ -508,6 +512,9 @@ angular.module('piAssets.controllers',[])
                             $scope.filedetails = data.data;
                             if ($scope.filedetails.dbdata)
                                 $scope.selectedLabels = $scope.filedetails.dbdata.labels;
+                        }else{
+                            piPopup.status({msg: "Details regarding the file "+$state.params.file+" could not be found"});
+                            $window.history.back();
                         }
                     })
                     .error(function(data,status){
@@ -540,6 +547,19 @@ angular.module('piAssets.controllers',[])
                     }
                 })
                 .error(function(data, status) {
+                });
+        }
+        
+        $scope.updateLink = function(form){
+            $http.post(piUrls.links, {details: $scope.urlLink})
+                .success(function (data, status) {
+                    if (data.success) {
+                        form.$setPristine();
+                    }else{
+                        piPopup.status({msg: "Error Occured while updating File "+ $scope.urlLink.name})
+                    }
+                })
+                .error(function (data, status) {
                 });
         }
 

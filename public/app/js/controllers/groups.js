@@ -107,7 +107,7 @@ angular.module('piGroups.controllers', [])
         }
     })
 
-    .controller('GroupDetailCtrl', function ($scope, $rootScope, $http, piUrls,$state, $modal,
+    .controller('GroupDetailCtrl', function ($scope, $rootScope, $http, piUrls,$state, $modal,piPopup,
                                                     weeks, days,weeksObject,daysObject,playerLoader,$timeout,layoutOtherZones) {
 
         //make sure state.params.group is set
@@ -518,15 +518,15 @@ angular.module('piGroups.controllers', [])
             $scope.group.selectedGroup.deploy = true;
             $scope.updateGroup(function (err,msg) {
                 if (!err) {
-                    $scope.msg = {msg: 'Deployed! Request has been sent to all Players.', title: 'Deploy Success'};
+                    piPopup.status({msg: 'Deployed! Request has been sent to all Players.', title: 'Deploy Success'});
                     $scope.needToDeploy = false;
                 } else {
-                    $scope.msg = {msg: msg, title: 'Deploy Failed'};
+                    piPopup.status({msg: msg, title: 'Deploy Failed'});
                 }
-                $scope.deployModal = $modal.open({
-                    templateUrl: '/app/templates/status-popup.html',
-                    scope: $scope
-                });
+                // $scope.deployModal = $modal.open({
+                //     templateUrl: '/app/templates/status-popup.html',
+                //     scope: $scope
+                // });
             })
         }
         $scope.closeWindow = function () {
