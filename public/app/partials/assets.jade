@@ -58,9 +58,9 @@
                     a(ng-click='fn.showDetails(file.fileDetails.name)')
                         img.media-object.img-rounded(ng-if='file.fileDetails.thumbnail',ng-src='{{file.fileDetails.thumbnail}}')
                         .letter-box.media-object.img-rounded(ng-if='!file.fileDetails.thumbnail')
-                            span(ng-if='file.filesDetails.type == "audio"')
+                            span(ng-if='file.fileDetails.type == "audio" || file.fileDetails.type == "radio"')
                                 i.fa.fa-music
-                            span(ng-if='file.filesDetails.type != "audio"')
+                            span(ng-if='file.fileDetails.type != "audio" || file.fileDetails.type != "radio"')
                                 | {{file.fileDetails.type.slice(0,1) || 'N'}}
                 .col-sm-10
                     .row
@@ -85,9 +85,19 @@
                     .row
                         .col-sm-6
                             small.text-info {{file.fileDetails.labels.join(',')}}
-                        .col-sm-5
+                        .col-sm-3
                             small.text-muted {{file.fileDetails.type}},&nbsp;{{file.fileDetails.size}},&nbsp;
                                 | {{file.fileDetails.createdAt | date: 'MMM dd'}}
+                        .col-sm-3
+                            button.btn.btn-link.btn-xs(title="{{'Add validity period for the asset'}}",
+                            ng-click="scheduleValidity(file)")
+                                i.fa.fa-calendar &nbsp;
+                                small(ng-if='!(file.fileDetails.validity.enable)')
+                                    | add validity
+                                small(ng-if='file.fileDetails.validity.enable')
+                                    | {{file.fileDetails.validity.startdate | date:'MMM d'}} -
+                                    | {{file.fileDetails.validity.enddate | date:'MMM d'}}
+
 
         h5.text-danger(ng-show="!assetConfig.assets.assets.length")
             | &nbsp&nbsp Nothing to show, Use `Add` button to add an asset or 'Assign Assets' to assign assets to playlist
@@ -108,4 +118,6 @@
                 .col-xs-2
                     button.btn.btn-danger.pull-right(ng-click='fn.delete($index)')
                         i.fa.fa-times.fa-lg
+
+
 

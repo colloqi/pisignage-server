@@ -294,6 +294,7 @@ angular.module('piAssets.controllers',[])
         $scope.link = {
             types: [{name: 'Livestreaming or YouTube', ext: '.tv'},
                 {name: 'Streaming', ext: '.stream'},
+                {name: 'Audio Streaming', ext: '.radio'},
                 {name: 'Web link (shown in iframe)', ext: '.link'},
                 {name: 'Web page (supports cross origin links)', ext: '.weblink'},
                 {name: 'Media RSS (needs v1.7.0) ', ext: '.mrss'},
@@ -302,7 +303,10 @@ angular.module('piAssets.controllers',[])
             obj: {
                 name: null,
                 type: '.tv',
-                link: null
+                link: null,
+                duration: 10,
+                hideTitle: 'title'    //actually show Rss text type
+
             },
             showPopup: function (type) {
                 if (type) {
@@ -454,6 +458,36 @@ angular.module('piAssets.controllers',[])
             }
         }
 
+        $scope.scheduleValidity = function(asset) {
+            $scope.forAsset = asset;
+            var validityField = asset.fileDetails.validity || {enable: false};
+            if (validityField.startdate)
+                validityField.startdate =
+                    new Date(validityField.startdate)
+            if (validityField.enddate)
+                validityField.enddate =
+                    new Date(validityField.enddate)
+
+            $scope.scheduleValidityModal = $modal.open({
+                templateUrl: '/app/templates/schedulealidity.html',
+                scope: $scope,
+                keyboard: false
+            });
+        }
+
+        $scope.saveValidity = function() {
+            $http.post(piUrls.files + $scope.forAsset.fileDetails.name, {dbdata: $scope.forAsset.fileDetails})
+                .then(function(response) {
+                    var data = response.data;
+                    if (data.success) {
+                        $scope.scheduleValidityModal.close()
+                    }
+                },function(response) {
+                });
+        }
+
+
+
         $scope.loadCategory = function(){
             $scope.labelMode = "assets"
             $scope.labelModal = $modal.open({
@@ -496,6 +530,7 @@ angular.module('piAssets.controllers',[])
             case 'link':
             case 'weblink':
             case 'stream':
+            case 'radio':
             case 'tv':
             case 'mrss':
             case 'txt':
@@ -505,6 +540,7 @@ angular.module('piAssets.controllers',[])
                     .success(function(data,status){
                         if(data.success){
                             $scope.urlLink = JSON.parse(data.data.data);
+                            $scope.urlLink.hideTitle = $scope.urlLink.hideTitle || 'title'
                             $scope.filedetails = data.data;
                             if ($scope.filedetails.dbdata)
                                 $scope.selectedLabels = $scope.filedetails.dbdata.labels;

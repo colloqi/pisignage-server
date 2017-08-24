@@ -63,6 +63,12 @@ server.listen(config.port, function () {
     console.log('Express server listening on port %d in %s mode', config.port, app.get('env'));
 });
 
+server.on('connection', function(socket) {
+    // 60 minutes timeout
+    socket.setTimeout(3600000);
+});
+
+
 // Expose app
 module.exports = app;
 

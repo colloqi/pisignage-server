@@ -24,12 +24,31 @@
       <div class="col-sm-8">
         <select ng-options="entry.ext as entry.name for entry in link.types" name="linktype" ng-model="link.obj.type" required="" class="form-control"></select>
       </div>
-      <div ng-show="link.obj.type=='.mrss'" class="col-xs-4 col-xs-offset-4">
-        <div class="checkbox">
+    </div>
+    <div ng-if="link.obj.type == '.mrss'" class="form-group">
+      <label class="col-sm-4 control-label">RSS Text</label>
+      <div class="col-xs-8">
+        <div class="radio-inline">
           <label>
-            <input type="checkbox" name="title_checkbox" ng-model="link.obj.hideTitle"/><span>Hide Title text</span>
+            <input type="radio" name="radio_none" ng-model="link.obj.hideTitle" value="none"/><small>Hide all text</small>
           </label>
         </div>
+        <div class="radio-inline">
+          <label>
+            <input type="radio" name="radio_title" ng-model="link.obj.hideTitle" value="title"/><small>Show title</small>
+          </label>
+        </div>
+        <div class="radio-inline">
+          <label>
+            <input type="radio" name="radio_description" ng-model="link.obj.hideTitle" value="description"/><small>Show description</small>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div ng-if="link.obj.type == '.mrss'" class="form-group">
+      <label class="control-label col-sm-4">Item duration</label>
+      <div class="col-sm-3">
+        <input type="number" name="duration" placeholder="{{&quot;Duration of each feed item&quot;}}" ng-model="link.obj.duration" class="form-control"/>
       </div>
     </div>
     <div ng-if="link.obj.type != '.txt'" class="form-group">

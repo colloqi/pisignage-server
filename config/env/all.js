@@ -40,7 +40,7 @@ module.exports = {
     filenameRegex:          /[&\/\\#,+()$~%'":*?<>{}]/g,
     groupNameRegEx:         /[&\/\\#,+()$~%'":*?<>{}\^]/g,
     videoRegex: /(mp4|mov|m4v|avi|webm|wmv|flv|mkv|mpg|mpeg|3gp)$/i,
-    audioRegex: /(mp3)$/i,
+    audioRegex: /(mp3|m4a|mp4a|aac)$/i,
     imageRegex: /(jpg|jpeg|png|gif|bmp)$/i,
     htmlRegex: /\.html$/,
     zipfileRegex: /(.zip|.gz|.bz2)$/i,
@@ -52,6 +52,8 @@ module.exports = {
     linkUrlRegex: /\.link$/i,
     CORSLink:  /\.weblink$/i,
     mediaRss:               /\.mrss$/i,
+    radioFileRegex:         /\.radio$/i,
+    brandRegex:             /^(brand_intro|brand_intro_portrait)\./i,
     nestedPlaylist:         /^__/i,
     gcalRegex: /\.gcal$/i,
     gCalendar: {

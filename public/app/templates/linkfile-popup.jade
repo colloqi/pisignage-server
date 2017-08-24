@@ -4,12 +4,14 @@
         p along with {{selectedAsset.filename}}
 .modal-body
     .panel-body
-        tabset
-            tab(heading='Assets')
+        tabset(active="tabIndex")
+            tab(index="0",heading='Assets')
                 ul.list-group
                     li.list-group-item.list-group-item-info
                         input.form-control(type="text",placeholder="Filter by Name",ng-model="search")
-                    li.list-group-item(ng-repeat="file in filteredAssets | filter:search ",ng-click="linkFileSave(file.fileDetails.name)")
+                    li.list-group-item(ng-repeat="file in filteredAssets | filter:search ",
+                    ng-class="{'list-group-item-success':file.fileDetails.name==selectedAsset[selectedZone]}",
+                    ng-click="linkFileSave(file.fileDetails.name)")
                         .media
                             .media-left
                                 a.pull-left(href="#" , ng-if="file.fileDetails.thumbnail")
@@ -17,17 +19,49 @@
                                 .media-object.letter-box.img-rounded.pull-left(ng-if="!file.fileDetails.thumbnail")
                                     | {{file.fileDetails.type.slice(0,1) || 'N' }}
                             .media-body
-                                .media-heading
-                                    h4 {{file.fileDetails.name}}
-            tab(heading='Playlists(needs 1.7.0)')
+                                .row
+                                    .col-sm-8
+                                        h4.media-heading &nbsp;{{file.fileDetails.name}}
+                                    .col-sm-4
+                                        label.text-muted(ng-show='file.fileDetails.type == "video" && file.fileDetails.name==selectedAsset[selectedZone]',
+                                        title='Mute video')
+                                            input(type='checkbox', ng-model='file.fileDetails.option[selectedZone]')
+                                            span.pl-5 mute audio
+                                .row
+                                    .col-sm-12
+                                        strong.pr-5 {{file.fileDetails.type}}
+                                        small.pr-5
+                                            span.text-muted duration:
+                                            | {{file.fileDetails.duration}} secs
+                                        small.pr-5(ng-if="file.fileDetails.size")
+                                            span.text-muted size:
+                                            | {{file.fileDetails.size}}
+                                        small.pr-5(ng-if="file.fileDetails.resolution.width")
+                                            span.text-muted resolution:
+                                            span {{file.fileDetails.resolution.width}}x
+                                            span {{file.fileDetails.resolution.height}}
+
+
+
+            tab(index="1",heading='Playlists(needs 1.7.0)')
                 ul.list-group
                     li.list-group-item.list-group-item-info
                         input.form-control(type="text",placeholder="{{'Filter by Name' }}",ng-model="search")
-                    li.list-group-item(ng-repeat="pl in playlistsList  | filter:search ",ng-click="linkFileSave(pl.plName)")
+                    li.list-group-item(ng-repeat="pl in playlistsList  | filter:search ",
+                    ng-class="{'list-group-item-success':pl.plName==selectedAsset[selectedZone]}",
+                    ng-click="linkFileSave(pl.plName)")
                         .media
                             .media-left
                                 .media-object.letter-box.img-rounded.pull-left
                                     i.fa.fa-list-alt
                             .media-body
-                                p.media-heading &nbsp;{{pl.displayName}}
+                                .row
+                                    .col-sm-8
+                                        p.media-heading &nbsp;{{pl.displayName}}
+                                    .col-sm-4
+                                        label.text-muted(ng-show="pl.plName==selectedAsset[selectedZone]",title='Continuously play independent of main zone')
+                                            input(type='checkbox', ng-model='selectedAsset.option[selectedZone]')
+                                            span.pl-5 play independently
+                                
+                                
 

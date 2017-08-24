@@ -113,10 +113,13 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
                 scope.percent = 0;
                 scope.progressText = "";        
                 el.bind('change', function(e) {
+                    //warning - this is a FileList not an array!
                     console.log('file change event');
                     if (!e.target.files.length) return;
                     
                     scope.files = [];
+                    scope.maxFiles = scope.maxFiles || 10;
+                    scope.maxFileSizeMb = scope.maxFileSizeMb || 3000;
                     var tooBig = [];
                     if (e.target.files.length > scope.maxFiles) {
                         raiseError(e.target.files, 'TOO_MANY_FILES', "Cannot upload " + e.target.files.length + " files, maxium allowed is " + scope.maxFiles);
@@ -167,14 +170,27 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
                     if (scope.postPath) {
                         uploadPath = piUrls.base+scope.postPath;
                     }
+                    //make a copy of file in obj
+                    var objFiles = [],
+                        obj;
+                    for (var i = 0; i < scope.files.length; i++) {
+                        //copy File properties to an object
+                        obj = {};
+                        obj.name = scope.files[i].name;
+                        obj.type = scope.files[i].type;
+                        obj.lastModified = scope.files[i].lastModified;
+                        obj.lastModifiedDate = scope.files[i].lastModifiedDate;
+                        obj.size = scope.files[i].size;
+                        objFiles.push(obj);
+                    }
 
                     fileUploader
                         .post(scope.files, data)
                         .to(uploadPath)
                         .then(function(ret) {
-                            scope.ondone({files: ret.files, data: ret.data});
+                            scope.ondone({files: objFiles, data: ret.data});
                         }, function(error) {
-                            scope.onerror({files: scope.files, type: error.type, msg: error.msg});
+                            scope.onerror({files: objFiles, type: error.type, msg: error.msg});
                         },  function(progress) {
                             scope.onprogress({percentDone: progress});
                             scope.percent = progress;
@@ -213,7 +229,7 @@ directive('categories',['$http','piUrls', function($http,piUrls,truncate) {
                         '<input type="checkbox" value="{{category.name}}"'+
                                 'ng-checked="selectedLabels.indexOf(category.name) &gt; -1"'+
                                 'ng-click="cat.toggleSelection(category.name)"/>'+
-                                '<small class="text-muted">{{category.name | truncate:18}}</small>' +
+                                '<small class="text-muted" ng-attr-title="{{category.name}}">{{category.name | truncate:18}}</small>' +
                     '</label></div></div></form>',
         link: function(scope, elem, attr){
             scope.cat = {}   //holds all the category related objects

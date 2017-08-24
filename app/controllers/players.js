@@ -115,6 +115,7 @@ var sendConfig = function (player, group, periodic) {
         retObj.playlists = groupPlaylists;
     }
     retObj.assets = groupAssets;
+    retObj.assetsValidity = group.assetsValidity;
     retObj.groupTicker = groupTicker;
     retObj.lastDeployed = group.lastDeployed;
     retObj.installation = installation;
@@ -155,6 +156,7 @@ var sendConfig = function (player, group, periodic) {
 
     retObj.systemMessagesHide = settings.systemMessagesHide;
     retObj.authCredentials = settings.authCredentials;
+    retObj.enableLog = settings.enableLog || false;
     retObj.currentTime = Date.now();
     socketio.emitMessage(player.socket, 'config', retObj);
 }
@@ -412,17 +414,31 @@ exports.secretAck = function (sid, status) {
 }
 
 var pendingCommands = {};
+var shellCmdTimer = {};
 
 exports.shell = function (req, res) {
     var cmd = req.body.cmd;
-    var object = req.object;
-    pendingCommands[object.socket] = res;
-    socketio.emitMessage(object.socket, 'shell', cmd);
+    var object = req.object,
+        sid = object.socket;
+    pendingCommands[sid] = res;
+    socketio.emitMessage(sid, 'shell', cmd);
+
+    clearTimeout(shellCmdTimer[sid]);
+    shellCmdTimer[sid] = setTimeout(function(){
+        delete shellCmdTimer[sid];
+        if(pendingCommands[sid]){
+            rest.sendSuccess(res,"Request Timeout",
+                { err: "Could not get response from the player,Make sure player is online and try again."})
+            pendingCommands[sid] = null;
+        }
+    },60000)
 }
 
 exports.shellAck = function (sid, response) {
 
     if (pendingCommands[sid]) {
+        clearTimeout(shellCmdTimer[sid])
+        delete shellCmdTimer[sid];
         rest.sendSuccess(pendingCommands[sid], 'Shell cmd response', response);
         pendingCommands[sid] = null;
     }

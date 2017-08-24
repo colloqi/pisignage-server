@@ -12,7 +12,7 @@
                     label
                         input(type="checkbox",ng-model='playlist.selectedPlaylist.settings.ads.adPlaylist')
                         span() Make this as Advt. Playlist
-        .form-group
+        .form-group(ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist")
             .col-sm-6
                 p()   You can play the assets only on side and banner zones by disabling main zone here.
                     | Still you have to select dummy file for main zone due to our UI issue! We will correct it soon.
@@ -21,11 +21,42 @@
                     label
                         input(type="checkbox",,ng-model='playlist.selectedPlaylist.settings.ads.noMainPlay')
                         span() Play only in side/banner zones
-        .form-group
+        .form-group(ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist")
             label.col-sm-6.control-label() Play one asset after every seconds
             .col-sm-2
                 input.form-control(type='text',ng-model='playlist.selectedPlaylist.settings.ads.adInterval')
 
         .form-group
+            .col-sm-6.col-sm-offset-6
+                button.btn.btn-success(ng-click="saveSettings()") Save
+.modal-header
+    h4.text-center() Play this as independent Audio Playlist (coming soon)
+.modal-body
+    form.form-horizontal
+
+        .form-group
+            .col-sm-6
+                p() In addition to signage functionality, you can play audio from a playlist
+                    | through the 3.5mm jack
+            .col-sm-6
+                .checkbox
+                    label
+                        input(type="checkbox",ng-model='playlist.selectedPlaylist.settings.audio.enable',ng-disabled="true")
+                        span() Play songs from this playlist (need to contain only mp3 files)
+        .form-group(ng-show="playlist.selectedPlaylist.settings.audio.enable")
+            .col-sm-6
+                p()  
+            .col-sm-6
+                .checkbox
+                    label
+                        input(type="checkbox",,ng-model='playlist.selectedPlaylist.settings.audio.random')
+                        span() Play in random order
+        .form-group(ng-show="playlist.selectedPlaylist.settings.audio.enable")
+            .col-sm-6
+                p()
+            .col-sm-6
+                input.form-control(type='number',min=0,max=100,ng-model='playlist.selectedPlaylist.settings.audio.volume',
+                                        placeholder="{{'Enter value in %' }}")
+        .form-group(ng-show="playlist.selectedPlaylist.settings.audio.enable")
             .col-sm-6.col-sm-offset-6
                 button.btn.btn-success(ng-click="saveSettings()") Save

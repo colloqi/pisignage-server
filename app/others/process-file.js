@@ -45,7 +45,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                         },
                         function(img_cb){ // resize image
                             imageMagick(src)
-                                .resize(2560,2560,'>')
+                                .resize(1920,1920,'>')
                                 .write(src,function(err,op1){
                                     if(err)
                                         console.log("Image resize error for : "+src +"  "+err);
@@ -185,6 +185,9 @@ exports.processFile = function (filename, filesize, categories, cb) {
                         type= 'text';
                     else if(filename.match(config.pdffileRegex))
                         type = 'pdf';
+                    else if(filename.match(config.radioFileRegex))
+                        type = 'radio';
+
                     task_cb();
                 }
             }],

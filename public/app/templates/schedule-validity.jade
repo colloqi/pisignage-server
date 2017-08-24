@@ -1,0 +1,36 @@
+.modal-content
+    .modal-header.bg-default
+        button.close(ng-click='scheduleValidityModal.close()') &times;
+        h4.modal-title
+            span.pr-5.text-muted  Add validity period for the asset:
+            | {{forAsset.fileDetails.name}}
+    .modal-body
+        form(role='form', id='schedulecal', name='schedulecal')
+            .form-group
+                span.help-block You can add validity period for an asset to be shown on the screen (for e.g. sale duration)
+
+            .form-group
+                .checkbox
+                    label
+                        input(type="checkbox",ng-model="forAsset.fileDetails.validity.enable")
+                        span Add validity period
+
+            .form-group.row(ng-show='forAsset.fileDetails.validity.enable')
+                label.col-sm-2.control-label Valid from
+                .col-sm-4
+                    input.form-control.input-sm(type='date', ng-model='forAsset.fileDetails.validity.startdate',
+                    ng-model-options="{timezone:'UTC'}",
+                    placeholder="{{'Starting on' }}",
+                    name='startdate', ng-attr-title='{{"Enter Start Date" }}')
+
+                label.col-sm-2.control-label.text-right till
+                .col-sm-4
+                    input.form-control.input-sm(type='date', ng-model='forAsset.fileDetails.validity.enddate',
+                    ng-model-options="{timezone:'UTC'}",
+                    placeholder="Till date",
+                    name='enddate', title='{{"Enter End Date"}}')
+
+    .modal-footer
+        button.btn.btn-default(type="button",ng-click='scheduleValidityModal.close()') Cancel
+        button.btn.btn-primary(ng-click='saveValidity()') SAVE
+

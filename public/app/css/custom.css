@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    max-width: 1280px;
+    /*max-width: 1280px;*/
     margin: auto;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
     height:100%;

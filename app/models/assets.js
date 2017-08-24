@@ -11,7 +11,7 @@ var AssetSchema = new Schema({
     thumbnail: String,
     labels: [],
     playlists:              [],
-
+    validity:               {enable:Boolean, startdate:String,enddate:String},
     createdAt: {type: Date, default: Date.now},
     createdBy: {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}
 })

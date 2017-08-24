@@ -135,6 +135,7 @@ angular.module('piAssets.services', [])
                 obj.fileDetails = assetLoader.asset.filesDetails[filename] || {name: filename};
                 obj.playlistDetails = {filename: filename, selected: false};
                 obj.playlistDetails.isVideo = !(filename.match(piConstants.videoRegex) == null);
+                obj.playlistDetails.option = obj.playlistDetails.option ||  {main:false}
                 if (assetLoader.asset.filesDetails[filename])
                     obj.playlistDetails.duration = parseInt(assetLoader.asset.filesDetails[filename].duration);
                 obj.playlistDetails.duration = obj.playlistDetails.duration || $rootScope.serverConfig.defaultDuration;

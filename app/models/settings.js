@@ -9,6 +9,7 @@ var SettingsSchema = new Schema({
     language: {type: String , default: 'en'},
     logo: {type: String},
     url: {type: String},
+    enableLog : {type: Boolean, default: false},
     authCredentials: {
         user: {type: String , default: 'pi'},
         password: {type: String , default: 'pi'}

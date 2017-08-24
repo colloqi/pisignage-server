@@ -24,4 +24,15 @@ angular.module('pisignage.filters', []).
             }
 
         };
+    }).
+    filter('readable', function(){
+        return function(str) {
+            var str1="";
+            while(str.length > 4) {
+                str1 += str.slice(0,4)+'-';
+                str = str.slice(4);
+            }
+            str1 += str;
+            return str1;
+        }
     });

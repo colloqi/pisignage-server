@@ -11,6 +11,7 @@ var GroupSchema = new Schema({
     timeToStopVideo:        {type: Number , default: 0 },
     
     assets:                 [],
+    assetsValidity:         [],
     ticker:                 {},
 
     deployedPlaylists:      [],

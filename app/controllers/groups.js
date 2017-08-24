@@ -126,7 +126,8 @@ exports.updateObject = function (req, res) {
                 Group.update({ _id: group._id }, { $set: {
                     lastDeployed: group.lastDeployed,
                     assets: group.assets,
-                    deployedAssets: group.deployedAssets
+                    deployedAssets: group.deployedAssets,
+                    assetsValidity: group.assetsValidity
                 }}).exec();
             }
             return rest.sendSuccess(res, 'updated Group details', group);

@@ -28,7 +28,36 @@
         <div class="col-xs-7">
           <h4>{{urlLink.type == ".tv"?"You Tube":urlLink.type.slice(1)}}</h4>
         </div>
-        <div class="col-xs-2"><small ng-show="urlLink.type=='.mrss' &amp;&amp; urlLink.hideTitle">Hide Title Text</small></div>
+      </div>
+      <div ng-if="urlLink.type == '.mrss'" class="row">
+        <div class="col-xs-2 col-xs-offset-1">
+          <h4 class="text-muted">RSS Text</h4>
+        </div>
+        <div class="col-sm-9">
+          <div class="radio-inline">
+            <label>
+              <input type="radio" name="radio_none" ng-model="urlLink.hideTitle" value="none"/><small>Hide all text</small>
+            </label>
+          </div>
+          <div class="radio-inline">
+            <label>
+              <input type="radio" name="radio_title" ng-model="urlLink.hideTitle" value="title"/><small>Show title</small>
+            </label>
+          </div>
+          <div class="radio-inline">
+            <label>
+              <input type="radio" name="radio_description" ng-model="urlLink.hideTitle" value="description"/><small>Show description</small>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div ng-if="urlLink.type == '.mrss'" class="row">
+        <div class="col-xs-2 col-xs-offset-1">
+          <h4 class="text-muted">Item duration</h4>
+        </div>
+        <div class="col-sm-3">
+          <input type="number" name="duration" placeholder="{{&quot;Duration of each feed item&quot;}}" ng-model="urlLink.duration" class="form-control"/>
+        </div>
       </div>
       <div ng-if="urlLink.type == '.txt'" class="row">
         <div class="col-sm-2 text-right">

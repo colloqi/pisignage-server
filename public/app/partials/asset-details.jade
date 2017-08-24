@@ -22,8 +22,29 @@
                     h4.text-muted Type
                 .col-xs-7
                     h4 {{urlLink.type == ".tv"?"You Tube":urlLink.type.slice(1)}}
-                .col-xs-2
-                    small(ng-show="urlLink.type=='.mrss' && urlLink.hideTitle") Hide Title Text
+            .row(ng-if="urlLink.type == '.mrss'")
+                .col-xs-2.col-xs-offset-1
+                    h4.text-muted RSS Text
+                .col-sm-9
+                    .radio-inline
+                        label
+                            input(type='radio',name='radio_none', ng-model='urlLink.hideTitle', value="none")
+                            small Hide all text
+                    .radio-inline
+                        label
+                            input(type='radio',name='radio_title', ng-model='urlLink.hideTitle', value="title")
+                            small Show title
+                    .radio-inline
+                        label
+                            input(type='radio',name='radio_description', ng-model='urlLink.hideTitle', value="description")
+                            small Show description
+            .row(ng-if="urlLink.type == '.mrss'")
+                .col-xs-2.col-xs-offset-1
+                    h4.text-muted Item duration
+                .col-sm-3
+                    input.form-control(type='number',name='duration' ,placeholder='{{"Duration of each feed item"}}',
+                    ng-model='urlLink.duration')
+
             .row(ng-if="urlLink.type == '.txt'")
                 .col-sm-2.text-right
                     label.control-label(translate) Optional CSS

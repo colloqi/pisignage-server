@@ -16,11 +16,27 @@
             label.col-sm-4.control-label File Type
             .col-sm-8
                 select.form-control(ng-options='entry.ext as entry.name for entry in link.types',name='linktype', ng-model='link.obj.type', required='')
-            .col-xs-4.col-xs-offset-4(ng-show="link.obj.type=='.mrss'")
-                .checkbox
+        .form-group(ng-if="link.obj.type == '.mrss'")
+            label.col-sm-4.control-label RSS Text
+            .col-xs-8
+                .radio-inline
                     label
-                        input(type='checkbox',name='title_checkbox', ng-model='link.obj.hideTitle')
-                        span Hide Title text
+                        input(type='radio',name='radio_none', ng-model='link.obj.hideTitle', value="none")
+                        small Hide all text
+                .radio-inline
+                    label
+                        input(type='radio',name='radio_title', ng-model='link.obj.hideTitle', value="title")
+                        small Show title
+                .radio-inline
+                    label
+                        input(type='radio',name='radio_description', ng-model='link.obj.hideTitle', value="description")
+                        small Show description
+        .form-group(ng-if="link.obj.type == '.mrss'")
+            label.control-label.col-sm-4 Item duration
+            .col-sm-3
+                input.form-control(type='number',name='duration' ,placeholder='{{"Duration of each feed item"}}',
+                ng-model='link.obj.duration')
+
         .form-group(ng-if="link.obj.type != '.txt'")
             label.col-sm-4.control-label Link Address
             .col-sm-8

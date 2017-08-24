@@ -67,6 +67,10 @@ exports.createFiles = function (req, res) {
     function renameFile(fileObj, next) {
         console.log("Uploaded file: "+fileObj.path);
         var filename = fileObj.originalname.replace(config.filenameRegex, '');
+
+        if(filename.match(config.brandRegex)) // change brand video name
+            filename = filename.toLowerCase();
+
         fs.rename(fileObj.path, path.join(config.mediaDir, filename), function (err) {
             if (err) {
                 next(err);
@@ -123,6 +127,8 @@ exports.getFileDetails = function (req, res) {
                         fileData.type = 'pdf';
                     else if (file.match(config.txtFileRegex))
                         fileData.type = 'text';
+                    else if (file.match(config.radioFileRegex))
+                        fileData.type = 'radio'
                     else
                         fileData.type = 'other';
                     next();

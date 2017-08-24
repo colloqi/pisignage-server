@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose'),
     Player = mongoose.model('Player'),
+    Asset = mongoose.model('Asset'),
     rest = require('../others/restware'),
     config = require('../../config/config'),
     fs = require('fs'),
@@ -56,7 +57,7 @@ exports.deploy = function (installation,group, cb) {
                             fs.stat(srcfile, function (err, stats) {
                                 if (err || !stats.isFile()) {
                                     if (file.indexOf("TV_OFF") == -1) {
-                                        console.log("removing file as it is not present: " + file)
+                                        //console.log("removing file as it is not present: " + file)
                                         //group.assets.splice(group.assets.indexOf(file), 1)       //careful, async gets affected if the array is same
                                         filesNotPresent.push(file)
                                     }
@@ -110,7 +111,7 @@ exports.deploy = function (installation,group, cb) {
             })
         },
         function(async_cb){ // brand video check
-            var specialFiles = ["brand_intro.mp4","welcome.ejs","iot.zip"]
+            var specialFiles = ["brand_intro.mp4","brand_intro_portrait.mp4","welcome.ejs","iot.zip"]
             var filesAdded = []
             async.eachSeries(specialFiles,
                 function(file,iterative_cb){
@@ -137,6 +138,20 @@ exports.deploy = function (installation,group, cb) {
                     async_cb(err);
                 }
             )
+        },function(async_cb){ // send list of asset validity
+            Asset.find({'validity.enable':true,'name':{'$in':group.assets}},
+                "name validity",function (err, data) {
+                    if (!err && data) {
+                        group.assetsValidity = data.map(function(asset){
+                            return ({name:asset.name, startdate:asset.validity.startdate, enddate:asset.validity.enddate})
+                        })
+                        //console.log(group.assetsValidity)
+                    } else {
+                        group.assetsValidity = [];
+                        logger.log("error", "Asset validity query error for " + installation + ";" + err)
+                    }
+                    async_cb();
+                })
         }], function (err, results) {
             group.deployedAssets = group.assets
             if (err) {
@@ -147,7 +162,7 @@ exports.deploy = function (installation,group, cb) {
                 socketio.emitMessage(player.socket, 'sync',
                     group.playlists, group.assets, group.deployedTicker,
                     group.logo, group.logox, group.logoy,group.combineDefaultPlaylist,group.omxVolume,
-                    group.loadPlaylistOnCompletion);
+                    group.loadPlaylistOnCompletion, group.assetsValidity);
             });
             console.log("sending sync event to players");
             cb(null, group);

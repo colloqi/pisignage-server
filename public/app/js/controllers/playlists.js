@@ -277,7 +277,7 @@ angular.module('piPlaylists.controllers', [])
                 var settings = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.settings
                 settings.ticker.enable = settings.ticker.enable || false
                 settings.ticker.behavior = settings.ticker.behavior || 'slide'
-                settings.ticker.rss = settings.ticker.rss || { enable: false , link: null }
+                settings.ticker.rss = settings.ticker.rss || { enable: false , link: null, feedDelay:10 }
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/ticker-popup.html',
                     scope: $scope
@@ -374,6 +374,10 @@ angular.module('piPlaylists.controllers', [])
             //rawdata.fileA = $scope.playlistItems; // file from playlist
             $scope.selectedAsset = item;
             $scope.selectedZone = zone;
+            if (item[zone] && item[zone].indexOf("__") == 0)
+                $scope.tabIndex = 1;
+            else
+                $scope.tabIndex = 0;
 
             $http
                 .get(piUrls.playlists, {})

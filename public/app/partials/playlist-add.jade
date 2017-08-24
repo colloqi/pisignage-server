@@ -50,17 +50,29 @@
                                             i.fa.fa-paperclip(ng-if="!file.playlistDetails[zone]")
                                         button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails[zone]",
                                                                         ng-click="removeLinkFile(file,zone)") X
+                    .row
+                        label.btn.btn-link.text-muted(ng-show='file.fileDetails.type == "video"',
+                        title='mute the audio')
+                            input(type='checkbox', ng-model='file.playlistDetails.option.main',ng-model-options="{ debounce: 500 }")
+                            span.pl-5 mute audio
+                        label.btn.btn-link.text-muted(ng-show='file.fileDetails.type == "audio" || file.fileDetails.type == "radio"',
+                        title='play in background')
+                            input(type='checkbox', ng-model='file.playlistDetails.option.main',ng-model-options="{ debounce: 500 }",
+                            ng-true-value="false", ng-false-value="true",
+                            ng-checked="file.playlistDetails.option.main !== true")
+                            span.pl-5  play in background
 
-                            //span(ng-show="asset.showAssets.playlist.layout != '2bp' && asset.showAssets.playlist.layout != '2bp270'")
-                            //    button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")
-                            //        span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}
-                            //    button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.side",
-                            //    ng-click="removeLinkFile(file,'side')") X
-                            //span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b' && asset.showAssets.playlist.layout != '2c' && asset.showAssets.playlist.layout != '2d'")
-                            //    button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'bottom')")
-                            //        span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}
-                            //    button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",
-                            //                        ng-click="removeLinkFile(file,'bottom')") X
+
+                        //span(ng-show="asset.showAssets.playlist.layout != '2bp' && asset.showAssets.playlist.layout != '2bp270'")
+                        //        button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")
+                        //            span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}
+                        //        button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.side",
+                        //        ng-click="removeLinkFile(file,'side')") X
+                        //    span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b' && asset.showAssets.playlist.layout != '2c' && asset.showAssets.playlist.layout != '2d'")
+                        //        button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'bottom')")
+                        //            span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}
+                        //        button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",
+                        //                            ng-click="removeLinkFile(file,'bottom')") X
 
 
         li.list-group-item(ng-if="!asset.showAssets.assets.length")

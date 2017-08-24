@@ -481,15 +481,10 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.groupTicker = function() {
-            var ticker = $scope.group.selectedGroup.ticker ||
-                                    {
-                                        enable:false,
-                                        behavior: 'scroll',
-                                        rss: { enable: false , link: null }
-                                    }
+            var ticker = $scope.group.selectedGroup.ticker || {}
             ticker.enable = ticker.enable || false
             ticker.behavior = ticker.behavior || 'slide'
-            ticker.rss = ticker.rss || { enable: false , link: null }
+            ticker.rss = ticker.rss || { enable: false , link: null, feedDelay:10 }
             $scope.tickerModal = $modal.open({
                 templateUrl: '/app/templates/group-ticker-popup.html',
                 scope: $scope

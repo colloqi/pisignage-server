@@ -41,18 +41,25 @@
                   <div ng-if="!customZonesPresent || customZonesPresent[zone]" class="btn-group">
                     <button ng-click="linkFile(file.playlistDetails,zone)" class="btn btn-xs btn-info"><small>{{zone}}: {{file.playlistDetails[zone]}}&nbsp;</small><i ng-if="!file.playlistDetails[zone]" class="fa fa-paperclip"></i></button>
                     <button ng-if="file.playlistDetails[zone]" ng-click="removeLinkFile(file,zone)" class="btn btn-xs btn-warning">X</button>
-                  </div></span></small>
-              <!--span(ng-show="asset.showAssets.playlist.layout != '2bp' && asset.showAssets.playlist.layout != '2bp270'")-->
-              <!--    button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")-->
-              <!--        span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}-->
-              <!--    button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.side",-->
-              <!--    ng-click="removeLinkFile(file,'side')") X-->
-              <!--span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b' && asset.showAssets.playlist.layout != '2c' && asset.showAssets.playlist.layout != '2d'")-->
-              <!--    button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'bottom')")-->
-              <!--        span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}-->
-              <!--    button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",-->
-              <!--                        ng-click="removeLinkFile(file,'bottom')") X-->
-            </div>
+                  </div></span></small></div>
+          </div>
+          <div class="row">
+            <label ng-show="file.fileDetails.type == &quot;video&quot;" title="mute the audio" class="btn btn-link text-muted">
+              <input type="checkbox" ng-model="file.playlistDetails.option.main" ng-model-options="{ debounce: 500 }"/><span class="pl-5">mute audio</span>
+            </label>
+            <label ng-show="file.fileDetails.type == &quot;audio&quot; || file.fileDetails.type == &quot;radio&quot;" title="play in background" class="btn btn-link text-muted">
+              <input type="checkbox" ng-model="file.playlistDetails.option.main" ng-model-options="{ debounce: 500 }" ng-true-value="false" ng-false-value="true" ng-checked="file.playlistDetails.option.main !== true"/><span class="pl-5"> play in background</span>
+            </label>
+            <!--span(ng-show="asset.showAssets.playlist.layout != '2bp' && asset.showAssets.playlist.layout != '2bp270'")-->
+            <!--        button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")-->
+            <!--            span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}-->
+            <!--        button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.side",-->
+            <!--        ng-click="removeLinkFile(file,'side')") X-->
+            <!--    span(ng-show="asset.showAssets.playlist.layout != '2a' && asset.showAssets.playlist.layout != '2b' && asset.showAssets.playlist.layout != '2c' && asset.showAssets.playlist.layout != '2d'")-->
+            <!--        button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'bottom')")-->
+            <!--            span Bottom Zone: {{file.playlistDetails.bottom || "Select a file"}}-->
+            <!--        button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails.bottom",-->
+            <!--                            ng-click="removeLinkFile(file,'bottom')") X-->
           </div>
         </div>
       </div>

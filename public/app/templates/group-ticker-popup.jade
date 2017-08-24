@@ -1,47 +1,65 @@
 .modal-header
     h3.text-warning() Ticker for the Play-list
 .modal-body
-    form(name='group.tickerForm')
-        .row
-            .col-xs-4
+    form.form(name='group.tickerForm')
+        .row.form-group
+            .col-sm-9.col-sm-offset-3
                 .checkbox
                     label
                         input(type='checkbox',name='ticker_checkbox', ng-model='group.selectedGroup.ticker.enable')
                         span Enable Ticker
-            .col-xs-2(ng-show='group.selectedGroup.ticker.enable')
-                .radio
-                    label.text-muted.pull-right: small() Type
-            .col-xs-2(ng-show='group.selectedGroup.ticker.enable')
-                .radio
-                    label
-                        input(type='radio',value='scroll',ng-model='group.selectedGroup.ticker.behavior')
-                        span() Scroll
-            .col-xs-2(ng-show='group.selectedGroup.ticker.enable')
+        .row.form-group(ng-show='group.selectedGroup.ticker.enable')
+            small.text-muted.col-sm-3.text-right Type
+            .col-sm-2
                 .radio
                     label
                         input(type='radio',value='slide',ng-model='group.selectedGroup.ticker.behavior')
                         span() Slide
-        .row(ng-show='group.selectedGroup.ticker.enable')
-            .col-xs-4
+            .col-sm-2
+                .radio
+                    label
+                        input(type='radio',value='scroll',ng-model='group.selectedGroup.ticker.behavior')
+                        span() Scroll left
+            .col-sm-2
+                .radio
+                    label
+                        input(type='radio',value='scrollRight',ng-model='group.selectedGroup.ticker.behavior')
+                        span() Scroll right
+        .row.form-group(ng-show='group.selectedGroup.ticker.enable')
+            small.text-muted.col-sm-3.text-right CSS
+            .col-xs-8
+                input.form-control(type='text',placeholder='e.g. color:#eee; font-style:italic; ',
+                                        ng-model='group.selectedGroup.ticker.style')
+        .row.form-group(ng-show='group.selectedGroup.ticker.enable')
+            .col-sm-6.col-sm-offset-3
                 .checkbox
                     label
                         input(type='checkbox',name='rss_checkbox', ng-model='group.selectedGroup.ticker.rss.enable')
                         span() Use RSS feed
-            .col-xs-2
-                label.text-muted.pull-right: small() CSS
-            .col-xs-6
-                input.form-control(type='text',placeholder='e.g. color:#eee; font-style:italic; ',
-                                        ng-model='group.selectedGroup.ticker.style')
-        .form-group
-            .col-xs-12 &nbsp;
-        .form-group(ng-show="group.selectedGroup.ticker.enable && group.selectedGroup.ticker.rss.enable")
-            label.control-label() RSS feed Link
-            input.form-control(type='text',ng-model='group.selectedGroup.ticker.rss.link',
+
+        .form-group.row(ng-show="group.selectedGroup.ticker.enable && group.selectedGroup.ticker.rss.enable")
+            small.text-muted.col-sm-3.text-right Item duration
+            .col-sm-6
+                input.form-control(type='number',ng-model='group.selectedGroup.ticker.rss.feedDelay',placeholder="{{'rss item duration in slide mode'}}")
+        .form-group.row(ng-show="group.selectedGroup.ticker.enable && group.selectedGroup.ticker.rss.enable")
+            small.text-muted.col-sm-3.text-right RSS feed Link
+            .col-sm-8
+                input.form-control(type='text',ng-model='group.selectedGroup.ticker.rss.link',
                                     placeholder="enter your rss link ....")
-        .form-group(ng-show="group.selectedGroup.ticker.enable && !group.selectedGroup.ticker.rss.enable")
-            label.control-label() Add Messages for the ticker
-            textarea.form-control( name='ticker_messages',rows=5,
+                .checkbox
+                    label
+                        input(type='checkbox',name='rss_encoding',ng-model='group.selectedGroup.ticker.rss.encodeAsBinary')
+                        small: i.text-primary Use Binary encoding for RSS, enable this if characters are not displayed properly
+                .checkbox
+                    label
+                        input(type='checkbox',name='rss_field',ng-model='group.selectedGroup.ticker.rss.useDescription')
+                        small: i.text-primary Use description field of rss stream instead of title field
+        .form-group.row(ng-show="group.selectedGroup.ticker.enable && !group.selectedGroup.ticker.rss.enable")
+            small.text-muted.col-sm-3.text-right Add Messages for the ticker
+            .col-sm-8
+                textarea.form-control( name='ticker_messages',rows=5,
                                     ng-model='group.selectedGroup.ticker.messages',
                                     placeholder="Enter messages here")
-        .form-group
-            button.btn.btn-success(ng-click='tickerSave()') SAVE
+        .form-group.row
+            .col-sm-9.col-sm-offset-3
+                button.btn.btn-success(ng-click='tickerSave()') SAVE
