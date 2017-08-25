@@ -30,3 +30,6 @@
 **1.8.5**
 1. drag and drop of assets to upload
 
+**1.9.5a**
+1. Randomising assets order in a playlist
+
