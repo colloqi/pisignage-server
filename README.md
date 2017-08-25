@@ -1,20 +1,29 @@
 # pisignage-server
-**Server to manage piSignage players in a LAN or Private Network**
+
+Server code to manage piSignage players in a LAN or Private Network or to setup your own server!
 
 
-## New version 0.9.0 has been released!      
-### Upgrading to 0.9.0 from existing versions  
+## New version 1.9.5a has been released! 
+     
+**Upgrading to 1.9.5a from existing versions**  
 1. git pull origin master and apply your code changes if any 
+1. If you are upadating from before 24 Nov 2016, please change the uri variable in config/env/development.js to 'mongodb://localhost/pisignage-dev' to retain the old data
 2. start the pisignage-server and go to url localhost:3000
-3. Enter the account name of yours at pisignage.com
+3. Enter the username of yours at pisignage.com (not the email ID) (or change under settings, otherwise player license will not be enabled)
 4. Default authentication credentials for player webUI has been changed to pi:pi
 5. New settings tab has been added for settings instead of config/env/all.js file
-6. New software upgrades are automatically pulled to the server and you can upgrade from the local server itself
+6. New player software upgrades are automatically pulled to the server and you can upgrade from the local server itself
 7. Upload new licenses bought to the local server so that they are automatically installed in the pi
 8. Authentication has been added to the server UI which can be changed under settings (default pi:pi)
 
 ## Getting Started
-1.Install mongodb
+
+
+***Note: Instructions are outdated for installing nodejs, mongodb, ffmpeg, please refer to the respective package/OS websites for latest till we update!, write to us 
+at support@pisignage.com for help***
+
+
+1. Install mongodb
 
    - **Ubuntu**
      
@@ -59,7 +68,7 @@
         
    For More info please refer [here](http://docs.mongodb.org/manual/installation/)
         
-2.Install node.js and npm
+2. Install node.js and npm
 
    > In some installations there is another program called node, be sure to install nodejs. If other node program is laready installed you can find out by node --version command, it will not output anything. Uninstall the node program in that case 
 
@@ -159,7 +168,7 @@
       
       You may be asked to run above command as **root user**
    
-4.Install imagemagik
+4. Install imagemagik
    - **Ubuntu**
       
       ```
@@ -171,7 +180,7 @@
       brew install imagemagick
       ```
 
-5.Clone this reporsitory and run follwing commands
+5. Clone this reporsitory and run follwing commands
 
    ```
     git clone https://github.com/colloqi/pisignage-server 
@@ -180,13 +189,13 @@
     
     npm install
    ```
-6.Currently network port is configured as 3000 in local server. Modify in the file `config/env/development.js` for the port
+6. Currently network port is configured as 3000 in local server. Modify in the file `config/env/development.js` for the port
 
-7.Run node server with `sudo node server.js`
+7. Run node server with `sudo node server.js`
 
-8.Open Chrome browser and check at [http://localhost:3000](http://localhost:3000) **OR** `http://[your-ip]:3000` (ex: 192.168.1.30:3000, 10.50.16.110:3000)
+8. Open Chrome browser and check at [http://localhost:3000](http://localhost:3000) **OR** `http://[your-ip]:3000` (ex: 192.168.1.30:3000, 10.50.16.110:3000)
 
-9.Do the following configuration before you start( **New under 0.9.0** )    
+9. Do the following configuration before you start( **New under 0.9.0** )    
     - Under settings, configure the username to be same as that of your signin username at pisignage.com  
     - Download the license files either from email or from pisignage.com, upload them to your local server under settings  
     - You can upgrade your players directly from your local server now
@@ -213,16 +222,16 @@
 
 ## Features  
 
-1.Player management  
+1. Player management  
     - Auto discovery of players in a network  
     - Monitor Players  
 
-2.Group management - create groups and assign players to groups  
+2. Group management - create groups and assign players to groups  
     - Display settings - 1080p/720p and landscape or portrait mode  
     - Deploy default playlist, scheduled playlists and advt playlist  
     - Assign Players to Groups  
 
-3.Assets Management  
+3. Assets Management  
     - Upload assets (video,mp3,html/zip,images, links, google calendar feed)  
     - Videos are automatically converted to mp4 using ffmpeg  
     - Thumbnail creation for videos and video metadat extraction to store in data base  
@@ -232,7 +241,7 @@
     - view assets locally   
     - auto label creation for uploaded time (in coming releases)  
 
-4.Playlist management  
+4. Playlist management  
     - Create, rename or delete playlists  
     - Assign assets & drag to change order  
     - assign duration for non-video assets  
@@ -240,24 +249,26 @@
     - Enable ticker & set Ticker text  
     - Make it ad playlist with configurable interval timer  
 
-5.Reports & Logs  
+5. Reports & Logs  
     - Not planned (Feature requests welcome)  
 
 ### Points to remember
 
-1.angularjs-dropdown-multiselect is taken directly from   
+1. angularjs-dropdown-multiselect is taken directly from   
     https://github.com/dotansimha/angularjs-dropdown-multiselect/pull/23/files instead of bower (for close-on-select to work)  
 
-2.Requires following programs to work  
+2. Requires following programs to work  
     - ffmpeg >= 0.9  (in certain Os, these may have to be compiled since the package does not exist, 
       please see the issue #9, it is not that scary!)   
     - ffprobe associated with ffmpeg needed to convert videos    
     - imagemagick  creates thumbnails
     
-3.Two directories are created by the program ../media and ../media/_thumbnails. If these directories are not created server won't work as expected (for e.g. thumbnails won't be created if _thumbnails directory does not exit). In that case create those directories manually.
+3. Two directories are created by the program ../media and ../media/_thumbnails. If these directories are not created server won't work as expected (for e.g. thumbnails won't be created if _thumbnails directory does not exit). In that case create those directories manually.
 
 
-#### You can also manage players using Browser(http://playerip:8000) or downloading Chrome app  
+4. You can also manage players using Browser(http://playerip:8000) or downloading Chrome app
+
+5. Make sure installation under settings page is same as your username (not email) at pisignage.com  
 
     
-#### The code is still in early release, Please raise an issue for problems or send an email to info@pisignage.com  
+***Please raise an issue for problems or send us email at support@pisignage.com***  
