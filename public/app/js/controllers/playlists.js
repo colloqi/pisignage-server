@@ -396,11 +396,16 @@ angular.module('piPlaylists.controllers', [])
                 return !(file.match(piConstants.audioRegex) ||
                 file.match(piConstants.liveStreamRegex) || file.match(piConstants.CORSLink));
             })
+            
 
             $scope.modal = $modal.open({
                 templateUrl: '/app/templates/linkfile-popup.html',
                 scope: $scope
             });
+        }
+
+        $scope.changeTab = function(index) {
+            $scope.tabIndex = index;
         }
 
         $scope.linkFileSave = function(file){

@@ -43,6 +43,7 @@ module.exports = {
     audioRegex: /(mp3|m4a|mp4a|aac)$/i,
     imageRegex: /(jpg|jpeg|png|gif|bmp)$/i,
     htmlRegex: /\.html$/,
+    noticeRegex: /\.html$/,
     zipfileRegex: /(.zip|.gz|.bz2)$/i,
     repofileRegex: /\.repo$/i,
     liveStreamRegex: /\.tv$/i,
