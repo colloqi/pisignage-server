@@ -5,7 +5,7 @@
 .modal-body
     .panel-body
         tabset
-            tab(index="0",heading='Assets',active="tabIndex == 0",ng-click="changeTab($index)")
+            tab(index="0",heading='Assets')
                 ul.list-group
                     li.list-group-item.list-group-item-info
                         input.form-control(type="text",placeholder="Filter by Name",ng-model="search")
@@ -43,7 +43,7 @@
 
 
 
-            tab(index="1",heading='Playlists(needs 1.7.0)',active="tabIndex == 1",ng-click="changeTab($index)")
+            tab(index="1",heading='Playlists(needs 1.7.0)')
                 ul.list-group
                     li.list-group-item.list-group-item-info
                         input.form-control(type="text",placeholder="{{'Filter by Name' }}",ng-model="search")
