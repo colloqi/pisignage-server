@@ -406,7 +406,7 @@ angular.module('piPlaylists.controllers', [])
         $scope.linkFileSave = function(file){
             $scope.selectedAsset[$scope.selectedZone] = file;
             $scope.saveData();
-            $scope.modal.close();
+            //$scope.modal.close();
         }
 
         $scope.removeLinkFile = function(file,zone){

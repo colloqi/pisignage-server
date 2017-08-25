@@ -7,7 +7,7 @@
   </div>
   <div class="panel-body"><img ng-if="filedetails.type==&quot;image&quot;" ng-src="{{ filedetails.path }}" class="img-responsive img-rounded"/>
     <video ng-if="filedetails.type==&quot;video&quot;" controls="controls" ng-src="{{ filedetails.path }}" class="img-responsive img-rounded"></video>
-    <audio ng-if="filedetails.type==&quot;audio&quot;" controls="controls">
+    <audio ng-if="filedetails.type==&quot;audio&quot; || filedetails.type==&quot;radio&quot;" controls="controls">
       <source ng-src="{{filedetails.path}}" type="audio/mpeg"/>
     </audio>
     <iframe ng-if="filedetails.type==&quot;html&quot;" ng-src="{{ filedetails.path }}"></iframe>

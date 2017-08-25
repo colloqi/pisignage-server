@@ -469,7 +469,7 @@ angular.module('piAssets.controllers',[])
                     new Date(validityField.enddate)
 
             $scope.scheduleValidityModal = $modal.open({
-                templateUrl: '/app/templates/schedulealidity.html',
+                templateUrl: '/app/templates/schedule-validity.html',
                 scope: $scope,
                 keyboard: false
             });

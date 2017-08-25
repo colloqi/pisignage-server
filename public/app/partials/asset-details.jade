@@ -5,7 +5,7 @@
     .panel-body
         img.img-responsive.img-rounded(ng-if='filedetails.type=="image"', ng-src='{{ filedetails.path }}')
         video.img-responsive.img-rounded(ng-if='filedetails.type=="video"', controls, ng-src='{{ filedetails.path }}')
-        audio(ng-if='filedetails.type=="audio"',controls)
+        audio(ng-if='filedetails.type=="audio" || filedetails.type=="radio"',controls)
             source(ng-src='{{filedetails.path}}',type="audio/mpeg")
         iframe(ng-if='filedetails.type=="html"', ng-src='{{ filedetails.path }}')
         iframe(ng-if='filedetails.type=="pdf"',height="300px",width="100%",ng-src='{{filedetails.path}}')

@@ -104,6 +104,19 @@ body .modal-body {
     color:lightgreen;
 }
 
+.pl-5 {
+    padding-left: 5px;
+}
+.pl-10 {
+    padding-left: 10px;
+}
+.pr-5 {
+    padding-right: 5px;
+}
+.pr-10 {
+    padding-right: 10px;
+}
+
 
 
 

@@ -7,8 +7,8 @@
 </div>
 <div class="modal-body">
   <div class="panel-body">
-    <tabset active="tabIndex">
-      <tab index="0" heading="Assets">
+    <tabset>
+      <tab index="0" heading="Assets" active="tabIndex == 0">
         <ul class="list-group">
           <li class="list-group-item list-group-item-info">
             <input type="text" placeholder="Filter by Name" ng-model="search" class="form-control"/>
@@ -37,7 +37,7 @@
           </li>
         </ul>
       </tab>
-      <tab index="1" heading="Playlists(needs 1.7.0)">
+      <tab index="1" heading="Playlists(needs 1.7.0)" active="tabIndex == 1">
         <ul class="list-group">
           <li class="list-group-item list-group-item-info">
             <input type="text" placeholder="{{'Filter by Name' }}" ng-model="search" class="form-control"/>

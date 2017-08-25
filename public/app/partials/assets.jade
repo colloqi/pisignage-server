@@ -60,7 +60,7 @@
                         .letter-box.media-object.img-rounded(ng-if='!file.fileDetails.thumbnail')
                             span(ng-if='file.fileDetails.type == "audio" || file.fileDetails.type == "radio"')
                                 i.fa.fa-music
-                            span(ng-if='file.fileDetails.type != "audio" || file.fileDetails.type != "radio"')
+                            span(ng-if='file.fileDetails.type != "audio" && file.fileDetails.type != "radio"')
                                 | {{file.fileDetails.type.slice(0,1) || 'N'}}
                 .col-sm-10
                     .row
