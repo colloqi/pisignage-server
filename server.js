@@ -32,6 +32,13 @@ fs.readdirSync(modelsPath).forEach(function (file) {
     require(modelsPath + '/' + file);
 });
 
+console.log('********************************************************************');
+console.log('*    After update if you do not see your groups, please change     *');
+console.log('*    change the uri variable to "mongodb://localhost/pisignage-dev"*');
+console.log('*    in config/env/development.js and restart the server           *');
+console.log('******************************************************************\n');
+
+
 var app = express();
 
 // Express settings
@@ -41,9 +48,9 @@ require('./config/express')(app);
 var server;
 if (config.https) {
     var https_options = {
-        ca: fs.readFileSync("/home/ec2-user/.ssh/ca-chain.crt"),
-        key: fs.readFileSync("/home/ec2-user/.ssh/nodeims.key"),
-        cert: fs.readFileSync("/home/ec2-user/.ssh/STAR_nodeims_com.crt")
+        ca: fs.readFileSync("/home/ec2-user/.ssh/intermediate.crt"),
+        key: fs.readFileSync("/home/ec2-user/.ssh/pisignage-server.key"),
+        cert: fs.readFileSync("/home/ec2-user/.ssh/pisignage-server.crt")
     };
     server = require('https').createServer(https_options, app);
 
