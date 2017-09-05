@@ -10,7 +10,7 @@
           <button ng-show="label.selectedLabel" ng-click="label.selectedLabel=null;" class="btn btn-info btn-sm"><i class="fa fa-close"></i></button></span></div>
       <div class="col-sm-2">
         <form>
-          <input type="text" placeholder="filter" ng-model="search.$" class="form-control"/>
+          <input type="text" placeholder="filter" ng-model="searchFilename" class="form-control"/>
         </form>
       </div>
       <div dropdown="dropdown" ng-if="!assetConfig.allAssets" class="col-sm-3 dropdown">
@@ -32,22 +32,24 @@
     </div>
   </div>
   <ul as-sortable="sortable.options" ng-model="assetConfig.assets.assets" style="min-height:50px;" class="list-group">
-    <li ng-repeat="file in assetConfig.assets.assets | filter:labelFilter | filter:search track by $index" as-sortable-item="as-sortable-item" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" style="margin:0px;min-height:70px;" class="list-group-item">
+    <li ng-repeat="file in assetConfig.assets.assets | filter:labelFilter" as-sortable-item="as-sortable-item" ng-show="([file.fileDetails.name] | filter:searchFilename).length" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" style="margin:0px;min-height:70px;" class="list-group-item">
       <div as-sortable-item-handle="as-sortable-item-handle" class="row">
         <div class="col-sm-2"><a ng-click="fn.showDetails(file.fileDetails.name)"><img ng-if="file.fileDetails.thumbnail" ng-src="{{file.fileDetails.thumbnail}}" class="media-object img-rounded"/>
             <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object img-rounded"><span ng-if="file.fileDetails.type == &quot;audio&quot; || file.fileDetails.type == &quot;radio&quot;"><i class="fa fa-music"></i></span><span ng-if="file.fileDetails.type != &quot;audio&quot; &amp;&amp; file.fileDetails.type != &quot;radio&quot;">{{file.fileDetails.type.slice(0,1) || 'N'}}</span></div></a></div>
         <div class="col-sm-10">
           <div class="row">
             <div class="col-sm-6"><small>{{file.fileDetails.name }}<small ng-if="playlist.selectedPlaylist &amp;&amp; !assetConfig.allAssets">&nbsp;{{file.playlistDetails.side}} &nbsp;{{file.playlistDetails.bottom}}</small></small></div>
-            <!--.col-sm-2
-            <p>{{file.fileDetails.size}}</p>
+            <!--.col-sm-2p {{file.fileDetails.size}}
             -->
             <div class="col-sm-3"><small ng-if="file.fileDetails.resolution.width" class="text-muted">{{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}</small></div>
             <div ng-if="playlist.selectedPlaylist  &amp;&amp; !assetConfig.allAssets" class="col-sm-2"><small class="text-muted"> {{file.playlistDetails.duration}} seconds</small></div>
             <div class="col-sm-1 pull-right">
               <input type="checkbox" name="checkbox" ng-model="file.selected" ng-change="ngDropdown.checkbox(file)"/>
             </div>
-            <!--.col-sm-1.pull-right(ng-if="assetConfig.allAssets")<a ng-click=""><i class="fa fa-lg fa-arrow-circle-right text-success"></i></a>
+            <!--.col-sm-1.pull-right(ng-if="assetConfig.allAssets")
+            a(ng-click="")
+                i.fa.fa-lg.fa-arrow-circle-right.text-success
+            
             -->
           </div>
           <div class="row">

@@ -12,7 +12,7 @@
                         i.fa.fa-close
             .col-sm-2
                 form
-                    input.form-control(type="text",placeholder="filter",ng-model="search.$")
+                    input.form-control(type="text",placeholder="filter",ng-model="searchFilename")
             .col-sm-3.dropdown(dropdown,ng-if="!assetConfig.allAssets")
                 button.btn.btn-success.dropdown-toggle.pull-right(dropdown-toggle)
                     i.fa.fa-plus &nbsp;ADD
@@ -50,8 +50,9 @@
 
 
     ul.list-group(as-sortable="sortable.options",ng-model="assetConfig.assets.assets",style="min-height:50px;")
-        li.list-group-item(ng-repeat='file in assetConfig.assets.assets | filter:labelFilter | filter:search track by $index',
+        li.list-group-item(ng-repeat='file in assetConfig.assets.assets | filter:labelFilter',
                                 as-sortable-item,
+                                ng-show="([file.fileDetails.name] | filter:searchFilename).length",
                                 ng-class='{"list-group-item-danger":file.deleted}', style="margin:0px;min-height:70px;" )
             .row(as-sortable-item-handle)
                 .col-sm-2
