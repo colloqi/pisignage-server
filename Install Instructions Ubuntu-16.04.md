@@ -65,7 +65,7 @@ To pull the latest version
     
     git clone https://github.com/colloqi/pisignage-server 
      
-9. ** and run following commands**
+9. **and run following commands**
     
     
      cd pisignage-server
