@@ -1,5 +1,4 @@
-
-#Install piSignage Server Software on Ubuntu 16.04
+# Install piSignage Server Software on Ubuntu 16.04
     
     Courtesy: Martyn Scott Bell
 
