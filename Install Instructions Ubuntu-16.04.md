@@ -13,11 +13,12 @@
 
 3. **Create a new MongoDB repository list file**
 
-    `sudo bash -c 'echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.2.list'`
+    ```sudo bash -c 'echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.2.list'```
 
 4. **Complete the installation with update of repositories then install**
 
     `sudo apt update`
+    
     `sudo apt install mongodb-org`
 
 5. **Install node.js and npm**
@@ -84,6 +85,6 @@ Ubuntu
 
 13. **Start up piSignage-Server**
 
-   `node server.js`
+     `node server.js`
             
 14. **Configure the settings and access the UI at http://localhost:3000**
