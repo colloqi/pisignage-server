@@ -31,17 +31,13 @@
 
 2. Update the systemd service with the command stated below.
 
-    
     ```systemctl daemon-reload```
 
 3. Start the service with systemcl.
 
-
     ```sudo systemctl start pisignage```
 
-
 4. Check if the service has started properly.
-
 
     `sudo systemctl status pisignage`
 
@@ -49,12 +45,14 @@
 
 5. Enable auto start MongoDB when system starts.
 
-
     `sudo systemctl enable pisignage`
     
 6. To Stop the service with systemcl.
 
-
     `sudo systemctl stop pisignage`
 
+7. To check the server log file.
 
+    `sudo journalctl -u pisignage.service -n 200 `
+    
+    Above command display last 200 lines from log.
