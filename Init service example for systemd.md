@@ -6,6 +6,7 @@
 1. Create startup file for pisignage at /etc/systemd/system/pisignage.service using your favorite editor
 
 
+    ```
     [Unit]
     Description=pisignage Player -  Server Software
     #Include the After directive to make sure mongodb is running
@@ -26,7 +27,7 @@
     Environment=NODE_ENV=development PORT=3000
     [Install]
     WantedBy=multi-user.target
-
+    ```
 
 2. Update the systemd service with the command stated below.
 
