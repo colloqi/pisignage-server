@@ -32,29 +32,29 @@
 2. Update the systemd service with the command stated below.
 
     
-    systemctl daemon-reload
+    ```systemctl daemon-reload```
 
 3. Start the service with systemcl.
 
 
-    sudo systemctl start pisignage
+    ```sudo systemctl start pisignage```
 
 
 4. Check if the service has started properly.
 
 
-    sudo systemctl status pisignage
+    `sudo systemctl status pisignage`
 
-  - The output to the above command will show `active (running)` status with the PID and Memory/CPU it is consuming.
+   The output to the above command will show `active (running)` status with the PID and Memory/CPU it is consuming.
 
 5. Enable auto start MongoDB when system starts.
 
 
-    sudo systemctl enable pisignage
+    `sudo systemctl enable pisignage`
     
 6. To Stop the service with systemcl.
 
 
-    sudo systemctl stop pisignage
+    `sudo systemctl stop pisignage`
 
 
