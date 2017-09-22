@@ -11,7 +11,7 @@
           <div class="btn-group"><a ng-disabled="!group.selectedGroup.playlists.length" ng-click="deploy()" class="btn btn-success btn-sm">Deploy to {{group.selectedGroup.name}}</a>&nbsp;
             <div class="checkbox-inline">
               <label>
-                <input type="checkbox" ng-model="group.loadPlaylistOnCompletion"/><small class="text-info">Change at the end<br> of current cycle</small>
+                <input type="checkbox" ng-model="group.selectedGroup.loadPlaylistOnCompletion"/><small class="text-info">Change at the end<br> of current cycle</small>
               </label>
             </div>
           </div>
@@ -39,7 +39,7 @@
       </div>
       <div ng-show="group.selectedGroup.playlists[0].name.length" class="row form-group">
         <h5 class="col-sm-8">You can select additional Playlists for Scheduling/Advt purposes
-          <!--a.btn.btn-link(ng-click="collapsed = !collapsed;")<i ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}" class="fa fa-lg"></i>
+          <!--a.btn.btn-link(ng-click="collapsed = !collapsed;")i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
           --><a ng-click="add()" class="btn btn-info btn-xs"><i class="fa fa-lg fa-plus">add</i></a><span ng-show="showMaxErr" class="text-info">&nbsp&nbsp {{'Maximum allowed Playlist Schedules (30)'}}</span>
         </h5>
         <div class="col-sm-4">
@@ -68,22 +68,20 @@
       </div>
     </form>
     <!--li.list-group-item
-    <form>
-      <div class="form-group">
-        <label class="control-label col-sm-4 text-muted">Add a Playlist to the group</label>
-        <div class="input-group col-sm-8">
-          <select ng-model="newPlaylistName" ng-options="pl.name as pl.name for pl in playlists" class="form-control">
-            <option value="">-- choose playlist --</option>
-          </select>
-          <div class="input-group-btn">
-            <button ng-click="add()" class="btn btn-info"><i class="fa fa-plus"></i></button>
-          </div>
-        </div>
-      </div>
-    </form>
+    form
+        .form-group
+            label.control-label.col-sm-4.text-muted Add a Playlist to the group
+            .input-group.col-sm-8
+                select.form-control(ng-model="newPlaylistName", ng-options="pl.name as pl.name for pl in playlists")
+                    option(value="") -- choose playlist --
+                .input-group-btn
+                    button.btn.btn-info(ng-click="add()")
+                        i.fa.fa-plus
+    
     -->
   </div>
   <!--.panel-footer
-  <button ng-click="deploy()" class="btn btn-primary btn-block">{{group.playlists.length?"DEPLOY":"Nothing to deploy"}}</button>
+  button.btn.btn-primary.btn-block(ng-click='deploy()')
+      | {{group.playlists.length?"DEPLOY":"Nothing to deploy"}}
   -->
 </div>
