@@ -51,8 +51,13 @@ exports.index = function (req, res) {
 
 exports.createFiles = function (req, res) {
 
-    var files = req.files["assets"],
+    var files = [],
         data = [];
+
+    if (req.files)
+        files = req.files["assets"]
+    else
+        return rest.sendError(res, "There are no files to be uploaded");
 
     async.each(files, renameFile, function (err) {
         if (err) {
