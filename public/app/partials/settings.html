@@ -60,6 +60,20 @@
         <div class="form-group">
           <div class="checkbox">
             <label class="col-xs-8 col-xs-offset-4">
+              <input type="checkbox" name="forcetvon" ng-model="settings.forceTvOn" ng-click="saveSettings()"/><span>Keep TV on by sending CEC tv-on message every 3 minutes</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label class="col-xs-8 col-xs-offset-4">
+              <input type="password" name="sshPassword" ng-model="settings.sshPassword" ng-click="saveSettings()"/><span>SSH Password</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label class="col-xs-8 col-xs-offset-4">
               <input type="checkbox" name="logs" ng-model="settings.enableLog" ng-change="saveSettings()"/><span translate="translate" class="text-warning">Enable log for file play count/details (network intensive, do not enable unless you need it!)</span>
             </label>
           </div>

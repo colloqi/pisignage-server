@@ -41,7 +41,15 @@ var GroupSchema = new Schema({
     logox:                  {type: Number,default: 10},
     logoy:                  {type: Number,default: 10},
     showClock:              {
-                                enable: {type: Boolean, default: false}
+                                enable: {type: Boolean, default: false},
+                                format: {type: String, default: "12"},
+                                position: {type: String, default: "bottom"}
+                            },
+    emergencyMessage:       {
+                                enable: false,
+                                msg: {type: String, default: ""},
+                                hPos: {type: String, default: "middle"},
+                                vPos: {type: String, default: "middle"}
                             },
 
     createdAt:              {type: Date, default: Date.now},

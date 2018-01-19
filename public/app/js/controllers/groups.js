@@ -187,6 +187,8 @@ angular.module('piGroups.controllers', [])
                         $scope.group.selectedGroup.assets.push(playlist.templateName)
                     $scope.group.selectedGroup.playlists[i].settings = $scope.group.selectedGroup.playlists[i].settings || {}
                     $scope.group.selectedGroup.playlists[i].settings.ads = playlist.settings.ads
+                    $scope.group.selectedGroup.playlists[i].settings.event = playlist.settings.event
+                    $scope.group.selectedGroup.playlists[i].settings.audio = playlist.settings.audio
                     if(playlist.name != 'TV_OFF') {
                         if (playlist.assets.length == 0) {
                             $scope.emptyPlExist = true;
@@ -441,6 +443,11 @@ angular.module('piGroups.controllers', [])
                 {value: 'portrait270', name: "Portrait Left (Hardware)"}
             ];
 
+            $scope.group.selectedGroup.showClock = $scope.group.selectedGroup.showClock || {enable: false}
+            $scope.group.selectedGroup.showClock.format = $scope.group.selectedGroup.showClock.format || "12";
+            $scope.group.selectedGroup.showClock.position = $scope.group.selectedGroup.showClock.position || "bottom";
+
+
             $scope.scheduleCalendar = function (playlist) {
                 $scope.forPlaylist = playlist;
 
@@ -484,6 +491,7 @@ angular.module('piGroups.controllers', [])
             var ticker = $scope.group.selectedGroup.ticker || {}
             ticker.enable = ticker.enable || false
             ticker.behavior = ticker.behavior || 'slide'
+            ticker.textSpeed = ticker.textSpeed || 3
             ticker.rss = ticker.rss || { enable: false , link: null, feedDelay:10 }
             $scope.tickerModal = $modal.open({
                 templateUrl: '/app/templates/group-ticker-popup.html',
@@ -496,6 +504,19 @@ angular.module('piGroups.controllers', [])
             if ($scope.group.selectedGroup.ticker.messages)
                 $scope.group.selectedGroup.ticker.messages = $scope.group.selectedGroup.ticker.messages.replace(/'/g, "`")
             $scope.tickerModal.close();
+            $scope.updateGroup();
+            $scope.needToDeploy = true;
+        }
+
+        $scope.emergencyMessage = function() {
+            $scope.emsgModal = $modal.open({
+                templateUrl: '/app/templates/emergencyMessagePopup.html',
+                scope: $scope
+            })
+
+        }
+        $scope.messageSave = function() {
+            $scope.emsgModal.close();
             $scope.updateGroup();
             $scope.needToDeploy = true;
         }

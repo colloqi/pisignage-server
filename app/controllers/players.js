@@ -34,6 +34,12 @@ var readVersions = function() {
 }
 readVersions();
 
+fs.mkdir(config.logStoreDir, function(err) {
+    if (err && (err.code != 'EEXIST')) {
+        logger.log("error","Error creating logs directory, "+err.code)
+    }
+});
+
 
 var activePlayers = {},
     lastCommunicationFromPlayers = {};
@@ -140,6 +146,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.logox =  group.logox;
     retObj.logoy =  group.logoy;
     retObj.showClock = group.showClock || {enable: false};
+    retObj.emergencyMessage = group.emergencyMessage || {enable: false};
     retObj.combineDefaultPlaylist = group.combineDefaultPlaylist || false;
     retObj.playAllEligiblePlaylists = group.playAllEligiblePlaylists || false;
     retObj.urlReloadDisable =  group.urlReloadDisable || false;
@@ -155,8 +162,11 @@ var sendConfig = function (player, group, periodic) {
     }
 
     retObj.systemMessagesHide = settings.systemMessagesHide;
+    retObj.forceTvOn = settings.forceTvOn;
     retObj.authCredentials = settings.authCredentials;
     retObj.enableLog = settings.enableLog || false;
+    if (settings.sshPassword)
+        retObj.sshPassword = settings.sshPassword;
     retObj.currentTime = Date.now();
     socketio.emitMessage(player.socket, 'config', retObj);
 }
@@ -460,7 +470,14 @@ exports.upload = function (cpuId, filename, data) {
     Player.findOne({cpuSerialNumber: cpuId}, function (err, player) {
         if (player) {
             var logData;
-            if (path.extname(filename) == '.log') {
+            if(filename.indexOf('forever_out') == 0 ){
+                fs.writeFile(config.logStoreDir+'/'+cpuId+'_forever_out.log',data,function(err){
+                    if(err)
+                        logger.log("error","Error in writing forever_out log for "+ cpuId);
+                    // else
+                    //     logger.log("info","Forever Log file saved for player : "+cpuId);
+                })
+            } else if (path.extname(filename) == '.log') {
                 try {
                     logData = JSON.parse(data);
                     logData.installation = player.installation;

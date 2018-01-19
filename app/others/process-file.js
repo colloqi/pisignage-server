@@ -89,7 +89,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                         new FFmpeg({source: src})
                                             .audioCodec('libfdk_aac')
                                             .videoCodec('libx264')
-                                            .size('?x720')
+                                            .size('?x1080')
                                             .toFormat('mp4')
                                             .outputOptions([
                                                 '-profile:v high',

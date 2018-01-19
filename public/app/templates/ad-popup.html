@@ -48,7 +48,7 @@
   </form>
 </div>
 <div class="modal-header">
-  <h4 class="text-center">Play this as independent Audio Playlist (coming soon)</h4>
+  <h4 class="text-center">Play this as independent Audio Playlist for the aux port</h4>
 </div>
 <div class="modal-body">
   <form class="form-horizontal">
@@ -62,7 +62,7 @@
       <div class="col-sm-6">
         <div class="checkbox">
           <label>
-            <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.enable" ng-disabled="true"/><span>Play songs from this playlist (need to contain only mp3 files)</span>
+            <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.enable"/><span>Play songs from this playlist (need to contain only mp3 files)</span>
           </label>
         </div>
       </div>
@@ -87,7 +87,35 @@
         <input type="number" min="0" max="100" ng-model="playlist.selectedPlaylist.settings.audio.volume" placeholder="{{'Enter value in %' }}" class="form-control"/>
       </div>
     </div>
-    <div ng-show="playlist.selectedPlaylist.settings.audio.enable" class="form-group">
+    <div class="form-group">
+      <div class="col-sm-6 col-sm-offset-6">
+        <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-header">
+  <h4 class="text-center">Make this as Event Playlist</h4>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-7 control-label text-muted">When SIGUSR2 event is signalled this playlist is played if eligible</label>
+      <div class="col-sm-5">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.event.enable"/><span>Enable</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div ng-show="settings.event.enable" class="form-group">
+      <label class="col-sm-7 control-label text-muted">Duration of the playlist, 0 to play till next event</label>
+      <div class="col-sm-5">
+        <input type="text" ng-model="playlist.selectedPlaylist.settings.event.duration" placeholder="{{'Enter value in seconds'}}" class="form-control"/>
+      </div>
+    </div>
+    <div class="form-group">
       <div class="col-sm-6 col-sm-offset-6">
         <button ng-click="saveSettings()" class="btn btn-success">Save</button>
       </div>

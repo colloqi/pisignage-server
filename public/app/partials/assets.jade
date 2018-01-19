@@ -96,8 +96,8 @@
                                 small(ng-if='!(file.fileDetails.validity.enable)')
                                     | add validity
                                 small(ng-if='file.fileDetails.validity.enable')
-                                    | {{file.fileDetails.validity.startdate | date:'MMM d'}} -
-                                    | {{file.fileDetails.validity.enddate | date:'MMM d'}}
+                                    | {{file.fileDetails.validity.startdate | date:'MMM d':'UTC'}} -
+                                    | {{file.fileDetails.validity.enddate | date:'MMM d':'UTC'}}
 
 
         h5.text-danger(ng-show="!assetConfig.assets.assets.length")

@@ -99,14 +99,29 @@
 
         .form-group.row
             .col-sm-4.text-right
-                .radio
-                    label.text-muted
-                        span Show Clock
-            .col-sm-4
                 .checkbox
                     label
                         input(type='checkbox',name='show_clock', ng-model='group.selectedGroup.showClock.enable')
-                        span Enable
+                        span Show Clock
+            .col-sm-2(ng-show='group.selectedGroup.showClock.enable')
+                .checkbox
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.showClock.position",value="top")
+                        small(translate) Top
+                .checkbox
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.showClock.position",value="bottom")
+                        small(translate) Bottom
+            .col-sm-2(ng-show='group.selectedGroup.showClock.enable')
+                .checkbox
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.showClock.format",value="12")
+                        small(translate) 12 hr
+                .checkbox
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.showClock.format",value="24")
+                        small(translate) 24 hr
+
         .form-group.row
             .col-sm-4.text-right
                 .radio

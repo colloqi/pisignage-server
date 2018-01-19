@@ -57,8 +57,8 @@
                 {{file.fileDetails.createdAt | date: 'MMM dd'}}</small></div>
             <div class="col-sm-3">
               <button title="{{'Add validity period for the asset'}}" ng-click="scheduleValidity(file)" class="btn btn-link btn-xs"><i class="fa fa-calendar">&nbsp;</i><small ng-if="!(file.fileDetails.validity.enable)">add validity</small><small ng-if="file.fileDetails.validity.enable">
-                  {{file.fileDetails.validity.startdate | date:'MMM d'}} -
-                  {{file.fileDetails.validity.enddate | date:'MMM d'}}</small></button>
+                  {{file.fileDetails.validity.startdate | date:'MMM d':'UTC'}} -
+                  {{file.fileDetails.validity.enddate | date:'MMM d':'UTC'}}</small></button>
             </div>
           </div>
         </div>

@@ -26,6 +26,9 @@ module.exports = {
     
     defaultPlaylist: "default",
 
+    logFile:                rootPath+ "/../forever_out.log",
+    logStoreDir:            assetDir+ "/_logs",
+
     mongo: {
         options: {
             db: {

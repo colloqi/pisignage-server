@@ -17,6 +17,9 @@ angular.module('piPlaylists.controllers', [])
                 return;
             }
 
+            $scope.newPlaylist.name = $scope.newPlaylist.name.replace(piConstants.groupNameRegEx,'');
+
+
             for (var i = 0; i < $scope.playlist.playlists.length; i++) {
                 if ($scope.playlist.playlists[i].name == $scope.newPlaylist.name) {
                     $scope.newPlaylist.name = "Playlist exists";
@@ -277,6 +280,7 @@ angular.module('piPlaylists.controllers', [])
                 var settings = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.settings
                 settings.ticker.enable = settings.ticker.enable || false
                 settings.ticker.behavior = settings.ticker.behavior || 'slide'
+                settings.ticker.textSpeed = settings.ticker.textSpeed || 3
                 settings.ticker.rss = settings.ticker.rss || { enable: false , link: null, feedDelay:10 }
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/ticker-popup.html',
@@ -285,6 +289,9 @@ angular.module('piPlaylists.controllers', [])
             }
 
             $scope.openAd = function() {
+                var settings = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.settings
+                settings.ads = settings.ads || {adPlaylist : false, adInterval : 60 } ;
+                settings.audio = settings.audio || {enable: false,random: false,volume: 50}  ;
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/ad-popup.html',
                     scope: $scope

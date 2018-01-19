@@ -56,12 +56,41 @@ exports.deploy = function (installation,group, cb) {
                         fs.unlink(dstfile, function (err) {
                             fs.stat(srcfile, function (err, stats) {
                                 if (err || !stats.isFile()) {
-                                    if (file.indexOf("TV_OFF") == -1) {
-                                        //console.log("removing file as it is not present: " + file)
-                                        //group.assets.splice(group.assets.indexOf(file), 1)       //careful, async gets affected if the array is same
-                                        filesNotPresent.push(file)
-                                    }
-                                    iterative_cb();
+                                        if (file.indexOf("TV_OFF") == -1) {
+                                            //console.log("removing file as it is not present: " + file)
+                                            //group.assets.splice(group.assets.indexOf(file), 1)       //careful, async gets affected if the array is same
+                                            filesNotPresent.push(file)
+                                        }
+                                        iterative_cb();
+                                } else if (file.match(/^__.*\.json$/)) {
+                                    //copy the playlist files instead of symlink
+                                    var cbCalled = false,
+                                        done = function(err) {
+                                            if (!cbCalled) {
+                                                if (err) {
+                                                    console.log(err)
+                                                    var errMessage = "Unable to copy playlist " + file + " for " + installation
+                                                    logger.log("error",errMessage )
+                                                    iterative_cb(errMessage);
+                                                } else
+                                                    iterative_cb();
+                                                cbCalled = true;
+                                            }
+                                        }
+
+                                    var rd = fs.createReadStream(srcfile);
+                                    rd.on("error", function(err) {
+                                        done(err);
+                                    });
+                                    var wr = fs.createWriteStream(dstfile);
+                                    wr.on("error", function(err) {
+                                        done(err);
+                                    });
+                                    wr.on("close", function(ex) {
+                                        done();
+                                    });
+                                    rd.pipe(wr);
+
                                 } else {
                                     //console.log("file is present; " + file)
                                     fs.symlink(srcfile, dstfile, function (err) {
@@ -153,7 +182,10 @@ exports.deploy = function (installation,group, cb) {
                     async_cb();
                 })
         }], function (err, results) {
-            group.deployedAssets = group.assets
+            group.deployedAssets = group.assets;
+            group.deployedPlaylists = group.playlists;
+            group.deployedTicker = group.ticker;
+
             if (err) {
                 console.log("Error in deploy: ", err);
                 return cb(err, group);

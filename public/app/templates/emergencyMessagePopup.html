@@ -1,0 +1,64 @@
+
+<div class="modal-content">
+  <div class="modal-header bg-default">
+    <!--button.close(ng-click='tickerModal.close()') &times;-->
+    <h3 class="modal-title">Display a text message in front of the Signage</h3>
+  </div>
+  <div class="modal-body">
+    <form name="emsgForm">
+      <div class="checkbox row form-group">
+        <label class="control-label col-sm-3 text-muted text-right">Enable Message</label>
+        <div class="col-sm-9">
+          <label>
+            <input type="checkbox" name="emsg_enable" ng-model="group.emergencyMessage.enable"/>
+          </label>
+        </div>
+      </div>
+      <!--.form-group.row(ng-show='group.emergencyMessage.enable')-->
+      <!--    label.text-muted.control-label.col-sm-3.text-right() Horizontal Position-->
+      <!--    .col-sm-9-->
+      <!--        .radio-inline-->
+      <!--            label-->
+      <!--                input(type='radio',value='left',name="left",ng-model='group.emergencyMessage.hPos')-->
+      <!--                small() Left-->
+      <!--        .radio-inline-->
+      <!--            label-->
+      <!--                input(type='radio',value='middle',name="hmiddle",ng-model='group.emergencyMessage.hPos')-->
+      <!--                small() Middle-->
+      <!--        .radio-inline-->
+      <!--            label-->
+      <!--                input(type='radio',value='right',name="right",ng-model='group.emergencyMessage.hPos')-->
+      <!--                small() Right-->
+      <div ng-show="group.emergencyMessage.enable" class="form-group row">
+        <label class="text-muted control-label col-sm-3 text-right">Vertical Position</label>
+        <div class="col-sm-9">
+          <div class="radio-inline">
+            <label>
+              <input type="radio" value="top" name="top" ng-model="group.emergencyMessage.vPos"/><small>Top</small>
+            </label>
+          </div>
+          <div class="radio-inline">
+            <label>
+              <input type="radio" value="middle" name="vmiddle" ng-model="group.emergencyMessage.vPos"/><small>Middle</small>
+            </label>
+          </div>
+          <div class="radio-inline">
+            <label>
+              <input type="radio" value="bottom" name="bottom" ng-model="group.emergencyMessage.vPos"/><small>Bottom</small>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div ng-show="group.emergencyMessage.enable" class="form-group row">
+        <label class="control-label text-muted col-sm-3 text-right">Message</label>
+        <div class="col-sm-9">
+          <input name="ticker_messages" rows="5" ng-model="group.emergencyMessage.msg" placeholder="Enter the message to be displayed" class="form-control"/>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" ng-click="emsgModal.close()" class="btn btn-default">Cancel</button>
+    <button ng-click="messageSave()" class="btn btn-primary">SAVE</button>
+  </div>
+</div>

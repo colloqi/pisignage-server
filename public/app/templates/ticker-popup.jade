@@ -30,6 +30,25 @@
             .col-xs-8
                 input.form-control(type='text',placeholder='e.g. color:#eee; font-style:italic; ',
                                         ng-model='playlist.selectedPlaylist.settings.ticker.style')
+        .form-group.row(ng-show='settings.ticker.enable')
+            label.text-muted.control-label.col-sm-3.text-right(translate) Ticker Speed
+            .col-sm-9
+                .radio-inline
+                    label
+                        input(type='radio',value='1',name="slow",ng-model='settings.ticker.textSpeed')
+                        small(translate) Slow
+
+                .radio-inline
+                    label
+                        input(type='radio',value='2',name="medium",ng-model='settings.ticker.textSpeed')
+                        small(translate) Medium
+
+                .radio-inline
+                    label
+                        input(type='radio',value='3',name="full",ng-model='settings.ticker.textSpeed')
+                        small(translate) Full
+
+
         .row.form-group(ng-show='playlist.selectedPlaylist.settings.ticker.enable')
             .col-sm-6.col-sm-offset-3
                 .checkbox

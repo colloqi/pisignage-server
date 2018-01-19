@@ -132,14 +132,33 @@
     </div>
     <div class="form-group row">
       <div class="col-sm-4 text-right">
-        <div class="radio">
-          <label class="text-muted"><span>Show Clock</span></label>
-        </div>
-      </div>
-      <div class="col-sm-4">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="show_clock" ng-model="group.selectedGroup.showClock.enable"/><span>Enable</span>
+            <input type="checkbox" name="show_clock" ng-model="group.selectedGroup.showClock.enable"/><span>Show Clock</span>
+          </label>
+        </div>
+      </div>
+      <div ng-show="group.selectedGroup.showClock.enable" class="col-sm-2">
+        <div class="checkbox">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.showClock.position" value="top"/><small translate="translate">Top</small>
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.showClock.position" value="bottom"/><small translate="translate">Bottom</small>
+          </label>
+        </div>
+      </div>
+      <div ng-show="group.selectedGroup.showClock.enable" class="col-sm-2">
+        <div class="checkbox">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.showClock.format" value="12"/><small translate="translate">12 hr</small>
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.showClock.format" value="24"/><small translate="translate">24 hr</small>
           </label>
         </div>
       </div>

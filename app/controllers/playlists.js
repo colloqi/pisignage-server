@@ -21,8 +21,13 @@ var isPlaylist = function (file) {
 
 exports.newPlaylist = function ( playlist, cb) {
     var file = path.join(config.mediaDir, ("__" + playlist + '.json')),
-        data = {name:playlist,settings:{ticker:{enable:false},ads:{adPlaylist:false,adInterval:60}},assets:[],layout:'1',
+        data = {name:playlist,settings:{ticker:{enable:false,behavior: 'scroll', textSpeed: 3, rss: { enable: false , link: null, feedDelay:10 }},
+                ads:{adPlaylist:false,adInterval:60},
+                audio: {enable: false,random: false,volume: 50}
+            },
+            assets:[],layout:'1',
             templateName:"custom_layout.html"};
+
 
     fs.writeFile(file, JSON.stringify(data, null, 4), function (err) {
         cb(err,data);

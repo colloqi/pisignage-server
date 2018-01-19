@@ -40,7 +40,8 @@ var PlayerSchema = new Schema({
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String},
     licensed:               {type: Boolean, default: false},
     ethMac:                 String,
-    wifiMac:                String
+    wifiMac:                String,
+    cecTvStatus:            {type: Boolean, default : true}
 })
 
 
