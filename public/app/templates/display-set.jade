@@ -5,7 +5,8 @@
         .form-group.row
             .col-sm-4.text-right
                 .radio
-                    label.text-muted Resolution
+                    label.text-muted
+                        small Resolution
             .col-sm-4
                 .radio
                     label
@@ -19,7 +20,7 @@
         .form-group.row
             .col-sm-4.text-right
                 .radio
-                    label.text-muted TV Orientation
+                    label.text-muted: small TV Orientation
             .col-sm-4
                 .radio
                     label
@@ -34,7 +35,7 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        span Animation
+                        small Animation
             .col-sm-2
                 .radio
                     label
@@ -68,10 +69,11 @@
                         input(type="radio",ng-model="group.selectedGroup.animationType",
                                     ng-change='group.selectedGroup.animationEnable = true;',value="down")
                         small Slide down
+        hr
         .form-group.row
             .col-xs-4.text-right
                 .radio
-                    label.text-muted Screen Background
+                    label.text-muted: small Screen Background
             .col-xs-3
                 .input-group.input-group-sm
                     input.form-control(type='color',ng-model='group.selectedGroup.signageBackgroundColor')
@@ -85,10 +87,10 @@
         .form-group.row
             .col-xs-4.text-right
                 .radio
-                    label.text-muted Display a Logo
+                    label.text-muted: small Display a Logo
             .col-xs-4
                 button.btn.btn-sm.btn-link(ng-click="showFileList()")
-                    span {{group.selectedGroup.logo || "Select a png image from Assets"}}
+                    small {{group.selectedGroup.logo || "Select a png image from Assets"}}
                 button.btn.btn-xs.btn-warning(ng-if="group.selectedGroup.logo",ng-click="group.selectedGroup.logo=null") X
             .col-xs-2
                 .form-group
@@ -100,57 +102,62 @@
         .form-group.row
             .col-sm-4.text-right
                 .checkbox
+                    label.text-muted: small Display Clock
+            .col-sm-2
+                .checkbox
                     label
                         input(type='checkbox',name='show_clock', ng-model='group.selectedGroup.showClock.enable')
-                        span Show Clock
-            .col-sm-2(ng-show='group.selectedGroup.showClock.enable')
-                .checkbox
+                        small Show
+            .col-sm-3(ng-show='group.selectedGroup.showClock.enable')
+                .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.showClock.position",value="top")
-                        small(translate) Top
-                .checkbox
+                        small() Top
+                .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.showClock.position",value="bottom")
-                        small(translate) Bottom
-            .col-sm-2(ng-show='group.selectedGroup.showClock.enable')
-                .checkbox
+                        small() Bottom
+            .col-sm-3(ng-show='group.selectedGroup.showClock.enable')
+                .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.showClock.format",value="12")
-                        small(translate) 12 hr
-                .checkbox
+                        small() 12 hr
+                .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.showClock.format",value="24")
-                        small(translate) 24 hr
+                        small() 24 hr
 
+        hr
         .form-group.row
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        span Stretch images to the screen
+                        small Stretch images to fit screen
             .col-sm-2
                 .checkbox
                     label
                         input(type='checkbox',name='resize_image', ng-model='group.selectedGroup.resizeAssets')
-                        span Enable
-            .col-sm-2.text-right
-            //    .radio
-            //        label.text-muted
+                        small Enable
             .col-sm-4
                 .checkbox
                     label
-                        input(type='checkbox',name='reload_checkbox', ng-model='group.selectedGroup.urlReloadDisable',
-                            ng-true-value="false",
-                            ng-false-value="true",
-                            ng-checked="group.selectedGroup.urlReloadDisable !== true"
-                        )
-                        //span Enable
                         small Reload link URLs each time<br>(appends ?ts in chromeapp)
+            .col-sm-2
+                .checkbox
+                    label
+                        input(type='checkbox',name='reload_checkbox', ng-model='group.selectedGroup.urlReloadDisable',
+                        ng-true-value="false",
+                        ng-false-value="true",
+                        ng-checked="group.selectedGroup.urlReloadDisable !== true"
+                        )
+                        small Enable
+
 
         .form-group.row
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        span Stretch videos to fit screen
+                        small Stretch videos to fit screen
             .col-sm-2
                 .checkbox
                     label
@@ -158,24 +165,24 @@
                                 ng-true-value="false", ng-false-value="true",
                                 ng-checked="group.videoKeepAspect !== true"
                         )
-                        span Enable
-            .col-sm-4
+                        small Enable
+            .col-sm-4.text-right
                 small Stop video every seconds to show adverts (0 to disable)
             .col-sm-2
                 input.input-sm.form-control(type='number',placeholder="secs",ng-model='group.timeToStopVideo')
 
-
+        hr
 
         .form-group.row
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        span Schedule Display OFF
+                        small Schedule Display OFF
             .col-sm-4
                 .checkbox
                     label
                         input(type='checkbox',name='sleep_checkbox', ng-model='group.selectedGroup.sleep.enable')
-                        span Enable
+                        small Enable
         .form-group.row(ng-show='group.selectedGroup.sleep.enable')
             .col-sm-4.col-sm-offset-4
                 label

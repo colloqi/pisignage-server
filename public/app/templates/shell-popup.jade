@@ -6,7 +6,7 @@
             button.btn.btn-sm(ng-class="!msg.player.tvStatus? 'btn-primary':'btn-default'",ng-click="changeTvState(true)") Tv OFF
     small.text-danger.pull-right(ng-if="confirmmsg") {{confirmmsg}}
 .modal-body
-    form.row(name="shellform",ng-submit='execute()')
+    form(name="shellform",ng-submit='execute()')
         .form-group
             .input-group.col-xs-12
                 input.form-control(type='text', ng-model='msg.cmd',ng-keydown='getOldEntry($event)')

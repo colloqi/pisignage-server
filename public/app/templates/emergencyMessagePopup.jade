@@ -1,53 +1,52 @@
-.modal-content
-    .modal-header.bg-default
-        //button.close(ng-click='tickerModal.close()') &times;
-        h3.modal-title() Display a text message in front of the Signage
-    .modal-body
-        form(name='emsgForm')
+.modal-header
+    //button.close(ng-click='tickerModal.close()') &times;
+    h3.modal-title() Display a text message in front of the Signage
+.modal-body
+    form(name='emsgForm')
 
-            .checkbox.row.form-group
-                label.control-label.col-sm-3.text-muted.text-right() Enable Message
-                .col-sm-9
+        .row.form-group
+            label.control-label.col-sm-3.text-muted.text-right() Enable Message
+            .col-sm-9
+                label
+                    input(type='checkbox',name="emsg_enable", ng-model='group.selectedGroup.emergencyMessage.enable')
+        //.form-group.row(ng-show='group.selectedGroup.emergencyMessage.enable')
+        //    label.text-muted.control-label.col-sm-3.text-right() Horizontal Position
+        //    .col-sm-9
+        //        .radio-inline
+        //            label
+        //                input(type='radio',value='left',name="left",ng-model='group.selectedGroup.emergencyMessage.hPos')
+        //                small() Left
+        //        .radio-inline
+        //            label
+        //                input(type='radio',value='middle',name="hmiddle",ng-model='group.selectedGroup.emergencyMessage.hPos')
+        //                small() Middle
+        //        .radio-inline
+        //            label
+        //                input(type='radio',value='right',name="right",ng-model='group.selectedGroup.emergencyMessage.hPos')
+        //                small() Right
+        .form-group.row(ng-show='group.selectedGroup.emergencyMessage.enable')
+            label.text-muted.control-label.col-sm-3.text-right() Vertical Position
+            .col-sm-9
+                .radio-inline
                     label
-                        input(type='checkbox',name="emsg_enable", ng-model='group.emergencyMessage.enable')
-            //.form-group.row(ng-show='group.emergencyMessage.enable')
-            //    label.text-muted.control-label.col-sm-3.text-right() Horizontal Position
-            //    .col-sm-9
-            //        .radio-inline
-            //            label
-            //                input(type='radio',value='left',name="left",ng-model='group.emergencyMessage.hPos')
-            //                small() Left
-            //        .radio-inline
-            //            label
-            //                input(type='radio',value='middle',name="hmiddle",ng-model='group.emergencyMessage.hPos')
-            //                small() Middle
-            //        .radio-inline
-            //            label
-            //                input(type='radio',value='right',name="right",ng-model='group.emergencyMessage.hPos')
-            //                small() Right
-            .form-group.row(ng-show='group.emergencyMessage.enable')
-                label.text-muted.control-label.col-sm-3.text-right() Vertical Position
-                .col-sm-9
-                    .radio-inline
-                        label
-                            input(type='radio',value='top',name="top",ng-model='group.emergencyMessage.vPos')
-                            small() Top
-                    .radio-inline
-                        label
-                            input(type='radio',value='middle',name="vmiddle",ng-model='group.emergencyMessage.vPos')
-                            small() Middle
-                    .radio-inline
-                        label
-                            input(type='radio',value='bottom',name="bottom",ng-model='group.emergencyMessage.vPos')
-                            small() Bottom
+                        input(type='radio',value='top',name="top",ng-model='group.selectedGroup.emergencyMessage.vPos')
+                        small() Top
+                .radio-inline
+                    label
+                        input(type='radio',value='middle',name="vmiddle",ng-model='group.selectedGroup.emergencyMessage.vPos')
+                        small() Middle
+                .radio-inline
+                    label
+                        input(type='radio',value='bottom',name="bottom",ng-model='group.selectedGroup.emergencyMessage.vPos')
+                        small() Bottom
 
-            .form-group.row(ng-show='group.emergencyMessage.enable')
-                label.control-label.text-muted.col-sm-3.text-right() Message
-                .col-sm-9
-                    input.form-control( name='ticker_messages',rows=5,
-                    ng-model='group.emergencyMessage.msg',placeholder="Enter the message to be displayed")
+        .form-group.row(ng-show='group.selectedGroup.emergencyMessage.enable')
+            label.control-label.text-muted.col-sm-3.text-right() Message
+            .col-sm-9
+                input.form-control( name='ticker_messages',rows=5,
+                ng-model='group.selectedGroup.emergencyMessage.msg',placeholder="Enter the message to be displayed")
 
-    .modal-footer
-        button.btn.btn-default(type="button",ng-click='emsgModal.close()',) Cancel
-        button.btn.btn-primary(ng-click='messageSave()',) SAVE
+.modal-footer
+    button.btn.btn-default(type="button",ng-click='emsgModal.close()',) Cancel
+    button.btn.btn-primary(ng-click='messageSave()',) SAVE
 

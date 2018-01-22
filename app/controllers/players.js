@@ -36,7 +36,7 @@ readVersions();
 
 fs.mkdir(config.logStoreDir, function(err) {
     if (err && (err.code != 'EEXIST')) {
-        logger.log("error","Error creating logs directory, "+err.code)
+        console.log("error","Error creating logs directory, "+err.code)
     }
 });
 
@@ -392,7 +392,8 @@ exports.updatePlayerStatus = function (obj) {
                         var now = Date.now(),
                             pid = player._id.toString();
                         //throttle messages
-                        if (!lastCommunicationFromPlayers[pid] || (now - lastCommunicationFromPlayers[pid]) > 60000) {
+                        if (!lastCommunicationFromPlayers[pid] || (now - lastCommunicationFromPlayers[pid]) > 60000 ||
+                            obj.priority) {
                             lastCommunicationFromPlayers[pid] = now;
                             sendConfig(player,group, (updatePlayerCount[obj.cpuSerialNumber] === 1));
                         } else {
@@ -473,9 +474,9 @@ exports.upload = function (cpuId, filename, data) {
             if(filename.indexOf('forever_out') == 0 ){
                 fs.writeFile(config.logStoreDir+'/'+cpuId+'_forever_out.log',data,function(err){
                     if(err)
-                        logger.log("error","Error in writing forever_out log for "+ cpuId);
+                        console.log("error","Error in writing forever_out log for "+ cpuId);
                     // else
-                    //     logger.log("info","Forever Log file saved for player : "+cpuId);
+                    //     console.log("info","Forever Log file saved for player : "+cpuId);
                 })
             } else if (path.extname(filename) == '.log') {
                 try {

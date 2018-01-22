@@ -5,7 +5,7 @@
       <button ng-class="!msg.player.tvStatus? 'btn-primary':'btn-default'" ng-click="changeTvState(true)" class="btn btn-sm">Tv OFF</button></span></h4><small ng-if="confirmmsg" class="text-danger pull-right">{{confirmmsg}}</small>
 </div>
 <div class="modal-body">
-  <form name="shellform" ng-submit="execute()" class="row">
+  <form name="shellform" ng-submit="execute()">
     <div class="form-group">
       <div class="input-group col-xs-12">
         <input type="text" ng-model="msg.cmd" ng-keydown="getOldEntry($event)" class="form-control"/><span class="input-group-btn">
@@ -26,5 +26,6 @@
     </div>
   </div>
 </div>
-<!--.modal-footerbutton.btn.btn-warning(ng-click='modal.dismiss()') Dismiss
+<!--.modal-footer
+<button ng-click="modal.dismiss()" class="btn btn-warning">Dismiss</button>
 -->

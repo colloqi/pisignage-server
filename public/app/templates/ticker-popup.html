@@ -4,34 +4,30 @@
 </div>
 <div class="modal-body">
   <form name="playlist.popForm" class="form">
-    <div class="row form-group">
-      <div class="col-sm-9 col-sm-offset-3">
-        <div class="checkbox">
+    <div class="row form-group"><small class="text-muted control-label col-sm-3 text-right">Ticker</small>
+      <div class="col-sm-9">
+        <div class="checkbox-inline">
           <label>
-            <input type="checkbox" name="ticker_checkbox" ng-model="playlist.selectedPlaylist.settings.ticker.enable"/><span>Enable Ticker</span>
+            <input type="checkbox" name="ticker_checkbox" ng-model="playlist.selectedPlaylist.settings.ticker.enable"/><small>Show</small>
           </label>
         </div>
       </div>
     </div>
     <div ng-show="playlist.selectedPlaylist.settings.ticker.enable" class="row form-group"><small class="text-muted col-sm-3 text-right">Type</small>
-      <div class="col-sm-2">
-        <div class="radio">
+      <div class="col-sm-9">
+        <div class="radio-inline">
           <label>
-            <input type="radio" value="slide" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><span>Slide</span>
+            <input type="radio" value="slide" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><small>Slide</small>
           </label>
         </div>
-      </div>
-      <div class="col-sm-2">
-        <div class="radio">
+        <div class="radio-inline">
           <label>
-            <input type="radio" value="scroll" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><span>Scroll left</span>
+            <input type="radio" value="scroll" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><small>Scroll left</small>
           </label>
         </div>
-      </div>
-      <div class="col-sm-2">
-        <div class="radio">
+        <div class="radio-inline">
           <label>
-            <input type="radio" value="scrollRight" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><span>Scroll right</span>
+            <input type="radio" value="scrollRight" ng-model="playlist.selectedPlaylist.settings.ticker.behavior"/><small>Scroll right</small>
           </label>
         </div>
       </div>
@@ -41,31 +37,30 @@
         <input type="text" placeholder="e.g. color:#eee; font-style:italic; " ng-model="playlist.selectedPlaylist.settings.ticker.style" class="form-control"/>
       </div>
     </div>
-    <div ng-show="settings.ticker.enable" class="form-group row">
-      <label translate="translate" class="text-muted control-label col-sm-3 text-right">Ticker Speed</label>
+    <div ng-show="playlist.selectedPlaylist.settings.ticker.enable" class="form-group row"><small class="text-muted control-label col-sm-3 text-right">Ticker Speed</small>
       <div class="col-sm-9">
         <div class="radio-inline">
           <label>
-            <input type="radio" value="1" name="slow" ng-model="settings.ticker.textSpeed"/><small translate="translate">Slow</small>
+            <input type="radio" value="1" name="slow" ng-model="playlist.selectedPlaylist.settings.ticker.textSpeed"/><small>Slow</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" value="2" name="medium" ng-model="settings.ticker.textSpeed"/><small translate="translate">Medium</small>
+            <input type="radio" value="2" name="medium" ng-model="playlist.selectedPlaylist.settings.ticker.textSpeed"/><small>Medium</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" value="3" name="full" ng-model="settings.ticker.textSpeed"/><small translate="translate">Full</small>
+            <input type="radio" value="3" name="full" ng-model="playlist.selectedPlaylist.settings.ticker.textSpeed"/><small>Full</small>
           </label>
         </div>
       </div>
     </div>
     <div ng-show="playlist.selectedPlaylist.settings.ticker.enable" class="row form-group">
       <div class="col-sm-6 col-sm-offset-3">
-        <div class="checkbox">
+        <div class="checkbox-inline">
           <label>
-            <input type="checkbox" name="rss_checkbox" ng-model="playlist.selectedPlaylist.settings.ticker.rss.enable"/><span>Use RSS feed</span>
+            <input type="checkbox" name="rss_checkbox" ng-model="playlist.selectedPlaylist.settings.ticker.rss.enable"/><small>Use RSS feed</small>
           </label>
         </div>
       </div>
@@ -78,12 +73,12 @@
     <div ng-show="playlist.selectedPlaylist.settings.ticker.enable &amp;&amp; playlist.selectedPlaylist.settings.ticker.rss.enable" class="form-group row"><small class="text-muted col-sm-3 text-right">RSS feed Link</small>
       <div class="col-sm-8">
         <input type="text" ng-model="playlist.selectedPlaylist.settings.ticker.rss.link" placeholder="enter your rss link ...." class="form-control"/>
-        <div class="checkbox">
+        <div class="checkbox-inline">
           <label>
             <input type="checkbox" name="rss_encoding" ng-model="playlist.selectedPlaylist.settings.ticker.rss.encodeAsBinary"/><small><i class="text-primary">Use Binary encoding for RSS, enable this if characters are not displayed properly</i></small>
           </label>
-        </div>
-        <div class="checkbox">
+        </div><br/>
+        <div class="checkbox-inline">
           <label>
             <input type="checkbox" name="rss_field" ng-model="playlist.selectedPlaylist.settings.ticker.rss.useDescription"/><small><i class="text-primary">Use description field of rss stream instead of title field</i></small>
           </label>
