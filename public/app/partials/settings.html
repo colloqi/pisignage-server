@@ -67,15 +67,17 @@
         <div class="form-group">
           <div class="checkbox">
             <label class="col-xs-8 col-xs-offset-4">
-              <input type="password" name="sshPassword" ng-model="settings.sshPassword" ng-click="saveSettings()"/><span>SSH Password</span>
+              <input type="checkbox" name="logs" ng-model="settings.enableLog" ng-change="saveSettings()"/><span translate="translate" class="text-warning">Enable log for file play count/details (network intensive, do not enable unless you need it!)</span>
             </label>
           </div>
         </div>
         <div class="form-group">
-          <div class="checkbox">
-            <label class="col-xs-8 col-xs-offset-4">
-              <input type="checkbox" name="logs" ng-model="settings.enableLog" ng-change="saveSettings()"/><span translate="translate" class="text-warning">Enable log for file play count/details (network intensive, do not enable unless you need it!)</span>
-            </label>
+          <label class="col-xs-4 control-label">SSH Password</label>
+          <div class="col-xs-2">
+            <input type="password" name="sshPassword" ng-model="settings.sshPassword"/>
+          </div>
+          <div class="col-xs-2">
+            <button type="submit" ng-click="saveSettings()" class="btn btn-success"> Save</button>
           </div>
         </div>
         <!--.form-group

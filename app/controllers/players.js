@@ -473,8 +473,10 @@ exports.upload = function (cpuId, filename, data) {
             var logData;
             if(filename.indexOf('forever_out') == 0 ){
                 fs.writeFile(config.logStoreDir+'/'+cpuId+'_forever_out.log',data,function(err){
-                    if(err)
-                        console.log("error","Error in writing forever_out log for "+ cpuId);
+                    if(err) {
+                        console.log("error", "Error in writing forever_out log for " + cpuId);
+                        console.log(err);
+                    }
                     // else
                     //     console.log("info","Forever Log file saved for player : "+cpuId);
                 })

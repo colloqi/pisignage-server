@@ -60,15 +60,15 @@
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
-                            input(type='password',name='sshPassword', ng-model='settings.sshPassword', ng-click="saveSettings()")
-                            span SSH Password
-
-                .form-group
-                    .checkbox
-                        label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',name='logs', ng-model='settings.enableLog', ng-change="saveSettings()")
                             span.text-warning(translate) Enable log for file play count/details (network intensive, do not enable unless you need it!)
 
+                .form-group
+                    label.col-xs-4.control-label SSH Password
+                    .col-xs-2
+                        input(type='password',name='sshPassword', ng-model='settings.sshPassword')
+                    .col-xs-2
+                        button.btn.btn-success(type='submit', ng-click='saveSettings()')  Save
 
                 //.form-group
                     .checkbox

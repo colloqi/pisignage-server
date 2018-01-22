@@ -47,7 +47,7 @@ exports.deploy = function (installation,group, cb) {
             var syncPath = path.join(config.syncDir, installation, group.name),
                 mediaPath = path.join(config.mediaDir);
             fs.mkdir(syncPath, function (err) {
-                console.log("created directory: "+syncPath+","+err)
+                //console.log("created directory: "+syncPath)
                 var filesNotPresent = []
                 async.eachSeries(group.assets,
                     function (file, iterative_cb) {
