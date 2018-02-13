@@ -40,7 +40,7 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
    https://www.ffmpeg.org/download.html
 
    
-4. Install imagemagik - tool for image edit, conversion
+4. Install imagemagick - tool for image edit, conversion
 
     https://www.imagemagick.org/script/download.php
     
