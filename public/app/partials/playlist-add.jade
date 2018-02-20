@@ -50,17 +50,19 @@
                                             i.fa.fa-paperclip(ng-if="!file.playlistDetails[zone]")
                                         button.btn.btn-xs.btn-warning(ng-if="file.playlistDetails[zone]",
                                                                         ng-click="removeLinkFile(file,zone)") X
-                    .row
-                        label.btn.btn-link.text-muted(ng-show='file.fileDetails.type == "video"',
-                        title='mute the audio')
+                    .col-sm-3(ng-show='file.fileDetails.type == "video"')
+                        label.btn.btn-link.text-muted(title='mute the audio')
                             input(type='checkbox', ng-model='file.playlistDetails.option.main',ng-model-options="{ debounce: 500 }")
                             span.pl-5 mute audio
-                        label.btn.btn-link.text-muted(ng-show='file.fileDetails.type == "audio" || file.fileDetails.type == "radio"',
-                        title='play in background')
+                    .col-sm-3(ng-show='file.fileDetails.type == "audio" || file.fileDetails.type == "radio"')
+                        label.btn.btn-link.text-muted( title='play in background')
                             input(type='checkbox', ng-model='file.playlistDetails.option.main',ng-model-options="{ debounce: 500 }",
                             ng-true-value="false", ng-false-value="true",
                             ng-checked="file.playlistDetails.option.main !== true")
                             span.pl-5  play in background
+                    .col-sm-1.pull-right
+                        a.btn.btn-xs.btn-link(title="{{'Duplicate this asset to add multiple times in the playlist'}}", ng-click='makeCopy(file,$index)')
+                            i.fa.fa-copy
 
 
                         //span(ng-show="asset.showAssets.playlist.layout != '2bp' && asset.showAssets.playlist.layout != '2bp270'")

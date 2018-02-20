@@ -375,6 +375,26 @@ angular.module('piPlaylists.controllers', [])
             }
         }
 
+        $scope.makeCopy = function(mediaObj,position) {
+            var playlist = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
+            if (playlist) {
+                playlist.assets.splice(position, 0, angular.copy(playlist.assets[position]))
+                $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].assets.splice(position, 0,
+                    angular.copy($scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].assets[position]))
+                $http.post(piUrls.playlists + playlist.name, {assets: playlist.assets})
+                    .success(function (data, status) {
+                        if (data.success) {
+                        }
+                    })
+                    .error(function (data, status) {
+                        console.log(status);
+                    });
+
+            }
+        }
+
+
+
         // modal for link files
         $scope.linkFile = function(item,zone){
             //rawdata.fileD = $scope.filesDetails; //files from database
