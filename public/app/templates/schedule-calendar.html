@@ -18,35 +18,34 @@
             </div>
           </div>
           <div class="col-xs-5">
-            <input type="date" ng-model="forPlaylist.settings.startdate" ng-show="forPlaylist.settings.durationEnable" placeholder="Starting on" name="startdate" title="Enter Start Date" class="form-control input-sm"/>
+            <input type="date" ng-model="forPlaylist.settings.startdate" ng-model-options="{timezone:'UTC'}" ng-show="forPlaylist.settings.durationEnable" placeholder="Starting on" name="startdate" title="Enter Start Date" class="form-control input-sm"/>
           </div>
           <div class="col-xs-1"><small ng-show="forPlaylist.settings.durationEnable">till</small></div>
           <div class="col-xs-4">
-            <input type="date" ng-model="forPlaylist.settings.enddate" ng-show="forPlaylist.settings.durationEnable" placeholder="Till date" name="enddate" title="Enter End Date" class="form-control input-sm"/>
+            <input type="date" ng-model="forPlaylist.settings.enddate" ng-model-options="{timezone:'UTC'}" ng-show="forPlaylist.settings.durationEnable" placeholder="Till date" name="enddate" title="Enter End Date" class="form-control input-sm"/>
           </div>
         </div>
       </div>
     </div>
-    <!--.panel.panel-info
-    .panel-heading
-        h4
-            strong Only on Specific Day
-            small &nbsp;&nbsp;Schedule on a week day or on a month day
-    .panel-body
-        .form-group
-            .col-xs-2
-                label.control-label(for="day") Week Day
-            .col-xs-4
-                select.form-control(ng-model='forPlaylist.settings.weekday',
-                ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',
-                title='Enter playing week day')
-            .col-xs-2
-                label.control-label(for="playDate") Day of Month
-            .col-xs-4
-                select.form-control(ng-model='forPlaylist.settings.monthday',
-                ng-options="dayslist.indexOf(day) as day for day in dayslist",
-                title='Enter playing date')
-    -->
+    <!--//.panel.panel-info-->
+    <!--    .panel-heading-->
+    <!--        h4-->
+    <!--            strong Only on Specific Day-->
+    <!--            small &nbsp;&nbsp;Schedule on a week day or on a month day-->
+    <!--    .panel-body-->
+    <!--        .form-group-->
+    <!--            .col-xs-2-->
+    <!--                label.control-label(for="day") Week Day-->
+    <!--            .col-xs-4-->
+    <!--                select.form-control(ng-model='forPlaylist.settings.weekday',-->
+    <!--                ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',-->
+    <!--                title='Enter playing week day')-->
+    <!--            .col-xs-2-->
+    <!--                label.control-label(for="playDate") Day of Month-->
+    <!--            .col-xs-4-->
+    <!--                select.form-control(ng-model='forPlaylist.settings.monthday',-->
+    <!--                ng-options="dayslist.indexOf(day) as day for day in dayslist",-->
+    <!--                title='Enter playing date')-->
     <div class="panel panel-info">
       <div class="panel-heading">
         <h4><strong>Only on Selected Days</strong><small>&nbsp;&nbsp;Schedule on specific week days or month days (needs 1.7.0 for multiple days, previous versions take the first day only)</small></h4>
@@ -57,20 +56,18 @@
             <label class="control-label">Week Day(s)</label>
           </div>
           <div class="col-xs-4">
-            <!--select.form-control(ng-model='forPlaylist.settings.weekdays',
-            ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',
-            title='Select playing week days | translate')
-            -->
+            <!--select.form-control(ng-model='forPlaylist.settings.weekdays',-->
+            <!--                    ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',-->
+            <!--                    title='Select playing week days | translate')-->
             <div ng-dropdown-multiselect="" options="ngDropdown.weekdays.list" selected-model="ngDropdown.weekdays.selectedDays" events="ngDropdown.weekdays.events" translation-texts="ngDropdown.weekdays.customTexts" extra-settings="ngDropdown.weekdays.extraSettings" checkboxes="true" class="pull-right"></div>
           </div>
           <div class="col-xs-2">
             <label class="control-label">Day(s) of Month</label>
           </div>
           <div class="col-xs-4">
-            <!--select.form-control(ng-model='forPlaylist.settings.monthdays',
-            ng-options="dayslist.indexOf(day) as day for day in dayslist",
-            title='Enter playing dates | translate')
-            -->
+            <!--select.form-control(ng-model='forPlaylist.settings.monthdays',-->
+            <!--                        ng-options="dayslist.indexOf(day) as day for day in dayslist",-->
+            <!--                        title='Enter playing dates | translate')-->
             <div ng-dropdown-multiselect="" options="ngDropdown.monthdays.list" selected-model="ngDropdown.monthdays.selectedDays" events="ngDropdown.monthdays.events" translation-texts="ngDropdown.monthdays.customTexts" extra-settings="ngDropdown.monthdays.extraSettings" checkboxes="true" class="pull-right"></div>
           </div>
         </div>

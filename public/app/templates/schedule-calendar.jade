@@ -17,6 +17,7 @@
                                 small(ng-show='forPlaylist.settings.durationEnable') Begin
                     .col-xs-5
                         input.form-control.input-sm(type='date', ng-model='forPlaylist.settings.startdate',
+                        ng-model-options="{timezone:'UTC'}",
                         ng-show='forPlaylist.settings.durationEnable',
                         placeholder="Starting on",
                         name='startdate', title='Enter Start Date')
@@ -24,28 +25,29 @@
                         small(ng-show='forPlaylist.settings.durationEnable') till
                     .col-xs-4
                         input.form-control.input-sm(type='date', ng-model='forPlaylist.settings.enddate',
+                        ng-model-options="{timezone:'UTC'}",
                         ng-show='forPlaylist.settings.durationEnable',
                         placeholder="Till date",
                         name='enddate', title='Enter End Date')
-        //.panel.panel-info
-            .panel-heading
-                h4
-                    strong Only on Specific Day
-                    small &nbsp;&nbsp;Schedule on a week day or on a month day
-            .panel-body
-                .form-group
-                    .col-xs-2
-                        label.control-label(for="day") Week Day
-                    .col-xs-4
-                        select.form-control(ng-model='forPlaylist.settings.weekday',
-                        ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',
-                        title='Enter playing week day')
-                    .col-xs-2
-                        label.control-label(for="playDate") Day of Month
-                    .col-xs-4
-                        select.form-control(ng-model='forPlaylist.settings.monthday',
-                        ng-options="dayslist.indexOf(day) as day for day in dayslist",
-                        title='Enter playing date')
+        ////.panel.panel-info
+        //    .panel-heading
+        //        h4
+        //            strong Only on Specific Day
+        //            small &nbsp;&nbsp;Schedule on a week day or on a month day
+        //    .panel-body
+        //        .form-group
+        //            .col-xs-2
+        //                label.control-label(for="day") Week Day
+        //            .col-xs-4
+        //                select.form-control(ng-model='forPlaylist.settings.weekday',
+        //                ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',
+        //                title='Enter playing week day')
+        //            .col-xs-2
+        //                label.control-label(for="playDate") Day of Month
+        //            .col-xs-4
+        //                select.form-control(ng-model='forPlaylist.settings.monthday',
+        //                ng-options="dayslist.indexOf(day) as day for day in dayslist",
+        //                title='Enter playing date')
         .panel.panel-info
             .panel-heading
                 h4
@@ -57,8 +59,8 @@
                         label.control-label Week Day(s)
                     .col-xs-4
                         //select.form-control(ng-model='forPlaylist.settings.weekdays',
-                                            ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',
-                                            title='Select playing week days | translate')
+                        //                    ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',
+                        //                    title='Select playing week days | translate')
                         div.pull-right( ng-dropdown-multiselect="",
                         options="ngDropdown.weekdays.list",
                         selected-model="ngDropdown.weekdays.selectedDays",
@@ -70,8 +72,8 @@
                         label.control-label Day(s) of Month
                     .col-xs-4
                         //select.form-control(ng-model='forPlaylist.settings.monthdays',
-                                                ng-options="dayslist.indexOf(day) as day for day in dayslist",
-                                                title='Enter playing dates | translate')
+                        //                        ng-options="dayslist.indexOf(day) as day for day in dayslist",
+                        //                        title='Enter playing dates | translate')
                         div.pull-right( ng-dropdown-multiselect="",
                         options="ngDropdown.monthdays.list",
                         selected-model="ngDropdown.monthdays.selectedDays",
@@ -107,3 +109,4 @@
     //button.btn(ng-click="scheduleCalendarModal.close()") Cancel
     button.btn.btn-success(ng-click="saveSchedules(schedulecal)") OK
 
+    

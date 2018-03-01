@@ -62,8 +62,8 @@
                     small(ng-if='pl.name && !(pl.settings.durationEnable || pl.settings.timeEnable || pl.settings.weekdays.length || pl.settings.monthdays.length)')
                         | Click the icon to Schedule&nbsp;
                     small(ng-if='pl.settings.durationEnable')
-                        | {{pl.settings.startdate | date:'MMM d'}} -
-                        | {{pl.settings.enddate | date:'MMM d'}} &nbsp&nbsp
+                        | {{pl.settings.startdate | date:'MMM d': 'UTC'}} -
+                        | {{pl.settings.enddate | date:'MMM d': 'UTC'}} &nbsp&nbsp
                     small(ng-if='pl.settings.timeEnable')
                         | {{pl.settings.starttime | date: 'hh:mm a'}} -
                         | {{pl.settings.endtime | date: 'hh:mm a'}}
@@ -91,3 +91,5 @@
 
 
 
+
+        

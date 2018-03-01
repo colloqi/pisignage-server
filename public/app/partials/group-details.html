@@ -60,8 +60,8 @@
           </select>
         </div>
         <div class="col-sm-6"><a ng-show="pl.name" ng-click="scheduleCalendar(pl)" class="btn btn-link"><i class="fa fa-calendar fa-lg text-info"></i></a><small ng-if="pl.name &amp;&amp; !(pl.settings.durationEnable || pl.settings.timeEnable || pl.settings.weekdays.length || pl.settings.monthdays.length)">Click the icon to Schedule&nbsp;</small><small ng-if="pl.settings.durationEnable">
-            {{pl.settings.startdate | date:'MMM d'}} -
-            {{pl.settings.enddate | date:'MMM d'}} &nbsp&nbsp</small><small ng-if="pl.settings.timeEnable">
+            {{pl.settings.startdate | date:'MMM d': 'UTC'}} -
+            {{pl.settings.enddate | date:'MMM d': 'UTC'}} &nbsp&nbsp</small><small ng-if="pl.settings.timeEnable">
             {{pl.settings.starttime | date: 'hh:mm a'}} -
             {{pl.settings.endtime | date: 'hh:mm a'}}</small><small>{{weekDaysText[$index]}} &nbsp;&nbsp;</small><small>{{monthDaysText[$index]}} &nbsp&nbsp</small></div>
         <div ng-show="pl.name.length" class="col-sm-1"><a ng-click="delete($index)" class="btn btn-link"><i class="fa fa-times text-danger"></i></a></div>

@@ -280,6 +280,16 @@ angular.module('piGroups.controllers', [])
 
 
         $scope.scheduleCalendar = function (playlist) {
+            var getHoursMinutes = function(timeString) {
+                var hhmmArray = timeString.split(':');
+                if (hhmmArray.length == 2)
+                    return ({h:parseInt(hhmmArray[0]),m: parseInt(hhmmArray[1])});
+                else if (hhmmArray.length == 1)
+                    return ({h:0,m: parseInt(hhmmArray[0])});
+                else if (hhmmArray.length > 2)
+                    return ({h:parseInt(hhmmArray[hhmmArray.length -2]),m: parseInt(hhmmArray[hhmmArray.length -1])});
+            }
+
             $scope.forPlaylist = playlist;
             if (!$scope.forPlaylist.settings.weekdays &&
                 $scope.forPlaylist.settings.weekday &&
@@ -322,12 +332,25 @@ angular.module('piGroups.controllers', [])
                 if ($scope.forPlaylist.settings.enddate) {
                     $scope.forPlaylist.settings.enddate = new Date($scope.forPlaylist.settings.enddate)
                 }
-                if ($scope.forPlaylist.settings.starttimeObj) {
-                    $scope.forPlaylist.settings.starttimeObj = new Date($scope.forPlaylist.settings.starttimeObj)
+                // if ($scope.forPlaylist.settings.starttimeObj) {
+                //     $scope.forPlaylist.settings.starttimeObj = new Date($scope.forPlaylist.settings.starttimeObj)
+                // }
+                // if ($scope.forPlaylist.settings.endtimeObj) {
+                //     $scope.forPlaylist.settings.endtimeObj = new Date($scope.forPlaylist.settings.endtimeObj)
+                // }
+                if ($scope.forPlaylist.settings.starttime) {
+                    $scope.forPlaylist.settings.starttimeObj = new Date(0)
+                    var t = getHoursMinutes($scope.forPlaylist.settings.starttime)
+                    $scope.forPlaylist.settings.starttimeObj.setHours(t.h)
+                    $scope.forPlaylist.settings.starttimeObj.setMinutes(t.m)
                 }
-                if ($scope.forPlaylist.settings.endtimeObj) {
-                    $scope.forPlaylist.settings.endtimeObj = new Date($scope.forPlaylist.settings.endtimeObj)
+                if ($scope.forPlaylist.settings.endtime) {
+                    $scope.forPlaylist.settings.endtimeObj = new Date(0)
+                    var t = getHoursMinutes($scope.forPlaylist.settings.endtime)
+                    $scope.forPlaylist.settings.endtimeObj.setHours(t.h)
+                    $scope.forPlaylist.settings.endtimeObj.setMinutes(t.m)
                 }
+
             }
             $scope.scheduleCalendarModal = $modal.open({
                 templateUrl: '/app/templates/schedule-calendar.html',
@@ -345,15 +368,29 @@ angular.module('piGroups.controllers', [])
                     delete $scope.forPlaylist.settings.monthday
                 $scope.showDates()
                 if ($scope.forPlaylist.settings) {
+                    // if ($scope.forPlaylist.settings.starttimeObj) {
+                    //     var time = $scope.forPlaylist.settings.starttimeObj.toTimeString().split(' ')[0].slice(0,5)
+                    //     $scope.forPlaylist.settings.starttime = time;
+                    // }
+                    // if ($scope.forPlaylist.settings.endtimeObj) {
+                    //     var time = $scope.forPlaylist.settings.endtimeObj.toTimeString().split(' ')[0].slice(0,5)
+                    //     $scope.forPlaylist.settings.endtime = time;
+                    // }
+                    var minutes,hours;
                     if ($scope.forPlaylist.settings.starttimeObj) {
-                        var time = $scope.forPlaylist.settings.starttimeObj.toTimeString().split(' ')[0].slice(0,5)
-                        $scope.forPlaylist.settings.starttime = time;
+                        hours = $scope.forPlaylist.settings.starttimeObj.getHours()
+                        $scope.forPlaylist.settings.starttime = (hours < 10)?("0"+hours):(""+hours);
+                        minutes = $scope.forPlaylist.settings.starttimeObj.getMinutes();
+                        $scope.forPlaylist.settings.starttime += (minutes < 10)?(":0"+minutes):":"+minutes;
                     }
                     if ($scope.forPlaylist.settings.endtimeObj) {
-                        var time = $scope.forPlaylist.settings.endtimeObj.toTimeString().split(' ')[0].slice(0,5)
-                        $scope.forPlaylist.settings.endtime = time;
+                        hours = $scope.forPlaylist.settings.endtimeObj.getHours()
+                        $scope.forPlaylist.settings.endtime = (hours < 10)?("0"+hours):(""+hours);
+                        minutes = $scope.forPlaylist.settings.endtimeObj.getMinutes();
+                        $scope.forPlaylist.settings.endtime += (minutes < 10)?(":0"+minutes):":"+minutes;
                     }
                 }
+
                 $scope.updateGroup();
                 //formcontroller.$dirty? $scope.deployform.$setDirty(): ''; //  inform user  of new changes
             })
