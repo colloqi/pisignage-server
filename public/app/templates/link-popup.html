@@ -30,17 +30,27 @@
       <div class="col-xs-8">
         <div class="radio-inline">
           <label>
-            <input type="radio" name="radio_none" ng-model="link.obj.hideTitle" value="none"/><small>Hide all text</small>
+            <input type="radio" name="radio_none" ng-model="link.obj.hideTitle" value="none"/><small>image</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" name="radio_title" ng-model="link.obj.hideTitle" value="title"/><small>Show title</small>
+            <input type="radio" name="radio_title" ng-model="link.obj.hideTitle" value="title"/><small>image&title</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" name="radio_description" ng-model="link.obj.hideTitle" value="description"/><small>Show description</small>
+            <input type="radio" name="radio_description" ng-model="link.obj.hideTitle" value="description"/><small>image&descr</small>
+          </label>
+        </div>
+        <div class="radio-inline">
+          <label>
+            <input type="radio" name="radio_title_noimg" ng-model="link.obj.hideTitle" value="onlytitle"/><small>title</small>
+          </label>
+        </div>
+        <div class="radio-inline">
+          <label>
+            <input type="radio" name="radio_description_noimg" ng-model="link.obj.hideTitle" value="onlydescription"/><small>descr</small>
           </label>
         </div>
       </div>
@@ -55,6 +65,12 @@
       <label class="col-sm-4 control-label">Link Address</label>
       <div class="col-sm-8">
         <input type="text" name="linkUrl" ng-model="link.obj.link" ng-pattern="/^(http(s?)|rtsp|udp):///" placeholder="{{'e.g. http(s)://site.com or rtsp://'}}" required="" class="form-control"/>
+      </div>
+    </div>
+    <div ng-if="link.obj.type == '.weblink'" class="row">
+      <label translate="translate" class="control-label col-sm-2">Zoom level</label>
+      <div class="col-sm-2">
+        <input type="number" step="0.01" name="style" placeholder="Leave blank for no-zoom" ng-model="link.obj.zoom" class="form-control"/>
       </div>
     </div>
     <div ng-if="link.obj.type == '.txt'" class="form-group">

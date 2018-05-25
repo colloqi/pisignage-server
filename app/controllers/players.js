@@ -138,6 +138,7 @@ var sendConfig = function (player, group, periodic) {
         retObj.animationEnable =  group.animationEnable || false;
     retObj.resizeAssets = group.resizeAssets || false;
     retObj.videoKeepAspect = group.videoKeepAspect || false;
+    retObj.imageLetterboxed = group.imageLetterboxed || false;
     retObj.sleep = group.sleep || {enable: false, ontime: null , offtime: null };
     retObj.signageBackgroundColor =  group.signageBackgroundColor || "#000";
     retObj.omxVolume = (group.omxVolume || group.omxVolume == 0)?group.omxVolume:100;
@@ -154,17 +155,19 @@ var sendConfig = function (player, group, periodic) {
     //if (!pipkgjson)
         //pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
     retObj.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version};
-    retObj.gcal = {
-        id: config.gCalendar.CLIENT_ID,
-        token: config.gCalendar.CLIENT_SECRET
-    }
+    // retObj.gcal = {
+    //     id: config.gCalendar.CLIENT_ID,
+    //     token: config.gCalendar.CLIENT_SECRET
+    // }
     if (periodic) {
     }
 
     retObj.systemMessagesHide = settings.systemMessagesHide;
     retObj.forceTvOn = settings.forceTvOn;
+    retObj.hideWelcomeNotice = settings.hideWelcomeNotice;
     retObj.authCredentials = settings.authCredentials;
     retObj.enableLog = settings.enableLog || false;
+    retObj.enableYoutubeDl = settings.enableYoutubeDl || false;
     if (settings.sshPassword)
         retObj.sshPassword = settings.sshPassword;
     retObj.currentTime = Date.now();

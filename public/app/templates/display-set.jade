@@ -45,8 +45,8 @@
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationType",
-                                    ng-change='group.selectedGroup.animationEnable = true;',value="fade")
-                        small Fade
+                                    ng-change='group.selectedGroup.animationEnable = true;',value="blend")
+                        small.text-primary Blend
             .col-sm-3
                 .radio
                     label
@@ -132,12 +132,20 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        small Stretch images to fit screen
+                        small Fit image
             .col-sm-2
-                .checkbox
+                .radio
                     label
-                        input(type='checkbox',name='resize_image', ng-model='group.selectedGroup.resizeAssets')
-                        small Enable
+                        input(type='radio', ng-model='group.selectedGroup.imageSize',ng-value="0")
+                        small Actual
+                .radio
+                    label
+                        input(type='radio', ng-model='group.selectedGroup.imageSize',ng-value="1")
+                        small Letterbox
+                .radio
+                    label
+                        input(type='radio', ng-model='group.selectedGroup.imageSize',ng-value="0")
+                        small Stretched
             .col-sm-4
                 .checkbox
                     label
@@ -157,15 +165,16 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        small Stretch videos to fit screen
+                        small Fit video
             .col-sm-2
-                .checkbox
+                .radio
                     label
-                        input(type='checkbox',name='fill_video', ng-model='group.selectedGroup.videoKeepAspect',
-                                ng-true-value="false", ng-false-value="true",
-                                ng-checked="group.videoKeepAspect !== true"
-                        )
-                        small Enable
+                        input(type='radio',ng-model='group.selectedGroup.videoSize',ng-value="1")
+                        small Letterbox
+                .radio
+                    label
+                        input(type='radio',ng-model='group.selectedGroup.videoSize',ng-value="2")
+                        small Stretched
             .col-sm-4.text-right
                 small Stop video every seconds to show adverts (0 to disable)
             .col-sm-2

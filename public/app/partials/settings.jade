@@ -40,6 +40,12 @@
                                                 ng-disabled="!settingsForm.user.$dirty") SAVE
                         small.text-danger {{loadMsg}}
                 .form-group
+                    label.col-xs-4.control-label SSH Password
+                    .col-xs-2
+                        input(type='password',name='sshPassword', ng-model='settings.sshPassword')
+                    .col-xs-2
+                        button.btn.btn-success(type='submit', ng-click='saveSettings()')  Save
+                .form-group
                     label.col-xs-4.control-label Default Duration for Slides
                     div.col-xs-2
                         input.form-control(type='text', name='duration', ng-model='settings.defaultDuration')
@@ -48,9 +54,9 @@
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
-                            input(type='checkbox',name='systemshow', ng-model='settings.systemMessagesHide', ng-click="saveSettings()")
-                            span Hide system messages on TV Screen (e.g. Download in Progress)
-
+                            input(type='checkbox',name='youtubedl', ng-model='settings.enableYoutubeDl', ng-change="saveSettings()")
+                            span Use youtube-dl program for livestreaming instead of livestreamer
+ 
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
@@ -60,15 +66,19 @@
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
+                            input(type='checkbox',name='systemshow', ng-model='settings.systemMessagesHide', ng-click="saveSettings()")
+                            span Hide system messages on TV Screen (e.g. Download in Progress)
+                .form-group
+                    .checkbox
+                        label.col-xs-8.col-xs-offset-4
+                            input(type='checkbox',name='hidenotice', ng-model='settings.hideWelcomeNotice', ng-change="saveSettings()")
+                            span Do not show startup welcome screen
+                .form-group
+                    .checkbox
+                        label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',name='logs', ng-model='settings.enableLog', ng-change="saveSettings()")
                             span.text-warning(translate) Enable log for file play count/details (network intensive, do not enable unless you need it!)
 
-                .form-group
-                    label.col-xs-4.control-label SSH Password
-                    .col-xs-2
-                        input(type='password',name='sshPassword', ng-model='settings.sshPassword')
-                    .col-xs-2
-                        button.btn.btn-success(type='submit', ng-click='saveSettings()')  Save
 
                 //.form-group
                     .checkbox

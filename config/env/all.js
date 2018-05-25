@@ -60,11 +60,5 @@ module.exports = {
     brandRegex:             /^(brand_intro|brand_intro_portrait)\./i,
     nestedPlaylist:         /^__/i,
     gcalRegex: /\.gcal$/i,
-    gCalendar: {
-        CLIENT_ID: '',
-        CLIENT_SECRET: '',
-        REDIRECT_URL: '',
-        REDIRECT_BASE_URL: ''
-    },
     systemAssets: ["_system_notice.html"]
 };

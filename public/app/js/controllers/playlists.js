@@ -291,6 +291,7 @@ angular.module('piPlaylists.controllers', [])
             $scope.openAd = function() {
                 var settings = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.settings
                 settings.ads = settings.ads || {adPlaylist : false, adInterval : 60 } ;
+                settings.ads.adCount = settings.ads.adCount || 1;
                 settings.audio = settings.audio || {enable: false,random: false,volume: 50}  ;
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/ad-popup.html',

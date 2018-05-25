@@ -60,7 +60,7 @@
         </div>
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="fade"/><small>Fade</small>
+            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="blend"/><small class="text-primary">Blend</small>
           </label>
         </div>
       </div>
@@ -173,13 +173,23 @@
     <div class="form-group row">
       <div class="col-sm-4 text-right">
         <div class="radio">
-          <label class="text-muted"><small>Stretch images to fit screen</small></label>
+          <label class="text-muted"><small>Fit image</small></label>
         </div>
       </div>
       <div class="col-sm-2">
-        <div class="checkbox">
+        <div class="radio">
           <label>
-            <input type="checkbox" name="resize_image" ng-model="group.selectedGroup.resizeAssets"/><small>Enable</small>
+            <input type="radio" ng-model="group.selectedGroup.imageSize" ng-value="0"/><small>Actual</small>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.imageSize" ng-value="1"/><small>Letterbox</small>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.imageSize" ng-value="0"/><small>Stretched</small>
           </label>
         </div>
       </div>
@@ -199,13 +209,18 @@
     <div class="form-group row">
       <div class="col-sm-4 text-right">
         <div class="radio">
-          <label class="text-muted"><small>Stretch videos to fit screen</small></label>
+          <label class="text-muted"><small>Fit video</small></label>
         </div>
       </div>
       <div class="col-sm-2">
-        <div class="checkbox">
+        <div class="radio">
           <label>
-            <input type="checkbox" name="fill_video" ng-model="group.selectedGroup.videoKeepAspect" ng-true-value="false" ng-false-value="true" ng-checked="group.videoKeepAspect !== true"/><small>Enable</small>
+            <input type="radio" ng-model="group.selectedGroup.videoSize" ng-value="1"/><small>Letterbox</small>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.videoSize" ng-value="2"/><small>Stretched</small>
           </label>
         </div>
       </div>

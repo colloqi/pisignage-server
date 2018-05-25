@@ -25,7 +25,7 @@
       <div class="row form-group">
         <label class="control-label col-sm-3">Default Playlist for the group</label>
         <div class="col-sm-5">
-          <select ng-model="group.selectedGroup.playlists[0].name" ng-options="pl for pl in playlist.playlistNames track by pl" ng-change="updateGroup()" class="form-control">
+          <select ng-model="group.selectedGroup.playlists[0].name" ng-options="pl for pl in playlist.normalPlaylistNames track by pl" ng-change="updateGroup()" class="form-control">
             <option value="">--</option>
           </select>
         </div>
@@ -59,7 +59,8 @@
             <option value="">--</option>
           </select>
         </div>
-        <div class="col-sm-6"><a ng-show="pl.name" ng-click="scheduleCalendar(pl)" class="btn btn-link"><i class="fa fa-calendar fa-lg text-info"></i></a><small ng-if="pl.name &amp;&amp; !(pl.settings.durationEnable || pl.settings.timeEnable || pl.settings.weekdays.length || pl.settings.monthdays.length)">Click the icon to Schedule&nbsp;</small><small ng-if="pl.settings.durationEnable">
+        <div class="col-sm-1"><small ng-class="{'text-info': (pl.plType == 'regular'), 'text-warning': (pl.plType != 'regular') }">{{pl.plType}}</small></div>
+        <div class="col-sm-5"><a ng-show="pl.name" ng-click="scheduleCalendar(pl)" class="btn btn-link"><i class="fa fa-calendar fa-lg text-info"></i></a><small ng-if="pl.name &amp;&amp; !(pl.settings.durationEnable || pl.settings.timeEnable || pl.settings.weekdays.length || pl.settings.monthdays.length)">Click the icon to Schedule&nbsp;</small><small ng-if="pl.settings.durationEnable">
             {{pl.settings.startdate | date:'MMM d': 'UTC'}} -
             {{pl.settings.enddate | date:'MMM d': 'UTC'}} &nbsp&nbsp</small><small ng-if="pl.settings.timeEnable">
             {{pl.settings.starttime | date: 'hh:mm a'}} -

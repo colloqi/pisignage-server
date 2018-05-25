@@ -187,19 +187,32 @@ angular.module('piGroups.controllers', [])
                         $scope.group.selectedGroup.assets.push(playlist.templateName)
                     $scope.group.selectedGroup.playlists[i].settings = $scope.group.selectedGroup.playlists[i].settings || {}
                     $scope.group.selectedGroup.playlists[i].settings.ads = playlist.settings.ads
+                    $scope.group.selectedGroup.playlists[i].settings.domination = playlist.settings.domination
                     $scope.group.selectedGroup.playlists[i].settings.event = playlist.settings.event
                     $scope.group.selectedGroup.playlists[i].settings.audio = playlist.settings.audio
-                    if(playlist.name != 'TV_OFF') {
+                    if (playlist.name != 'TV_OFF') {
                         if (playlist.assets.length == 0) {
                             $scope.emptyPlExist = true;
                             $scope.group.selectedGroup.playlists[i].skipForSchedule = true;
                         } else {
                             $scope.group.selectedGroup.playlists[i].skipForSchedule = false;
+                            if (playlist.settings.ads && playlist.settings.ads.adPlaylist)
+                                $scope.group.selectedGroup.playlists[i].plType = "advt";
+                            else if (playlist.settings.domination && playlist.settings.domination.enable)
+                                $scope.group.selectedGroup.playlists[i].plType = "domination";
+                            else if (playlist.settings.event && playlist.settings.event.enable)
+                                $scope.group.selectedGroup.playlists[i].plType = "event";
+                            else if (playlist.settings.audio && playlist.settings.audio.enable)
+                                $scope.group.selectedGroup.playlists[i].plType = "audio";
+                            else
+                                $scope.group.selectedGroup.playlists[i].plType = "regular";
                         }
+                    } else {
+                        $scope.group.selectedGroup.playlists[i].plType = "special";
                     }
 
                 } else {
-                    $scope.group.selectedGroup.playlists.splice(i,1);
+                    $scope.group.selectedGroup.playlists.splice(i, 1);
                 }
             }
 
@@ -484,6 +497,9 @@ angular.module('piGroups.controllers', [])
             $scope.group.selectedGroup.showClock.format = $scope.group.selectedGroup.showClock.format || "12";
             $scope.group.selectedGroup.showClock.position = $scope.group.selectedGroup.showClock.position || "bottom";
 
+            $scope.group.selectedGroup.videoSize = $scope.group.selectedGroup.videoKeepAspect ? 1 : 2 ;
+            $scope.group.selectedGroup.imageSize = $scope.group.selectedGroup.resizeAssets ? ($scope.group.selectedGroup.imageLetterboxed?1:2) : 0;
+
 
             $scope.scheduleCalendar = function (playlist) {
                 $scope.forPlaylist = playlist;
@@ -521,6 +537,31 @@ angular.module('piGroups.controllers', [])
                     $scope.group.selectedGroup.sleep.offtime = time
                 }
             }
+
+            switch ($scope.group.selectedGroup.imageSize) {
+                case 1:
+                    $scope.group.selectedGroup.imageLetterboxed = true;
+                    $scope.group.selectedGroup.resizeAssets = true;
+                    break;
+                case 2:
+                    $scope.group.selectedGroup.imageLetterboxed = false;
+                    $scope.group.selectedGroup.resizeAssets = true;
+                    break;
+                default:
+                    $scope.group.selectedGroup.resizeAssets = false;
+            }
+            switch ($scope.group.selectedGroup.videoSize) {
+                // case 0:
+                //     $scope.group.selectedGroup.videoKeepAspect = true;
+                //     break;
+                case 1:
+                    $scope.group.selectedGroup.videoKeepAspect = true;
+                    break;
+                default:
+                    $scope.group.selectedGroup.videoKeepAspect = false;
+            }
+
+
             $scope.updateGroup();
         }
 

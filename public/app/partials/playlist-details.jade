@@ -34,10 +34,15 @@
                             button.btn.btn-default.pull-right(ng-click='saveSettings()')
                                 i.fa.fa-check
             .form-group
-                label.control-label.col-sm-4.text-muted Make the playlist as Advertisement list
+                label.control-label.col-sm-4.text-muted Consfigure playlist
                 .col-sm-8
-                    button.btn.btn-default(ng-click="openAd ()")
-                        span {{playlist.selectedPlaylist.settings.ads.adPlaylist?"Enabled":"Disabled"}}
+                    button.btn.btn-default(ng-click="openAd ()") Settings&nbsp;
+                        span.badge
+                            small(ng-if= "playlist.selectedPlaylist.settings.ads && playlist.selectedPlaylist.settings.ads.adPlaylist") advert
+                            small(ng-if= "playlist.selectedPlaylist.settings.domination && playlist.selectedPlaylist.settings.domination.enable") domination
+                            small(ng-if= "playlist.selectedPlaylist.settings.event && playlist.selectedPlaylist.settings.event.enable") event
+                            small(ng-if= "playlist.selectedPlaylist.settings.audio && playlist.selectedPlaylist.settings.audio.enable") audio
+
                     //.checkbox
                         label
                             input(type="checkbox",ng-model="playlist.selectedPlaylist.settings.ads.adPlaylist")

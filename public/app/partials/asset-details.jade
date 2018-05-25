@@ -29,15 +29,23 @@
                     .radio-inline
                         label
                             input(type='radio',name='radio_none', ng-model='urlLink.hideTitle', value="none")
-                            small Hide all text
+                            small image
                     .radio-inline
                         label
                             input(type='radio',name='radio_title', ng-model='urlLink.hideTitle', value="title")
-                            small Show title
+                            small image&title
                     .radio-inline
                         label
                             input(type='radio',name='radio_description', ng-model='urlLink.hideTitle', value="description")
-                            small Show description
+                            small image&description
+                    .radio-inline
+                        label
+                            input(type='radio',name='radio_title_noimg', ng-model='urlLink.hideTitle', value="onlytitle")
+                            small title
+                    .radio-inline
+                        label
+                            input(type='radio',name='radio_description_noimg', ng-model='urlLink.hideTitle', value="onlydescription")
+                            small descr
             .row(ng-if="urlLink.type == '.mrss'")
                 .col-xs-2.col-xs-offset-1
                     h4.text-muted Item duration
@@ -58,6 +66,21 @@
                 .col-sm-6
                     textarea.form-control( rows="4",cols="50",name='message', ng-model='urlLink.message', required='')
 
+            .row(ng-if="urlLink.type == '.weblink'")
+                .col-sm-2.text-right
+                    label.control-label(translate) Zoom level
+                .col-sm-2
+                    input.form-control(type='number',step="0.01" ,name='style' ,placeholder='Leave blank for no-zoom',
+                    ng-model='urlLink.zoom')
+
+            .row(ng-if="urlLink.type == '.weblink'")
+                .col-sm-2.text-right
+                    label.control-label(translate) Send Key strokes (optional)
+                .col-sm-2
+                    input.form-control(type='text',name='keystrokes' ,placeholder='e.g. tab,shift+h,e,l,l,o,shift+!,enter',
+                    ng-model='urlLink.keystrokes')
+                .col-sm-6
+                    small for key definitions refer http://robotjs.io/docs/syntax#keys
 
 
         div(ng-if='(fileType=="gcal") && calendar.list.length')

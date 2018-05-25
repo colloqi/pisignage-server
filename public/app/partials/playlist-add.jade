@@ -60,6 +60,14 @@
                             ng-true-value="false", ng-false-value="true",
                             ng-checked="file.playlistDetails.option.main !== true")
                             span.pl-5  play in background
+                    .col-sm-3(ng-show='file.fileDetails.type == "pdf"')
+                        label.btn.btn-link.text-muted(title='use presentation mode')
+                            input(type='checkbox', ng-model='file.playlistDetails.option.main',ng-model-options="{ debounce: 500 }")
+                            span.pl-5 use presentation mode
+                        input.form-control.input-sm(ng-show='file.playlistDetails.option.main',
+                        type='number', ng-model='file.playlistDetails.option.subduration',min="1",placeholder="duration for each slide",
+                        ng-model-options="{ debounce: 500 }")
+
                     .col-sm-1.pull-right
                         a.btn.btn-xs.btn-link(title="{{'Duplicate this asset to add multiple times in the playlist'}}", ng-click='makeCopy(file,$index)')
                             i.fa.fa-copy

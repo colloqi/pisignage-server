@@ -16,13 +16,13 @@ var systemPlaylists = [
 ]
 
 var isPlaylist = function (file) {
-    return (file.charAt(0) == '_' && file.charAt(1) == '_');
+    return (file.charAt(0) == '_' && file.charAt(1) == '_' && file.slice(-5) == ".json");
 }
 
 exports.newPlaylist = function ( playlist, cb) {
     var file = path.join(config.mediaDir, ("__" + playlist + '.json')),
         data = {name:playlist,settings:{ticker:{enable:false,behavior: 'scroll', textSpeed: 3, rss: { enable: false , link: null, feedDelay:10 }},
-                ads:{adPlaylist:false,adInterval:60},
+                ads:{adPlaylist:false,adCount:1,adInterval:60},
                 audio: {enable: false,random: false,volume: 50}
             },
             assets:[],layout:'1',

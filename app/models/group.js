@@ -25,6 +25,7 @@ var GroupSchema = new Schema({
     animationType:          {type: String, default: null},
     resizeAssets:           {type: Boolean, default: true},
     videoKeepAspect:        {type: Boolean, default: false},
+    imageLetterboxed:       {type: Boolean, default: false},
     signageBackgroundColor: {type: String, default: "#000"},
     urlReloadDisable:       {type: Boolean, default: true},
     loadPlaylistOnCompletion:{type: Boolean, default: false},

@@ -304,6 +304,7 @@ angular.module('piAssets.controllers',[])
                 name: null,
                 type: '.tv',
                 link: null,
+                zoom: 1.0,
                 duration: 10,
                 hideTitle: 'title'    //actually show Rss text type
 
@@ -339,12 +340,12 @@ angular.module('piAssets.controllers',[])
             }
         }
 
-        $scope.configureGCalendar= function() {
-            $scope.gCalModal = $modal.open({
-                templateUrl: '/app/templates/gcal-popup.html',
-                scope: $scope
-            });
-        }
+        // $scope.configureGCalendar= function() {
+        //     $scope.gCalModal = $modal.open({
+        //         templateUrl: '/app/templates/gcal-popup.html',
+        //         scope: $scope
+        //     });
+        // }
 
         //dropdown selects for filter and assign selected files
         $scope.ngDropdown = {
@@ -508,25 +509,25 @@ angular.module('piAssets.controllers',[])
         $scope.fileType;
         $scope.selectedLabels = [];
         switch($state.params.file.slice($state.params.file.lastIndexOf('.')+1)) {
-            case 'gcal':
-                $scope.fileType = 'gcal';
-                $scope.calendarname = $state.params.file;
-
-                if($state.params.file != "new"){
-                    $http
-                        .get(piUrls.calendars+$state.params.file)
-                        .success(function(data, status) {
-                            if (data.success) {
-                                $scope.calendar = data.data;
-                                $scope.filedetails = data.data;
-                                if ($scope.filedetails.dbdata)
-                                    $scope.selectedLabels = $scope.filedetails.dbdata.labels;
-                            }
-                        })
-                        .error(function(data, status) {
-                        });
-                }
-                break;
+            // case 'gcal':
+            //     $scope.fileType = 'gcal';
+            //     $scope.calendarname = $state.params.file;
+            //
+            //     if($state.params.file != "new"){
+            //         $http
+            //             .get(piUrls.calendars+$state.params.file)
+            //             .success(function(data, status) {
+            //                 if (data.success) {
+            //                     $scope.calendar = data.data;
+            //                     $scope.filedetails = data.data;
+            //                     if ($scope.filedetails.dbdata)
+            //                         $scope.selectedLabels = $scope.filedetails.dbdata.labels;
+            //                 }
+            //             })
+            //             .error(function(data, status) {
+            //             });
+            //     }
+            //     break;
             case 'link':
             case 'weblink':
             case 'stream':

@@ -1,124 +1,173 @@
 
-<div class="modal-header">
-  <h4 class="text-center">Make this as Advt. Playlist</h4>
-</div>
-<div class="modal-body">
-  <form class="form-horizontal">
-    <div class="form-group">
-      <div class="col-sm-6">
-        <p>
-          By making this as Advt. playlist, you can insert the assets of this playlist periodically in between the currently
-          playing playlist.
-        </p>
-      </div>
-      <div class="col-sm-6">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.adPlaylist"/><span>Make this as Advt. Playlist</span>
-          </label>
+<div class="modal-content">
+  <div class="modal-header bg-info">
+    <h4 class="text-center">Make this as Advt. Playlist</h4>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+      <div class="form-group">
+        <div class="col-sm-6">
+          <p>
+            By making this as Advt. playlist, you can insert the assets of this playlist periodically in between the currently
+            playing playlist.
+          </p>
+        </div>
+        <div class="col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.adPlaylist"/><span>Make this as Advt. Playlist</span>
+            </label>
+          </div>
         </div>
       </div>
-    </div>
-    <div ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist" class="form-group">
-      <div class="col-sm-6">
-        <p>
-            You can play the assets only on side and banner zones by disabling main zone here.
-          Still you have to select dummy file for main zone due to our UI issue! We will correct it soon.
-        </p>
-      </div>
-      <div class="col-sm-6">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.noMainPlay"/><span>Play only in side/banner zones</span>
-          </label>
+      <div ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist" class="form-group">
+        <div class="col-sm-6">
+          <p>
+              You can play the assets only on side and banner zones by disabling main zone here.
+            Still you have to select dummy file for main zone
+          </p>
+        </div>
+        <div class="col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.noMainPlay"/><span>Play only in side/banner zones</span>
+            </label>
+          </div>
         </div>
       </div>
-    </div>
-    <div ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist" class="form-group">
-      <label class="col-sm-6 control-label">Play one asset after every seconds</label>
-      <div class="col-sm-2">
-        <input type="text" ng-model="playlist.selectedPlaylist.settings.ads.adInterval" class="form-control"/>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-6 col-sm-offset-6">
-        <button ng-click="saveSettings()" class="btn btn-success">Save</button>
-      </div>
-    </div>
-  </form>
-</div>
-<div class="modal-header">
-  <h4 class="text-center">Play this as independent Audio Playlist for the aux port</h4>
-</div>
-<div class="modal-body">
-  <form class="form-horizontal">
-    <div class="form-group">
-      <div class="col-sm-6">
-        <p>
-          In addition to signage functionality, you can play audio from a playlist
-          through the 3.5mm jack
-        </p>
-      </div>
-      <div class="col-sm-6">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.enable"/><span>Play songs from this playlist (need to contain only mp3 files)</span>
-          </label>
+      <div ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist" class="form-group">
+        <label class="col-sm-4 control-label">Play</label>
+        <div class="col-sm-3">
+          <div class="input-group">
+            <input type="number" ng-model="playlist.selectedPlaylist.settings.ads.adCount" class="form-control"/>
+            <div class="input-group-addon"><small translate="translate" class="text-muted"> assets</small></div>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="input-group">
+            <div class="input-group-addon"><small translate="translate" class="text-muted"> after every</small></div>
+            <input type="number" ng-model="playlist.selectedPlaylist.settings.ads.adInterval" class="form-control"/>
+            <div class="input-group-addon"><small translate="translate" class="text-muted"> seconds</small></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div ng-show="playlist.selectedPlaylist.settings.audio.enable" class="form-group">
-      <div class="col-sm-6">
-        <p> </p>
-      </div>
-      <div class="col-sm-6">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.random"/><span>Play in random order</span>
-          </label>
+      <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-6">
+          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
         </div>
       </div>
-    </div>
-    <div ng-show="playlist.selectedPlaylist.settings.audio.enable" class="form-group">
-      <div class="col-sm-6">
-        <p></p>
-      </div>
-      <div class="col-sm-6">
-        <input type="number" min="0" max="100" ng-model="playlist.selectedPlaylist.settings.audio.volume" placeholder="{{'Enter value in %' }}" class="form-control"/>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-6 col-sm-offset-6">
-        <button ng-click="saveSettings()" class="btn btn-success">Save</button>
-      </div>
-    </div>
-  </form>
-</div>
-<div class="modal-header">
-  <h4 class="text-center">Make this as Event Playlist</h4>
-</div>
-<div class="modal-body">
-  <form class="form-horizontal">
-    <div class="form-group">
-      <label class="col-sm-7 control-label text-muted">When SIGUSR2 event is signalled this playlist is played if eligible</label>
-      <div class="col-sm-5">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.event.enable"/><span>Enable</span>
-          </label>
+    </form>
+  </div>
+  <div class="modal-header bg-info">
+    <h4 class="text-center">Play this playlist only once during selected duration</h4>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+      <div class="form-group">
+        <div class="col-sm-6">
+          <p>
+            Play this playlist once every selected duration by stopping regular playlist
+            ,acts like insertion of advt at fixed intervals
+          </p>
+        </div>
+        <div class="col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.domination.enable"/><span>Enable (Domination Content)</span>
+            </label>
+          </div>
         </div>
       </div>
-    </div>
-    <div ng-show="settings.event.enable" class="form-group">
-      <label class="col-sm-7 control-label text-muted">Duration of the playlist, 0 to play till next event</label>
-      <div class="col-sm-5">
-        <input type="text" ng-model="playlist.selectedPlaylist.settings.event.duration" placeholder="{{'Enter value in seconds'}}" class="form-control"/>
+      <div ng-show="playlist.selectedPlaylist.settings.domination.enable" class="form-group">
+        <div class="col-sm-6">
+          <p>Play after every</p>
+        </div>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <input type="number" ng-model="playlist.selectedPlaylist.settings.domination.timeInterval" class="form-control"/>
+            <div class="input-group-addon"><small translate="translate"> minutes</small></div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-6 col-sm-offset-6">
-        <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+    </form>
+  </div>
+  <div class="modal-header bg-info">
+    <h4 class="text-center">Play this as independent Audio Playlist for the aux port</h4>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+      <div class="form-group">
+        <div class="col-sm-6">
+          <p>
+            In addition to signage functionality, you can play audio from a playlist
+            through the 3.5mm jack
+          </p>
+        </div>
+        <div class="col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.enable"/><span>Play songs from this playlist (need to contain only mp3 files)</span>
+            </label>
+          </div>
+        </div>
       </div>
-    </div>
-  </form>
+      <div ng-show="playlist.selectedPlaylist.settings.audio.enable" class="form-group">
+        <div class="col-sm-6">
+          <p></p>
+        </div>
+        <div class="col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.random"/><span>Play in random order</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div ng-show="playlist.selectedPlaylist.settings.audio.enable" class="form-group">
+        <div class="col-sm-6">
+          <p></p>
+        </div>
+        <div class="col-sm-6">
+          <input type="number" min="0" max="100" ng-model="playlist.selectedPlaylist.settings.audio.volume" placeholder="{{'Enter value in %' }}" class="form-control"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-6">
+          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-header bg-info">
+    <h4 class="text-center">Make this as Event Playlist</h4>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+      <div class="form-group">
+        <div class="col-sm-6">
+          <p>When SIGUSR2 event is signalled this playlist is played if eligible</p>
+        </div>
+        <div class="col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.event.enable"/><span>Enable</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div ng-show="playlist.selectedPlaylist.settings.event.enable" class="form-group">
+        <div class="col-sm-6">
+          <p>Duration of the playlist, 0 to play till next event</p>
+        </div>
+        <div class="col-sm-6">
+          <input type="text" ng-model="playlist.selectedPlaylist.settings.event.duration" placeholder="{{'Enter value in seconds'}}" class="form-control"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-6">
+          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
