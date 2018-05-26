@@ -12,6 +12,8 @@ var SettingsSchema = new Schema({
     url: {type: String},
     sshPassword: {type: String, default: null},
     enableLog : {type: Boolean, default: false},
+    hideWelcomeNotice: {type: Boolean, default: false},
+    enableYoutubeDl : {type: Boolean, default: false},
     authCredentials: {
         user: {type: String , default: 'pi'},
         password: {type: String , default: 'pi'}

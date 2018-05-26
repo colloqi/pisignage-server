@@ -597,6 +597,18 @@ angular.module('piAssets.controllers',[])
             }
         }
 
+        $scope.saveNewChanges = function(){
+            $http
+                .post(piUrls.links ,{ details : $scope.urlLink} )
+                .then(function(response) {
+                    var data = response.data;
+                    $scope.linkform.$setPristine();
+                },function(response){
+                    console.log(response);
+                })
+        }
+
+
         $scope.delete= function(index){
             piPopup.confirm("File "+$state.params.file, function() {
                 $http

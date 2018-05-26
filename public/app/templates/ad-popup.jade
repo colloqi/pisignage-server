@@ -61,6 +61,10 @@
                         input.form-control(type='number',ng-model='playlist.selectedPlaylist.settings.domination.timeInterval')
                         .input-group-addon
                             small(translate)  minutes
+            .form-group
+                .col-sm-6.col-sm-offset-6
+                    button.btn.btn-success(ng-click="saveSettings()") Save
+
 
 
     .modal-header.bg-info

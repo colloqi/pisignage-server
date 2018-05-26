@@ -43,23 +43,24 @@
                     <button ng-if="file.playlistDetails[zone]" ng-click="removeLinkFile(file,zone)" class="btn btn-xs btn-warning">X</button>
                   </div></span></small></div>
           </div>
-          <div ng-show="file.fileDetails.type == &quot;video&quot;" class="col-sm-3">
-            <label title="mute the audio" class="btn btn-link text-muted">
-              <input type="checkbox" ng-model="file.playlistDetails.option.main" ng-model-options="{ debounce: 500 }"/><span class="pl-5">mute audio</span>
-            </label>
-          </div>
-          <div ng-show="file.fileDetails.type == &quot;audio&quot; || file.fileDetails.type == &quot;radio&quot;" class="col-sm-3">
-            <label title="play in background" class="btn btn-link text-muted">
-              <input type="checkbox" ng-model="file.playlistDetails.option.main" ng-model-options="{ debounce: 500 }" ng-true-value="false" ng-false-value="true" ng-checked="file.playlistDetails.option.main !== true"/><span class="pl-5"> play in background</span>
-            </label>
-          </div>
-          <div ng-show="file.fileDetails.type == &quot;pdf&quot;" class="col-sm-3">
-            <label title="use presentation mode" class="btn btn-link text-muted">
-              <input type="checkbox" ng-model="file.playlistDetails.option.main" ng-model-options="{ debounce: 500 }"/><span class="pl-5">use presentation mode</span>
-            </label>
-            <input ng-show="file.playlistDetails.option.main" type="number" ng-model="file.playlistDetails.option.subduration" min="1" placeholder="duration for each slide" ng-model-options="{ debounce: 500 }" class="form-control input-sm"/>
-          </div>
-          <div class="col-sm-1 pull-right"><a title="{{'Duplicate this asset to add multiple times in the playlist'}}" ng-click="makeCopy(file,$index)" class="btn btn-xs btn-link"><i class="fa fa-copy"></i></a>
+          <div class="row">
+            <div ng-show="file.fileDetails.type == &quot;video&quot;" class="col-sm-3">
+              <label title="mute the audio" class="btn btn-link text-muted">
+                <input type="checkbox" ng-model="file.playlistDetails.option.main" ng-model-options="{ debounce: 500 }"/><span class="pl-5">mute audio</span>
+              </label>
+            </div>
+            <div ng-show="file.fileDetails.type == &quot;audio&quot; || file.fileDetails.type == &quot;radio&quot;" class="col-sm-3">
+              <label title="play in background" class="btn btn-link text-muted">
+                <input type="checkbox" ng-model="file.playlistDetails.option.main" ng-model-options="{ debounce: 500 }" ng-true-value="false" ng-false-value="true" ng-checked="file.playlistDetails.option.main !== true"/><span class="pl-5"> play in background</span>
+              </label>
+            </div>
+            <div ng-show="file.fileDetails.type == &quot;pdf&quot;" class="col-sm-3">
+              <label title="use presentation mode" class="btn btn-link text-muted">
+                <input type="checkbox" ng-model="file.playlistDetails.option.main" ng-model-options="{ debounce: 500 }"/><span class="pl-5">use presentation mode</span>
+              </label>
+              <input ng-show="file.playlistDetails.option.main" type="number" ng-model="file.playlistDetails.option.subduration" min="1" placeholder="duration for each slide" ng-model-options="{ debounce: 500 }" class="form-control input-sm"/>
+            </div>
+            <div class="col-sm-1 pull-right"><a title="{{'Duplicate this asset to add multiple times in the playlist'}}" ng-click="makeCopy(file,$index)" class="btn btn-xs btn-link"><i class="fa fa-copy"></i></a></div>
             <!--span(ng-show="asset.showAssets.playlist.layout != '2bp' && asset.showAssets.playlist.layout != '2bp270'")-->
             <!--        button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,'side')")-->
             <!--            span Side Zone:&nbsp; {{file.playlistDetails.side || "Select a file"}}-->
