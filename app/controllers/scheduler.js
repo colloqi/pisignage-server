@@ -66,6 +66,19 @@ var checkAndDownloadImage = function() {
                 update = true;
             }
             async_cb()
+        },
+        function (async_cb) {
+            //read version, different from local one
+            if (!update) {
+                fs.access(path.join(config.releasesDir,"piimage"+serverVersion+"-v6.zip"), fs.constants.F_OK, function(err) {
+                    if (err)
+                        update = true;
+                    console.log(err);
+                    async_cb(err)
+                });
+            } else {
+                async_cb()
+            }
         }
     ], function(err){
         if (!update)
