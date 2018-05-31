@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
     config = require('../../config/config'),
     fs = require('fs'),
     async = require('async'),
+    util = require('util'),
     path = require('path');
 
 var socketio = require('./server-socket');
@@ -70,7 +71,7 @@ exports.deploy = function (installation,group, cb) {
                                                 if (err) {
                                                     console.log(err)
                                                     var errMessage = "Unable to copy playlist " + file + " for " + installation
-                                                    logger.log("error",errMessage )
+                                                    util.log(errMessage )
                                                     iterative_cb(errMessage);
                                                 } else
                                                     iterative_cb();
@@ -177,7 +178,7 @@ exports.deploy = function (installation,group, cb) {
                         //console.log(group.assetsValidity)
                     } else {
                         group.assetsValidity = [];
-                        logger.log("error", "Asset validity query error for " + installation + ";" + err)
+                        util.log("Asset validity query error for " + installation + ";" + err)
                     }
                     async_cb();
                 })
