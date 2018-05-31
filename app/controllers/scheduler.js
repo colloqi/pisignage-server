@@ -74,27 +74,50 @@ var checkAndDownloadImage = function() {
         console.log("New version is available: "+serverVersion)
         var serverLink = "http://pisignage.com/releases/piimage"+serverVersion+".zip",
             imageFile = path.join(config.releasesDir,"piimage"+serverVersion+".zip"),
-            linkFile = path.join(config.releasesDir,"pi-image.zip")
+            serverLinkV6 = "http://pisignage.com/releases/piimage"+serverVersion+"-v6.zip",
+            imageFileV6 = path.join(config.releasesDir,"piimage"+serverVersion+"-v6.zip"),
+            linkFile = path.join(config.releasesDir,"pi-image.zip"),
+            linkFileV6 = path.join(config.releasesDir,"pi-image-v6.zip"),
+            linkFileV6_2 = path.join(config.releasesDir,("piimage"+serverVersion).slice(0,("piimage"+serverVersion).indexOf(".")) + "-v6.zip")
         download(serverLink,
             imageFile,
-            function(err) {
+            function (err) {
                 if (err) {
                     console.log(err)
                 } else {
-                    //create the symbolic link pi-image.zip to the the donwloaded zip file
-                    fs.unlink(linkFile, function(err){
-                        fs.symlink(imageFile,linkFile, function(err){
-                            if (err) console.log(err)
-                        })
+                    download(serverLinkV6,
+                        imageFileV6, function (err) {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                //create the symbolic link pi-image.zip to the the donwloaded zip file
+                                fs.unlink(linkFile, function (err) {
+                                    fs.symlink(imageFile, linkFile, function (err) {
+                                        if (err) console.log(err)
+                                    })
 
-                    })
-                    // update local package.json with the downloaded one
-                    fs.unlink(packageJsonFile, function(err) {
-                        fs.rename(serverFile, packageJsonFile, function(err){
-                            if (err) console.log(err)
+                                })
+                                fs.unlink(linkFileV6, function (err) {
+                                    fs.symlink(imageFileV6, linkFileV6, function (err) {
+                                        if (err) console.log(err)
+                                    })
+
+                                })
+                                fs.unlink(linkFileV6_2, function (err) {
+                                    fs.symlink(imageFileV6, linkFileV6_2, function (err) {
+                                        if (err) console.log(err)
+                                    })
+
+                                })
+                                // update local package.json with the downloaded one
+                                fs.unlink(packageJsonFile, function (err) {
+                                    fs.rename(serverFile, packageJsonFile, function (err) {
+                                        if (err) console.log(err)
+                                    })
+                                })
+                                console.log("piSignage image updated to " + serverVersion);
+                            }
                         })
-                    })
-                    console.log("piSignage image updated to "+serverVersion);
                 }
             })
     })
