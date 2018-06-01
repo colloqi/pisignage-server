@@ -70,7 +70,7 @@ var checkAndDownloadImage = function() {
         function (async_cb) {
             //read version, different from local one
             if (!update) {
-                fs.access(path.join(config.releasesDir,"piimage"+serverVersion+"-v6.zip"), (fs.constants || fs).F_OK), function(err) {
+                fs.access(path.join(config.releasesDir,"piimage"+serverVersion+"-v6.zip"), (fs.constants || fs).F_OK, function(err) {
                     if (err)
                         update = true;
                     console.log(err);
