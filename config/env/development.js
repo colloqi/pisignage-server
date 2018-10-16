@@ -5,6 +5,6 @@ module.exports = {
     https: false,
     port: process.env.PORT || 3000,
     mongo: {
-        uri: 'mongodb://localhost/pisignage-server-dev'
+        uri: 'mongodb://localhost/pisignage-dev'
     }
 };

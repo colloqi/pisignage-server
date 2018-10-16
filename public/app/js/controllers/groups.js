@@ -779,8 +779,8 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.swUpdate = function(player) {
-            if (player.statusClass == "text-danger")
-                return console.log("Player is offline");
+            // if (player.statusClass == "text-danger")
+            //     return console.log("Player is offline");
             $scope.msg = {player:player,curVer:player.version,
                 newVer:$scope.player.currentVersion.version, beta:$scope.player.currentVersion.beta};
             $scope.modal = $modal.open({

@@ -4,6 +4,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var express = require('express'),
+    oldSocketio = require('919.socket.io'),
     socketio = require('socket.io'),
     mongoose= require('mongoose');
 
@@ -60,10 +61,21 @@ else {
     server = require('http').createServer(app);
 }
 
-var io = socketio.listen(server);
+var io = oldSocketio.listen(server);
+var ioNew = socketio(server,{
+    path: '/newsocket.io',
+    serveClient: true,
+    // below are engine.IO options
+    pingInterval: 45000,
+    pingTimeout: 45000,
+    upgradeTimeout: 60000,
+    maxHttpBufferSize: 10e7
+});
 
 //Bootstrap socket.io
 require('./app/controllers/server-socket').startSIO(io);
+require('./app/controllers/server-socket-new').startSIO(ioNew);
+
 require('./app/controllers/scheduler');
 
 server.listen(config.port, function () {

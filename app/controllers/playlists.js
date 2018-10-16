@@ -11,7 +11,8 @@ var systemPlaylists = [
         name:"TV_OFF" ,
         settings: {},
         assets:[],
-        layout:"1"
+        layout:"1",
+        schedule:{}
     }
 ]
 
@@ -26,7 +27,9 @@ exports.newPlaylist = function ( playlist, cb) {
                 audio: {enable: false,random: false,volume: 50}
             },
             assets:[],layout:'1',
-            templateName:"custom_layout.html"};
+            templateName:"custom_layout.html",
+            schedule:{}
+    };
 
 
     fs.writeFile(file, JSON.stringify(data, null, 4), function (err) {
@@ -67,6 +70,7 @@ exports.index = function (req, res) {
                         playlist.templateName = obj.templateName || "custom_layout.html";
                         playlist.videoWindow = obj.videoWindow || null;
                         playlist.zoneVideoWindow = obj.zoneVideoWindow || {};
+                        playlist.schedule = obj.schedule || {};
                         list.push(playlist);
                     }
                     cb();
@@ -87,6 +91,9 @@ exports.index = function (req, res) {
 }
 
 exports.getPlaylist = function (req, res) {
+
+    if (req.params['file'] == "TV_OFF")
+        return rest.sendError(res, 'System Playlist, can not be edited');
 
     var file = path.join(config.mediaDir,  ("__" + req.params['file'] + '.json'));
 
@@ -115,6 +122,7 @@ exports.getPlaylist = function (req, res) {
                 playlist.templateName = obj.templateName || "custom_layout.html";
                 playlist.videoWindow = obj.videoWindow || null;
                 playlist.zoneVideoWindow = obj.zoneVideoWindow? obj.zoneVideoWindow : {};
+                playlist.schedule = obj.schedule || {};
             }
 
             return rest.sendSuccess(res, ' Sending playlist content', playlist);
@@ -138,6 +146,10 @@ exports.savePlaylist = function (req, res) {
     var file = path.join(config.mediaDir,  ("__" + req.params['file'] + '.json'));
 
     fs.readFile(file, 'utf8', function (err, data) {
+        if (err && (err.code == 'ENOENT') && req.params['file'] == "TV_OFF") {
+            data = JSON.stringify(systemPlaylists[0]);
+            err = null;
+        }
         if (err) {
             rest.sendError(res, "Playlist file read error", err)
         } else {
@@ -160,6 +172,10 @@ exports.savePlaylist = function (req, res) {
 
             if (req.body.assets) {
                 fileData.assets = req.body.assets;
+                dirty = true;
+            }
+            if (req.body.schedule) {
+                fileData.schedule = req.body.schedule;
                 dirty = true;
             }
             if (req.body.layout) {

@@ -7,7 +7,7 @@ var players = require('./players'),
 
 var handleClient = function (socket) {
 
-    //console.log("connection with 0.9.19 socket.io : "+socket.id);
+    //console.log("connection with 2.1.1 socket.io : "+socket.id);
     socket.on('status', function (settings, status, priority) {
         var statusObject = _.extend(
             {
@@ -19,7 +19,7 @@ var handleClient = function (socket) {
             settings,
             status
         )
-        statusObject.newSocketIo = false;
+        statusObject.newSocketIo = true;
         players.updatePlayerStatus(statusObject)
     });
 
@@ -47,7 +47,7 @@ var handleClient = function (socket) {
 
 exports.startSIO = function (io) {
     io.sockets.on('connection', handleClient);
-    io.set('log level', 0);
+    //io.set('log level', 0);
     iosockets = io.sockets;
 }
 

@@ -45,6 +45,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                         },
                         function(img_cb){ // resize image
                             imageMagick(src)
+                                .autoOrient()
                                 .resize(1920,1920,'>')
                                 .write(src,function(err,op1){
                                     if(err)

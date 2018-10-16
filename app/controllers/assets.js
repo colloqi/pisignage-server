@@ -73,6 +73,9 @@ exports.createFiles = function (req, res) {
         console.log("Uploaded file: "+fileObj.path);
         var filename = fileObj.originalname.replace(config.filenameRegex, '');
 
+        if ((filename).match(config.zipfileRegex)) //unzip won't work with spcaces in file name
+            filename = filename.replace(/ /g,'')
+
         if(filename.match(config.brandRegex)) // change brand video name
             filename = filename.toLowerCase();
 

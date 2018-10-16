@@ -63,7 +63,7 @@ LabelSchema.statics = {
         var criteria = options.criteria || {}
 
         this.find(criteria)
-            .sort({_id: -1}) // sort by date
+            .sort({name: -1}) // sort by date
             .limit(options.perPage)
             .skip(options.perPage * options.page)
             .exec(cb)

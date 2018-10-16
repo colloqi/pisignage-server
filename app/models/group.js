@@ -37,6 +37,10 @@ var GroupSchema = new Schema({
                             ontimeObj: {type: String},
                             offtimeObj: {type: String}
     },
+    reboot:                 {
+                                enable: {type: Boolean,default: false},
+                                time: { type: String}
+                            },
     omxVolume:              {type: Number , default: 100 },
     logo:                   {type: String,default: null},
     logox:                  {type: Number,default: 10},
@@ -78,7 +82,7 @@ GroupSchema.statics = {
             delete criteria.all
         }
         this.find(criteria)
-            .sort({_id: -1}) // sort by date
+            .sort({name: -1}) // sort by date
             .limit(options.perPage)
             .skip(options.perPage * options.page)
             .exec(cb)

@@ -10,7 +10,8 @@ var mongoose = require('mongoose'),
     async = require('async'),
     config = require('../../config/config');
 
-var socketio = require('./server-socket'),
+var oldSocketio = require('./server-socket'),
+    newSocketio = require('./server-socket-new'),
     licenses = require('./licenses');
 
 var installation,
@@ -43,14 +44,12 @@ fs.mkdir(config.logStoreDir, function(err) {
 
 var activePlayers = {},
     lastCommunicationFromPlayers = {};
-Player.find({"isConnected": true}, function (err, players) {
-    if (err)
-        return;
-    players.forEach(function (player) {
-        activePlayers[player._id.toString()] = false;
-    })
+Player.update({"isConnected": true},{$set:{"isConnected": false}},{ multi: true }, function(err, num) {
+    if (!err && num)
+        logger.log("info","Reset isConnected for "+num.nModified+" players");
     checkPlayersWatchdog();
 })
+
 
 var defaultGroup = {_id: 0, name: 'default'};
 //create a default group if does not exist
@@ -76,11 +75,12 @@ function checkPlayersWatchdog() {
     async.eachSeries(playerIds, function (playerId, cb) {
         if (!activePlayers[playerId]) {
             Player.findById(playerId, function (err, player) {
-                if (!err && player) {
+                if (!err && player && player.isConnected) {
                     player.isConnected = false;
                     player.save();
-                    delete activePlayers[playerId];
+                    logger.log("info","disconnect: "+player.installation+"-"+player.name+";reason: checkPlayersWatchdog")
                 }
+                delete activePlayers[playerId];
                 cb();
             })
         } else {
@@ -90,6 +90,19 @@ function checkPlayersWatchdog() {
     }, function (err) {
         readVersions() //update version of software
         setTimeout(checkPlayersWatchdog, 600000);    //cleanup every 10 minutes
+    })
+}
+
+exports.updateDisconnectEvent = function(socketId, reason) {
+    Player.findOne({socket:socketId}, function(err,player) {
+        if (!err && player) {
+            player.isConnected = false;
+            player.save();
+            delete activePlayers[player._id.toString()];
+            logger.log("info","disconnect: "+player.installation+"-"+player.name+";reason: "+reason)
+        } else {
+            //logger.log("warn","not able to find player for disconnect event: "+socketId);
+        }
     })
 }
 
@@ -140,6 +153,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.videoKeepAspect = group.videoKeepAspect || false;
     retObj.imageLetterboxed = group.imageLetterboxed || false;
     retObj.sleep = group.sleep || {enable: false, ontime: null , offtime: null };
+    retObj.reboot = group.reboot || {enable: false, time: null };
     retObj.signageBackgroundColor =  group.signageBackgroundColor || "#000";
     retObj.omxVolume = (group.omxVolume || group.omxVolume == 0)?group.omxVolume:100;
     retObj.timeToStopVideo = group.timeToStopVideo || 0;
@@ -154,7 +168,8 @@ var sendConfig = function (player, group, periodic) {
     retObj.loadPlaylistOnCompletion =  group.loadPlaylistOnCompletion || false;
     //if (!pipkgjson)
         //pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
-    retObj.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version};
+    retObj.currentVersion = { version: pipkgjson.version, platform_version: pipkgjson.platform_version,
+        beta: pipkgjsonBeta.version}
     // retObj.gcal = {
     //     id: config.gCalendar.CLIENT_ID,
     //     token: config.gCalendar.CLIENT_SECRET
@@ -171,6 +186,7 @@ var sendConfig = function (player, group, periodic) {
     if (settings.sshPassword)
         retObj.sshPassword = settings.sshPassword;
     retObj.currentTime = Date.now();
+    var socketio = (player.newSocketIo?newSocketio:oldSocketio);
     socketio.emitMessage(player.socket, 'config', retObj);
 }
 
@@ -355,7 +371,7 @@ exports.deleteObject = function (req, res) {
 }
 
 var updatePlayerCount = {},
-    perDayCount = 60 * 24;
+    perDayCount = 20 * 24;
 exports.updatePlayerStatus = function (obj) {
     var retObj = {};
 
@@ -435,6 +451,7 @@ exports.shell = function (req, res) {
     var object = req.object,
         sid = object.socket;
     pendingCommands[sid] = res;
+    var socketio = (object.newSocketIo?newSocketio:oldSocketio);
     socketio.emitMessage(sid, 'shell', cmd);
 
     clearTimeout(shellCmdTimer[sid]);
@@ -465,6 +482,7 @@ exports.swupdate = function (req, res) {
     if (!version) {
         version = 'piimage'+pipkgjson.version+'.zip'
     }
+    var socketio = (object.newSocketIo?newSocketio:oldSocketio);
     socketio.emitMessage(object.socket, 'swupdate',version);
     //console.log("updating to "+(version?version:'piimage'+pipkgjson.version+'.zip'));
     return rest.sendSuccess(res, 'SW update command issued');
@@ -510,6 +528,7 @@ exports.upload = function (cpuId, filename, data) {
                     }
                 }
             }
+            var socketio = (player.newSocketIo?newSocketio:oldSocketio);
             socketio.emitMessage(player.socket, 'upload_ack', filename);
         } else {
             console.log("ignoring file upload: " + filename);
@@ -520,6 +539,7 @@ exports.upload = function (cpuId, filename, data) {
 exports.tvPower = function(req,res){
     var status = req.body.status;
     var object = req.object;
+    var socketio = (object.newSocketIo?newSocketio:oldSocketio);
     socketio.emitMessage(object.socket,'cmd','tvpower',{off: status} );
     return rest.sendSuccess(res,'TV command issued');
 }
@@ -579,6 +599,7 @@ exports.takeSnapshot = function (req, res) { // send socket.io event
                 );
             })
         }, 60000)
+        var socketio = (object.newSocketIo?newSocketio:oldSocketio);
         socketio.emitMessage(object.socket, 'snapshot');
     }
 }

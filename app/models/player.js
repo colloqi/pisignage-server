@@ -30,6 +30,7 @@ var PlayerSchema = new Schema({
     lastReported:           {type: Date},
     isConnected:            {type: Boolean,index: true},
     socket:                 {type: String,index: true},
+    newSocketIo:            {type: Boolean,default:false},
 
     registered:             {type: Boolean, default: false},
     serverServiceDisabled:  {type: Boolean, default: false},
@@ -41,7 +42,8 @@ var PlayerSchema = new Schema({
     licensed:               {type: Boolean, default: false},
     ethMac:                 String,
     wifiMac:                String,
-    cecTvStatus:            {type: Boolean, default : true}
+    cecTvStatus:            {type: Boolean, default : true},
+    piTemperature:          {type: String}
 })
 
 
@@ -60,7 +62,7 @@ PlayerSchema.statics = {
         var criteria = options.criteria || {}
 
         this.find(criteria)
-            .sort({_id: -1}) // sort by date
+            .sort({name: -1}) // sort by date
             .limit(options.perPage)
             .skip(options.perPage * options.page)
             .exec(cb)

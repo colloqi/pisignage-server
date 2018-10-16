@@ -10,7 +10,8 @@ var mongoose = require('mongoose'),
     util = require('util'),
     path = require('path');
 
-var socketio = require('./server-socket');
+var oldSocketio = require('./server-socket'),
+    newSocketio = require('./server-socket-new');
 
 var playersToBeSynced = {}, players = {};
 
@@ -192,6 +193,7 @@ exports.deploy = function (installation,group, cb) {
                 return cb(err, group);
             }
             players[group._id.toString()].forEach(function (player) {
+                var socketio = (player.newSocketIo?newSocketio:oldSocketio);
                 socketio.emitMessage(player.socket, 'sync',
                     group.playlists, group.assets, group.deployedTicker,
                     group.logo, group.logox, group.logoy,group.combineDefaultPlaylist,group.omxVolume,
