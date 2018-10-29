@@ -37,7 +37,7 @@ readVersions();
 
 fs.mkdir(config.logStoreDir, function(err) {
     if (err && (err.code != 'EEXIST')) {
-        console.log("error","Error creating logs directory, "+err.code)
+        console.log("Error creating logs directory, "+err.code)
     }
 });
 
@@ -46,7 +46,7 @@ var activePlayers = {},
     lastCommunicationFromPlayers = {};
 Player.update({"isConnected": true},{$set:{"isConnected": false}},{ multi: true }, function(err, num) {
     if (!err && num)
-        logger.log("info","Reset isConnected for "+num.nModified+" players");
+        console.log("Reset isConnected for "+num.nModified+" players");
     checkPlayersWatchdog();
 })
 
@@ -78,7 +78,7 @@ function checkPlayersWatchdog() {
                 if (!err && player && player.isConnected) {
                     player.isConnected = false;
                     player.save();
-                    logger.log("info","disconnect: "+player.installation+"-"+player.name+";reason: checkPlayersWatchdog")
+                    console.log("disconnect: "+player.installation+"-"+player.name+";reason: checkPlayersWatchdog")
                 }
                 delete activePlayers[playerId];
                 cb();
@@ -99,9 +99,9 @@ exports.updateDisconnectEvent = function(socketId, reason) {
             player.isConnected = false;
             player.save();
             delete activePlayers[player._id.toString()];
-            logger.log("info","disconnect: "+player.installation+"-"+player.name+";reason: "+reason)
+            console.log("disconnect: "+player.installation+"-"+player.name+";reason: "+reason)
         } else {
-            //logger.log("warn","not able to find player for disconnect event: "+socketId);
+            //console.log("not able to find player for disconnect event: "+socketId);
         }
     })
 }

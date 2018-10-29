@@ -1,4 +1,4 @@
-'use strict;'
+'use strict'
 
 angular.module('piPlaylists.controllers', [])
     .controller('PlaylistsCtrl',function($scope, $http, $state, piUrls,assetLoader,piConstants,piPopup){

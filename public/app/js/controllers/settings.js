@@ -1,4 +1,4 @@
-'use strict;'
+'use strict'
 
 angular.module('piSettings.controllers', []).
     controller('SettingsCtrl', function ($scope, $http, piUrls, $state, $modal,$window) {

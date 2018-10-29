@@ -39,6 +39,22 @@ angular.module('piPlayers.services', [])
                                 player.statusClass = "text-lightyellow"
                             else
                                 player.statusClass = "text-lightgreen"
+
+                            if (player.uptime) {
+                                player.uptime = parseInt(player.uptime)
+                                if (player.uptime > 48 * 3600)
+                                    player.uptimeFormatted = (player.uptime/(24 * 3600)).toFixed(1) + " days";
+                                else if (player.uptime > 3 * 3600)
+                                    player.uptimeFormatted = (player.uptime/(3600)).toFixed(1) + " hours";
+                                else if (player.uptime > 300)
+                                    player.uptimeFormatted = parseInt(player.uptime/(60)) + " minutes";
+                                else
+                                    player.uptimeFormatted = player.uptime + " seconds";
+                            } else {
+                                player.uptimeFormatted = "";
+                            }
+
+
                             if (!player.lastReported)
                                 player.lastReported = 0;    //never reported
                             player.labels.forEach(function (item) {
