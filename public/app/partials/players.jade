@@ -1,8 +1,11 @@
 .panel.panel-info
     .panel-heading
         .row
-            .col-sm-3
+            .col-sm-4
                 h3.panel-title Reported Players
+                    .btn-group.btn-group-sm(ng-init="alphabetical=false")
+                        button.fa.fa-clock-o.fa-lg.text-muted.btn.btn-info(ng-click="alphabetical=false")
+                        button.fa.fa-sort-alpha-asc.fa-lg.text-muted.btn.btn-info(ng-click="alphabetical=true")
             .col-sm-2
                 span.btn-group(ng-attr-title="Click this button to select, edit and add labels")
                     button.btn.btn-info.btn-sm(ng-click="loadCategory()")
@@ -13,7 +16,7 @@
 
     ul.list-group
 
-        li.list-group-item(ng-repeat='item in player.players | filter:labelFilter | filter:search | orderBy:"lastReported":true')
+        li.list-group-item(ng-show="player.players.length!=0",ng-repeat='item in player.players | filter:labelFilter | filter:search | orderBy:(alphabetical? "name":"lastReported"):(alphabetical?false:true)')
             .row
                 .col-sm-4
                     //h6.text-primary.truncate  {{item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}
@@ -52,17 +55,14 @@
 
             .row
                 .col-sm-4
-                    h6.text-primary: small {{item.cpuSerialNumber}}&nbsp;&nbsp;&nbsp;&nbsp;
-                    small.text-info
-                    b{{item.piTemperature}}&nbsp;&nbsp;&nbsp;&nbsp;
-                    small.text-info
-                    b{{item.diskSpaceAvailable}}&nbsp;&nbsp;&nbsp;&nbsp;
-                    small.text-info
-                    b(ng-show="item.uptime"){{item.uptime }}
+                    h6.text-primary: small {{item.cpuSerialNumber}}
+                        small.text-info.pl-5 {{item.uptimeFormatted }}
+                        small.text-info.pl-5 {{item.piTemperature}}
+                        small.text-info.pl-5 {{item.diskSpaceAvailable}}
                 .col-sm-3
-                    h6.text-primary.truncate: small last seen:&nbsp;{{item.lastReported | timeAgo}}
+                    h6.text-primary.truncate: small last seen:&nbsp;{{item.lastReported?(item.lastReported | timeAgo):"never"}}
                 .col-sm-3
-                    h6(ng-if="!item.isConnected || !item.syncInProgress").text-primary.truncate: small last sync:&nbsp;{{item.lastUpload | timeAgo}}
+                    h6(ng-if="!item.isConnected || !item.syncInProgress").text-primary.truncate: small last sync:&nbsp;{{item.lastUpload?(item.lastUpload | timeAgo):"never"}}
                     h6(ng-if="item.isConnected && item.syncInProgress").text-primary
                         i.fa.fa-spinner.fa-spin
                         small.truncate &nbsp;{{item.wgetBytes }} &nbsp;{{item.wgetSpeed }}B/sec

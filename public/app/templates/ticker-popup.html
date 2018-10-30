@@ -31,7 +31,7 @@
           </label>
         </div>
         <div class="radio-inline">
-          <label class="text-info"><small>OpenVG</small></label>
+          <label class="text-info"><small>OpenVG</small><br/></label>
         </div>
         <div class="radio-inline">
           <label>
@@ -66,6 +66,9 @@
           <input type="text" placeholder="0(left)" ng-model="tickerObj.tickerX" class="form-control input-sm"/>
         </div>
         <label class="control-label text-muted col-sm-3 text-right">y position</label>
+        <div class="col-sm-2">
+          <input type="text" placeholder="0(bottom)" ng-model="tickerObj.tickerY" class="form-control input-sm"/>
+        </div>
       </div><small class="text-muted control-label col-sm-3 text-right">Ticker Speed</small>
       <div class="col-sm-9">
         <div class="radio-inline">
@@ -121,7 +124,7 @@
     </div>
     <div class="form-group row">
       <div class="col-sm-9 col-sm-offset-3">
-        <button ng-click="saveSettings()" class="btn btn-success">SAVE</button>
+        <button ng-click="saveTickerSettings()" class="btn btn-success">SAVE</button>
       </div>
     </div>
   </form>

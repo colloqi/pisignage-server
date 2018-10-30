@@ -1,7 +1,15 @@
 
 <div class="panel panel-info">
   <div class="panel-heading">
-    <h3 class="panel-title">Groups<a ng-click="fn.edit()" class="pull-right"><em class="text-danger">{{fn.editMode?'Done':'Edit'}}</em></a></h3>
+    <div class="row">
+      <div class="col-sm-12">
+        <h3 class="panel-title">Groups
+          <div class="btn-toolbar btn-group-sm pull-right">
+            <button ng-click="globalSync()" class="btn btn-info">Deploy all</button><a ng-click="fn.edit()" class="btn btn-default"><em class="text-danger">{{fn.editMode?'Done':'Edit'}}</em></a>
+          </div>
+        </h3>
+      </div>
+    </div>
   </div>
   <div class="panel-body">
     <ul class="nav nav-pills nav-stacked">

@@ -1,8 +1,11 @@
 .panel.panel-info
     .panel-heading
-        h3.panel-title Groups&nbsp&nbsp
-        button.btn.btn-info.btn-sm(" ng-click="globalSync()")Deploy all
-            a.pull-right(ng-click='fn.edit()'): em.text-danger {{fn.editMode?'Done':'Edit'}}
+        .row
+            .col-sm-12
+                h3.panel-title Groups
+                    .btn-toolbar.btn-group-sm.pull-right
+                        button.btn.btn-info(ng-click="globalSync()") Deploy all
+                        a.btn.btn-default(ng-click='fn.edit()'): em.text-danger {{fn.editMode?'Done':'Edit'}}
     .panel-body
         ul.nav.nav-pills.nav-stacked
             li(ng-repeat="item in group.groups",ng-class="fn.getClass(item)")

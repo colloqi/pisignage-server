@@ -204,6 +204,18 @@
             .col-sm-10.col-sm-offset-2
                 small.text-info For finer control use TV_OFF playlist under group scheduling
 
+        hr
+        .form-group.row
+            .col-sm-6
+                .checkbox
+                    label
+                        input(type='checkbox',name='reboot_checkbox', ng-model='group.selectedGroup.reboot.enable')
+                        small.text-muted.pl-5 Reboot players daily at
+                        small.text-info (optional & not needed)
+
+                input.input-sm.form-control.col-sm-8(ng-show='group.selectedGroup.reboot.enable',type='time',ng-model="group.selectedGroup.reboot.time")
+
+
 
 
 

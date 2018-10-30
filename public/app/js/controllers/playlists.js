@@ -232,9 +232,13 @@ angular.module('piPlaylists.controllers', [])
 
             $scope.layoutOtherZones = layoutOtherZones;
             $scope.openLayout = function(){
+                var playlistObj = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
                 loadLayoutStructure();
-                $scope.videoWindow = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.videoWindow || {}
-                $scope.zoneVideoWindow = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist.zoneVideoWindow || {}
+                playlistObj.videoWindow = playlistObj.videoWindow || {}
+                playlistObj.zoneVideoWindow = playlistObj.zoneVideoWindow || {}
+                $scope.videoWindow = playlistObj.videoWindow
+                $scope.zoneVideoWindow = playlistObj.zoneVideoWindow
+                $scope.mainzoneOnly = playlistObj.mainzoneOnly
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/layout-popup.html',
                     scope: $scope
@@ -255,6 +259,7 @@ angular.module('piPlaylists.controllers', [])
                 var pl = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
                 $http.post(piUrls.playlists + $scope.playlist.selectedPlaylist.name,
                                 {layout : pl.layout, videoWindow: pl.videoWindow, zoneVideoWindow: pl.zoneVideoWindow,
+                                    mainzoneOnly: pl.mainzoneOnly,
                                     templateName: pl.templateName,})
                     .success(function(data, status) {
                         if (data.success) {
@@ -298,6 +303,10 @@ angular.module('piPlaylists.controllers', [])
                     templateUrl: '/app/templates/ad-popup.html',
                     scope: $scope
                 });
+            }
+
+            $scope.saveTickerSettings = function() {
+                $scope.saveSettings();
             }
 
             $scope.saveSettings = function() {

@@ -27,7 +27,8 @@
                 .radio-inline
                         label.text-info
                             small OpenVG
-
+                            br
+                                i (beta)
                 .radio-inline
                         label
                             input(type='radio',value='openvg_left',name="openvg_left",ng-model='tickerObj.behavior')
@@ -54,6 +55,8 @@
                 .col-sm-2
                     input.form-control.input-sm(type='text',placeholder='0(left)',ng-model='tickerObj.tickerX')
                 label.control-label.text-muted.col-sm-3.text-right y position
+                .col-sm-2
+                    input.form-control.input-sm(type='text',placeholder='0(bottom)',ng-model='tickerObj.tickerY')
             small.text-muted.control-label.col-sm-3.text-right() Ticker Speed
             .col-sm-9
                 .radio-inline
@@ -105,4 +108,4 @@
                                     placeholder="Enter messages here")
         .form-group.row
             .col-sm-9.col-sm-offset-3
-                button.btn.btn-success(ng-click='saveSettings()') SAVE
+                button.btn.btn-success(ng-click='saveTickerSettings()') SAVE

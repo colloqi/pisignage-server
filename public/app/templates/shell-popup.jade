@@ -21,7 +21,7 @@
     .row
         .col-sm-10
             a.thumbnail(href="#",ng-click="getSnapshot()")
-                img(ng-src="{{snapshot.image}}",err-src="/app/img/snapshot.png")
+                img(ng-src="{{snapshot.image}}",err-src="/app/img/snapshot.png",ng-class="snapshot.cssClass")
                 small last taken: {{snapshot.lastTaken | date: "MMM dd, hh:mm a"}}
                 button.btn.btn-block.btn-success {{snapshot.buttonTxt}}&nbsp;(needs v1.6.0+)
 

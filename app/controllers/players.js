@@ -50,7 +50,6 @@ Player.update({"isConnected": true},{$set:{"isConnected": false}},{ multi: true 
     checkPlayersWatchdog();
 })
 
-
 var defaultGroup = {_id: 0, name: 'default'};
 //create a default group if does not exist
 licenses.getSettingsModel(function(err,data){

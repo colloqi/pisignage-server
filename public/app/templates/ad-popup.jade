@@ -91,10 +91,17 @@
                             span() Play in random order
             .form-group(ng-show="playlist.selectedPlaylist.settings.audio.enable")
                 .col-sm-6
-                    p()
+                    p Volume
                 .col-sm-6
                     input.form-control(type='number',min=0,max=100,ng-model='playlist.selectedPlaylist.settings.audio.volume',
                                             placeholder="{{'Enter value in %' }}")
+            .form-group(ng-show="playlist.selectedPlaylist.settings.audio.enable")
+                .col-sm-6
+                .col-sm-6
+                    .checkbox
+                        label
+                            input(type="checkbox",ng-model='playlist.selectedPlaylist.settings.audio.hdmi')
+                            span Output audio in HDMI port also
             .form-group
                 .col-sm-6.col-sm-offset-6
                     button.btn.btn-success(ng-click="saveSettings()") Save
@@ -120,3 +127,16 @@
             .form-group
                 .col-sm-6.col-sm-offset-6
                     button.btn.btn-success(ng-click="saveSettings()") Save
+    .modal-header.bg-info
+        h4.modal-title Play this playlist only when online
+    .modal-body
+        form.form-horizontal
+            .form-group
+                .col-sm-6
+                    p Schedule this playlist to play only when player is online
+                .col-sm-5
+                    .checkbox
+                        label
+                            input(type="checkbox",ng-model='playlist.selectedPlaylist.settings.onlineOnly')
+                            span Enable
+

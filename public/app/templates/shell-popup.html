@@ -19,7 +19,7 @@
     <pre ng-if="msg.stderr"><small class="text-warning">stderr: {{msg.stderr}}</small></pre>
   </div>
   <div class="row">
-    <div class="col-sm-10"><a href="#" ng-click="getSnapshot()" class="thumbnail"><img ng-src="{{snapshot.image}}" err-src="/app/img/snapshot.png"/><small>last taken: {{snapshot.lastTaken | date: "MMM dd, hh:mm a"}}</small>
+    <div class="col-sm-10"><a href="#" ng-click="getSnapshot()" class="thumbnail"><img ng-src="{{snapshot.image}}" err-src="/app/img/snapshot.png" ng-class="snapshot.cssClass"/><small>last taken: {{snapshot.lastTaken | date: "MMM dd, hh:mm a"}}</small>
         <button class="btn btn-block btn-success">{{snapshot.buttonTxt}}&nbsp;(needs v1.6.0+)</button></a></div>
     <div class="col-sm-2">
       <button ng-click="modal.dismiss()" class="btn btn-warning pull-right">Dismiss</button>

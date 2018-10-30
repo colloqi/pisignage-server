@@ -2,8 +2,13 @@
 <div class="panel panel-info">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-sm-3">
-        <h3 class="panel-title">Reported Players</h3>
+      <div class="col-sm-4">
+        <h3 class="panel-title">Reported Players
+          <div ng-init="alphabetical=false" class="btn-group btn-group-sm">
+            <button ng-click="alphabetical=false" class="fa fa-clock-o fa-lg text-muted btn btn-info"></button>
+            <button ng-click="alphabetical=true" class="fa fa-sort-alpha-asc fa-lg text-muted btn btn-info"></button>
+          </div>
+        </h3>
       </div>
       <div class="col-sm-2"><span ng-attr-title="Click this button to select, edit and add labels" class="btn-group">
           <button ng-click="loadCategory()" class="btn btn-info btn-sm"><i class="fa fa-tags">&nbsp;</i><span>{{label.selectedPlayerLabel.trunc(10) || "Labels"}}</span></button>
@@ -11,7 +16,7 @@
     </div>
   </div>
   <ul class="list-group">
-    <li ng-repeat="item in player.players | filter:labelFilter | filter:search | orderBy:&quot;lastReported&quot;:true" class="list-group-item">
+    <li ng-show="player.players.length!=0" ng-repeat="item in player.players | filter:labelFilter | filter:search | orderBy:(alphabetical? &quot;name&quot;:&quot;lastReported&quot;):(alphabetical?false:true)" class="list-group-item">
       <div class="row">
         <div class="col-sm-4">
           <!--h6.text-primary.truncate  {{item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}--><a href="#">
@@ -46,13 +51,13 @@
       </div>
       <div class="row">
         <div class="col-sm-4">
-          <h6 class="text-primary"><small>{{item.cpuSerialNumber}}&nbsp;&nbsp;&nbsp;&nbsp;</small></h6><small class="text-info"></small><b>{{item.piTemperature}}&nbsp;&nbsp;&nbsp;&nbsp;</b><small class="text-info"></small><b>{{item.diskSpaceAvailable}}&nbsp;&nbsp;&nbsp;&nbsp;</b><small class="text-info"></small><b ng-show="item.uptime">{{item.uptime }}</b>
+          <h6 class="text-primary"><small>{{item.cpuSerialNumber}}<small class="text-info pl-5">{{item.uptimeFormatted }}</small><small class="text-info pl-5">{{item.piTemperature}}</small><small class="text-info pl-5">{{item.diskSpaceAvailable}}</small></small></h6>
         </div>
         <div class="col-sm-3">
-          <h6 class="text-primary truncate"><small>last seen:&nbsp;{{item.lastReported | timeAgo}}</small></h6>
+          <h6 class="text-primary truncate"><small>last seen:&nbsp;{{item.lastReported?(item.lastReported | timeAgo):"never"}}</small></h6>
         </div>
         <div class="col-sm-3">
-          <h6 ng-if="!item.isConnected || !item.syncInProgress" class="text-primary truncate"><small>last sync:&nbsp;{{item.lastUpload | timeAgo}}</small></h6>
+          <h6 ng-if="!item.isConnected || !item.syncInProgress" class="text-primary truncate"><small>last sync:&nbsp;{{item.lastUpload?(item.lastUpload | timeAgo):"never"}}</small></h6>
           <h6 ng-if="item.isConnected &amp;&amp; item.syncInProgress" class="text-primary"><i class="fa fa-spinner fa-spin"></i><small class="truncate">&nbsp;{{item.wgetBytes }} &nbsp;{{item.wgetSpeed }}B/sec</small></h6>
         </div>
         <div ng-if="item.version" class="col-sm-2">

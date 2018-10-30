@@ -55,6 +55,14 @@
                         .col-sm-2
                             input.form-control(type="text",ng-model="videoWindow.yoffset",required='')
                     .form-group.row
+                        .col-sm-6
+                            .checkbox
+                                label
+                                    input(type='checkbox',name='fullscreen_checkbox', ng-model='mainzoneOnly',
+                                            ng-true-value="false", ng-false-value="true",
+                                            ng-checked="mainzoneOnly !== true")
+                                    small.text-muted.pl-5 Use as FULL SCREEN dimensions also(for custom displays)
+                    .form-group.row
                         .col-sm-3
                             button.btn.btn-danger(ng-click="setVideoWindow(null)") Restore Defaults
                         .col-sm-3

@@ -1,6 +1,6 @@
 .modal-header
     button.close(ng-click='cancel()') &times;
-    h3.text-warning {{msg.title}} Status
+    h3.text-warning {{msg.title || "Status" }}
 .modal-body
     h4 {{msg.msg}}
 .modal-footer

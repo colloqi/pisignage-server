@@ -87,6 +87,88 @@ angular.module('pisignage.services',[]).
         };
 
         return svc;
+    }]).factory('GroupFunctions', ['layoutOtherZones', function (layoutOtherZones) {
+        return {
+            listFiles: function (group, playlistsObj, playlists, cb) {
+                var files = [],
+                    errMessage = false,
+                    noPlaylistsAssociated = true;
+                for (var gpl = group.playlists.length -1; gpl >= 0; gpl--) {
+                    var groupPlList = group.playlists[gpl],
+                        itemIndex = playlists.indexOf(groupPlList.name);
+                    if (itemIndex != -1) {
+                        playlistsObj[itemIndex].assets.forEach(function (asset) {
+                            if (files.indexOf(asset.filename) == -1 && asset.filename.indexOf("_system") != 0)
+                                files.push(asset.filename);
+                            layoutOtherZones[playlistsObj[itemIndex].layout].forEach(function (zone) {
+                                if (asset[zone] && asset[zone].indexOf("_system") != 0) {
+                                    if (files.indexOf(asset[zone]) == -1) {
+                                        files.push(asset[zone]);
+                                    }
+                                    if (asset[zone].indexOf('__') == 0) { // for nested playlist
+                                        var playlistName = asset[zone].slice(2, asset[zone].indexOf(".json")),
+                                            nestedPlaylistIndex = playlists.indexOf(playlistName);
+
+                                        if (nestedPlaylistIndex != -1 &&
+                                            Array.isArray(playlistsObj[nestedPlaylistIndex].assets)) {
+                                            playlistsObj[nestedPlaylistIndex].assets.forEach(function (plfile) {
+                                                if (files.indexOf(plfile.filename) == -1 &&
+                                                    plfile.filename.indexOf("_system") != 0) {
+                                                    files.push(plfile.filename);
+                                                }
+                                            })
+                                        }
+                                    }
+                                }
+                            })
+                        });
+                        if (files.indexOf('__' + groupPlList.name + '.json') == -1)
+                            files.push('__' + groupPlList.name + '.json');
+                        if (playlistsObj[itemIndex].templateName && (files.indexOf(playlistsObj[itemIndex].templateName) == -1))
+                            files.push(playlistsObj[itemIndex].templateName)
+                        groupPlList.settings = groupPlList.settings || {}
+                        groupPlList.settings.ads = playlistsObj[itemIndex].settings.ads
+                        groupPlList.settings.domination = playlistsObj[itemIndex].settings.domination
+                        groupPlList.settings.event = playlistsObj[itemIndex].settings.event
+                        groupPlList.settings.audio = playlistsObj[itemIndex].settings.audio
+                        if (playlistsObj[itemIndex].name != 'TV_OFF') {
+                            if (playlistsObj[itemIndex].assets.length == 0) {
+                                errMessage = "EMPTY_PLAYLIST";
+                                groupPlList.skipForSchedule = true;
+                                groupPlList.plType = "no assets";
+                            } else {
+                                groupPlList.skipForSchedule = false;
+                                if (playlistsObj[itemIndex].settings.ads && playlistsObj[itemIndex].settings.ads.adPlaylist)
+                                    groupPlList.plType = "advt";
+                                else if (playlistsObj[itemIndex].settings.domination && playlistsObj[itemIndex].settings.domination.enable)
+                                    groupPlList.plType = "domination";
+                                else if (playlistsObj[itemIndex].settings.event && playlistsObj[itemIndex].settings.event.enable)
+                                    groupPlList.plType = "event";
+                                else if (playlistsObj[itemIndex].settings.audio && playlistsObj[itemIndex].settings.audio.enable)
+                                    groupPlList.plType = "audio";
+                                else {
+                                    noPlaylistsAssociated = false;
+                                    groupPlList.plType = "regular";
+                                }
+                            }
+                        } else {
+                            groupPlList.plType = "special";
+                        }
+                    } else if (!(groupPlList && groupPlList.name)) {
+                        group.playlists.splice(gpl,1)
+                    }
+                };
+                if (group.logo && files.indexOf(group.logo) == -1)
+                    files.push(group.logo);
+
+                group.assets = files;
+                if (noPlaylistsAssociated)
+                    errMessage = "NOPLAYLISTS"
+
+                if (cb)
+                    cb(errMessage, group);
+            }
+        }
     }]).
 
     factory('onlineStatusInterceptor', ['$q','$rootScope',function($q,$rootScope) {

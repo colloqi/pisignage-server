@@ -2,7 +2,7 @@
 
 angular.module('piGroups.controllers', [])
 
-    .controller('GroupsCtrl', function ($scope, $http, piUrls, $location, piPopup,playerLoader,piConstants) {
+    .controller('GroupsCtrl', function ($scope, $http,$sce, piUrls, $location, piPopup,$modal,playerLoader,piConstants,GroupFunctions) {
 
         
         
@@ -58,6 +58,74 @@ angular.module('piGroups.controllers', [])
                 $scope.fn.selected($scope.group.groups[index])
             }
         }
+
+        var deployToAll = function (groups) { // global sync
+            var errMessages = [],
+                error = false
+            async.each(groups, function (group, next) {
+                GroupFunctions.listFiles(group, $scope.playlistsObj, $scope.playlists, function (err, groupObj) {
+                    groupObj.deploy = true;
+                    $http
+                        .post(piUrls.groups + group._id, groupObj)
+                        .then(function (response) {
+                            var data = response.data;
+                            if (!data.success && group.name.indexOf("__player__") != 0) {
+                                errMessages.push("*** " + ("Deploy failed for ") + group.name + ", " + ('reason: ') + data.stat_message);
+                                //piPopup.status({msg: "Did not deply for "+ group.name + " reason: "+data.stat_message,
+                                //    title: ('Deploy ')});
+                            } else {
+                                errMessages.push(("Deploy done for ") + group.name);
+                            }
+                            next();
+                        }, function (response) {
+                            errMessages.push("*** " + ("Deploy failed for ") + group.name + ", " + ("reason: http post error"));
+                            next();
+                        });
+                })
+            }, function (err) {
+                    $scope.msg={msg:"",title:""}
+                    $scope.msg.msg = errMessages.join('</br>').toString();
+                    $scope.msg.title='Deploy '
+                    $scope.msg.msg = $sce.trustAsHtml($scope.msg.msg);
+
+                    $scope.needToDeploy = false;
+
+
+                $scope.deployModal = $modal.open({
+                    templateUrl: '/app/templates/status-popup.html',
+                    scope: $scope
+                });
+
+            })
+        }
+
+        $scope.globalSync = function () {
+            $http
+                .get(piUrls.playlists, {})
+                .then(function (response) {
+                    var data = response.data;
+                    if (data.success) {
+                        $scope.playlistsObj = data.data;
+                        $scope.playlists = $scope.playlistsObj.map(function (playlist) {
+                            return (playlist.name)
+                        });
+                        $http.get(piUrls.groups, {params: {all: "all"}})
+                            .then(function (response) {
+                                var data = response.data;
+                                if (data.success) {
+                                    deployToAll(data.data);
+                                }
+                            }, function (response) {
+                            });
+                    } else {
+                        console.log('error in getting playlist details' + data.stat_message);
+                    }
+
+                }, function (response) {
+                    console('error in getting playlist details' + response.status);
+                });
+        }
+
 
         $scope.fn.rename = function (index) {
             $scope.group.groups[index].renameEnable = false;
@@ -570,7 +638,8 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.groupTicker = function() {
-            var ticker = $scope.group.selectedGroup.ticker || {}
+            $scope.group.selectedGroup.ticker = $scope.group.selectedGroup.ticker || {}
+            var ticker = $scope.group.selectedGroup.ticker
             ticker.enable = ticker.enable || false
             ticker.behavior = ticker.behavior || 'slide'
             ticker.textSpeed = ticker.textSpeed || 3
@@ -581,7 +650,7 @@ angular.module('piGroups.controllers', [])
                 scope: $scope
             });
         }
-        $scope.tickerSave = function() {
+        $scope.saveTickerSettings = function() {
             if ($scope.group.selectedGroup.ticker.style)
                 $scope.group.selectedGroup.ticker.style = $scope.group.selectedGroup.ticker.style.replace(/\"/g,'');
             if ($scope.group.selectedGroup.ticker.messages)
