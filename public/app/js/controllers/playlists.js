@@ -282,6 +282,7 @@ angular.module('piPlaylists.controllers', [])
                 settings.ticker.behavior = settings.ticker.behavior || 'slide'
                 settings.ticker.textSpeed = settings.ticker.textSpeed || 3
                 settings.ticker.rss = settings.ticker.rss || { enable: false , link: null, feedDelay:10 }
+                $scope.tickerObj = $scope.playlist.selectedPlaylist.settings.ticker;
                 $scope.modal = $modal.open({
                     templateUrl: '/app/templates/ticker-popup.html',
                     scope: $scope

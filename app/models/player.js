@@ -43,7 +43,8 @@ var PlayerSchema = new Schema({
     ethMac:                 String,
     wifiMac:                String,
     cecTvStatus:            {type: Boolean, default : true},
-    piTemperature:          {type: String}
+    piTemperature:          {type:String},
+    uptime:                 {type:String}
 })
 
 
@@ -62,7 +63,7 @@ PlayerSchema.statics = {
         var criteria = options.criteria || {}
 
         this.find(criteria)
-            .sort({name: -1}) // sort by date
+            .sort({name: 1}) // sort by date
             .limit(options.perPage)
             .skip(options.perPage * options.page)
             .exec(cb)

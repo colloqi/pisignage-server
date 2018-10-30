@@ -61,60 +61,60 @@
                             button.btn.btn-info(ng-click="setVideoWindow(videoWindow)",
                             ng-disabled="!layoutform.$valid") Save New Changes
             tab(heading='Side/Bottom Video Window')
-                h4(translate) Change video window position for other zones
+                h4 Change video window position for other zones
                 i
-                    small(translate) This section is for custom layouts only !! Changing  Any parameter would affect the video display size in side and bottom zones.
+                    small This section is for custom layouts only !! Changing  Any parameter would affect the video display size in side and bottom zones.
 
                 form(name='sideZoneForm')
                     .alert.alert-info.text-center Side Zone Values
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small(translate) Width:
+                            label.control-label: small Width:
                         .col-sm-2
                             input.form-control(type="text",ng-model='zoneVideoWindow.side.length',required='')
                         .col-sm-2
-                            label.control-label: small(translate) Height:
+                            label.control-label: small Height:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.side.width",required='')
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small(translate) Left-Offset:
+                            label.control-label: small Left-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.side.xoffset",required='')
                         .col-sm-2
-                            label.control-label: small(translate) Top-Offset:
+                            label.control-label: small Top-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.side.yoffset",required='')
                     .form-group.row
                         .col-sm-6
-                            button.btn.btn-danger(ng-click="setZoneVideoWindow('side',null)",translate) Restore Side Zone Defaults
+                            button.btn.btn-danger(ng-click="setZoneVideoWindow('side',null)") Restore Side Zone Defaults
                         .col-sm-6
                             button.btn.btn-info(ng-click="setZoneVideoWindow('side',zoneVideoWindow.side)",
-                            ng-disabled="!sideZoneForm.$valid",translate) Save New Changes
+                            ng-disabled="!sideZoneForm.$valid") Save New Changes
                     hr
                 form(name='bottomZoneForm')
                     .alert.alert-info.text-center Bottom Zone Values
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small(translate) Width:
+                            label.control-label: small Width:
                         .col-sm-2
                             input.form-control(type="text",ng-model='zoneVideoWindow.bottom.length',required='')
                         .col-sm-2
-                            label.control-label: small(translate) Height:
+                            label.control-label: small Height:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.bottom.width",required='')
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small(translate) Left-Offset:
+                            label.control-label: small Left-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.bottom.xoffset",required='')
                         .col-sm-2
-                            label.control-label: small(translate) Top-Offset:
+                            label.control-label: small Top-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.bottom.yoffset",required='')
                     .form-group.row
                         .col-sm-6
-                            button.btn.btn-danger(ng-click="setZoneVideoWindow('bottom',null)",translate) Restore Bottom Zone Defaults
+                            button.btn.btn-danger(ng-click="setZoneVideoWindow('bottom',null)") Restore Bottom Zone Defaults
                         .col-sm-6
                             button.btn.btn-info(ng-click="setZoneVideoWindow('bottom',zoneVideoWindow.bottom)",
-                            ng-disabled="!bottomZoneForm.$valid",translate) Save New Changes
+                            ng-disabled="!bottomZoneForm.$valid") Save New Changes

@@ -32,7 +32,7 @@ exports.index = function (req, res) {
         var str = new RegExp(req.query['string'], "i")
         criteria['name'] = str;
     }
-    //criteria['mode'] = req.param('mode') || null;
+    //criteria['mode'] = req.query('mode') || null;
 
     var page = req.query['page'] > 0 ? req.query['page'] : 0
     var perPage = req.query['per_page'] || 500

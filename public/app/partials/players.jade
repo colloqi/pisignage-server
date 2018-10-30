@@ -52,11 +52,17 @@
 
             .row
                 .col-sm-4
-                    h6.text-primary: small {{item.cpuSerialNumber}}
+                    h6.text-primary: small {{item.cpuSerialNumber}}&nbsp;&nbsp;&nbsp;&nbsp;
+                    small.text-info
+                    b{{item.piTemperature}}&nbsp;&nbsp;&nbsp;&nbsp;
+                    small.text-info
+                    b{{item.diskSpaceAvailable}}&nbsp;&nbsp;&nbsp;&nbsp;
+                    small.text-info
+                    b(ng-show="item.uptime"){{item.uptime }}
                 .col-sm-3
-                    h6.text-primary.truncate: small last seen:&nbsp;{{item.lastReported | date: "MMM dd, hh:mm a"}}
+                    h6.text-primary.truncate: small last seen:&nbsp;{{item.lastReported | timeAgo}}
                 .col-sm-3
-                    h6(ng-if="!item.isConnected || !item.syncInProgress").text-primary.truncate: small last sync:&nbsp;{{item.lastUpload | date: "MMM dd, hh:mm a"}}
+                    h6(ng-if="!item.isConnected || !item.syncInProgress").text-primary.truncate: small last sync:&nbsp;{{item.lastUpload | timeAgo}}
                     h6(ng-if="item.isConnected && item.syncInProgress").text-primary
                         i.fa.fa-spinner.fa-spin
                         small.truncate &nbsp;{{item.wgetBytes }} &nbsp;{{item.wgetSpeed }}B/sec
@@ -66,6 +72,6 @@
                         button.btn.btn-warning.btn-xs(ng-if="item.version != player.currentVersion.version",ng-click="swUpdate(item)")
                             i.fa.fa-arrow-circle-up
 
-
+ li.list-group-item(ng-show="player.players.length == 0",class="list-group-item") There are no Players
 
 

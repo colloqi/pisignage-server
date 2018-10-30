@@ -24,12 +24,37 @@
                     label
                         input(type='radio',value='scrollRight',ng-model='group.selectedGroup.ticker.behavior')
                         small() Scroll right
-        .row.form-group(ng-show='group.selectedGroup.ticker.enable')
-            small.text-muted.col-sm-3.text-right CSS
-            .col-xs-8
-                input.form-control(type='text',placeholder='e.g. color:#eee; font-style:italic; ',
-                                        ng-model='group.selectedGroup.ticker.style')
-        .form-group.row(ng-show='group.selectedGroup.ticker.enable')
+        .radio-inline
+                        label.text-info
+                            small OpenVG
+
+                    .radio-inline
+                        label
+                            input(type='radio',value='openvg_left',name="openvg_left",ng-model='group.selectedGroup.ticker.behavior')
+                            small left
+
+                    .radio-inline
+                        label
+                            input(type='radio',value='openvg_right',name="openvg_right",ng-model='group.selectedGroup.ticker.behavior')
+                            small right
+            .form-group.row(ng-show='group.selectedGroup.ticker.enable && group.selectedGroup.ticker.behavior!= "openvg_right"&& group.selectedGroup.ticker.behavior!= "openvg_left"')
+                label.control-label.text-muted.col-sm-3.text-right Optional CSS
+                .col-sm-9
+                    input.form-control.input-sm(type='text',placeholder='e.g. color:#eee; font-style:italic; ',ng-model='group.selectedGroup.ticker.style')
+            .form-group.row(ng-show='group.selectedGroup.ticker.enable && (group.selectedGroup.ticker.behavior== "openvg_right" || group.selectedGroup.ticker.behavior== "openvg_left")')
+                label.control-label.text-muted.col-sm-3.text-right Font Size
+                .col-sm-2
+                    input.form-control.input-sm(type='text',placeholder='28',ng-model='group.selectedGroup.ticker.tickerFontSize')
+                label.control-label.text-muted.col-sm-3.text-right Width
+                .col-sm-2
+                    input.form-control.input-sm(type='text',placeholder='0(full)',ng-model='group.selectedGroup.ticker.tickerWidth')
+
+            .form-group.row(ng-show='group.selectedGroup.ticker.enable && (group.selectedGroup.ticker.behavior== "openvg_right" || group.selectedGroup.ticker.behavior== "openvg_left")')
+                label.control-label.text-muted.col-sm-3.text-right x position
+                .col-sm-2
+                    input.form-control.input-sm(type='text',placeholder='0(left)',ng-model='group.selectedGroup.ticker.tickerX')
+                label.control-label.text-muted.col-sm-3.text-right y position
+
             small.text-muted.control-label.col-sm-3.text-right() Ticker Speed
             .col-sm-9
                 .radio-inline

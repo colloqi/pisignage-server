@@ -71,7 +71,7 @@ exports.index = function (req, res) {
         criteria['name'] = str;
     }
 
-    if (req.param('all')) {
+    if (req.query['all']) {
         criteria['all'] = true;
     }
 

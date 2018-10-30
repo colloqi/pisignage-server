@@ -46,13 +46,13 @@
       </div>
       <div class="row">
         <div class="col-sm-4">
-          <h6 class="text-primary"><small>{{item.cpuSerialNumber}}</small></h6>
+          <h6 class="text-primary"><small>{{item.cpuSerialNumber}}&nbsp;&nbsp;&nbsp;&nbsp;</small></h6><small class="text-info"></small><b>{{item.piTemperature}}&nbsp;&nbsp;&nbsp;&nbsp;</b><small class="text-info"></small><b>{{item.diskSpaceAvailable}}&nbsp;&nbsp;&nbsp;&nbsp;</b><small class="text-info"></small><b ng-show="item.uptime">{{item.uptime }}</b>
         </div>
         <div class="col-sm-3">
-          <h6 class="text-primary truncate"><small>last seen:&nbsp;{{item.lastReported | date: "MMM dd, hh:mm a"}}</small></h6>
+          <h6 class="text-primary truncate"><small>last seen:&nbsp;{{item.lastReported | timeAgo}}</small></h6>
         </div>
         <div class="col-sm-3">
-          <h6 ng-if="!item.isConnected || !item.syncInProgress" class="text-primary truncate"><small>last sync:&nbsp;{{item.lastUpload | date: "MMM dd, hh:mm a"}}</small></h6>
+          <h6 ng-if="!item.isConnected || !item.syncInProgress" class="text-primary truncate"><small>last sync:&nbsp;{{item.lastUpload | timeAgo}}</small></h6>
           <h6 ng-if="item.isConnected &amp;&amp; item.syncInProgress" class="text-primary"><i class="fa fa-spinner fa-spin"></i><small class="truncate">&nbsp;{{item.wgetBytes }} &nbsp;{{item.wgetSpeed }}B/sec</small></h6>
         </div>
         <div ng-if="item.version" class="col-sm-2">
@@ -63,3 +63,4 @@
     </li>
   </ul>
 </div>
+<li ng-show="player.players.length == 0" class="list-group-item list-group-item">There are no Players</li>

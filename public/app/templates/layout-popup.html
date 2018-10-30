@@ -75,18 +75,18 @@
         </form>
       </tab>
       <tab heading="Side/Bottom Video Window">
-        <h4 translate="translate">Change video window position for other zones</h4><i><small translate="translate">This section is for custom layouts only !! Changing  Any parameter would affect the video display size in side and bottom zones.</small></i>
+        <h4>Change video window position for other zones</h4><i><small>This section is for custom layouts only !! Changing  Any parameter would affect the video display size in side and bottom zones.</small></i>
         <form name="sideZoneForm">
           <div class="alert alert-info text-center">Side Zone Values</div>
           <div class="form-group row">
             <div class="col-sm-2 col-sm-offset-2">
-              <label class="control-label"><small translate="translate">Width:</small></label>
+              <label class="control-label"><small>Width:</small></label>
             </div>
             <div class="col-sm-2">
               <input type="text" ng-model="zoneVideoWindow.side.length" required="" class="form-control"/>
             </div>
             <div class="col-sm-2">
-              <label class="control-label"><small translate="translate">Height:</small></label>
+              <label class="control-label"><small>Height:</small></label>
             </div>
             <div class="col-sm-2">
               <input type="text" ng-model="zoneVideoWindow.side.width" required="" class="form-control"/>
@@ -94,13 +94,13 @@
           </div>
           <div class="form-group row">
             <div class="col-sm-2 col-sm-offset-2">
-              <label class="control-label"><small translate="translate">Left-Offset:</small></label>
+              <label class="control-label"><small>Left-Offset:</small></label>
             </div>
             <div class="col-sm-2">
               <input type="text" ng-model="zoneVideoWindow.side.xoffset" required="" class="form-control"/>
             </div>
             <div class="col-sm-2">
-              <label class="control-label"><small translate="translate">Top-Offset:</small></label>
+              <label class="control-label"><small>Top-Offset:</small></label>
             </div>
             <div class="col-sm-2">
               <input type="text" ng-model="zoneVideoWindow.side.yoffset" required="" class="form-control"/>
@@ -108,10 +108,10 @@
           </div>
           <div class="form-group row">
             <div class="col-sm-6">
-              <button ng-click="setZoneVideoWindow('side',null)" translate="translate" class="btn btn-danger">Restore Side Zone Defaults</button>
+              <button ng-click="setZoneVideoWindow('side',null)" class="btn btn-danger">Restore Side Zone Defaults</button>
             </div>
             <div class="col-sm-6">
-              <button ng-click="setZoneVideoWindow('side',zoneVideoWindow.side)" ng-disabled="!sideZoneForm.$valid" translate="translate" class="btn btn-info">Save New Changes</button>
+              <button ng-click="setZoneVideoWindow('side',zoneVideoWindow.side)" ng-disabled="!sideZoneForm.$valid" class="btn btn-info">Save New Changes</button>
             </div>
           </div>
           <hr/>
@@ -120,13 +120,13 @@
           <div class="alert alert-info text-center">Bottom Zone Values</div>
           <div class="form-group row">
             <div class="col-sm-2 col-sm-offset-2">
-              <label class="control-label"><small translate="translate">Width:</small></label>
+              <label class="control-label"><small>Width:</small></label>
             </div>
             <div class="col-sm-2">
               <input type="text" ng-model="zoneVideoWindow.bottom.length" required="" class="form-control"/>
             </div>
             <div class="col-sm-2">
-              <label class="control-label"><small translate="translate">Height:</small></label>
+              <label class="control-label"><small>Height:</small></label>
             </div>
             <div class="col-sm-2">
               <input type="text" ng-model="zoneVideoWindow.bottom.width" required="" class="form-control"/>
@@ -134,13 +134,13 @@
           </div>
           <div class="form-group row">
             <div class="col-sm-2 col-sm-offset-2">
-              <label class="control-label"><small translate="translate">Left-Offset:</small></label>
+              <label class="control-label"><small>Left-Offset:</small></label>
             </div>
             <div class="col-sm-2">
               <input type="text" ng-model="zoneVideoWindow.bottom.xoffset" required="" class="form-control"/>
             </div>
             <div class="col-sm-2">
-              <label class="control-label"><small translate="translate">Top-Offset:</small></label>
+              <label class="control-label"><small>Top-Offset:</small></label>
             </div>
             <div class="col-sm-2">
               <input type="text" ng-model="zoneVideoWindow.bottom.yoffset" required="" class="form-control"/>
@@ -148,10 +148,10 @@
           </div>
           <div class="form-group row">
             <div class="col-sm-6">
-              <button ng-click="setZoneVideoWindow('bottom',null)" translate="translate" class="btn btn-danger">Restore Bottom Zone Defaults</button>
+              <button ng-click="setZoneVideoWindow('bottom',null)" class="btn btn-danger">Restore Bottom Zone Defaults</button>
             </div>
             <div class="col-sm-6">
-              <button ng-click="setZoneVideoWindow('bottom',zoneVideoWindow.bottom)" ng-disabled="!bottomZoneForm.$valid" translate="translate" class="btn btn-info">Save New Changes</button>
+              <button ng-click="setZoneVideoWindow('bottom',zoneVideoWindow.bottom)" ng-disabled="!bottomZoneForm.$valid" class="btn btn-info">Save New Changes</button>
             </div>
           </div>
         </form>

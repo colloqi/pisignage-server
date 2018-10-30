@@ -71,7 +71,7 @@
       </div>
       <div ng-if="urlLink.type == '.txt'" class="row">
         <div class="col-sm-2 text-right">
-          <label translate="translate" class="control-label">Optional CSS</label>
+          <label class="control-label">Optional CSS</label>
         </div>
         <div class="col-sm-6">
           <input type="text" name="style" placeholder="e.g. color:#eee; font-style:italic;" ng-model="urlLink.style" class="form-control"/>
@@ -79,7 +79,7 @@
       </div>
       <div ng-if="urlLink.type == '.txt'" class="row">
         <div class="col-sm-2 text-right">
-          <label translate="translate" class="control-label">Message</label>
+          <label class="control-label">Message</label>
         </div>
         <div class="col-sm-6">
           <textarea rows="4" cols="50" name="message" ng-model="urlLink.message" required="" class="form-control"></textarea>
@@ -87,7 +87,7 @@
       </div>
       <div ng-if="urlLink.type == '.weblink'" class="row">
         <div class="col-sm-2 text-right">
-          <label translate="translate" class="control-label">Zoom level</label>
+          <label class="control-label">Zoom level</label>
         </div>
         <div class="col-sm-2">
           <input type="number" step="0.01" name="style" placeholder="Leave blank for no-zoom" ng-model="urlLink.zoom" class="form-control"/>
@@ -95,7 +95,7 @@
       </div>
       <div ng-if="urlLink.type == '.weblink'" class="row">
         <div class="col-sm-2 text-right">
-          <label translate="translate" class="control-label">Send Key strokes (optional)</label>
+          <label class="control-label">Send Key strokes (optional)</label>
         </div>
         <div class="col-sm-2">
           <input type="text" name="keystrokes" placeholder="e.g. tab,shift+h,e,l,l,o,shift+!,enter" ng-model="urlLink.keystrokes" class="form-control"/>

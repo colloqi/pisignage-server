@@ -28,14 +28,14 @@
                     .input-group
                         input.form-control(type='number',ng-model='playlist.selectedPlaylist.settings.ads.adCount')
                         .input-group-addon
-                            small.text-muted(translate)  assets
+                            small.text-muted  assets
                 .col-sm-5
                     .input-group
                         .input-group-addon
-                            small.text-muted(translate)  after every
+                            small.text-muted  after every
                         input.form-control(type='number',ng-model='playlist.selectedPlaylist.settings.ads.adInterval')
                         .input-group-addon
-                            small.text-muted(translate)  seconds
+                            small.text-muted  seconds
 
             .form-group
                 .col-sm-6.col-sm-offset-6
@@ -60,7 +60,7 @@
                     .input-group
                         input.form-control(type='number',ng-model='playlist.selectedPlaylist.settings.domination.timeInterval')
                         .input-group-addon
-                            small(translate)  minutes
+                            small  minutes
             .form-group
                 .col-sm-6.col-sm-offset-6
                     button.btn.btn-success(ng-click="saveSettings()") Save

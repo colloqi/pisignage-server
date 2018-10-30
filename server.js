@@ -15,6 +15,7 @@ var path = require('path'),
 var config = require(path.join(__dirname,'/config/config'));
 
 // Connect to database
+mongoose.Promise = global.Promise;
 var db = mongoose.connect(config.mongo.uri, config.mongo.options);
 
 db.connection.on('error',function(){

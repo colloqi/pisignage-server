@@ -77,21 +77,21 @@
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',name='logs', ng-model='settings.enableLog', ng-change="saveSettings()")
-                            span.text-warning(translate) Enable log for file play count/details (network intensive, do not enable unless you need it!)
+                            span.text-warning Enable log for file play count/details (network intensive, do not enable unless you need it!)
 
 
                 //.form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',id="log", name='checkbox', ng-model='settings.assetLogEnable', ng-change="saveSettings()")
-                            span(translate) Enable Log for Files Play Statistics
+                            span Enable Log for Files Play Statistics
                 //.form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',id="layout", name='checkbox', ng-model='settings.newLayoutsEnable', ng-change="saveSettings()")
-                            span(translate) Enable new Layouts 3c,3d,4c,4d
+                            span Enable new Layouts 3c,3d,4c,4d
                             br
-                            strong.text-danger(translate) WARNING: ALL players in the GROUP should be of version >= 1.2.2
+                            strong.text-danger WARNING: ALL players in the GROUP should be of version >= 1.2.2
 
     .panel.panel-info
         .panel-heading

@@ -213,18 +213,30 @@ exports.index = function (req, res) {
         criteria['group._id'] = req.query['group'];
     }
 
+    if (req.query['groupName']) {
+        criteria['group.name'] = req.query['groupName'];
+    }
+
     if (req.query['string']) {
         var str = new RegExp(req.query['string'], "i")
         criteria['name'] = str;
     }
 
 
-    if (req.param('location')) {
-        criteria['$or'] = [ {'location':req.param('location')}, {'configLocation':req.param('location')} ];
+    if (req.query['location']) {
+        criteria['$or'] = [ {'location':req.query['location']}, {'configLocation':req.query['location']} ];
     }
 
-    if (req.param('label')) {
-        criteria['labels'] = req.param('label');
+    if (req.query['label']) {
+        criteria['labels'] = req.query['label'];
+    }
+
+    if (req.query['currentPlaylist']) {
+        criteria['currentPlaylist'] = req.query['currentPlaylist'];
+    }
+
+    if (req.query['version']) {
+        criteria['version'] = req.query['version'];
     }
 
     var page = req.query['page'] > 0 ? req.query['page'] : 0
@@ -550,7 +562,7 @@ var snapShotTimer = {};
 var pendingSnapshots = {};
 
 exports.piScreenShot = function (sid,data) { // save screen shot in  _screenshots directory
-    var img = (new Buffer(data.data,"base64")).toString("binary"),
+    var img =  Buffer.from(data.data,"base64").toString("binary"),
         cpuId = data.playerInfo["cpuSerialNumber"];
 
     clearTimeout(snapShotTimer[cpuId])

@@ -54,7 +54,7 @@
                             placeholder="{{'e.g. http(s)://site.com or rtsp://'}}",required='')
 
         .row(ng-if="link.obj.type == '.weblink'")
-            label.control-label.col-sm-2(translate) Zoom level
+            label.control-label.col-sm-2 Zoom level
             .col-sm-2
                 input.form-control(type='number',step="0.01" ,name='style' ,placeholder='Leave blank for no-zoom',
                 ng-model='link.obj.zoom')

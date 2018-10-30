@@ -55,27 +55,27 @@
 
             .row(ng-if="urlLink.type == '.txt'")
                 .col-sm-2.text-right
-                    label.control-label(translate) Optional CSS
+                    label.control-label Optional CSS
                 .col-sm-6
                     input.form-control(type='text',name='style' ,placeholder='e.g. color:#eee; font-style:italic;',
                         ng-model='urlLink.style')
 
             .row(ng-if="urlLink.type == '.txt'")
                 .col-sm-2.text-right
-                    label.control-label(translate) Message
+                    label.control-label Message
                 .col-sm-6
                     textarea.form-control( rows="4",cols="50",name='message', ng-model='urlLink.message', required='')
 
             .row(ng-if="urlLink.type == '.weblink'")
                 .col-sm-2.text-right
-                    label.control-label(translate) Zoom level
+                    label.control-label Zoom level
                 .col-sm-2
                     input.form-control(type='number',step="0.01" ,name='style' ,placeholder='Leave blank for no-zoom',
                     ng-model='urlLink.zoom')
 
             .row(ng-if="urlLink.type == '.weblink'")
                 .col-sm-2.text-right
-                    label.control-label(translate) Send Key strokes (optional)
+                    label.control-label Send Key strokes (optional)
                 .col-sm-2
                     input.form-control(type='text',name='keystrokes' ,placeholder='e.g. tab,shift+h,e,l,l,o,shift+!,enter',
                     ng-model='urlLink.keystrokes')

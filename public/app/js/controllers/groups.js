@@ -518,6 +518,10 @@ angular.module('piGroups.controllers', [])
                     $scope.group.selectedGroup.sleep.offtimeObj = new Date($scope.group.selectedGroup.sleep.offtimeObj)
                 }
             }
+            if ($scope.group.selectedGroup.reboot && $scope.group.selectedGroup.reboot.time) {
+                $scope.group.selectedGroup.reboot.time = new Date($scope.group.selectedGroup.reboot.time)
+            }
+
 
             $scope.displayModal = $modal.open({
                 templateUrl: '/app/templates/display-set.html',
@@ -571,8 +575,9 @@ angular.module('piGroups.controllers', [])
             ticker.behavior = ticker.behavior || 'slide'
             ticker.textSpeed = ticker.textSpeed || 3
             ticker.rss = ticker.rss || { enable: false , link: null, feedDelay:10 }
+            $scope.tickerObj = $scope.group.selectedGroup.ticker;
             $scope.tickerModal = $modal.open({
-                templateUrl: '/app/templates/group-ticker-popup.html',
+                templateUrl: '/app/templates/ticker-popup.html',
                 scope: $scope
             });
         }
@@ -644,6 +649,7 @@ angular.module('piGroups.controllers', [])
                 })
                 .error(function(data, status) {
                 });
+            $scope.imgFilter = ".png"
             $scope.fileDisplayModal = $modal.open({
                 templateUrl: '/app/templates/listFilePopup.html',
                 scope: $scope,
@@ -779,8 +785,8 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.swUpdate = function(player) {
-            // if (player.statusClass == "text-danger")
-            //     return console.log("Player is offline");
+            if (player.statusClass == "text-danger")
+                return console.log("Player is offline");
             $scope.msg = {player:player,curVer:player.version,
                 newVer:$scope.player.currentVersion.version, beta:$scope.player.currentVersion.beta};
             $scope.modal = $modal.open({

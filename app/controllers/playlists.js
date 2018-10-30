@@ -92,7 +92,7 @@ exports.index = function (req, res) {
 
 exports.getPlaylist = function (req, res) {
 
-    if (req.params['file'] == "TV_OFF")
+    if (req.query['file'] == "TV_OFF")
         return rest.sendError(res, 'System Playlist, can not be edited');
 
     var file = path.join(config.mediaDir,  ("__" + req.params['file'] + '.json'));
