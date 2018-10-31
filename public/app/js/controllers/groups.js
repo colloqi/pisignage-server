@@ -202,11 +202,12 @@ angular.module('piGroups.controllers', [])
 
         playerLoader.registerObserverCallback(initSortArray,"group-detail");
         initSortArray();
-
+        
         $scope.updateGroup = function (cb) {
             $scope.needToDeploy = true;
             GroupFunctions.listFiles($scope.group.selectedGroup, $scope.playlist.playlists, $scope.playlist.playlistNames, function (err, groupObj) {
-                $scope.showDates()
+                $scope.deployErrorMessage = err;
+                $scope.group.selectedGroup = groupObj;
                 $http
                     .post(piUrls.groups + $state.params.group, $scope.group.selectedGroup)
                     .success(function (data, status) {
