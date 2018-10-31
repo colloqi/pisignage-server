@@ -44,10 +44,10 @@
 1. Support for new socket.io and faster disconnection
     - for the new socket.io version to be used specify the http protocol in server name if server does not support https protocol
 1. Support for player configuration
-- Specify reboot of player everyday
-- mainzoneOnly flag in videoWindow to support full screen video in custom layouts
-- Online only playlist which is scheduled only when player is online
-- Audio playlist on HDMI port configuration
+    - Specify reboot of player everyday
+    - mainzoneOnly flag in videoWindow to support full screen video in custom layouts
+    - Online only playlist which is scheduled only when player is online
+    - Audio playlist on HDMI port configuration
 1. OpenVG (beta) ticker support
 1. Show player uptime, processor temperature and space available in player (in player screen)
 1. Alphabetical listing of players and all assets, groups, labels and playlists
