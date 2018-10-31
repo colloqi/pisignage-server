@@ -1,12 +1,11 @@
 
 <div class="modal-header">
   <button ng-click="cancel()" class="close">&times;</button>
-
   <h3 class="text-warning">{{msg.title || "Status" }}</h3>
 </div>
 <div class="modal-body">
-  <h4>{{msg.msg}}</h4>
+  <h5 style="white-space: pre;">{{msg.msg}}</h5>
 </div>
 <div class="modal-footer">
-  <button ng-click="deployModal.close()" class="btn btn-warning">Dismiss</button>
+  <button ng-click="cancel()" class="btn btn-warning">Dismiss</button>
 </div>

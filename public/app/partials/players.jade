@@ -56,9 +56,9 @@
             .row
                 .col-sm-4
                     h6.text-primary: small {{item.cpuSerialNumber}}
-                        small.text-info.pl-5 {{item.uptimeFormatted }}
-                        small.text-info.pl-5 {{item.piTemperature}}
-                        small.text-info.pl-5 {{item.diskSpaceAvailable}}
+                        small.text-info.pl-5(title="player on since") {{item.uptimeFormatted }}
+                        small.text-info.pl-5(title="cpu temperature") {{item.piTemperature}}
+                        small.text-info.pl-5(title="disk space available") {{item.diskSpaceAvailable}}
                 .col-sm-3
                     h6.text-primary.truncate: small last seen:&nbsp;{{item.lastReported?(item.lastReported | timeAgo):"never"}}
                 .col-sm-3

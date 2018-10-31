@@ -2,6 +2,6 @@
     button.close(ng-click='cancel()') &times;
     h3.text-warning {{msg.title || "Status" }}
 .modal-body
-    h4 {{msg.msg}}
+    h5(style="white-space: pre;") {{msg.msg}}
 .modal-footer
-    button.btn.btn-warning(ng-click='deployModal.close()') Dismiss
+    button.btn.btn-warning(ng-click='cancel()') Dismiss

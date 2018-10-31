@@ -33,3 +33,28 @@
 **1.9.5a**
 1. Randomising assets order in a playlist
 
+
+**2.0.0**
+1. In line with player version 2.0.0
+
+**2.2.1**
+
+1. Inline with pisignage.com release 2.2.1 (**074d2b4**)
+1. Deprecate warnings removed for req.param, Buffer and mongoose promises
+1. Support for new socket.io and faster disconnection
+    - for the new socket.io version to be used specify the http protocol in server name if server does not support https protocol
+1. Support for player configuration
+- Specify reboot of player everyday
+- mainzoneOnly flag in videoWindow to support full screen video in custom layouts
+- Online only playlist which is scheduled only when player is online
+- Audio playlist on HDMI port configuration
+1. OpenVG (beta) ticker support
+1. Show player uptime, processor temperature and space available in player (in player screen)
+1. Alphabetical listing of players and all assets, groups, labels and playlists
+1. Single button to deploy to all groups
+1. Last sync, last reported format change to time ago
+1. Auto orientation of image based on image header
+1. Snapshot orientation corrected for portrait modes
+1. Remove spaces from zipfile names
+
+

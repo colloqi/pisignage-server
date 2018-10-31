@@ -119,17 +119,17 @@ body .modal-body {
 
 .landscape {
     max-height:988px;
-    max-width:566px;
+    max-width:468px;
 }
 
 .portrait {
-    max-height:566px;
+    max-height:468px;
     max-width:988px;
     transform: rotate(-90deg);
 }
 
 .portrait270 {
-    max-height:566px;
+    max-height:468px;
     max-width:988px;
     transform: rotate(90deg);
 }
