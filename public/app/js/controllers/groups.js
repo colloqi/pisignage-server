@@ -61,7 +61,7 @@ angular.module('piGroups.controllers', [])
 
         var deployToAll = function (groups) { // global sync
             var errMessages = [],
-                error = false
+                error = false;
             async.each(groups, function (group, next) {
                 GroupFunctions.listFiles(group, $scope.playlistsObj, $scope.playlists, function (err, groupObj) {
                     groupObj.deploy = true;
@@ -83,19 +83,8 @@ angular.module('piGroups.controllers', [])
                         });
                 })
             }, function (err) {
-                    $scope.msg={msg:"",title:""}
-                    $scope.msg.msg = errMessages.join('</br>').toString();
-                    $scope.msg.title='Deploy '
-                    $scope.msg.msg = $sce.trustAsHtml($scope.msg.msg);
-
-                    $scope.needToDeploy = false;
-
-
-                $scope.deployModal = $modal.open({
-                    templateUrl: '/app/templates/status-popup.html',
-                    scope: $scope
-                });
-
+                var msg = errMessages.join("<br />")
+                piPopup.status({msg: msg, title: gettext('Deploy ')});
             })
         }
 
@@ -176,7 +165,7 @@ angular.module('piGroups.controllers', [])
     })
 
     .controller('GroupDetailCtrl', function ($scope, $rootScope, $http, piUrls,$state, $modal,
-                                                    weeks, days,weeksObject,daysObject,playerLoader,$timeout,layoutOtherZones) {
+                                                    weeks, days,weeksObject,daysObject,playerLoader,$timeout,GroupFunctions) {
 
         //make sure state.params.group is set
         if ($scope.group.selectedGroup && !($state.params.group)) {
@@ -216,94 +205,29 @@ angular.module('piGroups.controllers', [])
 
         $scope.updateGroup = function (cb) {
             $scope.needToDeploy = true;
-            $scope.group.selectedGroup.assets = [];
-            $scope.emptyPlExist = false;
-            for (var i=$scope.group.selectedGroup.playlists.length -1;i>=0;i--) {
-                if ($scope.group.selectedGroup.playlists[i].name && $scope.group.selectedGroup.playlists[i].name.length > 0) {
-                    var playlist = $scope.playlist.playlists[$scope.playlist.playlistNames.indexOf($scope.group.selectedGroup.playlists[i].name)];
-                    playlist.assets.forEach(function (asset) {
-                        if (asset.filename && $scope.group.selectedGroup.assets.indexOf(asset.filename) == -1
-                                            && asset.filename.indexOf("_system") != 0) {
-                            $scope.group.selectedGroup.assets.push(asset.filename);
+            GroupFunctions.listFiles($scope.group.selectedGroup, $scope.playlist.playlists, $scope.playlist.playlistNames, function (err, groupObj) {
+                $scope.showDates()
+                $http
+                    .post(piUrls.groups + $state.params.group, $scope.group.selectedGroup)
+                    .success(function (data, status) {
+                        if (data.success) {
+                            $scope.group.selectedGroup = data.data;
+                            $scope.group.selectedGroup.omxVolume =
+                                ($scope.group.selectedGroup.omxVolume ||
+                                    $scope.group.selectedGroup.omxVolume == 0)?$scope.group.selectedGroup.omxVolume:100;
+                            $scope.showDates()
                         }
-                        layoutOtherZones[playlist.layout].forEach(function(zone) {
-                            if (asset[zone] && $scope.group.selectedGroup.assets.indexOf(asset[zone]) == -1 &&
-                                                asset[zone].indexOf("_system") != 0){
-                                $scope.group.selectedGroup.assets.push(asset[zone]);
-                                if(asset[zone].indexOf('__') == 0){ // for nested playlist
-                                    var playlistName = asset[zone].slice(2,asset[zone].indexOf(".json")),
-                                        nestedPlaylistIndex = $scope.playlist.playlistNames.indexOf(playlistName);
-
-                                    if (nestedPlaylistIndex != -1 &&
-                                        Array.isArray($scope.playlist.playlists[nestedPlaylistIndex].assets)) {
-                                        $scope.playlist.playlists[nestedPlaylistIndex].assets.forEach(function(plfile){
-                                            if($scope.group.selectedGroup.assets.indexOf(plfile.filename) == -1 &&
-                                                plfile.filename.indexOf("_system") != 0){
-                                                $scope.group.selectedGroup.assets.push(plfile.filename);
-                                            }
-                                        })
-                                    }
-                                }
-                            }
-                        })
+                        if (cb)
+                            cb(!data.success,data.stat_message)
+                    })
+                    .error(function (data, status) {
+                        if (cb)
+                            cb(true)
+                    })
+                    .finally(function(){
+                        initSortArray();
                     });
-                    if ($scope.group.selectedGroup.assets.indexOf('__' + playlist.name + '.json') == -1)
-                        $scope.group.selectedGroup.assets.push('__' + playlist.name + '.json');
-                    if($scope.group.selectedGroup.logo && $scope.group.selectedGroup.assets.indexOf($scope.group.selectedGroup.logo) == -1)
-                        $scope.group.selectedGroup.assets.push($scope.group.selectedGroup.logo);
-                    if(playlist.templateName &&($scope.group.selectedGroup.assets.indexOf(playlist.templateName) == -1))
-                        $scope.group.selectedGroup.assets.push(playlist.templateName)
-                    $scope.group.selectedGroup.playlists[i].settings = $scope.group.selectedGroup.playlists[i].settings || {}
-                    $scope.group.selectedGroup.playlists[i].settings.ads = playlist.settings.ads
-                    $scope.group.selectedGroup.playlists[i].settings.domination = playlist.settings.domination
-                    $scope.group.selectedGroup.playlists[i].settings.event = playlist.settings.event
-                    $scope.group.selectedGroup.playlists[i].settings.audio = playlist.settings.audio
-                    if (playlist.name != 'TV_OFF') {
-                        if (playlist.assets.length == 0) {
-                            $scope.emptyPlExist = true;
-                            $scope.group.selectedGroup.playlists[i].skipForSchedule = true;
-                        } else {
-                            $scope.group.selectedGroup.playlists[i].skipForSchedule = false;
-                            if (playlist.settings.ads && playlist.settings.ads.adPlaylist)
-                                $scope.group.selectedGroup.playlists[i].plType = "advt";
-                            else if (playlist.settings.domination && playlist.settings.domination.enable)
-                                $scope.group.selectedGroup.playlists[i].plType = "domination";
-                            else if (playlist.settings.event && playlist.settings.event.enable)
-                                $scope.group.selectedGroup.playlists[i].plType = "event";
-                            else if (playlist.settings.audio && playlist.settings.audio.enable)
-                                $scope.group.selectedGroup.playlists[i].plType = "audio";
-                            else
-                                $scope.group.selectedGroup.playlists[i].plType = "regular";
-                        }
-                    } else {
-                        $scope.group.selectedGroup.playlists[i].plType = "special";
-                    }
-
-                } else {
-                    $scope.group.selectedGroup.playlists.splice(i, 1);
-                }
-            }
-
-            $http
-                .post(piUrls.groups + $state.params.group, $scope.group.selectedGroup)
-                .success(function (data, status) {
-                    if (data.success) {
-                        $scope.group.selectedGroup = data.data;
-                        $scope.group.selectedGroup.omxVolume =
-                            ($scope.group.selectedGroup.omxVolume ||
-                                $scope.group.selectedGroup.omxVolume == 0)?$scope.group.selectedGroup.omxVolume:100;
-                        $scope.showDates()
-                    }
-                    if (cb)
-                        cb(!data.success,data.stat_message)
-                })
-                .error(function (data, status) {
-                    if (cb)
-                        cb(true)
-                })
-                .finally(function(){
-                    initSortArray();
-                });
+            })
         }
 
         $scope.add = function () {
@@ -822,6 +746,18 @@ angular.module('piGroups.controllers', [])
                 });
         }
 
+        function getCssClass(groupId) {
+            for (var i=0,len=$scope.group.groups.length;i<len;i++) {
+                if ($scope.group.groups[i]._id == groupId) {
+                    break;
+                }
+            }
+            if (i < len) {
+                return ($scope.group.groups[i].orientation)
+            } else
+                return "landscape"
+        }
+
         $scope.getSnapshot = function() {
             $scope.snapshot.buttonTxt = "Please Wait";
             $http
@@ -831,6 +767,8 @@ angular.module('piGroups.controllers', [])
                         $scope.snapshot.image = (data.data.url) + "?" + Date.now()
                         $scope.snapshot.lastTaken = data.data.lastTaken
                         $scope.snapshot.buttonTxt = "Take Snapshot";
+                        $scope.snapshot.cssClass = getCssClass(
+                            ($scope.msg.player.group && $scope.msg.player.group._id)?$scope.msg.player.group._id:$scope.msg.player.selfGroupId);
                     } else {
                         $scope.snapshot.buttonTxt = data.stat_message;
                     }

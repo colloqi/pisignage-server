@@ -183,7 +183,6 @@ exports.savePlaylist = function (req, res) {
                 fileData.templateName = req.body.templateName;
                 fileData.videoWindow = req.body.videoWindow|| null;
                 fileData.zoneVideoWindow = req.body.zoneVideoWindow || null;
-                fileData.mainzoneOnly = req.body.mainzoneOnly || false;
                 dirty = true;
             }
 

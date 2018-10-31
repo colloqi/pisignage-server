@@ -130,6 +130,7 @@ angular.module('pisignage.services',[]).
                         groupPlList.settings.ads = playlistsObj[itemIndex].settings.ads
                         groupPlList.settings.domination = playlistsObj[itemIndex].settings.domination
                         groupPlList.settings.event = playlistsObj[itemIndex].settings.event
+                        groupPlList.settings.onlineOnly = playlistsObj[itemIndex].settings.onlineOnly
                         groupPlList.settings.audio = playlistsObj[itemIndex].settings.audio
                         if (playlistsObj[itemIndex].name != 'TV_OFF') {
                             if (playlistsObj[itemIndex].assets.length == 0) {
