@@ -512,13 +512,14 @@ exports.upload = function (cpuId, filename, data) {
                     // else
                     //     console.log("info","Forever Log file saved for player : "+cpuId);
                 })
-            } else if (path.extname(filename) == '.log') {
+            } else if (path.extname(filename) == '.log' && filename != "forever_out.log") {
                 try {
                     logData = JSON.parse(data);
                     logData.installation = player.installation;
                     logData.playerId = player._id.toString();
                 } catch (e) {
                     //corrupt file
+                    console.log(player.cpuSerialNumber)
                     console.log("corrupt log file: "+filename);
                 }
             } else if (path.extname(filename) == '.events') {
