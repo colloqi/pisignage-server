@@ -48,6 +48,11 @@
               <input type="checkbox" title="Content from all the eligible playlists will be combined" ng-model="group.selectedGroup.playAllEligiblePlaylists"/><small>Combine content of all scheduled playlists</small>
             </label>
           </div>
+          <div class="checkbox col-sm-12">
+            <label ng-repeat="item in combineOptions">
+              <input type="checkbox"  ng-show="group.selectedGroup.playAllEligiblePlaylists" ng-click="updateSelection($index, combineOptions,item.title)" title="Content from all the eligible playlists will be combined" ng-model="item.checked"/><small ng-show="group.selectedGroup.playAllEligiblePlaylists">play content {{item.title}} from all playlist</small>
+            </label> 
+          </div>
         </div>
       </div>
       <div ng-repeat="pl in group.selectedGroup.playlists" ng-if="$index &gt; 0" as-sortable-item="as-sortable-item" class="row form-group">

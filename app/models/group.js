@@ -8,6 +8,8 @@ var GroupSchema = new Schema({
     playlists:              [],
     combineDefaultPlaylist: {type: Boolean , default: false},
     playAllEligiblePlaylists: {type: Boolean , default: false},
+    randomsort:             {type: Boolean , default:false},
+    alternatesort:          {type: Boolean , default: false},
     timeToStopVideo:        {type: Number , default: 0 },
     
     assets:                 [],

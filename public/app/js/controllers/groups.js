@@ -230,6 +230,21 @@ angular.module('piGroups.controllers', [])
                     });
             })
         }
+        $scope.combineOptions = [
+            { title: "randomly", checked: false},
+            { title: "alternately", checked:false },
+            
+        ];        
+        $scope.updateSelection = function(position, combineOptions, title) {
+            angular.forEach(combineOptions, function(subscription, index) {
+                if (position != index)
+                    subscription.checked = false;
+                    $scope.selectedScheduled = title;
+                    $scope.group.selectedGroup.randomsort=combineOptions[0].checked;
+                    $scope.group.selectedGroup.alternatesort=combineOptions[1].checked;
+                }
+            );
+        }
 
         $scope.add = function () {
             if ($scope.group.selectedGroup.playlists.length >= 30) {
