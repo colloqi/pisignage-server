@@ -88,6 +88,15 @@
           </div>
         </div>
         <div class="form-group">
+            <label class="col-xs-4 control-label">Player reporting interval in minutes</label>
+            <div class="col-xs-2">
+              <input type="number" name="reportinterval" ng-model="settings.reportIntervalMinutes" placeholder="{{'default 5 minutes'}}" class="form-control"/>
+            </div>
+            <div class="col-xs-2">
+              <button type="submit" ng-click="saveSettings()" class="btn btn-success"> Save</button>
+            </div>
+        </div>
+        <div class="form-group">
           <div class="checkbox">
             <label class="col-xs-8 col-xs-offset-4">
               <input type="checkbox" name="logs" ng-model="settings.enableLog" ng-change="saveSettings()"/><span class="text-warning">Enable log for file play count/details (network intensive, do not enable unless you need it!)</span>

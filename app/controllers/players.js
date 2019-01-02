@@ -143,6 +143,8 @@ var sendConfig = function (player, group, periodic) {
     retObj.name = player.name;
     retObj.resolution = group.resolution || '720p';
     retObj.orientation = group.orientation || 'landscape';
+    retObj.enableMpv =  group.enableMpv || false;
+    retObj.kioskUi = group.kioskUi || {enable: false};
     retObj.animationType =  group.animationType || "right";
     if (!player.version || parseInt(player.version.replace(/\D/g,"")) < 180)
         retObj.animationEnable =  false;
@@ -181,6 +183,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.systemMessagesHide = settings.systemMessagesHide;
     retObj.forceTvOn = settings.forceTvOn;
     retObj.hideWelcomeNotice = settings.hideWelcomeNotice;
+    retObj.reportIntervalMinutes=settings.reportIntervalMinutes;
     retObj.authCredentials = settings.authCredentials;
     retObj.enableLog = settings.enableLog || false;
     retObj.enableYoutubeDl = settings.enableYoutubeDl || false;

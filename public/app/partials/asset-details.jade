@@ -72,21 +72,20 @@
                 .col-sm-2
                     input.form-control(type='number',step="0.01" ,name='style' ,placeholder='e.g. 0.75(75%), 1.25(125%) or leave blank for no-zoom',
                     ng-model='urlLink.zoom')
-
+            .br
             .row(ng-if="urlLink.type == '.weblink'")
                 .col-sm-2.text-right
                     label.control-label Send Key strokes (optional)
+                    .col-sm-4
+                        input.form-control(type="text",name="keystrokes",placeholder="e.g. tab,shift+h,e,l,l,o,shift+!,enter",ng-model="urlLink.keystrokes")
+                        .small for key definitions refer http://robotjs.io/docs/syntax#key
+                        label.col-sm-2.col-sm-offset-2.control-label.text-muted After a delay of 
                 .col-sm-2
-                    input.form-control(type='text',name='keystrokes' ,placeholder='e.g. tab,shift+h,e,l,l,o,shift+!,enter',
-                    ng-model='urlLink.keystrokes')
-                .col-sm-6
-                    small for key definitions refer http://robotjs.io/docs/syntax#keys
-
+                    input.form-control(type="text" name="keydelay" placeholder="10 secs" ng-model="urlLink.keydelay")  
             .row
                 .col-sm-3.col-sm-offset-2
                     button.btn.btn-success(ng-disabled='!(linkform.$dirty && linkform.$valid)',ng-click="saveNewChanges()") Update
-
-
+            .br
         div(ng-if='(fileType=="gcal") && calendar.list.length')
             h4: strong  Profile
             .media

@@ -22,6 +22,7 @@ var GroupSchema = new Schema({
 
     lastDeployed:           String,
 
+    enableMpv:              {type: Boolean, default: false},
     orientation:            {type: String,default: 'landscape'},
     animationEnable:        {type: Boolean, default: false},
     animationType:          {type: String, default: null},
@@ -42,6 +43,11 @@ var GroupSchema = new Schema({
     reboot:                 {
                                 enable: {type: Boolean,default: false},
                                 time: { type: String}
+                            },
+    kioskUi:                {
+                                enable:     {type: Boolean, default: false},
+                                url:        {type: String},
+                                timeout:    {type: Number}
                             },
     omxVolume:              {type: Number , default: 100 },
     logo:                   {type: String,default: null},

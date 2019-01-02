@@ -74,6 +74,12 @@
                             input(type='checkbox',name='hidenotice', ng-model='settings.hideWelcomeNotice', ng-change="saveSettings()")
                             span Do not show startup welcome screen
                 .form-group
+                    label.col-xs-4.control-label Player reporting interval in minutes
+                        .col-xs-2
+                            input.form-control(type="number" name="reportinterval" ng-model="settings.reportIntervalMinutes" placeholder="{{'default 5 minutes'}}")
+                        .col-xs-2
+                            button.btn.btn-success(type="submit" ng-click="saveSettings()") Save
+                .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',name='logs', ng-model='settings.enableLog', ng-change="saveSettings()")
