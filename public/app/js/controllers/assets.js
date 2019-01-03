@@ -297,7 +297,7 @@ angular.module('piAssets.controllers',[])
                 {name: 'Audio Streaming', ext: '.radio'},
                 {name: 'Web link (shown in iframe)', ext: '.link'},
                 {name: 'Web page (supports cross origin links)', ext: '.weblink'},
-                {name: 'Media RSS (needs v1.7.0) ', ext: '.mrss'},
+                {name: 'Media RSS', ext: '.mrss'},
                 {name: 'Message', ext: '.txt'}
             ],
             obj: {
