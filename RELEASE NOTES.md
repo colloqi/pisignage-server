@@ -57,4 +57,13 @@
 1. Snapshot orientation corrected for portrait modes
 1. Remove spaces from zipfile names
 
+**2.3.0**
+
+1. Inline with pisignage.com release 2.3.0 (**46f2de9**)
+1. Kiosk UI (either in-built or provide url/zip of your UI app) - under group settings
+1. Gapless video play (BETA)  - under group settings
+1. Player-server communication interval under settings
+1. Programmable delay for sending keystrokes to webpage link screen instead of fixed 10 seconds - under weblink 
+
+
 

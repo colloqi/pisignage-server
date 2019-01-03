@@ -2,7 +2,7 @@
 <div class="modal-header">
   <h4>Select Display Orientation and Resolution</h4>
 </div>
-<div class="modal-body overflow-auto" >
+<div class="modal-body overflow-auto">
   <form role="form" name="formdisplay">
     <div class="form-group row">
       <div class="col-sm-4 text-right">
@@ -259,58 +259,67 @@
     </div>
     <hr/>
     <div class="form-group row">
-        <div class="col-sm-4 text-right">
-          <div class="radio">
-            <small class="text-muted">Optional daily reboot</small>
-          </div>
+      <div class="col-sm-4 text-right">
+        <div class="radio">
+          <label class="text-muted"><small>Optional daily reboot</small></label>
         </div>
+      </div>
       <div class="col-sm-2">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="reboot_checkbox" ng-model="group.selectedGroup.reboot.enable"/><small >Enable</small>
-          </label>                
+            <input type="checkbox" name="reboot_checkbox" ng-model="group.selectedGroup.reboot.enable"/><small>enable</small>
+          </label>
         </div>
       </div>
       <div class="col-sm-2 text-right">
-        <div class="radio"><small class="text-muted" ng-show="group.selectedGroup.reboot.enable">At</small></div>
+        <div class="radio">
+          <label class="text-muted"><small ng-show="group.selectedGroup.reboot.enable" class="text-muted">at</small></label>
+        </div>
       </div>
       <div class="col-sm-4">
-        <div class="radio">
-        <input ng-show="group.selectedGroup.reboot.enable" type="time" ng-model="group.selectedGroup.reboot.time" class="input-sm form-control  "/>
-      </div>
-    </div>
-    </div>
-    <hr/>
-    <div class="form-group row">
-      <div class="col-sm-4 text-right"><small>Kiosk Menu</small></div>
-      <div class="col-sm-8">
-        <div class="form-check form-check-inline">
-          <label class="form-check-label">
-            <input type="checkbox" name="kioskui_checkbox" ng-model="group.selectedGroup.kioskUi.enable" class="form-check-input"/><small class="text-muted pl-5">Enable</small>
+        <div class="checkbox">
+          <label>
+            <input ng-show="group.selectedGroup.reboot.enable" type="time" ng-model="group.selectedGroup.reboot.time" class="input-sm form-control"/>
           </label>
         </div>
-        <div ng-show="group.selectedGroup.kioskUi.enable">
-          <div class="input-group">
-            <div class="input-group-addon"><small>URL</small></div>
-            <input type="text" placeholder="Leave blank for default" ng-model="group.selectedGroup.kioskUi.url" class="input-sm form-control"/>
-          </div>
-          <br>
-        </div>
       </div>
-      <div ng-show="group.selectedGroup.kioskUi.enable" class="col-sm-5 col-sm-offset-4">
-        <div class="input-group">
-          <div class="input-group-addon"><small>Inactivitiy timeout</small></div>
-          <input type="number" placeholder="30 secs" ng-model="group.selectedGroup.kioskUi.timeout" class="input-sm form-control"/>
-        </div>
-      </div>  
-    </div>    
+    </div>
     <hr/>
     <div class="form-group row">
-      <div class="col-sm-4 text-right"><small>Video Play</small></div>
+      <div class="col-sm-4 text-right">
+        <div class="radio">
+          <label class="text-muted"><small>Kiosk Menu</small></label>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="kioskui_checkbox" ng-model="group.selectedGroup.kioskUi.enable"/><small>Enable</small>
+          </label>
+        </div>
+      </div>
+      <div ng-show="group.selectedGroup.kioskUi.enable" class="col-sm-6">
+        <div class="input-group input-group-sm"><small class="input-group-addon">URL</small>
+          <input type="text" placeholder="Leave blank for default" ng-model="group.selectedGroup.kioskUi.url" class="input-sm form-control"/>
+        </div>
+      </div>
+      <div ng-show="group.selectedGroup.kioskUi.enable" class="col-sm-5 col-sm-offset-6">
+        <div class="input-group input-group-sm"><small class="input-group-addon">Inactivitiy timeout</small>
+          <input type="number" placeholder="30 secs" ng-model="group.selectedGroup.kioskUi.timeout" class="input-sm form-control"/>
+        </div>
+      </div>
+    </div>
+    <hr/>
+    <div class="form-group row">
+      <div class="col-sm-4 text-right">
+        <div class="radio">
+          <label class="text-muted"><small>Video Play</small></label>
+        </div>
+      </div>
       <div class="col-sm-8">
-        <div class="form-check form-check-inline">
-          <label class="form-check-label">
-            <input type="checkbox" name="ffmpeg" ng-model="group.selectedGroup.enableMpv" class="form-check-input"/><small  class="text-muted pl-5">Avoid gap between videos (**BETA**, use only for short videos)</small>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="ffmpeg" ng-model="group.selectedGroup.enableMpv"/><small>Avoid gap between videos (**BETA**, use only for short videos)</small>
           </label>
         </div>
       </div>

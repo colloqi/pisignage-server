@@ -165,8 +165,6 @@ var sendConfig = function (player, group, periodic) {
     retObj.emergencyMessage = group.emergencyMessage || {enable: false};
     retObj.combineDefaultPlaylist = group.combineDefaultPlaylist || false;
     retObj.playAllEligiblePlaylists = group.playAllEligiblePlaylists || false;
-    retObj.randomsort= group.randomsort || false;
-    retObj.alternatesort=group.alternatesort || false;
     retObj.urlReloadDisable =  group.urlReloadDisable || false;
     retObj.loadPlaylistOnCompletion =  group.loadPlaylistOnCompletion || false;
     //if (!pipkgjson)

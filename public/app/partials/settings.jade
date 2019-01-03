@@ -76,7 +76,7 @@
                 .form-group
                     label.col-xs-4.control-label Player reporting interval in minutes
                     .col-xs-2
-                        input.form-control(type="number", name="reportinterval", ng-model="settings.reportIntervalMinutes", placeholder="{{'default 5 minutes'}}")
+                        input.form-control(type="number", name="reportinterval", ng-model="settings.reportIntervalMinutes", placeholder="default 5 minutes")
                     .col-xs-2
                         button.btn.btn-success(type="submit", ng-click="saveSettings()") Save
                 .form-group
@@ -119,3 +119,5 @@
                     .col-xs-4.col-xs-offset-4
                         p.text-danger {{loadMsg}}
 
+
+                        

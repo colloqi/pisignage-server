@@ -14,23 +14,23 @@
     <iframe ng-if="filedetails.type==&quot;pdf&quot;" height="300px" width="100%" ng-src="{{filedetails.path}}"></iframe>
     <form role="form" name="linkform" ng-show="fileType==&quot;link&quot;">
       <div ng-if="urlLink.type != '.txt'" class="row">
-        <div class="col-xs-2 col-xs-offset-1">
-          <h4 class="text-muted">Address</h4>
+        <div class="col-sm-3 text-right">
+          <label class="control-label text-muted">Address</label>
         </div>
         <div class="col-xs-8">
           <h4>{{urlLink.link}}<a ng-disabled="!urlLink.link" href="{{urlLink.link}}" target="_blank" class="btn btn-link"><i class="fa fa-external-link"></i></a></h4>
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-2 col-xs-offset-1">
-          <h4 class="text-muted">Type</h4>
+        <div class="col-sm-3 text-right">
+          <label class="control-label text-muted">Type</label>
         </div>
         <div class="col-xs-7">
           <h4>{{urlLink.type == ".tv"?"You Tube":urlLink.type.slice(1)}}</h4>
         </div>
       </div>
       <div ng-if="urlLink.type == '.mrss'" class="row">
-        <div class="col-xs-2 col-xs-offset-1">
+        <div class="col-sm-3 text-right">
           <h4 class="text-muted">RSS Text</h4>
         </div>
         <div class="col-sm-9">
@@ -62,7 +62,7 @@
         </div>
       </div>
       <div ng-if="urlLink.type == '.mrss'" class="row">
-        <div class="col-xs-2 col-xs-offset-1">
+        <div class="col-sm-3 text-right">
           <h4 class="text-muted">Item duration</h4>
         </div>
         <div class="col-sm-3">
@@ -70,7 +70,7 @@
         </div>
       </div>
       <div ng-if="urlLink.type == '.txt'" class="row">
-        <div class="col-sm-2 text-right">
+        <div class="col-sm-3 text-right">
           <label class="control-label">Optional CSS</label>
         </div>
         <div class="col-sm-6">
@@ -78,36 +78,37 @@
         </div>
       </div>
       <div ng-if="urlLink.type == '.txt'" class="row">
-        <div class="col-sm-2 text-right">
+        <div class="col-sm-3 text-right">
           <label class="control-label">Message</label>
         </div>
         <div class="col-sm-6">
           <textarea rows="4" cols="50" name="message" ng-model="urlLink.message" required="" class="form-control"></textarea>
         </div>
-      </div>
+      </div><br/>
       <div ng-if="urlLink.type == '.weblink'" class="row">
-        <div class="col-sm-2 text-right">
-          <label class="control-label">Zoom level</label>
+        <div class="col-sm-3 text-right">
+          <label class="control-label text-muted">Zoom level</label>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-6">
           <input type="number" step="0.01" name="style" placeholder="e.g. 0.75(75%), 1.25(125%) or leave blank for no-zoom" ng-model="urlLink.zoom" class="form-control"/>
         </div>
-      </div>
+      </div><br/>
       <div ng-if="urlLink.type == '.weblink'" class="row">
-        <div class="col-sm-2 text-right">
+        <div class="col-sm-3 text-right">
           <label class="control-label">Send Key strokes (optional)</label>
         </div>
-        <div class="col-sm-4">
-          <input type="text" name="keystrokes" placeholder="e.g. tab,shift+h,e,l,l,o,shift+!,enter" ng-model="urlLink.keystrokes" class="form-control"/>
-          <div class="small">for key definitions refer http://robotjs.io/docs/syntax#key</div>
+        <div class="col-sm-5">
+          <input type="text" name="keystrokes" placeholder="e.g. tab,shift+h,e,l,l,o,shift+!,enter" ng-model="urlLink.keystrokes" class="form-control"/><small>for key definitions refer http://robotjs.io/docs/syntax#key</small>
         </div>
-        <label class="col-sm-2 col-sm-offset-2 control-label text-muted">After a delay of</label>
+        <div class="col-sm-2">
+          <label class="control-label text-muted">after a delay of</label>
+        </div>
         <div class="col-sm-2">
           <input type="text" name="keydelay" placeholder="10 secs" ng-model="urlLink.keydelay" class="form-control"/>
         </div>
-      </div>
+      </div><br/>
       <div class="row">
-        <div class="col-sm-3 col-sm-offset-2">
+        <div class="col-sm-3 col-sm-offset-3">
           <button ng-disabled="!(linkform.$dirty &amp;&amp; linkform.$valid)" ng-click="saveNewChanges()" class="btn btn-success">Update</button>
         </div>
       </div>

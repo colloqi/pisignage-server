@@ -34,11 +34,6 @@
                             input(type="checkbox",title="Default playlist assets will be played along with selected playlist",
                                             ng-model="group.selectedGroup.combineDefaultPlaylist")
                             small Play together with scheduled playlist (v1.7.0+)
-                    .checkbox.col-sm-12
-                        label(ng-repeat="item in combineOptions")
-                            input(type="checkbox",ng-show="group.selectedGroup.playAllEligiblePlaylists",ng-click="updateSelection($index, combineOptions,item.title)",title="Content from all the eligible playlists will be combined",
-                                            ng-model="item.checked")
-                            small(ng-show="group.selectedGroup.playAllEligiblePlaylists") play content {{item.title}} from all playlist
             .row.form-group(ng-show="group.selectedGroup.playlists[0].name.length")
                 h5.col-sm-8 You can select additional Playlists for Scheduling/Advt purposes
                     //a.btn.btn-link(ng-click="collapsed = !collapsed;")

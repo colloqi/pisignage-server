@@ -209,50 +209,52 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        small Opyional daily reboot
+                        small Optional daily reboot
             .col-sm-2
                 .checkbox
                     label
                         input(type='checkbox',name='reboot_checkbox', ng-model='group.selectedGroup.reboot.enable')
                         small enable
             .col-sm-2.text-right
-                radio
-                    small.text-muted(ng-show="group.selectedGroup.reboot.enable") At
+                .radio
+                    label.text-muted
+                        small.text-muted(ng-show="group.selectedGroup.reboot.enable") at
             .col-sm-4
-                .radio
-                    input.input-sm.form-control(ng-show='group.selectedGroup.reboot.enable',type='time',ng-model="group.selectedGroup.reboot.time")
+                .checkbox
+                    label
+                        input.input-sm.form-control(ng-show='group.selectedGroup.reboot.enable',type='time',ng-model="group.selectedGroup.reboot.time")
 
         hr
         .form-group.row
             .col-sm-4.text-right
                 .radio
-                    small Kiosk Menu
-            .col-sm-8
-                .form-check.form-check-inline
-                    label.form-check-label
-                        input.form-check-input(type='checkbox',name='kioskui_checkbox', ng-model='group.selectedGroup.kioskUi.enable')
-                        small.text-muted.pl-5 Enable
-                .div(ng-show='group.selectedGroup.kioskUi.enable')
-                    .input-group
-                        .input-group-addon
-                            small URL
-                            input.input-sm.form-control(type='text',placeholder="Leave blank for default",ng-model="group.selectedGroup.kioskUi.url")
-                    .br
-            .col-sm-5.col-sm-offset-4(ng-show='group.selectedGroup.kioskUi.enable')
-                .input-group
-                    .input-group-addon
-                        small Inactivitiy timeout
-                        input.input-sm.form-control(type='number',placeholder="30 secs",ng-model='group.selectedGroup.kioskUi.timeout')
+                    label.text-muted
+                        small Kiosk Menu
+            .col-sm-2
+                .checkbox
+                    label
+                        input(type='checkbox',name='kioskui_checkbox', ng-model='group.selectedGroup.kioskUi.enable')
+                        small Enable
+            .col-sm-6(ng-show='group.selectedGroup.kioskUi.enable')
+                .input-group.input-group-sm
+                    small.input-group-addon URL
+                    input.input-sm.form-control(type='text',placeholder="Leave blank for default",ng-model="group.selectedGroup.kioskUi.url")
+            .col-sm-5.col-sm-offset-6(ng-show='group.selectedGroup.kioskUi.enable')
+                .input-group.input-group-sm
+                    small.input-group-addon Inactivitiy timeout
+                    input.input-sm.form-control(type='number',placeholder="30 secs",ng-model='group.selectedGroup.kioskUi.timeout')
 
         hr
         .form-group.row
             .col-sm-4.text-right
-                small Video Play
+                .radio
+                    label.text-muted
+                        small Video Play
             .col-sm-8
-                .form-check.form-check-inline
-                    label.form-check-label
-                        input.form-check-input(type='checkbox',name='ffmpeg', ng-model='group.selectedGroup.enableMpv')
-                        small.text-muted.pl-5 Avoid gap between videos (**BETA**, use only for short videos)
+                .checkbox
+                    label
+                        input(type='checkbox',name='ffmpeg', ng-model='group.selectedGroup.enableMpv')
+                        small Avoid gap between videos (**BETA**, use only for short videos)
 .modal-footer
     button.btn(ng-click='displayModal.close()') Cancel
     button.btn.btn-danger(ng-click='saveSettings()') OK
