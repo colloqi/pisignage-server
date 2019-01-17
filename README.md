@@ -2,7 +2,7 @@
 
 Server code to manage piSignage players in a LAN or Private Network or to setup your own server!
 
-*run npm install command after git pull and before starting the server*
+    run npm install command after git pull and before starting the server
 
 **Upgrading to latest from existing versions**
 
