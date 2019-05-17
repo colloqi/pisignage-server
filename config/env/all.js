@@ -56,6 +56,7 @@ module.exports = {
     linkUrlRegex: /\.link$/i,
     CORSLink:  /\.weblink$/i,
     mediaRss:               /\.mrss$/i,
+    localFolderRegex:       /\.local$/i,
     radioFileRegex:         /\.radio$/i,
     brandRegex:             /^(brand_intro|brand_intro_portrait)\./i,
     nestedPlaylist:         /^__/i,

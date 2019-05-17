@@ -22,7 +22,7 @@
           </div>
           <div class="col-xs-1"><small ng-show="forPlaylist.settings.durationEnable">till</small></div>
           <div class="col-xs-4">
-            <input type="date" ng-model="forPlaylist.settings.enddate" ng-model-options="{timezone:'UTC'}" ng-show="forPlaylist.settings.durationEnable" placeholder="Till date" name="enddate" title="Enter End Date" class="form-control input-sm"/>
+            <input type="date" ng-model="forPlaylist.settings.enddate" ng-model-options="{timezone:'UTC'}" min="{{endday}}" ng-show="forPlaylist.settings.durationEnable" placeholder="Till date" name="enddate" title="Enter End Date" class="form-control input-sm"/>
           </div>
         </div>
       </div>

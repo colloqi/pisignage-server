@@ -1,0 +1,48 @@
+.panel.panel-default.row.height100.overflow-auto
+    .panel-heading
+        .row
+            .col-sm-3
+                h3 Overview of Players
+            .col-sm-3
+                label.checkbox-inline(ng-show="serverHost")
+                    input(type="checkbox",ng-model="onlyInstallation")
+                    span(title="{{'Show players only for this account'}}") Only this account
+
+            .col-sm-3.pull-right
+                button.btn.btn-primary.navbar-btn.pull-right(
+                title="{{'Register a player with the CPU ID displayed on TV' }}",
+                ng-click='register()') Subscribe to Alerts
+
+
+    .panel-body
+
+        .hr-divider.m-t-md.m-b
+            h3.hr-divider-content.hr-divider-heading Player reporting status
+        .row.statcards
+            .col-sm-4.col-lg-2.m-b(ng-repeat='bucket in playersStat  track by $index ')
+                .statcard(ng-class="'statcard-'+BUCKET_CLASS[$index]")
+                    a.btn.btn-block(ng-href="{{'/dashboard/players?bucket='+$index}}")
+                        .p-a.text-white
+                            span.statcard-desc {{BUCKET_TITLE[$index]}}
+                            h2.statcard-number {{bucket}}
+        .hr-divider.m-t-md.m-b
+            h3.hr-divider-content.hr-divider-heading Players expected to report now
+        div(style="max-height:200px;overflow:scroll")
+
+            h6.text-center.text-muted.m-b(ng-repeat="player in playersExpectedToReport | orderBy:'lastReported':true track by $index")  {{player.name}}
+                i.m-l {{player.lastReported | timeAgo}}
+            h6.text-center.text-muted.m-b(ng-show="playersExpectedToReport.length == 0") There are no players went offline just now
+        hr.m-t
+        .row
+            .col-md-6.m-b-md(ng-repeat-start="playerTable in COUNT_FIELDS_TO_SHOW" )
+                .list-group
+                    h4.list-group-header.bg-default {{playerTable.name}}
+                    a.list-group-item.text-primary(ng-repeat="row in playersStatFieldWise[playerTable.field+'Count'] | limitTo:(displayLimit || 10) track by $index",
+                            ng-href="{{'/dashboard/players?'+playerTable.field+'='+row.name}}")
+                        | {{row.name}}
+                        span.pull-right.text-muted {{row.count}}
+                a.btn.btn-primary-outline.p-x(ng-show="playersStatFieldWise[playerTable.field+'Count'].length > 10",ng-click="displayLimit==1000?displayLimit=10:displayLimit=1000;")
+                    | {{displayLimit==1000?"Show less":"All players"}}
+
+            .clearfix(ng-if="$index % 2 == 1")
+            div(ng-repeat-end)

@@ -13,6 +13,18 @@
           <input type="text" placeholder="filter" ng-model="searchFilename" class="form-control"/>
         </form>
       </div>
+      <div class="col-sm-1" ng-if="!assetConfig.allAssets">
+          <div dropdown="dropdown" class="btn-group-vertical ">
+            <button dropdown-toggle="dropdown-toggle" class="btn btn-default btn-xs"><small >multiple&nbsp;</small><i class="fa fa-caret-down fa-lg"></i></button>
+            <div role="menu" class="dropdown-menu col-xs-12">
+              <button ng-click="ngDropdown.doBulkOperation('assign')"  title="{{'Assign categories to the selected files' }}" class="btn btn-default btn-block"><span  class="text-muted">Assign Categories</span></button>
+              <button ng-click="ngDropdown.doBulkOperation('delete')" title="{{'Bulk delete all the selected files' }}" class="btn btn-default btn-block"><span  class="text-danger">Delete selected files</span></button>
+            </div>
+            <div class="btn btn-link btn-xs btn-default">
+              <input type="checkbox" ng-model="ngDropdown.filtered.selectAll" title="{{'Select All' }}" ng-change="ngDropdown.toggleSelection()"/>
+            </div>
+          </div>
+        </div>
       <div dropdown="dropdown" ng-if="!assetConfig.allAssets" class="col-sm-3 dropdown">
         <button dropdown-toggle="dropdown-toggle" class="btn btn-success dropdown-toggle pull-right"><i class="fa fa-plus">&nbsp;ADD</i></button>
         <ul role="menu" class="dropdown-menu">

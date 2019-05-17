@@ -27,6 +27,7 @@ angular.module('piConfig', [])
             playlists:       base + 'api/playlists/',
 
             groups:          base + 'api/groups/',
+            exportStatus:    base + 'api/exportstatus',
 
             players:         base + 'api/players/',
             labels:          base + 'api/labels/' ,

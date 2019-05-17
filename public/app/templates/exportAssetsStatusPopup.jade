@@ -1,0 +1,15 @@
+.modal-header
+    button.btn.btn-warning.btn-xs.pull-right(ng-click='exportAssetsStatusModalClose()',ng-disabled="exportInProgress") Dismiss
+    h3.text-warning Export Assets status
+.modal-body
+    .row
+        .col-sm-10.col-sm-offset-1
+            .well.well-sm
+                h5
+                    span.text-muted Current Status:&nbsp;
+                    strong.text-primary.bg-warning {{exportInProgress ? "In progress" : "Export Complete"}}
+                p.text-muted {{exportMessage}}
+                p.text-danger {{exportError}}
+        .col-sm-10.col-sm-offset-1
+            .alert(ng-class="alert-success")
+                h3(ng-show="exportLink"): a(download="{{ exportFile }}", ng-href="{{ exportLink }}") Click to download

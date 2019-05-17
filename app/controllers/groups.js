@@ -2,10 +2,13 @@
 
 var mongoose = require('mongoose'),
     Group = mongoose.model('Group'),
+    Settings=mongoose.model('Settings'),
+    Player = mongoose.model('Player'),
 
     fs = require('fs'),
     config = require('../../config/config'),
-
+    exec = require('child_process').exec,
+    sendConfig=require('./players'),
     rest = require('../others/restware'),
     _ = require('lodash'),
 
@@ -114,7 +117,16 @@ exports.createObject = function (req, res) {
             return rest.sendSuccess(res, 'new Group added successfully', data);
     })
 }
+var exportAssets = {
+    inProgress: false,
+    link: '',
+    file: '',
+    statusMessage: ''
+}
 
+exports.getExportStatus = function(req, res) {
+    rest.sendSuccess(res, exportAssets.statusMessage, exportAssets);
+};
 exports.updateObject = function (req, res) {
 
     var saveObject = function (err, group) {
@@ -130,6 +142,9 @@ exports.updateObject = function (req, res) {
                     assetsValidity: group.assetsValidity
                 }}).exec();
             }
+            if ( req.body.exportAssets) {
+                prepareExportZipFile(group);
+            }
             return rest.sendSuccess(res, 'updated Group details', group);
         }
     }
@@ -143,7 +158,12 @@ exports.updateObject = function (req, res) {
         });
     }
     object = _.extend(object, req.body);
-
+    if (req.body.exportAssets) {
+        exportAssets.inProgress = true;
+        exportAssets.link = "";
+        exportAssets.file = "";
+        exportAssets.statusMessage = 'Preparing export archive ...';
+    }
     if (req.body.deploy) {
         object.deployedPlaylists = object.playlists;
         object.deployedAssets = object.assets;
@@ -173,5 +193,221 @@ exports.deleteObject = function (req, res) {
             return rest.sendError(res, 'Unable to remove Group record', err);
         else
             return rest.sendSuccess(res, 'Group record deleted successfully');
+    })
+}
+
+function createSettings(config) {
+
+    var checkAndCopy = function(attr) {
+        if (typeof config[attr] !== 'undefined') {
+            //logger.log("info","changed settings for "+attr+" from "+settings[attr]+" to "+config[attr])
+            settings[attr] = config[attr];
+            return true;
+        } else {
+            return false;
+        }
+    }
+    var settings = {};
+    settings.name = config.name;
+    settings.currentVersion = config.currentVersion;
+    settings.assets = config.assets;
+    settings.loadPlaylistOnCompletion = config.loadPlaylistOnCompletion || false;
+    checkAndCopy("installation");
+    checkAndCopy("secret");
+    if (config.animationEnable) {
+        settings.animationEnable = true;
+        settings.animationType = config.animationType;
+    } else {
+        settings.animationEnable = false;
+        settings.animationType = null;
+    }
+    checkAndCopy("sshPassword");
+    checkAndCopy("signageBackgroundColor");
+    checkAndCopy("imageLetterboxed");
+    checkAndCopy("resizeAssets");
+    checkAndCopy("videoKeepAspect");
+    checkAndCopy("systemMessagesHide");
+    checkAndCopy("forceTvOn");
+    checkAndCopy("hideWelcomeNotice");
+    checkAndCopy("omxVolume");
+    checkAndCopy("timeToStopVideo");
+    checkAndCopy("enableLog");
+    checkAndCopy("reportIntervalMinutes");
+    checkAndCopy("enableYoutubeDl");
+    checkAndCopy("enableMpv");
+    checkAndCopy("combineDefaultPlaylist");
+    checkAndCopy("playAllEligiblePlaylists");
+    checkAndCopy("urlReloadDisable");
+    checkAndCopy("cpuSerialNumber");
+    if (config.logo){
+        settings.logo = config.logo;
+        settings.logox = config.logox;
+        settings.logoy = config.logoy;
+    }
+    settings.orientation = config.orientation || 'landscape';
+    settings.resolution = config.resolution || '720p';
+    checkAndCopy("sleep");
+    checkAndCopy("reboot");
+    checkAndCopy("showClock");
+    checkAndCopy("kioskUi");
+    checkAndCopy("emergencyMessage");
+    checkAndCopy("TZ");
+    checkAndCopy('assetsValidity');
+    return settings;
+}
+
+function prepareExportZipFile(group) {
+    const EXPORT_ASSETS_NAME = '_export_assets';
+    const EXPORT_ASSETS_ARCHIVE = EXPORT_ASSETS_NAME + '.zip';
+    const ZIP_CMD = 'zip -r ';
+
+    const exportAssetsDir = path.join(config.mediaDir, EXPORT_ASSETS_NAME);
+    const archiveFullPath = path.join(config.mediaDir, EXPORT_ASSETS_ARCHIVE);
+
+    var settings= Settings.findOne({}, function (err, data) {
+        settings = data;
+
+    });
+
+    async.waterfall([
+
+        function(next) {
+            // Cleanup and create fresh directory for export
+            exec("rm -rf " + exportAssetsDir, function(error) {
+                exec(" rm " + archiveFullPath, function(err) {
+                    fs.mkdir(exportAssetsDir, function(err) {
+                        if (err)
+                            return next(err);
+                        else
+                            fs.mkdir(path.join(exportAssetsDir, 'assets'), function(err) {
+                                return next(err);
+                            });
+                    });
+                });
+            });
+        },
+        function(next)  {
+            // copy all assets to export directory
+            require('fs-extra').copy(path.join(config.syncDir,settings.installation,group.name), path.join(exportAssetsDir, 'assets'), {dereference:true},function (err) {
+                if (err) {
+                    console.log("error","Asset copying error in exportAssets(to USB): " + err+','+group.name)
+                }
+                next(err);
+            });
+        },
+        function(next) {
+            //unzip all zip files into .repo repository
+            var filesToUnzip = [];
+            group.assets.forEach(function(filename){
+                if ((filename).match(config.zipfileRegex)) {
+                    filesToUnzip.push(filename);
+                }
+            })
+            if (filesToUnzip.length == 0)
+                return next();
+        },
+        function(next) {
+            const username = settings.authCredentials.user;
+            const password = settings.authCredentials.password;
+            fs.writeFile(path.join(exportAssetsDir, '.wgetrc'), 'user = ' + username + '\npassword = ' + password, 'utf8', function(err) {
+                if (err) {
+                    console.log("error", "wgetrc file creation error in exportAssets(to USB): " + err + "," + settings.installation + ',' + group.name)
+                    return next(err);
+                }
+                const hash = require("apache-md5")(password);
+                fs.writeFile(path.join(exportAssetsDir, 'htpasswd'), username+":"+hash, 'utf8', function(err) {
+                    if (err) {
+                        console.log("error", "htpasswd file creation error in exportAssets(to USB): " + err + "," + settings.installation + ',' + group.name)
+                    }
+                    return next(err);
+                })
+            })
+        },
+        function(next) {
+            var config = {};
+            config.deployedPlaylists = group.deployedPlaylists;
+            config.groupTicker = group.ticker;
+            config.lastUpload = Date.now();
+            config.localControl = false;
+            fs.writeFile(path.join(exportAssetsDir, '_config.json'), JSON.stringify(config, null, 4), 'utf8', function(err){
+                if(err) {
+                    console.log("error", "_config.json file creation error in exportAssets(to USB): " + err + "," + settings.installation + ',' + group.name)
+                }
+                return next(err);
+            })
+        },
+        function(next) {
+            fs.writeFile(path.join(exportAssetsDir, '_timestamp.txt'), Date.now(), 'utf8', function(err){
+                if(err) {
+                    console.log("error", "_timestamp.txt file creation error in exportAssets(to USB): " + err + "," + settings.installation + ',' + group.name)
+                }
+                return next(err);
+            })
+        },
+        function(next) {
+            Player.find({'group._id': group._id }, null, { lean: 1 },
+                function(err, players) {
+                    next(err, players);
+                });
+        },
+        function(players, next) {
+            var licenseDir = path.join(config.licenseDir,settings.installation);
+            var pipkgjson = {};
+            try {
+                pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
+            } catch (e) {
+                console.log("error","Could not read package.json for players: " + err+","+settings.installation)
+            }
+            async.eachSeries(players, function(player, series_cb) {
+                async.waterfall([
+                    function(cb_inner) {
+                        var playerConfig = sendConfig.sendConfig( player, group, pipkgjson);
+                        playerConfig.cpuSerialNumber = player.cpuSerialNumber;
+
+                        var setting = createSettings(playerConfig);
+                        var playerSettingsFile = path.join(exportAssetsDir, player.cpuSerialNumber + '_settings.json');
+                        fs.writeFile(playerSettingsFile, JSON.stringify(setting, null, 4),'utf8', cb_inner);
+                    },
+                    function(cb_inner) {
+                        var licenseSrc = path.join(licenseDir, 'license_' + player.cpuSerialNumber + '.txt');
+                        var licenseDst = path.join(exportAssetsDir, 'license_' + player.cpuSerialNumber + '.txt');
+
+                        require('fs-extra').copy(licenseSrc, licenseDst, {dereference:true},function (err) {
+                            if (err) {
+                                console.log("error","License copying error in exportAssets(to USB): " + err+","+settings.installation+','+licenseSrc)
+                            }
+                            cb_inner();
+                        });
+                    }
+                ], function(err) {
+                    series_cb(err);
+                });
+            }, function(err) {
+                next(err);
+            });
+        },
+        function(next) {
+            exec(ZIP_CMD + ' ' + EXPORT_ASSETS_ARCHIVE + ' ' + EXPORT_ASSETS_NAME,
+                { cwd: config.mediaDir },
+                function(err, stdout, stderr) {
+                    console.log("stdout: "+stdout);
+                    console.log("stderr: "+stderr);
+                    next(err || stderr, { stdout:stdout, stderr:stderr });
+                });
+        }
+    ], function(err, result) {
+        exportAssets.inProgress = false;
+        if (!err) {
+            exportAssets.link = "/media/"+EXPORT_ASSETS_ARCHIVE;
+            exportAssets.file = 'D9ADBB67-BB4F-4D15-B5AE-2859E02E13A3.zip';
+            exportAssets.statusMessage = 'Export file ready for download';
+        } else {
+            exportAssets.statusMessage = err;
+        }
+        exec(" rm -rf " + exportAssetsDir, function(error) {
+            if (error) {
+                console.log("error","assets dir cleanup error in exportAssets(to USB): " + error+","+settings.installation+','+group.name)
+            }
+        })
     })
 }

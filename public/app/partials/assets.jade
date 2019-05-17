@@ -13,6 +13,26 @@
             .col-sm-2
                 form
                     input.form-control(type="text",placeholder="filter",ng-model="searchFilename")
+            .col-sm-1(ng-if="!assetConfig.allAssets")
+                    .btn-group-vertical.pull-right(dropdown)
+                        button.btn.btn-default.btn-xs(dropdown-toggle)
+                            small multiple&nbsp;
+                            i.fa.fa-caret-down.fa-lg
+                        .dropdown-menu.col-xs-12(dropdown-menu)
+                              
+                            button.btn.btn-default.btn-block(ng-click="ngDropdown.doBulkOperation('assign')",
+                            title="{{'Assign categories to the selected files' }}")
+                                span.text-muted Assign Categories
+                                
+                            button.btn.btn-default.btn-block(ng-click="ngDropdown.doBulkOperation('delete')",
+                            title="{{'Bulk delete all the selected files' }}")
+                                span.text-danger Delete selected files
+
+                        .btn.btn-link.btn-xs.btn-default
+                            input(type='checkbox', ng-model='ngDropdown.filtered.selectAll',
+                            title="{{'Select All' }}",
+                            ng-change="ngDropdown.toggleSelection()")
+
             .col-sm-3.dropdown(dropdown,ng-if="!assetConfig.allAssets")
                 button.btn.btn-success.dropdown-toggle.pull-right(dropdown-toggle)
                     i.fa.fa-plus &nbsp;ADD

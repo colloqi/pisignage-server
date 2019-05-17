@@ -1,0 +1,38 @@
+.modal-content(ng-if="operation")
+    .modal-header.bg-default
+        h4.modal-title
+            span.text-danger(ng-if="operation == 'delete'") Do you want to delete the selected files?
+            span(ng-if="operation == 'assign'") Assign the category to the selected files
+    .modal-body
+        div(ng-if="adminServer && operation == 'assign'")
+            h5 Select Categories for the files
+            categories.categories(selected-labels="upload.selectedLabels", labels="upload.labels")
+            br
+            form.form-inline.row
+                .form-group.col-sm-6
+                    .input-group
+                        //label: small new
+                        input.form-control.input-sm(type="text", ng-model="newLabel.name",placeholder="{{'add new' }}")
+                        .input-group-btn
+                            button.btn.btn-success.btn-sm(type="submit", ng-click="upload.addLabel()")
+                                i.fa.fa-plus
+                div.text-danger(ng-if='msg.error', ng-bind="msg.error")
+
+        .row
+            .col-sm-12
+                p.text-info.pull-right(ng-if='ngDropdown.filtered.msg', ng-bind="ngDropdown.filtered.msg")
+            .col-sm-12
+                .btn-toolbar.pull-right
+                    button.btn.btn-default(ng-click='ngDropdown.modalClose()',ng-hide='ngDopdown.filtered.msg') Cancel
+                    button.btn.btn-primary(ng-click='proceed()',ng-hide='ngDopdown.filtered.msg') Proceed
+                    button.btn.btn-primary(ng-click='ngDropdown.modalClose()',ng-show='ngDopdown.filtered.msg') OK
+    .modal-body
+        h5 Selected files
+        .row
+            .col-sm-6(ng-repeat='file in bulkSelectedFiles')
+                small.text-muted {{file | truncate:40}}
+
+.modal-content(ng-if="!operation")
+    .modal-header.bg-default
+        h4.modal-title Please select at least 1 file
+            button.btn-xs.btn-link.fa.fa-close.pull-right(ng-click="bulkModal.close()")

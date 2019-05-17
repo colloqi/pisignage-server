@@ -67,3 +67,23 @@
 
 
 
+
+**2.4.0**
+
+1. Local folder/file play support 
+2. Option for Random shuffle of assets in the player before start of play
+3. Default resolution of new groups changed to 1080p
+4. Display CPU temperature both in Centigrade and Fahrenheit
+5. Option to interleave assets from different playlists while combining assets from multiple scheduled    playlists(instead of sequential add)
+6. Group
+    - Selection of playlist which is to be added as default for scheduling rows
+    - Auto adjustment of end-date when start-date is changed to the same date if not later
+7. Upload limit enhanced to 5GB for a file
+8. USB export and import (for offline players)
+    Deploy under Group and export asset repository to USB stick.
+    Connect the USB stick to Pi player to import and deploy automatically
+    player will reboot after copying assets and settings from USB
+9. Bulk assigning of categories for assets, playlists and groups added
+   Bulk deleting of assets added.
+10. Dashboard added.
+

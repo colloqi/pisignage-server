@@ -298,7 +298,8 @@ angular.module('piAssets.controllers',[])
                 {name: 'Web link (shown in iframe)', ext: '.link'},
                 {name: 'Web page (supports cross origin links)', ext: '.weblink'},
                 {name: 'Media RSS', ext: '.mrss'},
-                {name: 'Message', ext: '.txt'}
+                {name: 'Message', ext: '.txt'},
+                {name: 'Local Folder/File', ext: '.local'}
             ],
             obj: {
                 name: null,
@@ -406,6 +407,7 @@ angular.module('piAssets.controllers',[])
                     }
                 }
             },
+            filtered : {selectAll: false, selected : [], msg:""},
             playlist: {
                 extraSettings: {displayProp:'name', idProp:'name', externalIdProp:'name',
                     closeOnSelect: true,
@@ -444,11 +446,16 @@ angular.module('piAssets.controllers',[])
                 }
             },
             checkbox: function(asset) {
-                if (asset.selected)
+                if (asset.selected){
                     $scope.ngDropdown.selectedAssets.push(asset);
-                else
-                    $scope.ngDropdown.selectedAssets.splice($scope.ngDropdown.selectedAssets.indexOf(asset), 1)
-            },
+                    if($scope.ngDropdown.selectedAssets.length==$scope.assetConfig.assets.assets.length)
+                        $scope.ngDropdown.filtered.selectAll=true;
+                }
+                else{
+                    $scope.ngDropdown.filtered.selectAll=false;
+                    $scope.ngDropdown.selectedAssets.splice($scope.ngDropdown.selectedAssets.indexOf(asset), 1);
+                }
+                },
             clearCheckboxes: function() {
                 $scope.ngDropdown.selectedAssets.forEach(function(asset){
                     asset.selected = false;
@@ -456,6 +463,35 @@ angular.module('piAssets.controllers',[])
                 $scope.ngDropdown.selectedAssets=[];
                 $scope.ngDropdown.label.selectedLabels = [];
                 $scope.ngDropdown.playlist.selectedPlaylists = [];
+            },
+            toggleSelection: function(){
+                $scope.assetConfig.assets.assets.forEach(function(asset){
+                asset.selected=$scope.ngDropdown.filtered.selectAll
+                $scope.ngDropdown.checkbox(asset);
+                })
+            },
+            doBulkOperation : function(txt) {
+                $scope.bulkSelectedFiles = [];
+                Object.keys($scope.ngDropdown.selectedAssets).forEach(function(key){
+                    if ($scope.ngDropdown.selectedAssets[key])
+                        $scope.bulkSelectedFiles.push($scope.ngDropdown.selectedAssets[key].fileDetails.name);
+                })               
+                if ($scope.bulkSelectedFiles.length)
+                    $scope.operation = txt;
+                else
+                    $scope.operation = null;
+                $scope.newLabel = {mode:$state.current.data && $state.current.data.labelMode};
+                $scope.msg = {};
+                $scope.bulkModal = $modal.open({
+                    templateUrl: '/app/templates/bulkAssetsOperation.html',
+                    scope: $scope,
+                });
+            },
+            modalClose:function(){
+                $scope.bulkModal.close();
+                assetLoader.reload();
+                $state.reload();
+                return;
             }
         }
 
@@ -468,7 +504,16 @@ angular.module('piAssets.controllers',[])
             if (validityField.enddate)
                 validityField.enddate =
                     new Date(validityField.enddate)
-
+                    $scope.today = new Date().toISOString().split("T")[0];
+                    $scope.$watch("forAsset.fileDetails.validity.startdate", function(value) {
+                        if (value) {
+                            var endday = new Date(value);
+                            $scope.endday = endday.toISOString().split("T")[0];
+                            if (!$scope.forAsset.fileDetails.validity.enddate ||
+                                value > $scope.forAsset.fileDetails.validity.enddate)
+                                $scope.forAsset.fileDetails.validity.enddate = endday;
+                        }
+                    });
             $scope.scheduleValidityModal = $modal.open({
                 templateUrl: '/app/templates/schedule-validity.html',
                 scope: $scope,
@@ -487,7 +532,47 @@ angular.module('piAssets.controllers',[])
                 });
         }
 
-
+        $scope.proceed = function() {
+            var count = 0;
+            async.eachSeries($scope.bulkSelectedFiles, function (file, next) {
+                switch ($scope.operation) {
+                    case "delete":
+                        $http
+                            .delete(piUrls.files+file)
+                            .then(function (response) {
+                                var data = response.data;
+                                if (data.success) {
+                                    count += 1;
+                                }
+                                next();
+                            }, function (response) {
+                                next();
+                            });
+                        break;
+                    case "assign":
+                    var selectedAsset;
+                    $scope.upload.selectedLabels.forEach(function(label){
+                        selectedAsset=$scope.ngDropdown.selectedAssets.filter(function(asset){return file==asset.fileDetails.name});
+                        if(selectedAsset[0].fileDetails.labels.indexOf(label)==-1)
+                            selectedAsset[0].fileDetails.labels.push(label);
+                    })
+                    var asset = selectedAsset[0];
+                    $http.post(piUrls.files + asset.fileDetails.name, {dbdata: asset.fileDetails})
+                    .then(function (response) {
+                        var data = response.data;
+                        if (data.success) {
+                            //$scope.filesDetails[file] = data.data;
+                            count += 1;
+                        }
+                        next();
+                    }, function (response) {
+                        next();
+                    });
+            break;
+                }
+            }, function () {
+                $scope.ngDropdown.filtered.msg = count + " files processed";})
+        }
 
         $scope.loadCategory = function(){
             $scope.labelMode = "assets"

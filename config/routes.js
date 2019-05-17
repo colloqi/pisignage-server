@@ -49,6 +49,7 @@ router.post('/api/playlists/:file', playlists.savePlaylist);
 router.get('/api/groups', groups.index)
 router.get('/api/groups/:groupid', groups.getObject)
 router.post('/api/groups', groups.createObject)
+router.get('/api/exportstatus', groups.getExportStatus)
 router.post('/api/groups/:groupid', groups.updateObject)
 router.delete('/api/groups/:groupid', groups.deleteObject)
 

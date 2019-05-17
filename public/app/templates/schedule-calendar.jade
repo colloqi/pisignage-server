@@ -27,7 +27,7 @@
                         input.form-control.input-sm(type='date', ng-model='forPlaylist.settings.enddate',
                         ng-model-options="{timezone:'UTC'}",
                         ng-show='forPlaylist.settings.durationEnable',
-                        placeholder="Till date",
+                        placeholder="Till date",min="{{endday}}"
                         name='enddate', title='Enter End Date')
         ////.panel.panel-info
         //    .panel-heading

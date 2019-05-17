@@ -20,14 +20,14 @@
                 .col-sm-4
                     input.form-control.input-sm(type='date', ng-model='forAsset.fileDetails.validity.startdate',
                     ng-model-options="{timezone:'UTC'}",
-                    placeholder="{{'Starting on' }}",
+                    placeholder="{{'Starting on' }}",min="{{today}}"
                     name='startdate', ng-attr-title='{{"Enter Start Date" }}')
 
                 label.col-sm-2.control-label.text-right till
                 .col-sm-4
                     input.form-control.input-sm(type='date', ng-model='forAsset.fileDetails.validity.enddate',
                     ng-model-options="{timezone:'UTC'}",
-                    placeholder="Till date",
+                    placeholder="Till date",min="{{endday}}"
                     name='enddate', title='{{"Enter End Date"}}')
 
     .modal-footer

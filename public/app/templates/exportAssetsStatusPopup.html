@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <button ng-click="exportAssetsStatusModalClose()" ng-disabled="exportInProgress" class="btn btn-warning btn-xs pull-right">Dismiss</button>
+  <h3 class="text-warning">Export Assets status</h3>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+      <div class="well well-sm">
+        <h5><span class="text-muted">Current Status:&nbsp;</span><strong class="text-primary bg-warning">{{exportInProgress ? "In progress" : "Export Complete"}}</strong></h5>
+        <p class="text-muted">{{exportMessage}}</p>
+        <p class="text-danger">{{exportError}}</p>
+      </div>
+    </div>
+    <div class="col-sm-10 col-sm-offset-1">
+      <div ng-class="alert-success" class="alert">
+        <h3 ng-show="exportLink"><a download="{{ exportFile }}" ng-href="{{ exportLink }}">Click to download</a></h3>
+      </div>
+    </div>
+  </div>
+</div> 

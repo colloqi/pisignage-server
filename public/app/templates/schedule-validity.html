@@ -17,11 +17,11 @@
       <div ng-show="forAsset.fileDetails.validity.enable" class="form-group row">
         <label class="col-sm-2 control-label">Valid from</label>
         <div class="col-sm-4">
-          <input type="date" ng-model="forAsset.fileDetails.validity.startdate" ng-model-options="{timezone:'UTC'}" placeholder="{{'Starting on' }}" name="startdate" ng-attr-title="{{&quot;Enter Start Date&quot; }}" class="form-control input-sm"/>
+          <input type="date" ng-model="forAsset.fileDetails.validity.startdate" min="{{today}}" ng-model-options="{timezone:'UTC'}" placeholder="{{'Starting on' }}" name="startdate" ng-attr-title="{{&quot;Enter Start Date&quot; }}" class="form-control input-sm"/>
         </div>
         <label class="col-sm-2 control-label text-right">till</label>
         <div class="col-sm-4">
-          <input type="date" ng-model="forAsset.fileDetails.validity.enddate" ng-model-options="{timezone:'UTC'}" placeholder="Till date" name="enddate" title="{{&quot;Enter End Date&quot;}}" class="form-control input-sm"/>
+          <input type="date" ng-model="forAsset.fileDetails.validity.enddate" min="{{endday}}" ng-model-options="{timezone:'UTC'}" placeholder="Till date" name="enddate" title="{{&quot;Enter End Date&quot;}}" class="form-control input-sm"/>
         </div>
       </div>
     </form>

@@ -6,6 +6,7 @@
             .col-sm-9
                 .btn-toolbar.pull-right
                     .btn-group
+                        a.btn.btn-default.btn-sm(ng-click='exportGroupAssets()'): em.text-danger Export to USB
                         a.btn.btn-default.btn-sm(ng-click='emergencyMessage()'): em.text-danger Emergency Message
                         a.btn.btn-default.btn-sm(ng-click='groupTicker()'): em.text-danger Group Ticker
                         a.btn.btn-default.btn-sm(ng-click='displaySet()'): em.text-danger Group Settings
@@ -44,9 +45,18 @@
                 .col-sm-4
                     .checkbox
                         label
+                            input(type="checkbox",ng-model="group.selectedGroup.shuffleContent")
+                            small Shuffle content before deploying
+                .col-sm-4
+                    .checkbox
+                        label
                             input(type="checkbox",title="Content from all the eligible playlists will be combined",
                             ng-model="group.selectedGroup.playAllEligiblePlaylists")
                             small Combine content of all scheduled playlists
+                    .checkbox(ng-show="group.selectedGroup.playAllEligiblePlaylists")
+                            label(ng-attr-title="{{'Play content alternatively from selected playlists'}}")
+                                input(type="checkbox", ng-model="group.selectedGroup.alternateContent")
+                                small Alternate content from selected playlists
 
             .row.form-group(ng-repeat='pl in group.selectedGroup.playlists', ng-if="$index > 0",as-sortable-item)
                 .col-sm-1.text-right(as-sortable-item-handle)
