@@ -7,8 +7,8 @@ var path = require('path'),
     config = require('../../config/config'),
     fs = require('fs'),
     async = require('async'),
-    mongoose = require('mongoose'),
-    Asset = mongoose.model('Asset'),
+    
+    Asset = require('../models/nedb-models').Asset,
     _ = require('lodash');
 
 exports.processFile = function (filename, filesize, categories, cb) {
@@ -35,11 +35,11 @@ exports.processFile = function (filename, filesize, categories, cb) {
                             imageMagick(src)
                                 .autoOrient()
                                 .resize(64)
-                                .write(path.join(config.thumbnailDir, random+filename), function (err) {
+                                .write(path.join(config.thumbnailDir,random+filename), function (err) {
                                     console.log(' imageKick write done: ' + filename + ';error:' + err);
                                     if (err)
                                         errorMessages.push(err);
-                                    thumbnail = "/media/_thumbnails/" + random+filename;
+                                    thumbnail = config.thumbnailDir  + random+filename;
                                     img_cb();
                                 });
                         },
@@ -151,7 +151,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                     video_cb()
                                 })
                                 .on('end', function (filenames) {
-                                    thumbnail = "/media/_thumbnails/" + random+filename + '.png';
+                                    thumbnail = config.thumbnailDir + random+filename + '.png';
                                     video_cb()
                                 })
                                 .takeScreenshots({
@@ -205,15 +205,15 @@ exports.processFile = function (filename, filesize, categories, cb) {
                         thumbnail: thumbnail,
                         createdAt: Date.now()
                     };
-                if (object.duration == 10)      //hack for default avoidance
-                    object.duration = 11;
+                
 
                 if (err || !data) {
-                    asset = new Asset(object);
+                    asset=object
+                    Asset.setDefaults(asset);
                 } else {
                     asset = _.extend(data, object)
                 }
-                asset.save(function (err) {
+                Asset.update({name: asset.name},asset,{upsert:true},function (err) {
                     if (err)
                         errorMessages = errorMessages.push(err);
                     if (errorMessages.length > 0) {

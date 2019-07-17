@@ -86,10 +86,9 @@ angular.module('piAssets.controllers',[])
     }).
 
     controller('AssetsEditCtrl', function($scope,$rootScope,$state, $http,$modal, fileUploader, assetLoader,piUrls,piPopup){
-
+        //var async=require('async');
         $scope.sortListName = "assets"
         $scope.label = assetLoader.label
-
         $scope.assetConfig = {
             allAssets: false,
             assets: []
@@ -195,7 +194,7 @@ angular.module('piAssets.controllers',[])
         $scope.upload = {
             onstart: function (files) {
                 $scope.modal = $modal.open({
-                    templateUrl: '/app/templates/upload-popup.html',
+                    templateUrl: 'app/templates/upload-popup.html',
                     scope: $scope,
                     backdrop: 'static',
                     keyboard: false
@@ -320,7 +319,7 @@ angular.module('piAssets.controllers',[])
                 }
                 $scope.linkCategories = []
                 $scope.modal = $modal.open({
-                    templateUrl: '/app/templates/link-popup.html',
+                    templateUrl: 'app/templates/link-popup.html',
                     scope: $scope
                 });
             },
@@ -483,7 +482,7 @@ angular.module('piAssets.controllers',[])
                 $scope.newLabel = {mode:$state.current.data && $state.current.data.labelMode};
                 $scope.msg = {};
                 $scope.bulkModal = $modal.open({
-                    templateUrl: '/app/templates/bulkAssetsOperation.html',
+                    templateUrl: 'app/templates/bulkAssetsOperation.html',
                     scope: $scope,
                 });
             },
@@ -515,7 +514,7 @@ angular.module('piAssets.controllers',[])
                         }
                     });
             $scope.scheduleValidityModal = $modal.open({
-                templateUrl: '/app/templates/schedule-validity.html',
+                templateUrl: 'app/templates/schedule-validity.html',
                 scope: $scope,
                 keyboard: false
             });
@@ -577,7 +576,7 @@ angular.module('piAssets.controllers',[])
         $scope.loadCategory = function(){
             $scope.labelMode = "assets"
             $scope.labelModal = $modal.open({
-                templateUrl: '/app/partials/labels.html',
+                templateUrl: 'app/partials/labels.html',
                 controller: 'LabelsCtrl',
                 scope: $scope
             })

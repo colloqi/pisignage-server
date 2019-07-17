@@ -1,8 +1,7 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-    Player = mongoose.model('Player'),
-    Asset = mongoose.model('Asset'),
+var Player = require('../models/nedb-models').Player,
+    Asset = require('../models/nedb-models').Asset,
     rest = require('../others/restware'),
     config = require('../../config/config'),
     fs = require('fs'),
@@ -28,7 +27,7 @@ exports.saveSettings = function () {
 exports.deploy = function (installation,group, cb) {
     async.series([
         function (async_cb) {
-
+            
             if (!group.playlists  || group.playlists.length == 0)
                 return async_cb("No Playlists assigned to the Group")
 
@@ -39,6 +38,7 @@ exports.deploy = function (installation,group, cb) {
                 } else {
                     data.forEach(function (player) {
                         playersToBeSynced[player.cpuSerialNumber] = player;
+
                     });
                     players[group._id.toString()] = data;
                     async_cb()
@@ -50,9 +50,12 @@ exports.deploy = function (installation,group, cb) {
                 mediaPath = path.join(config.mediaDir);
             fs.mkdir(syncPath, function (err) {
                 //console.log("created directory: "+syncPath)
-                var filesNotPresent = []
+                var filesNotPresent = [];
+
                 async.eachSeries(group.assets,
                     function (file, iterative_cb) {
+                        
+
                         var srcfile = path.join(mediaPath,file),
                             dstfile = path.join(syncPath,file);
                         fs.unlink(dstfile, function (err) {
@@ -171,9 +174,13 @@ exports.deploy = function (installation,group, cb) {
             )
         },function(async_cb){ // send list of asset validity
             Asset.find({'validity.enable':true,'name':{'$in':group.assets}},
-                "name validity",function (err, data) {
+                function (err, data) {
+                    
+
                     if (!err && data) {
+
                         group.assetsValidity = data.map(function(asset){
+
                             return ({name:asset.name, startdate:asset.validity.startdate, enddate:asset.validity.enddate})
                         })
                         //console.log(group.assetsValidity)

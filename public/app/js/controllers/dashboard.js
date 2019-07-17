@@ -59,9 +59,9 @@ angular.module('dashboard.controllers', [])
                                 }
                             })
 
-                            player.labels.forEach(function(item){
-                                selectedLabel.labelsCount[item]=(selectedLabel.labelsCount[item] || 0)+1;
-                            })
+                           // player.labels.forEach(function(item){
+                             //   selectedLabel.labelsCount[item]=(selectedLabel.labelsCount[item] || 0)+1;
+                           // })
                             lastReportedTimeInMinutes = parseInt((Date.now() - (new Date(player.lastReported).getTime()))/60000);
                             for (var i=0,len=BUCKET_INTERVALS.length;i<len;i++) {
                                 if (lastReportedTimeInMinutes <= BUCKET_INTERVALS[i]) {

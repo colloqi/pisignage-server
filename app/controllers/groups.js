@@ -1,19 +1,18 @@
 'use strict;'
 
-var mongoose = require('mongoose'),
-    Group = mongoose.model('Group'),
-    Settings=mongoose.model('Settings'),
-    Player = mongoose.model('Player'),
-
-    fs = require('fs'),
+var fs = require('fs'),
     config = require('../../config/config'),
-    exec = require('child_process').exec,
-    sendConfig=require('./players'),
-    rest = require('../others/restware'),
-    _ = require('lodash'),
 
+    _ = require('lodash'),
     path = require('path'),
-    async = require('async');
+    async = require('async'),
+
+    Group = require('../models/nedb-models').Group,
+    Settings=require('../models/nedb-models').Settings,
+    Player=require('../models/nedb-models').Player,
+    sendConfig=require('./players'),
+    exec = require('child_process').exec,
+    rest = require('../others/restware');
 
 var serverMain = require('./server-main'),
     licenses = require('./licenses');
@@ -29,11 +28,12 @@ licenses.getSettingsModel(function(err,settings){
 exports.newGroup = function (group, cb) {
 
     var object;
-    Group.findOne({name:group.name}, function(err,data) {
-        if (err || !data) {
-            object = new Group(group);
+    Group.find({name:group.name}, function(err,data) {
+        if (err || !data[0]) {
+            object = group;
+            Group.setDefaults(object);
         } else {
-            object = _.extend(data, group);
+            object = _.extend(data[0], group);
         }
         //create a sync folder under sync_folder
         if (!object.name) {
@@ -41,11 +41,13 @@ exports.newGroup = function (group, cb) {
             return cb('Unable to create a group folder in server: '+object.name);
         }
         fs.mkdir(path.join(config.syncDir,installation, object.name),function(err){
+            
             if (err && (err.code != 'EEXIST'))
                 return cb('Unable to create a group folder in server: '+err);
             else {
-                object.save(function (err, data) {
-                    cb(err,data);
+                
+                Group.update({_id:object._id},object, {upsert: true},function (err, data) {
+                    cb(err,object);
                 })
             }
         });
@@ -54,11 +56,9 @@ exports.newGroup = function (group, cb) {
 
 //Load a object
 exports.loadObject = function (req, res, next, id) {
-
-    Group.load(id, function (err, object) {
+    Group.findOne({"_id":id}, function(err,object) {
         if (err || !object)
             return rest.sendError(res,'Unable to get group details',err);
-
         req.object = object;
         next();
     })
@@ -87,8 +87,9 @@ exports.index = function (req, res) {
         criteria: criteria
     }
 
-    Group.list(options, function (err, groups) {
-        if (err)
+    Group.find({}).skip(page*perPage).limit(perPage).exec( function (err, groups) {
+
+            if (err)
             return rest.sendError(res, 'Unable to get Group list', err);
         else
             return rest.sendSuccess(res, 'sending Group list', groups || []);
@@ -128,7 +129,6 @@ exports.getExportStatus = function(req, res) {
     rest.sendSuccess(res, exportAssets.statusMessage, exportAssets);
 };
 exports.updateObject = function (req, res) {
-
     var saveObject = function (err, group) {
         if (err) {
             return rest.sendError(res, err);
@@ -140,7 +140,7 @@ exports.updateObject = function (req, res) {
                     assets: group.assets,
                     deployedAssets: group.deployedAssets,
                     assetsValidity: group.assetsValidity
-                }}).exec();
+                }},{},function(err,data){});
             }
             if ( req.body.exportAssets) {
                 prepareExportZipFile(group);
@@ -158,21 +158,8 @@ exports.updateObject = function (req, res) {
         });
     }
     object = _.extend(object, req.body);
-    if (req.body.exportAssets) {
-        exportAssets.inProgress = true;
-        exportAssets.link = "";
-        exportAssets.file = "";
-        exportAssets.statusMessage = 'Preparing export archive ...';
-    }
-    if (req.body.deploy) {
-        object.deployedPlaylists = object.playlists;
-        object.deployedAssets = object.assets;
-        object.deployedTicker = object.ticker;
-    }
-
-    //disable animation for the timebeing
-    //object.animationEnable = false;
-    object.save(function (err, data) {
+    
+    Group.update({_id:object._id},object, {},function (err, data) {
         if (!err && req.body.deploy) {
             serverMain.deploy(installation,object, saveObject);
         } else {
@@ -183,12 +170,14 @@ exports.updateObject = function (req, res) {
 };
 
 
+
+
 exports.deleteObject = function (req, res) {
     if (!req.object || req.object.name == "default")
         return rest.sendError(res,'No group specified or can not remove default group');
 
     var object = req.object;
-    object.remove(function (err) {
+    Group.remove({_id:object._id},{},function (err,data) {
         if (err)
             return rest.sendError(res, 'Unable to remove Group record', err);
         else
@@ -345,7 +334,7 @@ function prepareExportZipFile(group) {
             })
         },
         function(next) {
-            Player.find({'group._id': group._id }, null, { lean: 1 },
+            Player.find({'group._id': group._id },
                 function(err, players) {
                     next(err, players);
                 });
@@ -356,7 +345,7 @@ function prepareExportZipFile(group) {
             try {
                 pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
             } catch (e) {
-                console.log("error","Could not read package.json for players: " + err+","+settings.installation)
+                console.log("error","Could not read package.json for players: " + e+","+settings.installation)
             }
             async.eachSeries(players, function(player, series_cb) {
                 async.waterfall([
@@ -398,7 +387,7 @@ function prepareExportZipFile(group) {
     ], function(err, result) {
         exportAssets.inProgress = false;
         if (!err) {
-            exportAssets.link = "/media/"+EXPORT_ASSETS_ARCHIVE;
+            exportAssets.link = config.mediaDir+"/"+EXPORT_ASSETS_ARCHIVE;
             exportAssets.file = 'D9ADBB67-BB4F-4D15-B5AE-2859E02E13A3.zip';
             exportAssets.statusMessage = 'Export file ready for download';
         } else {

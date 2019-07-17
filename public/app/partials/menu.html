@@ -11,7 +11,7 @@
         <li ng-class="getClass('home.players')"><a ui-sref="home.players.players" ui-sref-opts="{reload: true}">Players</a></li>
         <li ng-class="getClass('home.license')"><a ui-sref="home.settings" ui-sref-opts="{reload: true}">Settings</a></li>
       </ul>
-      <button ng-click="launchCastApp()" ng-show="castStatus.devicesAvailable" class="btn btn-link pull-right"><img ng-show="castStatus.deviceState == '0'" src="/app/img/ic_cast_black_24dp.png" title="Chromecast devices available, add them to piSignage" class="img-thumbanail"/><img ng-show="castStatus.deviceState != '0'" src="/app/img/ic_cast_connected_black_24dp.png" title="Chromecast device connected" class="img-thumbanail"/></button>
+      <button ng-click="launchCastApp()" ng-show="castStatus.devicesAvailable" class="btn btn-link pull-right"><img ng-show="castStatus.deviceState == '0'" src="app/img/ic_cast_black_24dp.png" title="Chromecast devices available, add them to piSignage" class="img-thumbanail"/><img ng-show="castStatus.deviceState != '0'" src="app/img/ic_cast_connected_black_24dp.png" title="Chromecast device connected" class="img-thumbanail"/></button>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="https://twitter.com/pisignage" target="_blank"><small class="text-info">follow us on&nbsp;<i class="fa fa-twitter-square text-info"></i>&nbsp;for latest updates and tips</small></a></li>
       </ul>

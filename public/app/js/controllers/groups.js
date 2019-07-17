@@ -95,6 +95,7 @@ angular.module('piGroups.controllers', [])
                     var data = response.data;
                     if (data.success) {
                         $scope.playlistsObj = data.data;
+
                         $scope.playlists = $scope.playlistsObj.map(function (playlist) {
                             return (playlist.name)
                         });
@@ -169,9 +170,10 @@ angular.module('piGroups.controllers', [])
 
         //make sure state.params.group is set
         if ($scope.group.selectedGroup && !($state.params.group)) {
+
             playerLoader.selectGroup($scope.group.selectedGroup)
         }
-
+        
         $scope.sortable = {
             options: {
                 orderChanged: function (event) {
@@ -181,7 +183,6 @@ angular.module('piGroups.controllers', [])
             },
             playlistArray: []
         }
-
         $scope.weeklist = weeks; // get all week list and code
         $scope.dayslist = days;
         $scope.needToDeploy = false;
@@ -203,10 +204,10 @@ angular.module('piGroups.controllers', [])
         playerLoader.registerObserverCallback(initSortArray,"group-detail");
         initSortArray();
         var prepareForDeploy = function() {
+
             listFiles();
             $scope.group.orientation = $scope.group.orientation || 'landscape';
             $scope.group.resolution = $scope.group.resolution || '720p';
-            $scope.group.deploy = true;
             $scope.group.selectedGroup.exportAssets = false;
         }
         var listFiles = function() {
@@ -216,6 +217,7 @@ angular.module('piGroups.controllers', [])
                 $scope.showDates();
             })
         }
+
         var statusTimer;
         $scope.exportGroupAssets = function() {
             function getExportStatus() {
@@ -244,7 +246,7 @@ angular.module('piGroups.controllers', [])
             $scope.exportInProgress = true;
             $scope.exportLink = '';
             $scope.exportAssetsStatusModal = $modal.open({
-                templateUrl: '/app/templates/exportAssetsStatusPopup.html',
+                templateUrl: 'app/templates/exportAssetsStatusPopup.html',
                 scope: $scope
             });
 
@@ -253,7 +255,6 @@ angular.module('piGroups.controllers', [])
                 $scope.exportAssetsStatusModal.dismiss();
                 $scope.needToDeploy = false;
             };
-
             $http.post(piUrls.groups + $state.params.group, $scope.group.selectedGroup)
                 .then(function(response) {
                     $scope.group.selectedGroup.exportAssets = false;
@@ -268,10 +269,13 @@ angular.module('piGroups.controllers', [])
                 });
         };
         $scope.updateGroup = function (cb) {
+            
+
             $scope.needToDeploy = true;
             GroupFunctions.listFiles($scope.group.selectedGroup, $scope.playlist.playlists, $scope.playlist.playlistNames, function (err, groupObj) {
                 $scope.deployErrorMessage = err;
                 $scope.group.selectedGroup = groupObj;
+
                 $http
                     .post(piUrls.groups + $state.params.group, $scope.group.selectedGroup)
                     .success(function (data, status) {
@@ -429,7 +433,7 @@ angular.module('piGroups.controllers', [])
 
             }
             $scope.scheduleCalendarModal = $modal.open({
-                templateUrl: '/app/templates/schedule-calendar.html',
+                templateUrl: 'app/templates/schedule-calendar.html',
                 scope: $scope
             });
             $scope.scheduleCalendarModal.result.finally(function() {
@@ -568,7 +572,7 @@ angular.module('piGroups.controllers', [])
                 $scope.forPlaylist = playlist;
 
                 $scope.scheduleCalendarModal = $modal.open({
-                    templateUrl: '/app/templates/schedule-calendar.html',
+                    templateUrl: 'app/templates/schedule-calendar.html',
                     scope: $scope
                 });
             }
@@ -587,7 +591,7 @@ angular.module('piGroups.controllers', [])
 
 
             $scope.displayModal = $modal.open({
-                templateUrl: '/app/templates/display-set.html',
+                templateUrl: 'app/templates/display-set.html',
                 scope: $scope
             });
 
@@ -641,7 +645,7 @@ angular.module('piGroups.controllers', [])
             ticker.rss = ticker.rss || { enable: false , link: null, feedDelay:10 }
             $scope.tickerObj = $scope.group.selectedGroup.ticker;
             $scope.tickerModal = $modal.open({
-                templateUrl: '/app/templates/ticker-popup.html',
+                templateUrl: 'app/templates/ticker-popup.html',
                 scope: $scope
             });
         }
@@ -657,7 +661,7 @@ angular.module('piGroups.controllers', [])
 
         $scope.emergencyMessage = function() {
             $scope.emsgModal = $modal.open({
-                templateUrl: '/app/templates/emergencyMessagePopup.html',
+                templateUrl: 'app/templates/emergencyMessagePopup.html',
                 scope: $scope
             })
 
@@ -679,6 +683,7 @@ angular.module('piGroups.controllers', [])
             $scope.group.selectedGroup.orientation = $scope.group.selectedGroup.orientation || 'landscape';
             $scope.group.selectedGroup.resolution = $scope.group.selectedGroup.resolution || '720p';
             $scope.group.selectedGroup.deploy = true;
+            $scope.group.selectedGroup.exportAssets=false;
             $scope.updateGroup(function (err,msg) {
                 if (!err) {
                     piPopup.status({msg: 'Deployed! Request has been sent to all Players.', title: 'Deploy Success'});
@@ -711,7 +716,7 @@ angular.module('piGroups.controllers', [])
                 });
             $scope.imgFilter = ".png"
             $scope.fileDisplayModal = $modal.open({
-                templateUrl: '/app/templates/listFilePopup.html',
+                templateUrl: 'app/templates/listFilePopup.html',
                 scope: $scope,
                 keyboard: false
             });
@@ -780,7 +785,7 @@ angular.module('piGroups.controllers', [])
 
 
         $scope.snapshot = {
-            image: "/app/img/snapshot.png",
+            image: "app/img/snapshot.png",
             buttonTxt: "Take Snapshot"
         }
 
@@ -790,7 +795,7 @@ angular.module('piGroups.controllers', [])
             
             $scope.msg = {player:player,cmd:'',err:"Type a shell command..."};
             $scope.modal = $modal.open({
-                templateUrl: '/app/templates/shell-popup.html',
+                templateUrl: 'app/templates/shell-popup.html',
                 scope: $scope
             });
             $scope.getSnapshot()
@@ -864,7 +869,7 @@ angular.module('piGroups.controllers', [])
             $scope.msg = {player:player,curVer:player.version,
                 newVer:$scope.player.currentVersion.version, beta:$scope.player.currentVersion.beta};
             $scope.modal = $modal.open({
-                templateUrl: '/app/templates/swupdate-popup.html',
+                templateUrl: 'app/templates/swupdate-popup.html',
                 scope: $scope
             });
         }
@@ -883,7 +888,7 @@ angular.module('piGroups.controllers', [])
         $scope.loadCategory = function(){
             $scope.labelMode = "players"
             $scope.labelModal = $modal.open({
-                templateUrl: '/app/partials/labels.html',
+                templateUrl: 'app/partials/labels.html',
                 controller: 'LabelsCtrl',
                 scope: $scope
             })
@@ -922,7 +927,7 @@ angular.module('piGroups.controllers', [])
             $scope.selectedPlayer.labels = $scope.selectedPlayer.labels || []
 
             $scope.settingsModal = $modal.open({
-                templateUrl: '/app/templates/groupChangePopUp.html',
+                templateUrl: 'app/templates/groupChangePopUp.html',
                 scope: $scope
             });
 

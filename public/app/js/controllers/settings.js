@@ -35,7 +35,7 @@ angular.module('piSettings.controllers', []).
             $scope.modal = $modal.open({
                 animation: true,
                 scope: $scope,
-                templateUrl: '/app/templates/confirm-popup.html'
+                templateUrl: 'app/templates/confirm-popup.html'
             })
             $scope.ok = function () {
                 $http.delete(piUrls.licenses + filename)

@@ -1,16 +1,10 @@
-# pisignage-server
+#piSignage-server-app
+**Desktop app that manages piSignage players connected to a LAN or private network**
 
-Server code to manage piSignage players in a LAN or Private Network or to setup your own server!
-
-    run npm install command after git pull and before starting the server
+Deskrtop application to manage piSignage players in a LAN or Private Network 
 
 **Upgrading to latest from existing versions**
 
-1. Change to pisignage-server directory where you have pulled the code last time
-1. Issue the command `git pull origin master`
-   ***IMPORTANT: If you are upadating from before 24 Nov 2016, after git pull, please change the uri variable in config/env/development.js to 'mongodb://localhost/pisignage-dev' to retain the old data***
-1. Apply your code changes if any
-1. Start the pisignage-server and go to url localhost:3000
 1. Enter the username of yours at pisignage.com (not the email ID) (or change under settings, otherwise player license will not be enabled)
 1. Default authentication credentials for player webUI has been changed to pi:pi
 1. New settings tab has been added for settings instead of config/env/all.js file
@@ -19,16 +13,16 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
 1. Authentication has been added to the server UI which can be changed under settings (default pi:pi)
 
 
-##2.0.0 compatible release-features
+## Supported platforms
 
-1. Introduction of domination playlist
-1. Play multiple assets when a advertisement event is triggered
-1. PDF slide mode
-1. Media RSS option to show only text
-1. Zoom and sending keystrokes option for webpage links (can be used for login and other uses)
-1. Blend transition mode
-1. Option to use youtube-dl, disable welcome screen
-1. Letterboxed and stretched mode for video and image
+**MacOS**
+1. Only 64 bit binaries are supported and the minimum os version required is macOS 10.10 (Yosemite).
+
+**Windows**
+1. Windows 7 and later are supported with both 32 and 64 bit.
+
+**Linux**
+1. Ubuntu 12.04 and later versions are supported 
 
 
 ## Getting Started
@@ -37,53 +31,41 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
     Note: Instructions may change, please refer to the respective package/OS websites for the latest,   
             Write to us at support@pisignage.com for help.
 
-
-1. Install mongodb - open-source document database
-
-    Refer mongodb install guides to install mongodb. 
-
-   - Windows: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
-   - Linux: https://docs.mongodb.com/manual/administration/install-on-linux/
-   - Mac OS X: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/ 
         
-2. Install node.js and npm - open source server framework
+1. Install node.js and npm - open source server framework
 
    https://nodejs.org/en/download/package-manager/
          
-3. Install ffmpeg - video converter
+2. Install ffmpeg - video converter
 
    https://www.ffmpeg.org/download.html
 
    
-4. Install imagemagick - tool for image edit, conversion
+3. Install imagemagick - tool for image edit, conversion
 
     https://www.imagemagick.org/script/download.php
     
-5. Install Git -  distributed version control system
+4.  Download image 
 
-    https://git-scm.com/downloads
+## mac
+ -  **[ 2.4 based image for macos](https://s3.amazonaws.com/pisignage/pisignage-server-app/pisignage_2.3.1.img.zip)**
+## linux
+-   **[ 2.4 based image for Ubuntu](https://s3.amazonaws.com/pisignage/pisignage-server-app/pisignage_2.3.1.img.zip)**
+## windows
+-   **[ 2.4 based image for windows](https://s3.amazonaws.com/pisignage/pisignage-server-app/pisignage_2.3.1.img.zip)**
 
-5. Clone this reporsitory and run follwing commands
 
-    - git clone https://github.com/colloqi/pisignage-server 
-    - mkdir media
-    - mkdir media/_thumbnails
-    - cd pisignage-server
-    - npm install
-    
-6. Currently network port is configured as 3000 in local server. Modify in the file `config/env/development.js` for the port
 
-7. Run node server with `node server.js`
-
-8. Open Chrome browser and check at [http://localhost:3000](http://localhost:3000) **OR** `http://[your-ip]:3000` (ex: 192.168.1.30:3000, 10.50.16.110:3000)
-
-9. Do the following configuration before you start   
+5. Do the pi configuration before you start   
     - Under settings, configure the username to be same as that of your signin username at pisignage.com (it is **not** your email id)  
     - Download the license files either from email or from pisignage.com, upload them to your local server under settings  
     - You can upgrade your players directly from your local server 
     - authentication is pi & pi, you can change this under settings
 
-**NOTE:** Please make sure **mongod** process is running and **/data/db** owenership is changed to regular user. If not use, ``` sudo chown -R your-username:user-group /data```
+6. The defaults : **username:pi  password:pi** 
+
+7. After opening the application change the installation name from local to your username (i.e signin username at pisignage.com).
+
 ### Configure Pi
 
     In player settings, PORT number should be part of server name for e.g. 192.168.1.12:3000
@@ -143,7 +125,7 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
     - ffprobe associated with ffmpeg needed to convert videos    
     - imagemagick  creates thumbnails
     
-3. Two directories are created by the program ../media and ../media/_thumbnails. If these directories are not created server won't work as expected (for e.g. thumbnails won't be created if _thumbnails directory does not exit). In that case create those directories manually.
+3. Three directories are created by the program /pisignage-server-data/media and /pisignage-server-data/data  /pisignage-server-data/db/.  If these directories are not created server won't work as expected (for e.g. thumbnails won't be created if _thumbnails directory does not exit). In that case create those directories manually.
 
 
 4. You can also manage players using Browser(http://playerip:8000) or downloading Chrome app

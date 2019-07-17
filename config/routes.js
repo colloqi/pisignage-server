@@ -88,5 +88,16 @@ router.get('/api/serverconfig',licenses.getSettings);
 
 router.param('label', labels.loadObject)
 
+router.get('/loginWindow', function(req,res) {
+    res.render('login', function(err,data) {
+        res.send(data);
+    })
+})
+
+router.get('/about',function(req,res){
+    res.render('about',function(err,data){
+        res.send(data);
+    })
+})
 module.exports = router;
 

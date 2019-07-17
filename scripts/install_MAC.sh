@@ -3,10 +3,7 @@
 
 DBDIR="/data/db"
 
-#install mongo on mac
-echo " installing mongodb "
-brew update
-brew install mongodb
+
 
 #check /data/db directory present if not create
 if [ ! -d "$DBDIR" ];then

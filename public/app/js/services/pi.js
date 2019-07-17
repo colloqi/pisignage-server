@@ -203,7 +203,7 @@ factory('selectedLabel', function () {
             confirm: function (objString, cb) {
                 return (
                     $modal.open({
-                        templateUrl: '/app/templates/confirm-popup.html',
+                        templateUrl: 'app/templates/confirm-popup.html',
                         controller: ['$scope', '$modalInstance', 'msg', function ($scope, $modalInstance, msg) {
                             if (msg.indexOf("--") == 0) {
                                 $scope.noPrepend = true;
@@ -229,7 +229,7 @@ factory('selectedLabel', function () {
             status: function (objString) {
                 return (
                     $modal.open({
-                        templateUrl: '/app/templates/status-popup.html',
+                        templateUrl: 'app/templates/status-popup.html',
                         controller: ['$scope', '$modalInstance', 'msg', function ($scope, $modalInstance, msg) {
                             $scope.msg = msg;
                             $scope.cancel = function () {

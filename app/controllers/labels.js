@@ -1,9 +1,7 @@
 'use strict;'
 
-var mongoose = require('mongoose'),
-    Label = mongoose.model('Label'),
-
-    config = require('../../config/config'),
+var config = require('../../config/config'),
+    Label = require('../models/nedb-models').Label,
 
     rest = require('../others/restware'),
     _ = require('lodash'),
@@ -14,11 +12,11 @@ var mongoose = require('mongoose'),
 //Load a object
 exports.loadObject = function (req, res, next, id) {
 
-    Label.load(id, function (err, object) {
+    Label.find({_id:id}, function (err, object) {
         if (err || !object)
             return rest.sendError(res,'Unable to get group details',err);
 
-        req.object = object;
+        req.object = object[0];
         next();
     })
 }
@@ -43,7 +41,7 @@ exports.index = function (req, res) {
         criteria: criteria
     }
 
-    Label.list(options, function (err, labels) {
+    Label.find().skip(page*perPage).limit(perPage).exec( function (err, labels) {
         if (err)
             return rest.sendError(res, 'Unable to get Label list', err);
         else
@@ -64,16 +62,17 @@ exports.getObject = function (req, res) {
 
 exports.createObject = function (req, res) {
 
-    var object = new Label(req.body);
+    var object = req.body;
+    Label.setDefaults(object)
     //object.installation = req.installation;
     if (req.user) {
         object.createdBy = req.user._id;  //creator of entity
     }
-    object.save(function (err, data) {
+    Label.update({_id:object._id},object, {upsert: true},function (err, data) {
         if (err) {
             return rest.sendError(res, 'Error in saving new Label', err || "");
         } else {
-            return rest.sendSuccess(res, 'new Label added successfully', data);
+            return rest.sendSuccess(res, 'new Label added successfully', object);
         }
     })
 }
@@ -82,10 +81,10 @@ exports.updateObject = function (req, res) {
     var object = req.object;
     delete req.body.__v;        //do not copy version key
     object = _.extend(object, req.body)
-    object.save(function (err, data) {
+    Label.update({_id:object._id},object,{},function (err, data) {
         if (err)
             return rest.sendError(res, 'Unable to update Label', err);
-        return rest.sendSuccess(res, 'updated Label details', data);
+        return rest.sendSuccess(res, 'updated Label details', object);
     });
 };
 
@@ -93,7 +92,7 @@ exports.updateObject = function (req, res) {
 exports.deleteObject = function (req, res) {
 
     var object = req.object;
-    object.remove(function (err) {
+    Label.remove({_id:object._id},function (err) {
         if (err)
             return rest.sendError(res, 'Unable to remove Label', err);
         else

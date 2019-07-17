@@ -42,12 +42,12 @@ exports.index = function (req, res) {
     var assetDir = path.join(config.mediaDir);
 
     fs.readdir(assetDir, function (err, files) {
+        
         if (err) {
             return rest.sendError(res, 'directory read error', err);
         } else {
             var playlists = files.filter(isPlaylist),
                 list = [];
-
             var readFile = function (plfile, cb) {
                 var playlist = {
                     settings: {},

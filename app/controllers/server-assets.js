@@ -7,8 +7,7 @@ var path = require('path'),
     config = require('../../config/config'),
     fs = require('fs'),
     async = require('async'),
-    mongoose = require('mongoose'),
-    Asset = mongoose.model('Asset'),
+    Asset = require('../models/nedb-models').Asset,
     _ = require('lodash'),
     rest = require('../others/restware'),
     processFile = require('../others/process-file');
@@ -43,17 +42,17 @@ exports.storeLinkDetails = function(name, type, categories, cb) {
 
 
 exports.updateObject = function(req,res) {
-    Asset.load(req.body.dbdata._id, function (err, asset) {
+    Asset.findOne({_id:req.body.dbdata._id}, function (err, asset) {
         if (err || !asset) {
             return rest.sendError(res, 'Categories saving error', err);
         } else {
             delete req.body.dbdata.__v;        //do not copy version key
             asset = _.extend(asset, req.body.dbdata);
-            asset.save(function (err, data) {
+            Asset.update({_id:asset._id},asset,{upsert:true},function (err, obj) {
                 if (err)
                     return rest.sendError(res, 'Categories saving error', err);
 
-                return rest.sendSuccess(res, 'Categories saved', data);
+                return rest.sendSuccess(res, 'Categories saved', asset);
             });
         }
     })

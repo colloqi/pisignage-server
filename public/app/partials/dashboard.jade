@@ -21,7 +21,7 @@
         .row.statcards
             .col-sm-4.col-lg-2.m-b(ng-repeat='bucket in playersStat  track by $index ')
                 .statcard(ng-class="'statcard-'+BUCKET_CLASS[$index]")
-                    a.btn.btn-block(ng-href="{{'/dashboard/players?bucket='+$index}}")
+                    a.btn.btn-block(ng-href="{{'#/dashboard/players?bucket='+$index}}")
                         .p-a.text-white
                             span.statcard-desc {{BUCKET_TITLE[$index]}}
                             h2.statcard-number {{bucket}}
@@ -38,7 +38,7 @@
                 .list-group
                     h4.list-group-header.bg-default {{playerTable.name}}
                     a.list-group-item.text-primary(ng-repeat="row in playersStatFieldWise[playerTable.field+'Count'] | limitTo:(displayLimit || 10) track by $index",
-                            ng-href="{{'/dashboard/players?'+playerTable.field+'='+row.name}}")
+                            ng-href="{{'#/dashboard/players?'+playerTable.field+'='+row.name}}")
                         | {{row.name}}
                         span.pull-right.text-muted {{row.count}}
                 a.btn.btn-primary-outline.p-x(ng-show="playersStatFieldWise[playerTable.field+'Count'].length > 10",ng-click="displayLimit==1000?displayLimit=10:displayLimit=1000;")

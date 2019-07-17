@@ -31,7 +31,7 @@
                                 strong {{file.fileDetails.duration}} seconds
                             //input.form-control.input-sm(ng-if="file.playlistDetails && !file.playlistDetails.isVideo",
                             input.form-control.input-sm(
-                                                                type='number', ng-model='file.playlistDetails.duration',min="5",
+                                                                type='String', ng-model='file.playlistDetails.duration',min="5",
                                                                 ng-model-options="{ updateOn: 'blur' }",
                                                                 ng-change="saveData()")
                         .col-sm-1

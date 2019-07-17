@@ -25,7 +25,7 @@
               <!--h6(ng-if="(!file.playlistDetails || file.playlistDetails.isVideo) && file.fileDetails.duration > 0")<strong>{{file.fileDetails.duration}} seconds</strong>
               -->
               <!--input.form-control.input-sm(ng-if="file.playlistDetails && !file.playlistDetails.isVideo",-->
-              <input type="number" ng-model="file.playlistDetails.duration" min="5" ng-model-options="{ updateOn: 'blur' }" ng-change="saveData()" class="form-control input-sm"/>
+              <input type="String" ng-model="file.playlistDetails.duration" min="5" ng-model-options="{ updateOn: 'blur' }" ng-change="saveData()" class="form-control input-sm"/>
             </div>
             <div class="col-sm-1">
               <button ng-click="removeAsset($index)" class="btn btn-xs btn-warning">X</button>

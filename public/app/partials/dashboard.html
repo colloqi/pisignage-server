@@ -14,7 +14,7 @@
       </div>
       <div class="row">
         <div ng-repeat="bucket in playersStat  track by $index " class="col-sm-4 col-lg-2 m-b">
-          <div class="{{BUCKET_CLASS[$index]}}" ><a ng-href="{{'/#/dashboard/players?bucket='+$index}}" class="btn btn-block">
+          <div class="{{BUCKET_CLASS[$index]}}" ><a ng-href="{{'#/dashboard/players?bucket='+$index}}" class="btn btn-block">
               <div class="p-a text-white"><span class="statcard-desc">{{BUCKET_TITLE[$index]}}</span>
                 <h2 class="statcard-number">{{bucket}}</h2>
               </div></a></div>
@@ -31,7 +31,7 @@
       <div class="row">
         <div ng-repeat-start="playerTable in COUNT_FIELDS_TO_SHOW" class="col-md-6 m-b-md">
           <div class="list-group">
-            <h4 class="list-group-header bg-default">{{playerTable.name}}</h4><a ng-repeat="row in playersStatFieldWise[playerTable.field+'Count'] | limitTo:(displayLimit || 10) track by $index" ng-href="{{'/#/dashboard/players?'+playerTable.field+'='+row.name}}" class="list-group-item text-primary">{{row.name}}<span class="pull-right text-muted">{{row.count}}</span></a>
+            <h4 class="list-group-header bg-default">{{playerTable.name}}</h4><a ng-repeat="row in playersStatFieldWise[playerTable.field+'Count'] | limitTo:(displayLimit || 10) track by $index" ng-href="{{'#/dashboard/players?'+playerTable.field+'='+row.name}}" class="list-group-item text-primary">{{row.name}}<span class="pull-right text-muted">{{row.count}}</span></a>
           </div><a ng-show="playersStatFieldWise[playerTable.field+'Count'].length &gt; 10" ng-click="displayLimit==1000?displayLimit=10:displayLimit=1000;" class="btn btn-primary-outline p-x">{{displayLimit==1000?"Show less":"All players"}}</a>
         </div>
         <div ng-if="$index % 2 == 1" class="clearfix"></div>

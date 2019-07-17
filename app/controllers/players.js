@@ -1,8 +1,7 @@
 'use strict;'
 
-var mongoose = require('mongoose'),
-    Player = mongoose.model('Player'),
-    Group = mongoose.model('Group'),
+var Player=require('../models/nedb-models').Player,
+    Group = require('../models/nedb-models').Group,
     groups = require('./groups'),
     rest = require('../others/restware'),
     _ = require('lodash'),
@@ -50,13 +49,15 @@ Player.update({"isConnected": true},{$set:{"isConnected": false}},{ multi: true 
     checkPlayersWatchdog();
 })
 
-var defaultGroup = {_id: 0, name: 'default'};
-//create a default group if does not exist
 licenses.getSettingsModel(function(err,data){
     settings = data;
     installation = settings.installation || "local"
+    var groupData = {
+        name:"default"
+        }
+    Group.setDefaults(groupData);
 
-    Group.update({name:"default"},{name:"default",description:"Default group for Players"},{upsert:true},function(err){
+    Group.update({name:"default"},groupData,{upsert:true},function(err){
         fs.mkdir(path.join(config.syncDir,installation), function (err) {
             fs.mkdir(path.join(config.syncDir,installation, "default"), function (err) {
             })
@@ -69,6 +70,7 @@ licenses.getSettingsModel(function(err,data){
 })
 
 
+
 function checkPlayersWatchdog() {
     var playerIds = Object.keys(activePlayers);
     async.eachSeries(playerIds, function (playerId, cb) {
@@ -76,7 +78,11 @@ function checkPlayersWatchdog() {
             Player.findById(playerId, function (err, player) {
                 if (!err && player && player.isConnected) {
                     player.isConnected = false;
-                    player.save();
+                    Player.update({_id:player._id},player,{upsert:true},function (err, player) {
+                        if (err) {
+                            return console.log("Error while saving player status: " + err.toString());
+                        }
+                    });
                     console.log("disconnect: "+player.installation+"-"+player.name+";reason: checkPlayersWatchdog")
                 }
                 delete activePlayers[playerId];
@@ -96,7 +102,11 @@ exports.updateDisconnectEvent = function(socketId, reason) {
     Player.findOne({socket:socketId}, function(err,player) {
         if (!err && player) {
             player.isConnected = false;
-            player.save();
+            Player.update({_id:player._id},player,{upsert:true},function (err, player) {
+                if (err) {
+                    return console.log("Error while saving player status: " + err.toString());
+                }
+            });
             delete activePlayers[player._id.toString()];
             console.log("disconnect: "+player.installation+"-"+player.name+";reason: "+reason)
         } else {
@@ -192,6 +202,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.currentTime = Date.now();
     var socketio = (player.newSocketIo?newSocketio:oldSocketio);
     socketio.emitMessage(player.socket, 'config', retObj);
+
     return retObj;
 }
 exports.sendConfig=sendConfig;
@@ -199,7 +210,7 @@ exports.sendConfig=sendConfig;
 //Load a object
 exports.loadObject = function (req, res, next, id) {
 
-    Player.load(id, function (err, object) {
+    Player.findOne({_id:id}, function (err, object) {
         if (err || !object)
             return rest.sendError(res,'Unable to get group details',err);
 
@@ -254,7 +265,7 @@ exports.index = function (req, res) {
         criteria: criteria
     }
 
-    Player.list(options, function (err, objects) {
+    Player.find(criteria).skip(page*perPage).limit(perPage).exec(function (err, objects) {
         if (err)
             return rest.sendError(res, 'Unable to get Player list', err);
 
@@ -297,25 +308,26 @@ exports.createObject = function (req, res) {
             delete req.body.__v;        //do not copy version key
             player = _.extend(data, req.body)
         } else {
-            player = new Player(req.body);
+            player = req.body;
+            player.installation = player.installation || installation;
+            Player.setDefaults(player)
             if (!player.group) player.group = defaultGroup;
         }
         player.registered = false;
 
         player.installation = installation;
-        console.log(player);
-        Group.findById(player.group._id, function(err,group) {
+        Group.findOne({_id:player.group._id}, function(err,group) {
             if (!err && group) {
                 sendConfig(player,group,true)
             } else {
                 console.log("unable to find group for the player");
             }
         })
-        player.save(function (err, obj) {
+        Player.update({_id:player._id},player,{upsert:true},function (err, obj) {
             if (err) {
                 return rest.sendError(res, 'Error in saving new Player', err || "");
             } else {
-                return rest.sendSuccess(res, 'new Player added successfully', obj);
+                return rest.sendSuccess(res, 'new Player added successfully', player);
             }
         })
     })
@@ -355,7 +367,7 @@ exports.updateObject = function (req, res) {
         },
         function (next) {
             object = _.extend(object, req.body)
-            object.save(function (err, data) {
+            Player.update({_id:object._id},object,{upsert:true},function (err, data) {
                 if (err)
                     rest.sendError(res, 'Unable to update Player data', err);
                 else
@@ -364,9 +376,9 @@ exports.updateObject = function (req, res) {
             });
         }], function() {
 
-            Group.findById(object.group._id, function (err, group) {
-                if (!err && group) {
-                    sendConfig(object, group, true)
+            Group.find({_id:object.group._id}, function (err, groups) {
+                if (!err && groups && groups[0]) {
+                    sendConfig(object, groups[0], true)
                 } else {
                     console.log("unable to find group for the player");
                 }
@@ -379,7 +391,7 @@ exports.deleteObject = function (req, res) {
 
     var object = req.object,
         playerId = object.cpuSerialNumber;
-    object.remove(function (err) {
+        Player.remove({_id:object._id},function(err) {
         if (err)
             return rest.sendError(res, 'Unable to remove Player record', err);
         else {
@@ -402,7 +414,7 @@ exports.updatePlayerStatus = function (obj) {
         if (err) {
             console.log("Error while retriving player data: " + err);
         } else {
-            var player;
+            var player={};
             if (data) {
                 if (!obj.lastUpload || (obj.lastUpload < data.lastUpload))
                     delete obj.lastUpload;
@@ -413,10 +425,12 @@ exports.updatePlayerStatus = function (obj) {
                     player.isConnected = true;
                 }
             } else {
-                player = new Player(obj);
                 player.group = defaultGroup;
                 player.installation = installation;
                 player.isConnected = true;
+                player.cpuSerialNumber = obj.cpuSerialNumber;
+                Player.setDefaults(player)
+                player = _.extend(player, obj)
             }
             //server license feature, disable communication if server license is not available
             if (player.serverServiceDisabled)
@@ -424,7 +438,7 @@ exports.updatePlayerStatus = function (obj) {
 
             activePlayers[player._id.toString()] = true;
             if (!player.registered || obj.request ) {
-                Group.findById(player.group._id, function (err, group) {
+                Group.findOne({"_id":player.group._id}, function (err, group) {
                     if (!err && group) {
                         var now = Date.now(),
                             pid = player._id.toString();
@@ -441,7 +455,7 @@ exports.updatePlayerStatus = function (obj) {
                     }
                 })
             }
-            player.save(function (err, player) {
+            Player.update({_id:player._id},player,{upsert:true},function (err, player) {
                 if (err) {
                     return console.log("Error while saving player status: " + err);
                 }
@@ -454,7 +468,8 @@ exports.secretAck = function (sid, status) {
     Player.findOne({socket: sid}, function (err, player) {
         if (!err && player) {
             player.registered = status;
-            player.save();
+            Player.update({_id:player._id},player,{},function(err,data) {
+            });
         } else {
             console.log("not able to find player")
         }
@@ -581,7 +596,7 @@ exports.piScreenShot = function (sid,data) { // save screen shot in  _screenshot
         if (pendingSnapshots[cpuId]) {
             rest.sendSuccess(pendingSnapshots[cpuId], 'screen shot received',
                 {
-                    url: "/media/_thumbnails/"+cpuId+".jpeg",
+                    url: config.thumbnailDir +cpuId+".jpeg",
                     lastTaken: Date.now()
                 }
             );
@@ -599,7 +614,7 @@ exports.takeSnapshot = function (req, res) { // send socket.io event
         fs.stat(path.join(config.thumbnailDir, cpuId + '.jpeg'), function (err, stats) {
             rest.sendSuccess(res, 'player is offline, sending previous snapshot',
                 {
-                    url: "/media/_thumbnails/" + cpuId + ".jpeg",
+                    url: config.thumbnailDir + cpuId + ".jpeg",
                     lastTaken: stats ? stats.mtime : "NA"
                 }
             );
@@ -612,7 +627,7 @@ exports.takeSnapshot = function (req, res) { // send socket.io event
             fs.stat(path.join(config.thumbnailDir, cpuId + '.jpeg'), function (err, stats) {
                 rest.sendSuccess(res, 'screen shot command timeout',
                     {
-                        url: "/media/_thumbnails/" + cpuId + ".jpeg",
+                        url: config.thumbnailDir + cpuId + ".jpeg",
                         lastTaken: stats ? stats.mtime : "NA"
                     }
                 );

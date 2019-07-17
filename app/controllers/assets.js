@@ -7,9 +7,8 @@ var fs = require('fs'),
     _ = require('lodash'),
     fileUtil = require('../others/file-util');
 
-var mongoose = require('mongoose'),
-    Asset = mongoose.model('Asset'),
-    config = require('../../config/config'),
+var config = require('../../config/config'),
+    Asset = require('../models/nedb-models').Asset,    
     rest = require('../others/restware');
 
 exports.index = function (req, res) {
@@ -162,7 +161,7 @@ exports.getFileDetails = function (req, res) {
                         name: file,
                         size: ~~(fileData.size / 1000) + ' KB',
                         ctime: fileData.ctime,
-                        path: '/media/' +  file,
+                        path: config.mediaDir+"/" +  file,
                         type: fileData.type,
                         dbdata: dbData
                     });
@@ -235,7 +234,7 @@ exports.updateAsset = function (req, res) {
                         return next();
                     }
                     asset.name = newName;
-                    asset.save(function(err) {
+                    Asset.update({_id:asset._id},asset,{},function(err) {
                         if (err)
                             util.log('unable to save asset after rename,' + oldName)
                         next();
@@ -249,16 +248,16 @@ exports.updateAsset = function (req, res) {
                 return rest.sendSuccess(res, 'Successfully renamed file to', newName);
         })
     } else if (req.body.dbdata) {
-        Asset.load(req.body.dbdata._id, function (err, asset) {
-            if (err || !asset) {
+        Asset.findOne({name: req.body.dbdata.name}, function (err, asset) {
+            if (err ||  !asset || asset.length == 0) {
                 return rest.sendError(res, 'Categories saving error', err);
             } else {
                 asset = _.extend(asset, req.body.dbdata);
-                asset.save(function (err, data) {
+               Asset.update({_id:asset._id},asset,{upsert:true},function(err){
                     if (err)
                         return rest.sendError(res, 'Categories saving error', err);
 
-                    return rest.sendSuccess(res, 'Categories saved', data);
+                    return rest.sendSuccess(res, 'Categories saved', asset);
                 });
             }
         })

@@ -3,6 +3,7 @@
   "version": "2.3.0",
   "description": "Server to manage piSignage players in a LAN or Private Network.",
   "author": "colloqi <info@pisignage.com>",
+  "main": "main.js",
   "engines": {
     "node": ">=0.10"
   },
@@ -23,8 +24,10 @@
     "deep-extend": ">=0.5.1",
     "errorhandler": "^1.5.0",
     "express": "^4.16.4",
-    "fluent-ffmpeg": "^2.0.0-rc3",
+    "fix-path": "2.1.0",
+    "fluent-ffmpeg": "2.1.2",
     "fresh": ">=0.5.2",
+    "fs-extra": "8.0.1",
     "gm": "^1.17.0",
     "googleapis": "^14.1.0",
     "http-auth": "~2.2.5",
@@ -33,9 +36,10 @@
     "lodash": ">=4.17.5",
     "method-override": "~2.3.2",
     "mime": ">=1.4.1",
-    "mongoose": "4.13.17",
+    "mkdirp": "^0.5.1",
     "morgan": "^1.9.1",
-    "multer": "^1.0.1",
+    "multer": "^1.4.1",
+    "nedb": "^1.8.0",
     "negotiator": ">=0.6.1",
     "node-ffprobe": "^1.2.2",
     "node-schedule": "^0.2.9",
@@ -48,10 +52,72 @@
     "sshpk": ">=1.13.2"
   },
   "devDependencies": {
-    "nodemon": "latest"
+    "electron": "^5.0.4",
+    "electron-builder": "^20.44.4",
+    "electron-packager": "^13.1.1",
+    "electron-rebuild": "^1.8.5",
+    "nodemon": "^1.19.1"
   },
+  "license": "(MIT OR Apache-2.0)",
   "scripts": {
-    "start": "./node_modules/.bin/nodemon server.js"
+    "postinstall": "install-app-deps",
+    "start": "npm run clean && npm run pack && npm run build:all",
+    "clean": "rm -rf ./electron/dist && rm -rf ./electron/packages",
+    "pack": "npm run pack:linux && npm run pack:win && npm run pack:osx",
+    "pack:linux": "electron-packager ./ piSignage-server --arch=all --platform=linux --ignore='electron' --overwrite --icon='electron/assets/icon40.png' --out='electron/packages'",
+    "pack:win": "electron-packager ./ piSignage-server --arch=all --platform=win32 --ignore='electron' --overwrite --icon='electron/assets/icon40.ico' --out='electron/packages'",
+    "pack:osx": "electron-packager ./ piSignage-server --arch=all --platform=darwin --ignore='electron' --overwrite --icon='electron/assets/icon40.icns' --out='electron/packages'",
+    "build:all": "npm run build:osx && npm run build:win && npm run build:linux",
+    "build:osx": "electron-builder -m --x64 --pd './electron/packages/piSignage-server-darwin-x64/piSignage-server.app'",
+    "build:win": "npm run build:win32 && npm run build:win64",
+    "build:win32": "electron-builder -w --ia32 --pd './electron/packages/piSignage-server-win32-ia32/'",
+    "build:win64": "electron-builder -w --x64 --pd './electron/packages/piSignage-server-win32-x64/'",
+    "build:linux": "npm run build:linux32 && npm run build:linux64 && npm run build:linuxarm",
+    "build:linux64": "electron-builder -l --x64 --pd './electron/packages/piSignage-server-linux-x64/'",
+    "build:linux32": "electron-builder -l --ia32 --pd './electron/packages/piSignage-server-linux-ia32/'",
+    "build:linuxarm": "electron-builder -l --armv7l --pd './electron/packages/piSignage-server-linux-armv7l/'"
   },
-  "license": "(MIT OR Apache-2.0)"
+  "build": {
+    "compression": "maximum",
+    "artifactName": "${productName}-${arch}.${ext}",
+    "directories": {
+      "output": "./electron/dist/"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "dmg": {
+      "icon": "electron/assets/icon40.icns",
+      "backgroundColor": "#EDEBEC",
+      "contents": [
+        {
+          "x": 0,
+          "y": 0,
+          "type": "file"
+        },
+        {
+          "x": 350,
+          "y": 0,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 450,
+        "height": 250
+      }
+    },
+    "linux": {
+      "icon": "electron/assets"
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "electron/assets/icon40.ico",
+      "uninstallerIcon": "electron/assets/icon40.ico",
+      "allowToChangeInstallationDirectory": true
+    }
+  }
 }

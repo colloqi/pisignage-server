@@ -45,7 +45,7 @@
         <!--.col-sm-2
         <select ng-model="item.group.name" ng-change="assignGroup(item)" ng-options="gr for gr in group.groupNames" class="form-control select-xs"></select>
         -->
-        <div class="col-sm-2"><a ng-href="/#/players/players?group={{item.group._id}}"><small class="text-primary"> {{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}</small></a>
+        <div class="col-sm-2"><a ng-href="#/players/players?group={{item.group._id}}"><small class="text-primary"> {{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}</small></a>
           <button ng-click="loadPlayerDetails(item)" class="btn btn-default btn-xs pull-right"><i class="fa fa-cog fa-lg text-warning"></i></button>
         </div>
       </div>

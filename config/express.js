@@ -35,7 +35,9 @@ var allowCrossDomain = function (req, res, next) {
 var basicHttpAuth = function(req,res,next) {
 
     var auth = req.headers['authorization'];  // auth is in base64(username:password)  so we need to decode the base64
-
+    if (req.url.indexOf('/api') !== 0) {
+        return next();
+    }
     if(!auth) {     // No Authorization header was passed in so it's the first time the browser hit us
 
         // Sending a 401 will require authentication, we need to send the 'WWW-Authenticate' to tell them the sort of authentication to use
@@ -60,7 +62,6 @@ var basicHttpAuth = function(req,res,next) {
 
         var pathComponents = req.path.split('/');
         //console.log(pathComponents);
-
         require('../app/controllers/licenses').getSettingsModel(function(err,settings){
             if( (!settings.authCredentials) ||
                 (!settings.authCredentials.user || username == settings.authCredentials.user) &&
@@ -99,7 +100,7 @@ module.exports = function (app) {
     }
 
     if (process.env.NODE_ENV == 'production') {
-        app.use(favicon(path.join(config.root, 'public/app/img', 'favicon.ico')));
+        //app.use(favicon(path.join(config.root, '/public/app/img', 'favicon.ico')));
     };
 
     //app.use(auth.connect(digest));      //can specify specific routes for auth also
@@ -120,7 +121,7 @@ module.exports = function (app) {
     app.use('/releases',express.static(config.releasesDir));
     app.use('/licenses',express.static(config.licenseDir));
 
-    app.use('/media', express.static(path.join(config.mediaDir)));
+    app.use('media', express.static(path.join(config.mediaDir)));
     app.use(express.static(path.join(config.root, 'public')));
 
     app.set('view engine', 'jade');
@@ -147,7 +148,6 @@ module.exports = function (app) {
         console.error(err.stack)
         res.status(500).render('500')
     })
-
     app.use(function (req, res, next) {
         //res.redirect('/');
         res.status(404).render('404', {url: req.originalUrl})

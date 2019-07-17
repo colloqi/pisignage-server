@@ -10,8 +10,8 @@ angular.module('piConfig', [])
         protocol = window.location.protocol.toLowerCase();
         if (protocol.indexOf("http") != -1 )
             base = window.location.origin+'/';
-        else
-            base = 'http://localhost/';
+        else{
+            base = 'http://localhost:3000/';}
         console.log("api base: ",base);
         return {
             base:            base,

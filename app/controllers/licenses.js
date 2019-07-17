@@ -10,12 +10,11 @@ var serverIp = require('ip').address();
 var	config = require('../../config/config'),
 	rest = require('../others/restware');
 
-var mongoose = require('mongoose'),
-    Settings = mongoose.model('Settings'),
+var Settings = require('../models/nedb-models').Settings,
+    defaultSettings = {installation: 'local'},
     settingsModel = null;
 
-var licenseDir = config.licenseDirPath
-
+var licenseDir = config.licenseDirPath;
 var getTxtFiles = function(cb){
     var txtOnly;
     fs.readdir(licenseDir,function(err,files){
@@ -73,13 +72,14 @@ exports.deleteLicense = function(req,res){ // delete particular license and retu
 }
 
 exports.getSettingsModel = function(cb) {
-    Settings.findOne(function (err, settings) {
+    Settings.findOne({},function (err, settings) {
         if (err || !settings) {
             if (settingsModel) {
                 cb(null, settingsModel)
             } else {
-                settingsModel = new Settings();
-                settingsModel.save(cb);
+                settingsModel = defaultSettings;
+                Settings.setDefaults(settingsModel)
+                Settings.insert(settingsModel,cb);
             }
         } else {
             cb(null,settings);
@@ -92,7 +92,7 @@ exports.getSettings = function(req,res) {
         if (err) {
             return rest.sendError(res, 'Unable to access Settings', err);
         } else {
-            var obj = data.toObject()
+            var obj = data.toObject ? data.toObject() : data;
             obj.serverIp = serverIp;
             return rest.sendSuccess(res, 'Settings', obj);
         }
@@ -101,7 +101,7 @@ exports.getSettings = function(req,res) {
 
 exports.updateSettings = function(req,res) {
     var restart;
-    Settings.findOne(function (err, settings) {
+    Settings.findOne({},function (err, settings) {
         if (err)
             return rest.sendError(res, 'Unable to update Settings', err);
 
@@ -110,17 +110,16 @@ exports.updateSettings = function(req,res) {
         if (settings)
             settings = _.extend(settings, req.body)
         else
-            settings = new Settings(req.body);
-        settings.save(function (err, data) {
+            settings = Settings.setDefaults(req.body);
+            Settings.update({_id: settings._id},settings,{upsert: true},function (err, data) {
             if (err) {
                 rest.sendError(res, 'Unable to update Settings', err);
             } else {
                 rest.sendSuccess(res, 'Settings Saved', data);
             }
             if (restart)  {
-                console.log("restarting server")
-                require('child_process').fork(require.main.filename);
-                process.exit(0);
+                console.log("restarting server");
+                require('../../server').restartServer();            
             }
         });
     })

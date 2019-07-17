@@ -17,9 +17,9 @@ nav.navbar.navbar-default.navbar-fixed-top
                 li(ng-class="getClass('home.license')")
                     a(ui-sref="home.settings",ui-sref-opts="{reload: true}") Settings
             button.btn.btn-link.pull-right(ng-click="launchCastApp()", ng-show="castStatus.devicesAvailable")
-                img.img-thumbanail(ng-show="castStatus.deviceState == '0'",src="/app/img/ic_cast_black_24dp.png",
+                img.img-thumbanail(ng-show="castStatus.deviceState == '0'",src="app/img/ic_cast_black_24dp.png",
                 title="Chromecast devices available, add them to piSignage")
-                img.img-thumbanail(ng-show="castStatus.deviceState != '0'",src="/app/img/ic_cast_connected_black_24dp.png",
+                img.img-thumbanail(ng-show="castStatus.deviceState != '0'",src="app/img/ic_cast_connected_black_24dp.png",
                 title="Chromecast device connected")
 
             ul.nav.navbar-nav.navbar-right

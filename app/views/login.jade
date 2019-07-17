@@ -1,0 +1,28 @@
+extends ./layouts/common-layout
+block content
+    script(type='text/javascript').
+        var login = function() {
+                        console.log("hi there ------------------------------")
+
+            var ipc = require('electron').ipcRenderer;
+            var username = document.getElementById('username').value,
+                password = document.getElementById('password').value;
+                
+            ipc.send('authCredentials', {username: username, password:password});
+        }
+    .panel.panel.alert-info
+        .panel-header
+            h3.text-center Please Login
+        .panel-body
+            form.form-horizontal
+                .form-group
+                    label.col-xs-3.control-label(for='username') Username:
+                    .col-xs-9
+                        input.form-control(type='text', id='username')
+                .form-group
+                    label.col-xs-3.control-label(for='password') Password:
+                    .col-xs-9
+                        input.form-control(type='password', id='password')
+                .form-group
+                    .col-xs-9.col-xs-offset-3
+                        button.btn.btn-success(onclick='login()') Login

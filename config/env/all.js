@@ -3,12 +3,15 @@
 //installation and authCredentials has been moved to db, configure at settings tab
 var path = require('path');
 
-var rootPath = process.cwd(),
-    dataDir = path.join(rootPath, '/data'),
-    assetDir = path.join(rootPath, '/../media');
+var mediaPath = path.join((process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE), 'piSignage-server-data'),
+rootPath = path.resolve(__dirname,'../../'),
+dataDir = path.join(mediaPath, '/data'),
+assetDir = path.join(mediaPath, '/media'),
+dbDir = path.join(mediaPath, '/db');
 
 module.exports = {
     root: rootPath,
+    dbDir:dbDir,
     dataDir: dataDir,
     releasesDir: dataDir+'/releases',
 
@@ -22,20 +25,13 @@ module.exports = {
     viewDir: path.join(rootPath, '/app/views'),
     mediaDir: assetDir,
     mediaPath: assetDir + '/',
-    thumbnailDir: assetDir + '/_thumbnails',
+    thumbnailDir: assetDir + '/_thumbnails/',
     
     defaultPlaylist: "default",
 
     logFile:                rootPath+ "/../forever_out.log",
     logStoreDir:            assetDir+ "/_logs",
 
-    mongo: {
-        options: {
-            db: {
-                safe: true
-            }
-        }
-    },
     session: {
         secret: 'piSignage'
     },

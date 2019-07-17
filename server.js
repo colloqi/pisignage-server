@@ -5,26 +5,18 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var express = require('express'),
     oldSocketio = require('919.socket.io'),
-    socketio = require('socket.io'),
-    mongoose= require('mongoose');
+    socketio = require('socket.io');
 
 var path = require('path'),
-    fs = require('fs');
-
+    fs = require('fs'),
+    async = require('async'),
+    fix=require('fix-path'),
+    mkdirp = require('mkdirp');
+    fix();
+var certificatesFound = true;
 // Application Config
 var config = require(path.join(__dirname,'/config/config'));
 
-// Connect to database
-mongoose.Promise = global.Promise;
-var db = mongoose.connect(config.mongo.uri, config.mongo.options);
-
-db.connection.on('error',function(){
-    console.log('********************************************');
-    console.log('*          MongoDB Process not running     *');
-    console.log('********************************************\n');
-
-    process.exit(1);
-})
 
 // check system 
 require('./app/others/system-check')();
@@ -34,21 +26,15 @@ fs.readdirSync(modelsPath).forEach(function (file) {
     require(modelsPath + '/' + file);
 });
 
-console.log('********************************************************************');
-console.log('*    After update if you do not see your groups, please change     *');
-console.log('*    change the uri variable to "mongodb://localhost/pisignage-dev"*');
-console.log('*    in config/env/development.js and restart the server           *');
-console.log('******************************************************************\n');
-
 
 var app = express();
-
+var server;
+var createServer=function(){
 // Express settings
 require('./config/express')(app);
 
 // Start server
-var server;
-if (config.https) {
+if (config.https && certificatesFound) {
     var https_options = {
         ca: fs.readFileSync("/home/ec2-user/.ssh/intermediate.crt"),
         key: fs.readFileSync("/home/ec2-user/.ssh/pisignage-server.key"),
@@ -61,7 +47,8 @@ if (config.https) {
 else {
     server = require('http').createServer(app);
 }
-
+}
+var startServer=function(){
 var io = oldSocketio.listen(server);
 var ioNew = socketio(server,{
     path: '/newsocket.io',
@@ -87,8 +74,55 @@ server.on('connection', function(socket) {
     // 60 minutes timeout
     socket.setTimeout(3600000);
 });
-
+}
 
 // Expose app
-module.exports = app;
+//module.exports = app;
 
+module.exports = {
+    initializeServer : function() {
+
+        async.series([
+            function(async_cb) {
+                //Create media directory if not present
+                var neededDirs = [config.mediaDir,config.thumbnailDir,config.dataDir,config.releasesDir,config.licenseDir,config.syncDir,config.dbDir]
+                async.eachSeries(neededDirs, function(dir,cb) {
+
+                        mkdirp(dir, function (err) {
+                            if (err) {
+                                console.log("Error : Could not create " + dir +", error: "+ err);
+                            }
+                            cb()
+                        });
+                    }, async_cb
+                )
+            },
+            function (async_cb) {
+                //Check for certificates required for HTTPS
+                var certFiles = ['https/private_key.cert','https/certificate.cert']
+                async.eachSeries(certFiles, function(file,cb) {
+                    fs.access(path.join(config.dataDir,file),function(err) {
+                        if (err) {
+                            certificatesFound = false;
+                        }
+                        cb();
+                    })
+                }, async_cb)
+            }
+        ], function(err){
+            if (err) {
+                console.log("Error while creating directories, aborting ")
+            } else {
+                console.log("system check done")
+                createServer();
+                startServer();
+            }
+        })
+    },
+    expressServer : express,
+    
+    restartServer : function() {
+        server.close();
+        startServer();
+    }
+}

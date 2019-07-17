@@ -49,15 +49,15 @@ angular.module('piServerApp', [
                 url: "players?group",
                 views: {
                     "left": {
-                        templateUrl: '/app/partials/groups.html',
+                        templateUrl: 'app/partials/groups.html',
                         controller: 'GroupsCtrl'
                     },
                     "details": {
-                        templateUrl: '/app/partials/group-details.html',
+                        templateUrl: 'app/partials/group-details.html',
                         controller: 'GroupDetailCtrl'
                     },
                     "list": {
-                        templateUrl: '/app/partials/players.html'
+                        templateUrl: 'app/partials/players.html'
                     }
                 }
             })
@@ -66,7 +66,7 @@ angular.module('piServerApp', [
                 url: "dashboard",
                 views: {
                     "main": {
-                        templateUrl: '/app/partials/dashboard.html',
+                        templateUrl: 'app/partials/dashboard.html',
                         controller: 'DashboardCtrl'
                     }
                 }
@@ -76,7 +76,7 @@ angular.module('piServerApp', [
                 url: "dashboard/players?groupName&locationName&currentPlaylist&version&bucket",
                 views: {
                     "main": {
-                        templateUrl: '/app/partials/players.html',
+                        templateUrl: 'app/partials/players.html',
                         controller:'ServerPlayerCtrl'
                     }
                 }
@@ -115,7 +115,7 @@ angular.module('piServerApp', [
                 url: "main",
                 views: {
                     "left": {
-                        templateUrl: '/app/partials/playlists.html',
+                        templateUrl: 'app/partials/playlists.html',
                         controller: 'PlaylistsCtrl'
                     },
                     // "left2": {
@@ -123,11 +123,11 @@ angular.module('piServerApp', [
                     //     controller: 'LabelsCtrl'
                     // },
                     "details": {
-                        templateUrl: '/app/partials/playlist-details.html',
+                        templateUrl: 'app/partials/playlist-details.html',
                         controller: 'PlaylistViewCtrl'
                     },
                     "list": {
-                        templateUrl: '/app/partials/assets.html',
+                        templateUrl: 'app/partials/assets.html',
                         controller: 'AssetsEditCtrl'
                     }
                 }
@@ -138,11 +138,11 @@ angular.module('piServerApp', [
                 url: "detail/:file",
                 views: {
                     "left": {
-                        templateUrl: '/app/partials/labels.html',
+                        templateUrl: 'app/partials/labels.html',
                         controller: 'LabelsCtrl'
                     },
                     "list": {
-                        templateUrl: '/app/partials/asset-details.html',
+                        templateUrl: 'app/partials/asset-details.html',
                         controller: 'AssetViewCtrl'
                     }
                 }
@@ -163,11 +163,11 @@ angular.module('piServerApp', [
                 url: "add/:playlist",
                 views: {
                     "list": {
-                        templateUrl: '/app/partials/assets.html',
+                        templateUrl: 'app/partials/assets.html',
                         controller: 'AssetsEditCtrl'
                     },
                     "right": {
-                        templateUrl: '/app/partials/playlist-add.html',
+                        templateUrl: 'app/partials/playlist-add.html',
                         controller: 'PlaylistAddCtrl'
                     }
                 },
@@ -180,7 +180,7 @@ angular.module('piServerApp', [
                 url: "settings",
                 views: {
                     "main": {
-                        templateUrl: '/app/partials/settings.html',
+                        templateUrl: 'app/partials/settings.html',
                         controller: 'SettingsCtrl'
                     }
                 }

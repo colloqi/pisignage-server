@@ -92,9 +92,10 @@ angular.module('piPlayers.services', [])
 
                             if (!player.lastReported)
                                 player.lastReported = 0;    //never reported
-                            player.labels.forEach(function (item) {
-                                assetLoader.label.labelsCount[item] = (assetLoader.label.labelsCount[item] || 0) + 1;
-                            })
+                            
+                           //player.labels.forEach(function (item) {
+                              //  assetLoader.label.labelsCount[item] = (assetLoader.label.labelsCount[item] || 0) + 1;
+                            //})
                         });
                     }
                     cb(!data.success);

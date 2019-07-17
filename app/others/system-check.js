@@ -1,6 +1,6 @@
 var async = require('async'),
 	fs = require('fs'),
-	config = require('../../config/config'),
+	config = require('./../../config/config'),
 	exec = require('child_process').exec;
 
 module.exports = function(){
@@ -53,6 +53,7 @@ module.exports = function(){
 		},
 		function(cb){
 			exec('convert -version',function(err,stdout,stderr){
+				console.log(stdout);
                 if(err){
 					console.log('*********************************************************************');
 					console.log('* Please install imagemagik, otherwise thumbnails cannot be created *');
