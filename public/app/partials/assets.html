@@ -21,6 +21,7 @@
           </li>
           <li><a ng-click="link.showPopup()" class="btn btn-link btn-block">Add a Link</a></li>
           <li><a ng-click="link.showPopup('txt')" class="btn btn-link btn-block">Add a Message</a></li>
+          <li><a ng-click="link.showPopup('local')" title="{{'You can local folder/file here'}}" class="btn btn-link btn-block">Add a local folder/file</a></li>
           <!--li-->
           <!--    a.btn.btn-link.btn-block(ng-click="configureGCalendar()")-->
           <!--        | Add Calendar-->
@@ -58,9 +59,8 @@
                 {{file.fileDetails.type}},&nbsp;{{file.fileDetails.size}},&nbsp;
                 {{file.fileDetails.createdAt | date: 'MMM dd'}}</small></div>
             <div class="col-sm-3">
-              <button title="{{'Add validity period for the asset'}}" ng-click="scheduleValidity(file)" class="btn btn-link btn-xs"><i class="fa fa-calendar">&nbsp;</i><small ng-if="!(file.fileDetails.validity.enable)">add validity</small><small ng-if="file.fileDetails.validity.enable">
-                  {{file.fileDetails.validity.startdate | date:'MMM d':'UTC'}} -
-                  {{file.fileDetails.validity.enddate | date:'MMM d':'UTC'}}</small></button>
+              <button title="{{'Add validity period for the asset'}}" ng-click="scheduleValidity(file)" class="btn btn-link btn-xs"><i class="fa fa-calendar">&nbsp;</i><small ng-if="!(file.fileDetails.validity.enable)">add validity</small><small ng-if="file.fileDetails.validity.enable">{{file.fileDetails.validity.startdate | date:'MMM d':'UTC'}}<small ng-if="file.filesDetails.validity.startdate &amp;&amp; file.filesDetails.validity.starthour">({{file.filesDetails.validity.starthour}}h)</small>-
+                  {{file.fileDetails.validity.enddate | date:'MMM d':'UTC'}}<small ng-if="file.filesDetails.validity.enddate &amp;&amp; file.filesDetails.validity.endhour" class="text-muted">({{file.filesDetails.validity.endhour}}h)</small></small></button>
             </div>
           </div>
         </div>

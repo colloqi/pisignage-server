@@ -29,6 +29,11 @@
                     li
                         a.btn.btn-link.btn-block(ng-click="link.showPopup('txt')")
                             | Add a Message
+                    li
+                        a.btn.btn-link.btn-block(ng-click="link.showPopup('local')",
+                            title="{{'You can local folder/file here'}}")
+                            | Add a local folder/file
+
                     //li
                     //    a.btn.btn-link.btn-block(ng-click="configureGCalendar()")
                     //        | Add Calendar
@@ -96,8 +101,14 @@
                                 small(ng-if='!(file.fileDetails.validity.enable)')
                                     | add validity
                                 small(ng-if='file.fileDetails.validity.enable')
-                                    | {{file.fileDetails.validity.startdate | date:'MMM d':'UTC'}} -
+                                    | {{file.fileDetails.validity.startdate | date:'MMM d':'UTC'}}
+                                    small(ng-if='file.filesDetails.validity.startdate && file.filesDetails.validity.starthour')
+                                        | ({{file.filesDetails.validity.starthour}}h)
+                                    | -
                                     | {{file.fileDetails.validity.enddate | date:'MMM d':'UTC'}}
+                                    small.text-muted(ng-if='file.filesDetails.validity.enddate && file.filesDetails.validity.endhour')
+                                        | ({{file.filesDetails.validity.endhour}}h)
+
 
 
         h5.text-danger(ng-show="!assetConfig.assets.assets.length")

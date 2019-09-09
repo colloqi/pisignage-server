@@ -165,6 +165,48 @@
           </div>
         </form>
       </tab>
+      <tab heading="Zone4 Video" ng-if="playlist.selectedPlaylist.layout.indexOf('custom') === 0">
+        <h4>Change video window position for zone4</h4><i><small>This section is for custom layouts only !! Changing  Any parameter would affect the video display size in zone4.</small></i>
+        <form name="zone4Form">
+          <div class="alert text-center bg-default">Zone4 Values</div>
+          <div class="form-group row">
+            <div class="col-sm-2 col-sm-offset-2">
+              <label class="control-label"><small translate="translate">Width:</small></label>
+            </div>
+            <div class="col-sm-2">
+              <input type="text" ng-model="zoneVideoWindow.zone4.length" required="" class="form-control"/>
+            </div>
+            <div class="col-sm-2">
+              <label class="control-label"><small translate="translate">Height:</small></label>
+            </div>
+            <div class="col-sm-2">
+              <input type="text" ng-model="zoneVideoWindow.zone4.width" required="" class="form-control"/>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-2 col-sm-offset-2">
+              <label class="control-label"><small translate="translate">Left-Offset:</small></label>
+            </div>
+            <div class="col-sm-2">
+              <input type="text" ng-model="zoneVideoWindow.zone4.xoffset" required="" class="form-control"/>
+            </div>
+            <div class="col-sm-2">
+              <label class="control-label"><small translate="translate">Top-Offset:</small></label>
+            </div>
+            <div class="col-sm-2">
+              <input type="text" ng-model="zoneVideoWindow.zone4.yoffset" required="" class="form-control"/>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-6">
+              <button ng-click="setZoneVideoWindow('zone4',null)" class="btn btn-danger">Restore Zone4 Defaults</button>
+            </div>
+            <div class="col-sm-6">
+              <button ng-click="setZoneVideoWindow('zone4',zoneVideoWindow.zone4)" ng-disabled="!zone4Form.$valid" class="btn btn-info">Save New Changes</button>
+            </div>
+          </div>
+        </form>
+      </tab>
     </tabset>
   </div>
 </div>

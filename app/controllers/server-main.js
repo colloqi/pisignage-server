@@ -53,6 +53,9 @@ exports.deploy = function (installation,group, cb) {
                 var filesNotPresent = []
                 async.eachSeries(group.assets,
                     function (file, iterative_cb) {
+                        if (!file)
+                            return iterative_cb();
+
                         var srcfile = path.join(mediaPath,file),
                             dstfile = path.join(syncPath,file);
                         fs.unlink(dstfile, function (err) {
@@ -126,6 +129,9 @@ exports.deploy = function (installation,group, cb) {
                     })
                     async.eachSeries(files,
                         function (file, iterative_cb) {
+                            if (!file)
+                                return iterative_cb();
+
                             if (group.assets.indexOf(file) == -1) {
                                 fs.unlink(path.join(syncPath, file), function (err) {
                                     iterative_cb();
@@ -174,7 +180,8 @@ exports.deploy = function (installation,group, cb) {
                 "name validity",function (err, data) {
                     if (!err && data) {
                         group.assetsValidity = data.map(function(asset){
-                            return ({name:asset.name, startdate:asset.validity.startdate, enddate:asset.validity.enddate})
+                            return ({name:asset.name, startdate:asset.validity.startdate, enddate:asset.validity.enddate,
+                                starthour:asset.validity.starthour, endhour:asset.validity.endhour})
                         })
                         //console.log(group.assetsValidity)
                     } else {

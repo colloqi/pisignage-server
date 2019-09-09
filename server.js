@@ -87,7 +87,11 @@ server.on('connection', function(socket) {
     // 60 minutes timeout
     socket.setTimeout(3600000);
 });
-
+server.on('error', function (err) {console.log("caught ECONNRESET error 1");console.log(err)});
+io.on('error', function (err) {console.log("caught ECONNRESET error 2");console.log(err)});
+io.sockets.on('error', function (err) {console.log("caught ECONNRESET error 3");console.log(err)});
+ioNew.on('error', function (err) {console.log("caught ECONNRESET error 4");console.log(err)});
+ioNew.sockets.on('error', function (err) {console.log("caught ECONNRESET error 5");console.log(err)});
 
 // Expose app
 module.exports = app;

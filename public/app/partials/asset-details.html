@@ -62,14 +62,18 @@
         </div>
       </div>
       <div ng-if="urlLink.type == '.mrss'" class="row">
+        <div class="col-sm-3 text-right">Number of Items</div>
+        <div class="col-sm-3">
+          <input type="number" name="count" placeholder="{{&quot;Number of Items to show&quot; }}" ng-model="urlLink.numberOfItems" class="form-control"/>
+        </div>
         <div class="col-sm-3 text-right">
-          <h4 class="text-muted">Item duration</h4>
+          <h4 class="text-muted">Item duration (use playlist duration & number of items instead after 2.4.0)</h4>
         </div>
         <div class="col-sm-3">
           <input type="number" name="duration" placeholder="{{&quot;Duration of each feed item&quot;}}" ng-model="urlLink.duration" class="form-control"/>
         </div>
       </div>
-      <div ng-if="urlLink.type == '.txt'" class="row">
+      <div ng-if="urlLink.type == '.txt'|| urlLink.type == '.mrss'" class="row">
         <div class="col-sm-3 text-right">
           <label class="control-label">Optional CSS</label>
         </div>

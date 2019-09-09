@@ -70,12 +70,6 @@ body {
     opacity: 0.5;
 }
 
-
-
-body .modal-body {
-    max-height: 1000px;
-}
-
 .modal-content > .panel {
     margin-bottom: 0px;
 }

@@ -55,6 +55,7 @@ module.exports = {
     txtFileRegex:           /\.txt$/i,
     linkUrlRegex: /\.link$/i,
     CORSLink:  /\.weblink$/i,
+    localFolderRegex:       /\.local$/i,
     mediaRss:               /\.mrss$/i,
     radioFileRegex:         /\.radio$/i,
     brandRegex:             /^(brand_intro|brand_intro_portrait)\./i,

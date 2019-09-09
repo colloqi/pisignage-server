@@ -4,11 +4,17 @@
     form.form(name='playlist.popForm')
         .row.form-group
             small.text-muted.control-label.col-sm-3.text-right() Ticker
-            .col-sm-9
+            .col-sm-3
                 .checkbox-inline
                     label
                         input(type='checkbox',name='ticker_checkbox', ng-model='tickerObj.enable')
                         small Show
+            small.control-label.col-sm-3.text-muted.text-right Show asset associated text
+            .col-sm-3
+                .checkbox-inline
+                    label
+                        input(type='checkbox',name="ticker_enable", ng-model='tickerObj.bannerText')
+
         .row.form-group(ng-show='tickerObj.enable')
             small.text-muted.col-sm-3.text-right Type
             .col-sm-12

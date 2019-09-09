@@ -5,10 +5,17 @@
 <div class="modal-body">
   <form name="playlist.popForm" class="form">
     <div class="row form-group"><small class="text-muted control-label col-sm-3 text-right">Ticker</small>
-      <div class="col-sm-9">
+      <div class="col-sm-3">
         <div class="checkbox-inline">
           <label>
             <input type="checkbox" name="ticker_checkbox" ng-model="tickerObj.enable"/><small>Show</small>
+          </label>
+        </div>
+      </div><small class="control-label col-sm-3 text-muted text-right">Show asset associated text</small>
+      <div class="col-sm-3">
+        <div class="checkbox-inline">
+          <label>
+            <input type="checkbox" name="ticker_enable" ng-model="tickerObj.bannerText"/>
           </label>
         </div>
       </div>

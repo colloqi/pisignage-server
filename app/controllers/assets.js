@@ -14,7 +14,8 @@ var mongoose = require('mongoose'),
 
 exports.index = function (req, res) {
 
-    var files,dbdata;
+    var files = [],
+        dbdata;
     async.series([
         function(next) {
             fs.readdir(config.mediaDir, function (err, data) {
@@ -24,6 +25,8 @@ exports.index = function (req, res) {
                     files = data.filter(function (file) {
                         return (file.charAt(0) != '_' && file.charAt(0) != '.');
                     });
+                    if (files.length)
+                        files.sort(function(str1,str2){return (str1.localeCompare(str2,undefined,{numeric:true}));});
                     next();
                 }
             })

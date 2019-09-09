@@ -103,6 +103,9 @@ angular.module('piAssets.services', [])
                         return;
                     var obj = {};
                     obj.fileDetails = assetLoader.asset.filesDetails[asset.filename] || {name: asset.filename};
+                    obj.filesDetails.muteButtonEnable =
+                        asset.filename.match(piConstants.videoRegex)  ||asset.filename.match(piConstants.omxStreamRegex)  ||asset.filename.match(piConstants.liveStreamRegex)
+
                     obj.playlistDetails = asset;
                     obj.deleted = (assetLoader.asset.files.indexOf(asset.filename) == -1) &&
                                         (asset.filename.indexOf("_system") != 0);

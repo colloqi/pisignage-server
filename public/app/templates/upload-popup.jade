@@ -9,7 +9,7 @@
         form.form-inline
             .form-group
                 label: small new
-                input.form-control.input-sm(type="text", ng-model="newLabel.name")
+                input.form-control.input-sm(type="text", ng-model="newLabel.name",required)
             button.btn.btn-success.btn-xs(type="submit", ng-click="upload.addLabel()")
                 i.fa.fa-plus
         div.text-danger(ng-if='msg.error', ng-bind="msg.error")

@@ -145,7 +145,7 @@ angular.module('piAssets.controllers',[])
             $scope.fn.delete= function(index){
                 piPopup.confirm("File "+$scope.asset.files[index], function() {
                     $http
-                        .delete(piUrls.files+$scope.asset.files[index])
+                        .delete(piUrls.files+encodeURIComponent($scope.asset.files[index]))
                         .success(function(data, status) {
                             if (data.success) {
                                 delete $scope.asset.filesDetails[$scope.asset.files[index]];
@@ -166,7 +166,7 @@ angular.module('piAssets.controllers',[])
                     $scope.fieldStatus = "has-error";
                 } else {
                     $http
-                        .post(piUrls.files + oldname, {  newname: newname })
+                        .post(piUrls.files + encodeURIComponent(oldname), {  newname: newname })
                         .success(function (data, status) {
                             if (data.success) {
                                 $scope.asset.filesDetails[newname] = $scope.asset.filesDetails[$scope.asset.files[index]];
@@ -298,7 +298,8 @@ angular.module('piAssets.controllers',[])
                 {name: 'Web link (shown in iframe)', ext: '.link'},
                 {name: 'Web page (supports cross origin links)', ext: '.weblink'},
                 {name: 'Media RSS', ext: '.mrss'},
-                {name: 'Message', ext: '.txt'}
+                {name: 'Message', ext: '.txt'},
+                {name: 'Local Folder/File', ext: '.local'}
             ],
             obj: {
                 name: null,
@@ -368,7 +369,7 @@ angular.module('piAssets.controllers',[])
                                     asset.fileDetails.labels.push(label.name);
                                 //delete asset.selected;
 
-                                $http.post(piUrls.files + asset.fileDetails.name, {dbdata: asset.fileDetails})
+                                $http.post(piUrls.files + encodeURIComponent(asset.fileDetails.name), {dbdata: asset.fileDetails})
                                     .success(function(data, status) {
                                         if (data.success) {
                                             asset.fileDetails = data.data;
@@ -391,7 +392,7 @@ angular.module('piAssets.controllers',[])
                                     asset.fileDetails.labels.splice(index, 1);
                                 //delete asset.selected;
 
-                                $http.post(piUrls.files + asset.fileDetails.name, {dbdata: asset.fileDetails})
+                                $http.post(piUrls.files + encodeURIComponent(asset.fileDetails.name), {dbdata: asset.fileDetails})
                                     .success(function (data, status) {
                                         if (data.success) {
                                             asset.fileDetails = data.data;
@@ -468,6 +469,19 @@ angular.module('piAssets.controllers',[])
             if (validityField.enddate)
                 validityField.enddate =
                     new Date(validityField.enddate)
+            $scope.today = new Date().toISOString().split("T")[0];
+            $scope.$watch("forAsset.fileDetails.validity.startdate", function(value,oldvalue) {
+                if (value && (!oldvalue || (value.getTime() != oldvalue.getTime()))) {
+                    $scope.forAsset.filesDetails.validity.starthour = 0;
+                    var endday = new Date(value);
+                    $scope.endday = endday.toISOString().split("T")[0];
+                    if (!$scope.forAsset.filesDetails.validity.enddate ||
+                        value > $scope.forAsset.filesDetails.validity.enddate) {
+                        $scope.forAsset.filesDetails.validity.enddate = endday;
+                        $scope.forAsset.filesDetails.validity.endhour = 24;
+                    }
+                }
+            });
 
             $scope.scheduleValidityModal = $modal.open({
                 templateUrl: '/app/templates/schedule-validity.html',
@@ -477,7 +491,7 @@ angular.module('piAssets.controllers',[])
         }
 
         $scope.saveValidity = function() {
-            $http.post(piUrls.files + $scope.forAsset.fileDetails.name, {dbdata: $scope.forAsset.fileDetails})
+            $http.post(piUrls.files + encodeURIComponent($scope.forAsset.fileDetails.name), {dbdata: $scope.forAsset.fileDetails})
                 .then(function(response) {
                     var data = response.data;
                     if (data.success) {
@@ -535,6 +549,7 @@ angular.module('piAssets.controllers',[])
             case 'tv':
             case 'mrss':
             case 'txt':
+            case 'local':
                 $scope.fileType = 'link';
                 $http
                     .get(piUrls.links+$state.params.file)
@@ -553,7 +568,7 @@ angular.module('piAssets.controllers',[])
                 break;
             default:
                 $scope.fileType = 'other';
-                $http.get(piUrls.files + $state.params.file)
+                $http.get(piUrls.files + encodeURIComponent($state.params.file))
                     .success(function(data, status) {
                         if (data.success) {
                             $scope.filedetails = data.data;
@@ -583,7 +598,7 @@ angular.module('piAssets.controllers',[])
         $scope.save = function() {
             if ($scope.filedetails && $scope.filedetails.dbdata) {
                 $scope.filedetails.dbdata.labels = $scope.selectedLabels;
-                $http.post(piUrls.files + $state.params.file, {dbdata: $scope.filedetails.dbdata})
+                $http.post(piUrls.files + encodeURIComponent($state.params.file), {dbdata: $scope.filedetails.dbdata})
                     .success(function (data, status) {
                         if (data.success) {
                             $scope.asset.filesDetails[data.data.name].labels = data.data.labels;
@@ -612,7 +627,7 @@ angular.module('piAssets.controllers',[])
         $scope.delete= function(index){
             piPopup.confirm("File "+$state.params.file, function() {
                 $http
-                    .delete(piUrls.files+$state.params.file)
+                    .delete(piUrls.files+encodeURIComponent($state.params.file))
                     .success(function(data, status) {
                         if (data.success) {
                             //delete $scope.asset.filesDetails[$state.params.file];

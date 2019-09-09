@@ -47,7 +47,7 @@ exports.index = function (req, res) {
         } else {
             var playlists = files.filter(isPlaylist),
                 list = [];
-
+            playlists.sort(function(str1,str2){return (str1.localeCompare(str2,undefined,{numeric:true}));});
             var readFile = function (plfile, cb) {
                 var playlist = {
                     settings: {},
@@ -77,7 +77,7 @@ exports.index = function (req, res) {
                 })
             }
 
-            async.each(playlists, readFile, function (err) {
+            async.eachSeries(playlists, readFile, function (err) {
                 if (err) {
                     return rest.sendError(res, 'playlist read error', err);
                 } else {

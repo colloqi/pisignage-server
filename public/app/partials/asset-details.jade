@@ -47,13 +47,17 @@
                             input(type='radio',name='radio_description_noimg', ng-model='urlLink.hideTitle', value="onlydescription")
                             small descr
             .row(ng-if="urlLink.type == '.mrss'")
-                .col-sm-3.text-right
-                    h4.text-muted Item duration
+                .col-sm-3.text-right Number of Items
                 .col-sm-3
-                    input.form-control(type='number',name='duration' ,placeholder='{{"Duration of each feed item"}}',
+                    input.form-control(type='number',name='count',placeholder='{{"Number of Items to show" }}',
+                        ng-model='urlLink.numberOfItems')
+                .col-sm-3.text-right
+                    h4.text-muted Item duration (use playlist duration & number of items instead after 2.4.0)
+                .col-sm-3
+                    input.form-control(type='number',name='duration',placeholder='{{"Duration of each feed item"}}',
                     ng-model='urlLink.duration')
 
-            .row(ng-if="urlLink.type == '.txt'")
+            .row(ng-if="urlLink.type == '.txt'|| urlLink.type == '.mrss'")
                 .col-sm-3.text-right
                     label.control-label Optional CSS
                 .col-sm-6

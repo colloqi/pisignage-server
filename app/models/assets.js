@@ -11,9 +11,11 @@ var AssetSchema = new Schema({
     thumbnail: String,
     labels: [],
     playlists:              [],
-    validity:               {enable:Boolean, startdate:String,enddate:String},
+    validity:               {enable:Boolean, startdate:String,enddate:String,starthour:Number,endhour:Number},
     createdAt: {type: Date, default: Date.now},
     createdBy: {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}
+}, {
+    usePushEach: true
 })
 
 AssetSchema.index({ installation: 1 });

@@ -24,6 +24,16 @@
           <input type="date" ng-model="forAsset.fileDetails.validity.enddate" ng-model-options="{timezone:'UTC'}" placeholder="Till date" name="enddate" title="{{&quot;Enter End Date&quot;}}" class="form-control input-sm"/>
         </div>
       </div>
+      <div class="form-group row">
+        <label ng-show="forAsset.fileDetails.validity.startdate" class="col-sm-4 control-label text-muted"> optional start hour (0-23)</label>
+        <div ng-show="forAsset.fileDetails.validity.startdate" class="col-sm-2">
+          <input type="number" ng-model="forAsset.fileDetails.validity.starthour" placeholder="0-23" ng-min="0" ng-max="23" name="starttime" ng-attr-title="Enter the hour on start date to start 0-23" class="form-control input-sm"/>
+        </div>
+        <label ng-show="forAsset.fileDetails.validity.enddate" class="col-sm-4 control-label text-muted">end hour (1-24)</label>
+        <div ng-show="forAsset.fileDetails.validity.enddate" class="col-sm-2">
+          <input type="number" ng-model="forAsset.fileDetails.validity.endhour" placeholder="1-24" ng-min="1" ng-max="24" name="endtime" title="Enter hour on end date to end 1-24" class="form-control input-sm"/>
+        </div>
+      </div>
     </form>
   </div>
   <div class="modal-footer">
