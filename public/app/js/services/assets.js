@@ -103,7 +103,7 @@ angular.module('piAssets.services', [])
                         return;
                     var obj = {};
                     obj.fileDetails = assetLoader.asset.filesDetails[asset.filename] || {name: asset.filename};
-                    obj.filesDetails.muteButtonEnable =
+                    obj.fileDetails.muteButtonEnable =
                         asset.filename.match(piConstants.videoRegex)  ||asset.filename.match(piConstants.omxStreamRegex)  ||asset.filename.match(piConstants.liveStreamRegex)
 
                     obj.playlistDetails = asset;
