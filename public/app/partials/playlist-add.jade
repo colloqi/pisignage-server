@@ -61,7 +61,8 @@
                                 ng-true-value="false", ng-false-value="true",
                                 ng-checked="file.playlistDetails.option.main !== true")
                                 span.pl-5  play in background
-                            label.btn.btn-link.text-muted(ng-show='file.filesDetails.type == "image" || file.filesDetails.type == "video"', title='add a text message over image or video')
+                        .col-sm-3(ng-show='file.fileDetails.type == "image" || file.fileDetails.type == "video"')
+                            label.btn.btn-link.text-muted(title='add a text message over image or video')
                                 input(type='text', ng-model='file.playlistDetails.option.bannerText',placeholder="text message over the image/video", ng-model-options="{ debounce: 500 }")
                         .col-sm-3(ng-show='file.fileDetails.type == "pdf"')
                             label.btn.btn-link.text-muted(title='use presentation mode')

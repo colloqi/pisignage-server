@@ -472,13 +472,13 @@ angular.module('piAssets.controllers',[])
             $scope.today = new Date().toISOString().split("T")[0];
             $scope.$watch("forAsset.fileDetails.validity.startdate", function(value,oldvalue) {
                 if (value && (!oldvalue || (value.getTime() != oldvalue.getTime()))) {
-                    $scope.forAsset.filesDetails.validity.starthour = 0;
+                    $scope.forAsset.fileDetails.validity.starthour = 0;
                     var endday = new Date(value);
                     $scope.endday = endday.toISOString().split("T")[0];
-                    if (!$scope.forAsset.filesDetails.validity.enddate ||
-                        value > $scope.forAsset.filesDetails.validity.enddate) {
-                        $scope.forAsset.filesDetails.validity.enddate = endday;
-                        $scope.forAsset.filesDetails.validity.endhour = 24;
+                    if (!$scope.forAsset.fileDetails.validity.enddate ||
+                        value > $scope.forAsset.fileDetails.validity.enddate) {
+                        $scope.forAsset.fileDetails.validity.enddate = endday;
+                        $scope.forAsset.fileDetails.validity.endhour = 24;
                     }
                 }
             });
