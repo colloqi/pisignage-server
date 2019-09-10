@@ -136,7 +136,6 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                     return video_cb();
                                 }
                                 if (metadata) {
-                                    console.log(metadata);
                                     duration = metadata.format.duration;
                                     if (metadata.format.size)
                                         mediaSize = parseInt(metadata.format.size / 1000) + 'KB';

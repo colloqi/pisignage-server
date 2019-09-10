@@ -16,15 +16,16 @@ var config = require(path.join(__dirname,'/config/config'));
 
 // Connect to database
 mongoose.Promise = global.Promise;
-var db = mongoose.connect(config.mongo.uri, config.mongo.options);
+mongoose.connect(config.mongo.uri, config.mongo.options,function(error){
+    if (error) {
+        console.log('********************************************');
+        console.log('*          MongoDB Process not running     *');
+        console.log('********************************************\n');
 
-db.connection.on('error',function(){
-    console.log('********************************************');
-    console.log('*          MongoDB Process not running     *');
-    console.log('********************************************\n');
+        process.exit(1);
+    }
+});
 
-    process.exit(1);
-})
 
 // check system 
 require('./app/others/system-check')();
