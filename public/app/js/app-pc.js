@@ -9,7 +9,6 @@ angular.module('piServerApp', [
     'piConfig',
     'piIndex.controllers',
     'piGroups.controllers',
-    'dashboard.controllers',
     'piAssets.controllers',
     'piAssets.services',
     'piPlayers.services',

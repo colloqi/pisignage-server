@@ -55,16 +55,20 @@
               <input type="checkbox" title="Content from all the eligible playlists will be combined" ng-model="group.selectedGroup.playAllEligiblePlaylists"/><small>Combine content of all scheduled playlists</small>
             </label>
           </div>
+          <div class="checkbox">
+            <label ng-attr-title="Shuffle content from selected playlists and deploy">
+              <input type="checkbox" ng-model="group.selectedGroup.shuffleContent"/><small>Shuffle content before deploying</small>
+            </label>
+          </div>
           <div ng-show="group.selectedGroup.playAllEligiblePlaylists" class="checkbox">
-              <label ng-attr-title="{{'Play content alternatively from selected playlists' }}">
-                <input type="checkbox" ng-model="group.selectedGroup.alternateContent"/><small >Alternate content from selected playlists</small>
-              </label>
-            </div>
+            <label ng-attr-title="Play content alternatively from selected playlists">
+              <input type="checkbox" ng-model="group.selectedGroup.alternateContent"/><small>Alternate content from selected playlists</small>
+            </label>
+          </div>
         </div>
       </div>
       <div ng-repeat="pl in group.selectedGroup.playlists" ng-if="$index &gt; 0" as-sortable-item="as-sortable-item" class="row form-group">
         <div as-sortable-item-handle="as-sortable-item-handle" class="col-sm-1 text-right">
-            <small ng-show="$index==1" class="text-muted">&uarr; high </small><small ng-show="$last" class="text-muted">&darr; low</small>
           <h6>  {{$index+'.'}}</h6>
         </div>
         <div class="col-sm-4">

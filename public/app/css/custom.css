@@ -70,12 +70,6 @@ body {
     opacity: 0.5;
 }
 
-
-
-body .modal-body {
-    max-height: 1000px;
-}
-
 .modal-content > .panel {
     margin-bottom: 0px;
 }
@@ -104,23 +98,23 @@ body .modal-body {
     color:lightgreen;
 }
 .success{
-    background:  	#00C993;
- }
- .primary{
-     background:  #01A9D8;
- }
- .info{
-     background: #A088F6;
- }
- .warning{
-     background: #E4D757;
- }
- .light-danger{
-     background: #EEA1A9;
- }
- .danger{
-     background: #EB4559;
- }
+  background:  	#00C993;
+}
+.primary{
+    background:  #01A9D8;
+}
+.info{
+    background: #A088F6;
+}
+.warning{
+    background: #E4D757;
+}
+.light-danger{
+    background: #EEA1A9;
+}
+.danger{
+    background: #EB4559;
+}
 .pl-5 {
     padding-left: 5px;
 }

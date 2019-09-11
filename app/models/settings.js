@@ -19,6 +19,8 @@ var SettingsSchema = new Schema({
         user: {type: String , default: 'pi'},
         password: {type: String , default: 'pi'}
     }
+}, {
+    usePushEach: true
 })
 
 mongoose.model('Settings', SettingsSchema)

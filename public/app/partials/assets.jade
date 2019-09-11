@@ -49,6 +49,11 @@
                     li
                         a.btn.btn-link.btn-block(ng-click="link.showPopup('txt')")
                             | Add a Message
+                    li
+                        a.btn.btn-link.btn-block(ng-click="link.showPopup('local')",
+                            title="{{'You can local folder/file here'}}")
+                            | Add a local folder/file
+
                     //li
                     //    a.btn.btn-link.btn-block(ng-click="configureGCalendar()")
                     //        | Add Calendar
@@ -68,40 +73,41 @@
                         i.fa.fa-lg.fa-arrow-circle-right assign
                     a.btn.btn-link(ng-click="ngDropdown.clearCheckboxes()"): i.fa.fa-times
 
+                
 
-    ul.list-group(as-sortable="sortable.options",ng-model="assetConfig.assets.assets",style="min-height:50px;")
-        li.list-group-item(ng-repeat='file in assetConfig.assets.assets | filter:labelFilter',
-                                as-sortable-item,
-                                ng-show="([file.fileDetails.name] | filter:searchFilename).length",
-                                ng-class='{"list-group-item-danger":file.deleted}', style="margin:0px;min-height:70px;" )
-            .row(as-sortable-item-handle)
-                .col-sm-2
-                    a(ng-click='fn.showDetails(file.fileDetails.name)')
-                        img.media-object.img-rounded(ng-if='file.fileDetails.thumbnail',ng-src='{{file.fileDetails.thumbnail}}')
-                        .letter-box.media-object.img-rounded(ng-if='!file.fileDetails.thumbnail')
-                            span(ng-if='file.fileDetails.type == "audio" || file.fileDetails.type == "radio"')
-                                i.fa.fa-music
-                            span(ng-if='file.fileDetails.type != "audio" && file.fileDetails.type != "radio"')
-                                | {{file.fileDetails.type.slice(0,1) || 'N'}}
-                .col-sm-10
-                    .row
-                        .col-sm-6
-                            small {{file.fileDetails.name }}
-                                small(ng-if="playlist.selectedPlaylist && !assetConfig.allAssets")
-                                    | &nbsp;{{file.playlistDetails.side}} &nbsp;{{file.playlistDetails.bottom}}
-                        //.col-sm-2
-                            p {{file.fileDetails.size}}
-                        .col-sm-3
-                            small.text-muted(ng-if="file.fileDetails.resolution.width")
-                                | {{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}
-                        .col-sm-2(ng-if="playlist.selectedPlaylist  && !assetConfig.allAssets")
-                            small.text-muted  {{file.playlistDetails.duration}} seconds
-                        .col-sm-1.pull-right
-                            input(type="checkbox",name='checkbox',ng-model="file.selected",
-                                    ng-change="ngDropdown.checkbox(file)")
-                        //.col-sm-1.pull-right(ng-if="assetConfig.allAssets")
-                            a(ng-click="")
-                                i.fa.fa-lg.fa-arrow-circle-right.text-success
+        ul.list-group(as-sortable="sortable.options",ng-model="assetConfig.assets.assets",style="min-height:50px;")
+            li.list-group-item(ng-repeat='file in assetConfig.assets.assets | filter:labelFilter',
+                                    as-sortable-item,
+                                    ng-show="([file.fileDetails.name] | filter:searchFilename).length",
+                                    ng-class='{"list-group-item-danger":file.deleted}', style="margin:0px;min-height:70px;" )
+                .row(as-sortable-item-handle)
+                    .col-sm-2
+                        a(ng-click='fn.showDetails(file.fileDetails.name)')
+                            img.media-object.img-rounded(ng-if='file.fileDetails.thumbnail',ng-src='{{file.fileDetails.thumbnail}}')
+                            .letter-box.media-object.img-rounded(ng-if='!file.fileDetails.thumbnail')
+                                span(ng-if='file.fileDetails.type == "audio" || file.fileDetails.type == "radio"')
+                                    i.fa.fa-music
+                                span(ng-if='file.fileDetails.type != "audio" && file.fileDetails.type != "radio"')
+                                    | {{file.fileDetails.type.slice(0,1) || 'N'}}
+                    .col-sm-10
+                        .row
+                            .col-sm-6
+                                small {{file.fileDetails.name }}
+                                    small(ng-if="playlist.selectedPlaylist && !assetConfig.allAssets")
+                                        | &nbsp;{{file.playlistDetails.side}} &nbsp;{{file.playlistDetails.bottom}}
+                            //.col-sm-2
+                                p {{file.fileDetails.size}}
+                            .col-sm-3
+                                small.text-muted(ng-if="file.fileDetails.resolution.width")
+                                    | {{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}
+                            .col-sm-2(ng-if="playlist.selectedPlaylist  && !assetConfig.allAssets")
+                                small.text-muted  {{file.playlistDetails.duration}} seconds
+                            .col-sm-1.pull-right
+                                input(type="checkbox",name='checkbox',ng-model="file.selected",
+                                        ng-change="ngDropdown.checkbox(file)")
+                            //.col-sm-1.pull-right(ng-if="assetConfig.allAssets")
+                                a(ng-click="")
+                                    i.fa.fa-lg.fa-arrow-circle-right.text-success
 
                     .row
                         .col-sm-6
@@ -116,29 +122,35 @@
                                 small(ng-if='!(file.fileDetails.validity.enable)')
                                     | add validity
                                 small(ng-if='file.fileDetails.validity.enable')
-                                    | {{file.fileDetails.validity.startdate | date:'MMM d':'UTC'}} -
+                                    | {{file.fileDetails.validity.startdate | date:'MMM d':'UTC'}}
+                                    small(ng-if='file.fileDetails.validity.startdate && file.fileDetails.validity.starthour')
+                                        | ({{file.fileDetails.validity.starthour}}h)
+                                    | -
                                     | {{file.fileDetails.validity.enddate | date:'MMM d':'UTC'}}
+                                    small.text-muted(ng-if='file.fileDetails.validity.enddate && file.fileDetails.validity.endhour')
+                                        | ({{file.fileDetails.validity.endhour}}h)
 
 
-        h5.text-danger(ng-show="!assetConfig.assets.assets.length")
-            | &nbsp&nbsp Nothing to show, Use `Add` button to add an asset or 'Assign Assets' to assign assets to playlist
 
-.panel.panel-danger(ng-if="fn.editMode")
-    .panel-heading
-        .panel-title Rename or delete files, tap Done when completed
-            a.pull-right(ng-click='fn.edit()'):  strong.text-success  Done
-    ul.list-group
-        li.list-group-item(ng-repeat='name in names')
-            form.row(name="editform")
-                .form-group.col-xs-10(ng-class="editform.$dirty?'':fieldStatus")
-                    .input-group.col-xs-12
-                        input.form-control(type='text', ng-model='name.name')
-                        span.input-group-addon(ng-bind="name.ext", ng-hide="editform.$dirty")
-                        span.input-group-btn(ng-click='fn.rename($index)', ng-show="editform.$dirty")
-                            a.btn.btn-success(type="button") SAVE
-                .col-xs-2
-                    button.btn.btn-danger.pull-right(ng-click='fn.delete($index)')
-                        i.fa.fa-times.fa-lg
+            h5.text-danger(ng-show="!assetConfig.assets.assets.length")
+                | &nbsp&nbsp Nothing to show, Use `Add` button to add an asset or 'Assign Assets' to assign assets to playlist
+
+    .panel.panel-danger(ng-if="fn.editMode")
+        .panel-heading
+            .panel-title Rename or delete files, tap Done when completed
+                a.pull-right(ng-click='fn.edit()'):  strong.text-success  Done
+        ul.list-group
+            li.list-group-item(ng-repeat='name in names')
+                form.row(name="editform")
+                    .form-group.col-xs-10(ng-class="editform.$dirty?'':fieldStatus")
+                        .input-group.col-xs-12
+                            input.form-control(type='text', ng-model='name.name')
+                            span.input-group-addon(ng-bind="name.ext", ng-hide="editform.$dirty")
+                            span.input-group-btn(ng-click='fn.rename($index)', ng-show="editform.$dirty")
+                                a.btn.btn-success(type="button") SAVE
+                    .col-xs-2
+                        button.btn.btn-danger.pull-right(ng-click='fn.delete($index)')
+                            i.fa.fa-times.fa-lg
 
 
 

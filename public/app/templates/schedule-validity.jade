@@ -29,6 +29,21 @@
                     ng-model-options="{timezone:'UTC'}",
                     placeholder="Till date",min="{{endday}}"
                     name='enddate', title='{{"Enter End Date"}}')
+            .form-group.row
+                label.col-sm-4.control-label.text-muted(ng-show='forAsset.fileDetails.validity.startdate')  optional start hour (0-23)
+                .col-sm-2(ng-show='forAsset.fileDetails.validity.startdate')
+                    input.form-control.input-sm(type='number', ng-model='forAsset.fileDetails.validity.starthour',
+                        placeholder="0-23",
+                        ng-min="0",ng-max="23",
+                        name='starttime', ng-attr-title='Enter the hour on start date to start 0-23')
+
+                label.col-sm-4.control-label.text-muted(ng-show='forAsset.fileDetails.validity.enddate') end hour (1-24)
+                .col-sm-2(ng-show='forAsset.fileDetails.validity.enddate')
+                    input.form-control.input-sm(type='number', ng-model='forAsset.fileDetails.validity.endhour',
+                        placeholder="1-24",
+                        ng-min="1",ng-max="24",
+                        name='endtime', title='Enter hour on end date to end 1-24')
+
 
     .modal-footer
         button.btn.btn-default(type="button",ng-click='scheduleValidityModal.close()') Cancel

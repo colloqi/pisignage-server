@@ -10,6 +10,7 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
 1. Issue the command `git pull origin master`
    ***IMPORTANT: If you are upadating from before 24 Nov 2016, after git pull, please change the uri variable in config/env/development.js to 'mongodb://localhost/pisignage-dev' to retain the old data***
 1. Apply your code changes if any
+1. Do "npm install" 
 1. Start the pisignage-server and go to url localhost:3000
 1. Enter the username of yours at pisignage.com (not the email ID) (or change under settings, otherwise player license will not be enabled)
 1. Default authentication credentials for player webUI has been changed to pi:pi

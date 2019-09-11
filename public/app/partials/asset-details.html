@@ -13,26 +13,16 @@
     <iframe ng-if="filedetails.type==&quot;html&quot;" ng-src="{{ filedetails.path }}"></iframe>
     <iframe ng-if="filedetails.type==&quot;pdf&quot;" height="300px" width="100%" ng-src="{{filedetails.path}}"></iframe>
     <form role="form" name="linkform" ng-show="fileType==&quot;link&quot;">
-      <div ng-if="urlLink.type != '.txt'" class="row">
-        <div class="col-sm-3 text-right">
-          <label class="control-label text-muted">Address</label>
-        </div>
-        <div class="col-xs-8">
-          <h4>{{urlLink.link}}<a ng-disabled="!urlLink.link" href="{{urlLink.link}}" target="_blank" class="btn btn-link"><i class="fa fa-external-link"></i></a></h4>
-        </div>
+      <div ng-if="urlLink.type != '.txt'" class="form-group row">
+        <label class="control-label text-muted col-sm-3 text-right"><small>Address</small></label>
+        <div class="col-xs-8"><span>{{urlLink.link}}<a ng-disabled="!urlLink.link" href="{{urlLink.link}}" target="_blank" class="btn btn-link"><i class="fa fa-external-link"></i></a></span></div>
       </div>
-      <div class="row">
-        <div class="col-sm-3 text-right">
-          <label class="control-label text-muted">Type</label>
-        </div>
-        <div class="col-xs-7">
-          <h4>{{urlLink.type == ".tv"?"You Tube":urlLink.type.slice(1)}}</h4>
-        </div>
+      <div class="form-group row">
+        <label class="control-label text-muted col-sm-3 text-right"><small>Type</small></label>
+        <div class="col-xs-7"><span>{{urlLink.type == ".tv"?"You Tube":urlLink.type.slice(1)}}</span></div>
       </div>
-      <div ng-if="urlLink.type == '.mrss'" class="row">
-        <div class="col-sm-3 text-right">
-          <h4 class="text-muted">RSS Text</h4>
-        </div>
+      <div ng-if="urlLink.type == '.mrss'" class="form-group row">
+        <label class="control-label text-muted col-sm-3 text-right"><small>RSS Text</small></label>
         <div class="col-sm-9">
           <div class="radio-inline">
             <label>
@@ -61,58 +51,45 @@
           </div>
         </div>
       </div>
-      <div ng-if="urlLink.type == '.mrss'" class="row">
-        <div class="col-sm-3 text-right">
-          <h4 class="text-muted">Item duration</h4>
+      <div ng-if="urlLink.type == '.mrss'" class="form-group row">
+        <label class="control-label text-muted col-sm-3 text-right"><small>Number of Items</small></label>
+        <div class="col-sm-3">
+          <input type="number" name="count" placeholder="{{&quot;Number of Items to show&quot; }}" ng-model="urlLink.numberOfItems" class="form-control"/>
         </div>
+        <label class="control-label text-muted col-sm-3 text-right"><small>Item duration (use playlist duration & number of items instead after 2.4.0)</small></label>
         <div class="col-sm-3">
           <input type="number" name="duration" placeholder="{{&quot;Duration of each feed item&quot;}}" ng-model="urlLink.duration" class="form-control"/>
         </div>
       </div>
-      <div ng-if="urlLink.type == '.txt'" class="row">
-        <div class="col-sm-3 text-right">
-          <label class="control-label">Optional CSS</label>
-        </div>
+      <div ng-if="urlLink.type == '.txt'|| urlLink.type == '.mrss'" class="form-group row">
+        <label class="control-label text-muted col-sm-3 text-right"><small>Optional CSS</small></label>
         <div class="col-sm-6">
           <input type="text" name="style" placeholder="e.g. color:#eee; font-style:italic;" ng-model="urlLink.style" class="form-control"/>
         </div>
       </div>
-      <div ng-if="urlLink.type == '.txt'" class="row">
-        <div class="col-sm-3 text-right">
-          <label class="control-label">Message</label>
-        </div>
+      <div ng-if="urlLink.type == '.txt'" class="form-group row">
+        <label class="control-label text-muted col-sm-3 text-right"><small>Message</small></label>
         <div class="col-sm-6">
           <textarea rows="4" cols="50" name="message" ng-model="urlLink.message" required="" class="form-control"></textarea>
         </div>
       </div><br/>
-      <div ng-if="urlLink.type == '.weblink'" class="row">
-        <div class="col-sm-3 text-right">
-          <label class="control-label text-muted">Zoom level</label>
-        </div>
+      <div ng-if="urlLink.type == '.weblink'" class="form-group row">
+        <label class="control-label text-muted col-sm-3 text-right"><small>Zoom level</small></label>
         <div class="col-sm-6">
           <input type="number" step="0.01" name="style" placeholder="e.g. 0.75(75%), 1.25(125%) or leave blank for no-zoom" ng-model="urlLink.zoom" class="form-control"/>
         </div>
       </div><br/>
-      <div ng-if="urlLink.type == '.weblink'" class="row">
-        <div class="col-sm-3 text-right">
-          <label class="control-label">Send Key strokes (optional)</label>
-        </div>
-        <div class="col-sm-5">
-          <input type="text" name="keystrokes" placeholder="e.g. tab,shift+h,e,l,l,o,shift+!,enter" ng-model="urlLink.keystrokes" class="form-control"/><small>for key definitions refer http://robotjs.io/docs/syntax#key</small>
-        </div>
-        <div class="col-sm-2">
-          <label class="control-label text-muted">after a delay of</label>
-        </div>
-        <div class="col-sm-2">
-          <input type="text" name="keydelay" placeholder="10 secs" ng-model="urlLink.keydelay" class="form-control"/>
-        </div>
-      </div><br/>
-      <div class="row">
-        <div class="col-sm-3 col-sm-offset-3">
-          <button ng-disabled="!(linkform.$dirty &amp;&amp; linkform.$valid)" ng-click="saveNewChanges()" class="btn btn-success">Update</button>
-        </div>
-      </div>
     </form>
+    <div ng-if="urlLink.type == '.weblink'" class="form-group row">
+      <label class="control-label text-muted col-sm-3 text-right"><small>Send Key strokes (optional)</small></label>
+      <div class="col-sm-5">
+        <input type="text" name="keystrokes" placeholder="e.g. tab,shift+h,e,l,l,o,shift+!,enter" ng-model="urlLink.keystrokes" class="form-control"/><small>for key definitions refer http://robotjs.io/docs/syntax#key</small>
+      </div>
+      <label class="control-label text-muted col-sm-2 text-right"><small>after a delay of</small></label>
+      <div class="col-sm-2">
+        <input type="text" name="keydelay" placeholder="10 secs" ng-model="urlLink.keydelay" class="form-control"/>
+      </div>
+    </div><br/>
     <div ng-if="(fileType==&quot;gcal&quot;) &amp;&amp; calendar.list.length">
       <h4><strong> Profile</strong></h4>
       <div class="media">
@@ -138,14 +115,10 @@
       </ul>
     </div>
   </div>
-  <div class="panel-footer">
-    <div class="row">
-      <div class="col-sm-10">
-        <categories selected-labels="selectedLabels"></categories>
-      </div>
-      <div class="col-sm-2 pull-right">
-        <button ng-click="save()" class="btn btn-success pull-right">DONE</button>
-      </div>
-    </div>
-  </div>
+  <!--.panel-footer-->
+  <!--    .row-->
+  <!--        .col-sm-10-->
+  <!--            categories(selected-labels="selectedLabels")-->
+  <!--        .col-sm-2.pull-right-->
+  <!--            button.btn.btn-success.pull-right(ng-click='save()') DONE-->
 </div>

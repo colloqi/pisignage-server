@@ -6,7 +6,6 @@ angular.module('dashboard.controllers', [])
         var BUCKET_INTERVALS = [5,60,240,24 * 60, 7 * 24 * 60];
 
         $scope.COUNT_FIELDS = [
-
             {field:"locationName",name:"Location wise"},
             {field:"groupName",name:"Group wise"},
             {field:"currentPlaylist",name:"Playlists playing"},

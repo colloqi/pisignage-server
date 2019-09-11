@@ -296,7 +296,7 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.add = function () {
-            if ($scope.group.selectedGroup.playlists.length >= 30) {
+            if ($scope.group.selectedGroup.playlists.length >= 100) {
                 $timeout(function () {
                     $scope.showMaxErr = false;
                 }, 5000);
@@ -305,7 +305,7 @@ angular.module('piGroups.controllers', [])
             }
             //$scope.deployform.$setDirty(); //  inform user  of new changes
             $scope.group.selectedGroup.playlists.unshift({
-                name: $scope.group.selectedGroup.playlists[0].name ,
+                name: $scope.group.selectedGroup.playlistToSchedule || $scope.group.selectedGroup.playlists[0].name ,
                 settings: { durationEnable: false, timeEnable: false}
             });
             $scope.updateGroup();
@@ -544,8 +544,9 @@ angular.module('piGroups.controllers', [])
 
         $scope.displaySet = function () {
             $scope.resolutions = [
-                {value: '720p', name: "HD(720p) Video & Browser 1280x720"},
+                {value: 'auto', name: "Auto based on TV settings(EDID)"},
                 {value: '1080p', name: "Full HD(1080p) Video & Browser 1920x1080"},
+                {value: '720p', name: "HD(720p) Video & Browser 1280x720"},
                 {value: 'PAL',name: 'PAL (RCA), 720x576 Video and Browser'},
                 {value: 'NTSC',name: 'NTSC (RCA), 720x480 Video and Browser' }
             ];
@@ -677,9 +678,10 @@ angular.module('piGroups.controllers', [])
             if (!$scope.group.selectedGroup.playlists.length)
                 return;
             $scope.group.selectedGroup.orientation = $scope.group.selectedGroup.orientation || 'landscape';
-            $scope.group.selectedGroup.resolution = $scope.group.selectedGroup.resolution || '720p';
+            $scope.group.selectedGroup.resolution = $scope.group.selectedGroup.resolution || 'auto';
             $scope.group.selectedGroup.deploy = true;
             $scope.updateGroup(function (err,msg) {
+                $scope.msg={msg:"",title:""};
                 if (!err) {
                     piPopup.status({msg: 'Deployed! Request has been sent to all Players.', title: 'Deploy Success'});
                     $scope.needToDeploy = false;

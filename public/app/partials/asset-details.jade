@@ -10,21 +10,18 @@
         iframe(ng-if='filedetails.type=="html"', ng-src='{{ filedetails.path }}')
         iframe(ng-if='filedetails.type=="pdf"',height="300px",width="100%",ng-src='{{filedetails.path}}')
         form(role="form",name="linkform",ng-show='fileType=="link"')
-            .row(ng-if="urlLink.type != '.txt'")
-                .col-sm-3.text-right
-                    label.control-label.text-muted Address
+            .form-group.row(ng-if="urlLink.type != '.txt'")
+                label.control-label.text-muted.col-sm-3.text-right: small Address
                 .col-xs-8
-                    h4 {{urlLink.link}}
+                    span {{urlLink.link}}
                         a.btn.btn-link(ng-disabled='!urlLink.link',href="{{urlLink.link}}",target="_blank")
                             i.fa.fa-external-link
-            .row
-                .col-sm-3.text-right
-                    label.control-label.text-muted Type
+            .form-group.row
+                label.control-label.text-muted.col-sm-3.text-right: small Type
                 .col-xs-7
-                    h4 {{urlLink.type == ".tv"?"You Tube":urlLink.type.slice(1)}}
-            .row(ng-if="urlLink.type == '.mrss'")
-                .col-sm-3.text-right
-                    h4.text-muted RSS Text
+                    span {{urlLink.type == ".tv"?"You Tube":urlLink.type.slice(1)}}
+            .form-group.row(ng-if="urlLink.type == '.mrss'")
+                label.control-label.text-muted.col-sm-3.text-right: small RSS Text
                 .col-sm-9
                     .radio-inline
                         label
@@ -46,47 +43,45 @@
                         label
                             input(type='radio',name='radio_description_noimg', ng-model='urlLink.hideTitle', value="onlydescription")
                             small descr
-            .row(ng-if="urlLink.type == '.mrss'")
-                .col-sm-3.text-right
-                    h4.text-muted Item duration
+            .form-group.row(ng-if="urlLink.type == '.mrss'")
+                label.control-label.text-muted.col-sm-3.text-right: small Number of Items
                 .col-sm-3
-                    input.form-control(type='number',name='duration' ,placeholder='{{"Duration of each feed item"}}',
+                    input.form-control(type='number',name='count',placeholder='{{"Number of Items to show" }}',
+                        ng-model='urlLink.numberOfItems')
+                label.control-label.text-muted.col-sm-3.text-right: small Item duration (use playlist duration & number of items instead after 2.4.0)
+                .col-sm-3
+                    input.form-control(type='number',name='duration',placeholder='{{"Duration of each feed item"}}',
                     ng-model='urlLink.duration')
 
-            .row(ng-if="urlLink.type == '.txt'")
-                .col-sm-3.text-right
-                    label.control-label Optional CSS
+            .form-group.row(ng-if="urlLink.type == '.txt'|| urlLink.type == '.mrss'")
+                label.control-label.text-muted.col-sm-3.text-right: small Optional CSS
                 .col-sm-6
-                    input.form-control(type='text',name='style' ,placeholder='e.g. color:#eee; font-style:italic;',
+                    input.form-control(type='text',name='style',placeholder='e.g. color:#eee; font-style:italic;',
                         ng-model='urlLink.style')
 
-            .row(ng-if="urlLink.type == '.txt'")
-                .col-sm-3.text-right
-                    label.control-label Message
+            .form-group.row(ng-if="urlLink.type == '.txt'")
+                label.control-label.text-muted.col-sm-3.text-right: small Message
                 .col-sm-6
                     textarea.form-control( rows="4",cols="50",name='message', ng-model='urlLink.message', required='')
 
             br
-            .row(ng-if="urlLink.type == '.weblink'")
-                .col-sm-3.text-right
-                    label.control-label.text-muted Zoom level
+            .form-group.row(ng-if="urlLink.type == '.weblink'")
+                label.control-label.text-muted.col-sm-3.text-right: small Zoom level
                 .col-sm-6
                     input.form-control(type='number',step="0.01" ,name='style' ,placeholder='e.g. 0.75(75%), 1.25(125%) or leave blank for no-zoom',
                     ng-model='urlLink.zoom')
 
             br
-            .row(ng-if="urlLink.type == '.weblink'")
-                .col-sm-3.text-right
-                    label.control-label Send Key strokes (optional)
+           .form-group.row(ng-if="urlLink.type == '.weblink'")
+                label.control-label.text-muted.col-sm-3.text-right: small Send Key strokes (optional)
                 .col-sm-5
                     input.form-control(type="text",name="keystrokes",placeholder="e.g. tab,shift+h,e,l,l,o,shift+!,enter",ng-model="urlLink.keystrokes")
                     small for key definitions refer http://robotjs.io/docs/syntax#key
-                .col-sm-2
-                    label.control-label.text-muted after a delay of
+                label.control-label.text-muted.col-sm-2.text-right: small after a delay of
                 .col-sm-2
                     input.form-control(type="text", name="keydelay", placeholder="10 secs", ng-model="urlLink.keydelay")
             br
-            .row
+            .form-group.row
                 .col-sm-3.col-sm-offset-3
                     button.btn.btn-success(ng-disabled='!(linkform.$dirty && linkform.$valid)',ng-click="saveNewChanges()") Update
 
@@ -113,12 +108,12 @@
                                 input(type="radio", name="email", ng-click='selectedCalendar(item.id)', ng-checked="calendar.selected == item.summary")
 
 
-    .panel-footer
-        .row
-            .col-sm-10
-                categories(selected-labels="selectedLabels")
-            .col-sm-2.pull-right
-                button.btn.btn-success.pull-right(ng-click='save()') DONE
+    //.panel-footer
+    //    .row
+    //        .col-sm-10
+    //            categories(selected-labels="selectedLabels")
+    //        .col-sm-2.pull-right
+    //            button.btn.btn-success.pull-right(ng-click='save()') DONE
 
 
 

@@ -126,3 +126,35 @@
                         .col-sm-6
                             button.btn.btn-info(ng-click="setZoneVideoWindow('bottom',zoneVideoWindow.bottom)",
                             ng-disabled="!bottomZoneForm.$valid") Save New Changes
+
+            tab(heading='Zone4 Video',ng-if="playlist.selectedPlaylist.layout.indexOf('custom') === 0")
+                h4 Change video window position for zone4
+                i
+                    small This section is for custom layouts only !! Changing  Any parameter would affect the video display size in zone4.
+
+                form(name='zone4Form')
+                    .alert.alert-info.text-center Zone4 Values
+                    .form-group.row
+                        .col-sm-2.col-sm-offset-2
+                            label.control-label: small(translate) Width:
+                        .col-sm-2
+                            input.form-control(type="text",ng-model='zoneVideoWindow.zone4.length',required='')
+                        .col-sm-2
+                            label.control-label: small(translate) Height:
+                        .col-sm-2
+                            input.form-control(type="text",ng-model="zoneVideoWindow.zone4.width",required='')
+                    .form-group.row
+                        .col-sm-2.col-sm-offset-2
+                            label.control-label: small(translate) Left-Offset:
+                        .col-sm-2
+                            input.form-control(type="text",ng-model="zoneVideoWindow.zone4.xoffset",required='')
+                        .col-sm-2
+                            label.control-label: small(translate) Top-Offset:
+                        .col-sm-2
+                            input.form-control(type="text",ng-model="zoneVideoWindow.zone4.yoffset",required='')
+                    .form-group.row
+                        .col-sm-6
+                            button.btn.btn-danger(ng-click="setZoneVideoWindow('zone4',null)") Restore Zone4 Defaults
+                        .col-sm-6
+                            button.btn.btn-info(ng-click="setZoneVideoWindow('zone4',zoneVideoWindow.zone4)",
+                                ng-disabled="!zone4Form.$valid") Save New Changes

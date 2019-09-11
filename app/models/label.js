@@ -18,6 +18,8 @@ var LabelSchema= new Schema({
 
     createdAt:              {type: Date, default: Date.now},
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}
+}, {
+    usePushEach: true
 })
 
 LabelSchema.path('name').validate(function (name) {

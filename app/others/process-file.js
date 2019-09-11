@@ -46,7 +46,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                         function(img_cb){ // resize image
                             imageMagick(src)
                                 .autoOrient()
-                                .resize(1920,1920,'>')
+                                .resize(3840,3840,'>')
                                 .write(src,function(err,op1){
                                     if(err)
                                         console.log("Image resize error for : "+src +"  "+err);
@@ -55,8 +55,12 @@ exports.processFile = function (filename, filesize, categories, cb) {
                         },
                         function (img_cb) {
                             imageMagick(src).filesize(function(err,value){
-                                if (value)
+                                if (value) {
+                                    var multipleB = value.lastIndexOf("B",value.length-2)
+                                    if (multipleB > 0)
+                                        value = value.slice(multipleB+1)
                                     mediaSize = value;
+                                }
                                 img_cb();
                             })
                         },
@@ -126,6 +130,11 @@ exports.processFile = function (filename, filesize, categories, cb) {
                         },
                         function (video_cb) {
                             probe(filePath, function (err, metadata) {
+                                if (err || !metadata || !metadata.format) {
+                                    console.log("probe error "+filePath+";"+err.message)
+                                    console.log(metadata);
+                                    return video_cb();
+                                }
                                 if (metadata) {
                                     duration = metadata.format.duration;
                                     if (metadata.format.size)

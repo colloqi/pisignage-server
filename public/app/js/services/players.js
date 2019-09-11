@@ -1,8 +1,7 @@
 'use strict';
-
 /*
 
- */
+*/
 
 angular.module('piPlayers.services', [])
     .factory('playerLoader', function ($http,piUrls,$state,assetLoader,$stateParams) {
@@ -97,94 +96,104 @@ angular.module('piPlayers.services', [])
                             })
                         });
                     }
-                    cb(!data.success);
-                })
-                .error(function (data, status) {
-                    cb(true);
-                });
-        }
-
-        var playerLoader = {
-            player: {
-                players: [],
-                currentVersion: null
-            },
-
-            group: {
-                groups: [],
-                groupNames: [],
-                selectedGroup: null
-            },
-            playlist: {
-                playlists: [],
-                playlistNames: []
-            },
-
-            reload: function() {
-                loadAllModels();
-            },
-
-            getPlayers: getPlayers,
-
-            selectGroup: function(group) {
-                playerLoader.group.selectedGroup = group;
-                $state.go("home.players.players",{group: group?group._id:null})
-                //notifyObservers();
-            },
-            registerObserverCallback: function(callback,key){
-                observerCallbacks[key] = callback;
-            }
-        }
-
-        var loadAllModels = function() {
-            async.series([
-                    function (next) {
-                        $http.get(piUrls.groups, {params:{all: "all"}})
-                            .success(function (data, status) {
-                                if (data.success) {
-                                    playerLoader.group.groups = data.data;
-                                    playerLoader.group.groupNames = playerLoader.group.groups.map(function(group){
-                                        return (group.name)
-                                    });
-                                }
-                                next()
-                            })
-                            .error(function (data, status) {
-                                next()
-                            });
-                    },
-                    function (next) {
-                        $http
-                            .get(piUrls.playlists, {})
-                            .success(function (data, status) {
-                                if (data.success) {
-                                    playerLoader.playlist.playlists = data.data;
-                                    playerLoader.playlist.playlistNames = playerLoader.playlist.playlists.map(function(playlist){
-                                        return playlist.name;
-                                    });
-                                }
-                                playerLoader.playlist.normalPlaylistNames = playerLoader.playlist.playlistNames.filter(function(name,itemIndex){
-                                    return (!((playerLoader.playlist.playlists[itemIndex].settings.ads && playerLoader.playlist.playlists[itemIndex].settings.ads.adPlaylist) ||
-                                        (playerLoader.playlist.playlists[itemIndex].settings.domination && playerLoader.playlist.playlists[itemIndex].settings.domination.enable)  ||
-                                        (playerLoader.playlist.playlists[itemIndex].settings.event && playerLoader.playlist.playlists[itemIndex].settings.event.enable)            ||
-                                        (playerLoader.playlist.playlists[itemIndex].settings.audio && playerLoader.playlist.playlists[itemIndex].settings.audio.enable)
-                                    ))
-                                });
-                                
-                                next();
-                            })
-                            .error(function (data, status) {
-                                next();
-                            });
-                    },
-                    function (next) {
-                        getPlayers(next);
+                    if(groupWise){
+                        playerLoader.player.players=playerLoader.player.players.filter(
+                            function (player) { return player.group.name===groupWise});
                     }
-                ], function (err) {
-                    notifyObservers();
-                }
-            )
+                    if(versionWise){
+                        playerLoader.player.players=playerLoader.player.players.filter(function (player) {return player.version===versionWise});
+                    }
+                    if(locationWise){
+                        playerLoader.player.players=playerLoader.player.players.filter(function (player) {retrun ((player.locationName===locationWise)||"NA")});
+                    }
+                cb(!data.success);
+            })
+            .error(function (data, status) {
+                cb(true);
+            });
+    }
+
+    var playerLoader = {
+        player: {
+            players: [],
+            currentVersion: null
+        },
+
+        group: {
+            groups: [],
+            groupNames: [],
+            selectedGroup: null
+        },
+        playlist: {
+            playlists: [],
+            playlistNames: []
+        },
+
+        reload: function() {
+            loadAllModels();
+        },
+
+        getPlayers: getPlayers,
+
+        selectGroup: function(group) {
+            playerLoader.group.selectedGroup = group;
+            $state.go("home.players.players",{group: group?group._id:null})
+            //notifyObservers();
+        },
+        registerObserverCallback: function(callback,key){
+            observerCallbacks[key] = callback;
         }
-        loadAllModels();
-        return playerLoader;
-    });
+    }
+
+    var loadAllModels = function() {
+        async.series([
+                function (next) {
+                    $http.get(piUrls.groups, {params:{all: "all"}})
+                        .success(function (data, status) {
+                            if (data.success) {
+                                playerLoader.group.groups = data.data;
+                                playerLoader.group.groupNames = playerLoader.group.groups.map(function(group){
+                                    return (group.name)
+                                });
+                            }
+                            next()
+                        })
+                        .error(function (data, status) {
+                            next()
+                        });
+                },
+                function (next) {
+                    $http
+                        .get(piUrls.playlists, {})
+                        .success(function (data, status) {
+                            if (data.success) {
+                                playerLoader.playlist.playlists = data.data;
+                                playerLoader.playlist.playlistNames = playerLoader.playlist.playlists.map(function(playlist){
+                                    return playlist.name;
+                                });
+                            }
+                            playerLoader.playlist.normalPlaylistNames = playerLoader.playlist.playlistNames.filter(function(name,itemIndex){
+                                return (!((playerLoader.playlist.playlists[itemIndex].settings.ads && playerLoader.playlist.playlists[itemIndex].settings.ads.adPlaylist) ||
+                                    (playerLoader.playlist.playlists[itemIndex].settings.domination && playerLoader.playlist.playlists[itemIndex].settings.domination.enable)  ||
+                                    (playerLoader.playlist.playlists[itemIndex].settings.event && playerLoader.playlist.playlists[itemIndex].settings.event.enable)            ||
+                                    (playerLoader.playlist.playlists[itemIndex].settings.audio && playerLoader.playlist.playlists[itemIndex].settings.audio.enable)
+                                ))
+                            });
+                            
+                            next();
+                        })
+                        .error(function (data, status) {
+                            next();
+                        });
+                },
+                function (next) {
+                    getPlayers(next);
+                }
+            ], function (err) {
+                notifyObservers();
+            }
+        )
+    }
+    loadAllModels();
+    return playerLoader;
+});

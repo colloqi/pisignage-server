@@ -99,7 +99,7 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
         },
         compile: function compile(tElement, tAttrs, transclude) {            
             if (!tAttrs.maxFiles) {
-                tAttrs.maxFiles = 10;
+                tAttrs.maxFiles = 100;
                 tElement.removeAttr("multiple")
             } else {
                 tElement.attr("multiple", "multiple");
@@ -118,7 +118,7 @@ directive('nodeimsFileUpload', ['fileUploader','piUrls', function(fileUploader, 
                     if (!e.target.files.length) return;
                     
                     scope.files = [];
-                    scope.maxFiles = scope.maxFiles || 10;
+                    scope.maxFiles = scope.maxFiles || 100;
                     scope.maxFileSizeMb = scope.maxFileSizeMb || 5000;
                     var tooBig = [];
                     if (e.target.files.length > scope.maxFiles) {

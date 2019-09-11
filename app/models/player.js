@@ -45,6 +45,8 @@ var PlayerSchema = new Schema({
     cecTvStatus:            {type: Boolean, default : true},
     piTemperature:          {type:String},
     uptime:                 {type:String}
+}, {
+    usePushEach: true
 })
 
 

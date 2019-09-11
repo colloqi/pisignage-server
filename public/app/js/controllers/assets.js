@@ -115,7 +115,147 @@ angular.module('piAssets.controllers',[])
                     true
             )
         }
+        $scope.nbDropdown = {
+        
+            selectedAssets: [],
+            label: {
+                extraSettings: {displayProp:'name', idProp:'name', externalIdProp:'name',
+                    //scrollableHeight: '200px', scrollable: true,
+                    showCheckAll:false,showUncheckAll:false  },
+                customTexts: {buttonDefaultText: "Assign Label"},
+                Label: assetLoader.label,
+                selectedLabels: [],
+                events: {
+                    onItemSelect: function(label) {
+                        //add Labels to selected files
+                        if (!$scope.playlistState && $scope.ngDropdown.selectedAssets.length) {
+                            for (var i=0,len=$scope.ngDropdown.selectedAssets.length;i<len;i++) {
+                                var asset = $scope.ngDropdown.selectedAssets[i];
+                                asset.fileDetails.labels = asset.fileDetails.labels || [];
+                                if (asset.fileDetails.labels.indexOf(label.name) == -1)
+                                    asset.fileDetails.labels.push(label.name);
+                              
+                            }
+                        }
+                    },
+                    onItemDeselect: function(label) {
+                        //delete label for the selected files
+                        if (!$scope.playlistState && $scope.ngDropdown.selectedAssets.length) {
+                            for (var i = 0, len = $scope.ngDropdown.selectedAssets.length; i < len; i++) {
+                                var asset = $scope.ngDropdown.selectedAssets[i],
+                                    index = asset.fileDetails.labels.indexOf(label.name);
+                                if (index != -1)
+                                asset.fileDetails.labels.splice(index, 1);
+                                //delete asset.selected;
+                               
+                            }
+                        }
+                    }
+                }
+            },
+            playlist: {
+                extraSettings: {displayProp:'name', idProp:'name', externalIdProp:'name',
+                    closeOnSelect: true,
+                    showCheckAll:false,showUncheckAll:false  },
+                customTexts: {buttonDefaultText:($state.current.name.indexOf("home.assets.playlists") == 0)?"AssignTo Playlist":"RemoveFrom Playlist"},
+                PlaylistTab: assetLoader.playlist,
+                selectedPlaylists: [],
+                events: {
+                    //add to the playlist
+                    onItemSelect: function() {
+                        var playlist = $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].playlist;
+                        if (playlist) {
+                            var assetNames = playlist.assets.map(function (asset) {
+                                return asset.filename;
+                            });
+                            $scope.ngDropdown.selectedAssets.forEach(function (asset) {
+                                if (assetNames.indexOf(asset.playlistDetails.filename) == -1) {
+                                    playlist.assets.push(asset.playlistDetails);
+                                    $scope.asset.groupWiseAssets[$scope.playlist.selectedPlaylist.name].assets.push(asset);
+                                }
+                            })
+                          
+                        }
+                    },
+                    onItemDeselect: function(index) {
+                       next();
+                }
+                    }
+        },
+       
+           
+        }
 
+    $scope.filtered = {selectAll: false, selected : {}, msg:""};
+    $scope.doBulkOperation = function(txt) {
+        $scope.bulkSelectedFiles=[];
+        $scope.bulkSelectedFiles = $scope.ngDropdown.selectedAssets.map(item=>item.playlistDetails.filename);
+        
+
+        $scope.filtered.selected = {}
+
+        if ($scope.bulkSelectedFiles.length)
+            $scope.operation = txt;
+        else
+            $scope.operation = null;
+        $scope.filtered.msg = "";
+        $scope.bulkModal = $modal.open({
+            templateUrl: '/app/templates/bulkAssetsOperation.html',
+            scope: $scope,
+        });
+    }
+    $scope.proceed = function() {
+        var count = 0;
+        selectDropdown=$scope.ngDropdown.selectedAssets
+        async.eachSeries($scope.bulkSelectedFiles, function (file, next) {
+            switch ($scope.operation) {
+                case "delete":
+                    $http
+                        .delete(piUrls.files + file)
+                        .then(function (response) {
+                            var data = response.data;
+                            if (data.success) {
+                                $scope.asset.files.splice($scope.asset.files.indexOf(file), 1);
+                                count += 1;
+                                assetLoader.reload();
+                            }
+                            next();
+                        }, function (response) {
+                            next();
+                        });
+                    break;
+                case "assign":
+                
+                selectFilter={}
+                
+                selectFilter=selectDropdown.filter(asset=>asset.playlistDetails.filename==file)
+                selectFilter.forEach(asset=>{
+                $http.post(piUrls.files + file, {dbdata:asset.fileDetails})
+                .success(function(data, status) {
+                    if (data.success) {
+                        asset.fileDetails = data.data;
+                        assetLoader.updateLabelsCount()
+
+                    } next();
+                })
+                .error(function(data, status) {
+                    
+                })
+            });  
+                break;
+            }
+        }, function () {
+            $scope.filtered.msg = $scope.bulkSelectedFiles.length + " files processed";   
+        })
+        $scope.ngDropdown.clearCheckboxes();
+}
+$scope.closeModal=function(){
+  
+  $scope.ngDropdown.clearCheckboxes();
+    
+    assetLoader.reload();
+    $scope.bulkModal.close();
+}
         $scope.fn = {};
             $scope.fn.editMode = false;
             $scope.fn.edit = function () {
@@ -141,11 +281,10 @@ angular.module('piAssets.controllers',[])
                     $state.reload();
                 }
             }
-
             $scope.fn.delete= function(index){
                 piPopup.confirm("File "+$scope.asset.files[index], function() {
                     $http
-                        .delete(piUrls.files+$scope.asset.files[index])
+                        .delete(piUrls.files+encodeURIComponent($scope.asset.files[index]))
                         .success(function(data, status) {
                             if (data.success) {
                                 delete $scope.asset.filesDetails[$scope.asset.files[index]];
@@ -157,7 +296,6 @@ angular.module('piAssets.controllers',[])
                         });
                 })
             }
-
             $scope.fn.rename= function(index){
                 var oldname = $scope.asset.files[index],
                     newname = $scope.names[index].name + $scope.names[index].ext;
@@ -166,7 +304,7 @@ angular.module('piAssets.controllers',[])
                     $scope.fieldStatus = "has-error";
                 } else {
                     $http
-                        .post(piUrls.files + oldname, {  newname: newname })
+                        .post(piUrls.files + encodeURIComponent(oldname), {  newname: newname })
                         .success(function (data, status) {
                             if (data.success) {
                                 $scope.asset.filesDetails[newname] = $scope.asset.filesDetails[$scope.asset.files[index]];
@@ -179,7 +317,6 @@ angular.module('piAssets.controllers',[])
                         });
                 }
             }
-
             $scope.fn.showDetails = function(file) {
                 $state.go("home.assets.assetDetails",{file:file})
             }
@@ -350,6 +487,7 @@ angular.module('piAssets.controllers',[])
 
         //dropdown selects for filter and assign selected files
         $scope.ngDropdown = {
+        
             selectedAssets: [],
             label: {
                 extraSettings: {displayProp:'name', idProp:'name', externalIdProp:'name',
@@ -369,7 +507,7 @@ angular.module('piAssets.controllers',[])
                                     asset.fileDetails.labels.push(label.name);
                                 //delete asset.selected;
 
-                                $http.post(piUrls.files + asset.fileDetails.name, {dbdata: asset.fileDetails})
+                                $http.post(piUrls.files + encodeURIComponent(asset.fileDetails.name), {dbdata: asset.fileDetails})
                                     .success(function(data, status) {
                                         if (data.success) {
                                             asset.fileDetails = data.data;
@@ -389,10 +527,10 @@ angular.module('piAssets.controllers',[])
                                 var asset = $scope.ngDropdown.selectedAssets[i],
                                     index = asset.fileDetails.labels.indexOf(label.name);
                                 if (index != -1)
-                                    asset.fileDetails.labels.splice(index, 1);
+                                asset.fileDetails.labels.splice(index, 1);
                                 //delete asset.selected;
 
-                                $http.post(piUrls.files + asset.fileDetails.name, {dbdata: asset.fileDetails})
+                                $http.post(piUrls.files + encodeURIComponent(asset.fileDetails.name), {dbdata: asset.fileDetails})
                                     .success(function (data, status) {
                                         if (data.success) {
                                             asset.fileDetails = data.data;
@@ -441,9 +579,22 @@ angular.module('piAssets.controllers',[])
                         }
                     },
                     onItemDeselect: function(index) {
-
-                    }
+                    next();
                 }
+                    }
+        },
+        toggleSelection:function(){  
+            $scope.assetConfig.assets.assets.selected=! $scope.assetConfig.assets.assets.selected   
+                if(!$scope.assetConfig.assets.assets.selected){
+                    $scope.assetConfig.assets.assets.forEach(item=>{
+                    item.selected=true        
+                    });
+                }
+                else $scope.ngDropdown.clearCheckboxes();     
+            $scope.assetConfig.assets.assets.forEach(item=>{
+                $scope.ngDropdown.checkbox(item)
+            });
+                
             },
             checkbox: function(asset) {
                 if (asset.selected){
@@ -456,9 +607,10 @@ angular.module('piAssets.controllers',[])
                     $scope.ngDropdown.selectedAssets.splice($scope.ngDropdown.selectedAssets.indexOf(asset), 1);
                 }
                 },
-            clearCheckboxes: function() {
+           clearCheckboxes: function() {
                 $scope.ngDropdown.selectedAssets.forEach(function(asset){
                     asset.selected = false;
+                    $scope.assetConfig.assets.assets.selected=false;
                 })
                 $scope.ngDropdown.selectedAssets=[];
                 $scope.ngDropdown.label.selectedLabels = [];
@@ -504,16 +656,20 @@ angular.module('piAssets.controllers',[])
             if (validityField.enddate)
                 validityField.enddate =
                     new Date(validityField.enddate)
-                    $scope.today = new Date().toISOString().split("T")[0];
-                    $scope.$watch("forAsset.fileDetails.validity.startdate", function(value) {
-                        if (value) {
-                            var endday = new Date(value);
-                            $scope.endday = endday.toISOString().split("T")[0];
-                            if (!$scope.forAsset.fileDetails.validity.enddate ||
-                                value > $scope.forAsset.fileDetails.validity.enddate)
-                                $scope.forAsset.fileDetails.validity.enddate = endday;
-                        }
-                    });
+            $scope.today = new Date().toISOString().split("T")[0];
+            $scope.$watch("forAsset.fileDetails.validity.startdate", function(value,oldvalue) {
+                if (value && (!oldvalue || (value.getTime() != oldvalue.getTime()))) {
+                    $scope.forAsset.fileDetails.validity.starthour = 0;
+                    var endday = new Date(value);
+                    $scope.endday = endday.toISOString().split("T")[0];
+                    if (!$scope.forAsset.fileDetails.validity.enddate ||
+                        value > $scope.forAsset.fileDetails.validity.enddate) {
+                        $scope.forAsset.fileDetails.validity.enddate = endday;
+                        $scope.forAsset.fileDetails.validity.endhour = 24;
+                    }
+                }
+            });
+
             $scope.scheduleValidityModal = $modal.open({
                 templateUrl: '/app/templates/schedule-validity.html',
                 scope: $scope,
@@ -522,7 +678,7 @@ angular.module('piAssets.controllers',[])
         }
 
         $scope.saveValidity = function() {
-            $http.post(piUrls.files + $scope.forAsset.fileDetails.name, {dbdata: $scope.forAsset.fileDetails})
+            $http.post(piUrls.files + encodeURIComponent($scope.forAsset.fileDetails.name), {dbdata: $scope.forAsset.fileDetails})
                 .then(function(response) {
                     var data = response.data;
                     if (data.success) {
@@ -620,6 +776,7 @@ angular.module('piAssets.controllers',[])
             case 'tv':
             case 'mrss':
             case 'txt':
+            case 'local':
                 $scope.fileType = 'link';
                 $http
                     .get(piUrls.links+$state.params.file)
@@ -638,7 +795,7 @@ angular.module('piAssets.controllers',[])
                 break;
             default:
                 $scope.fileType = 'other';
-                $http.get(piUrls.files + $state.params.file)
+                $http.get(piUrls.files + encodeURIComponent($state.params.file))
                     .success(function(data, status) {
                         if (data.success) {
                             $scope.filedetails = data.data;
@@ -668,7 +825,7 @@ angular.module('piAssets.controllers',[])
         $scope.save = function() {
             if ($scope.filedetails && $scope.filedetails.dbdata) {
                 $scope.filedetails.dbdata.labels = $scope.selectedLabels;
-                $http.post(piUrls.files + $state.params.file, {dbdata: $scope.filedetails.dbdata})
+                $http.post(piUrls.files + encodeURIComponent($state.params.file), {dbdata: $scope.filedetails.dbdata})
                     .success(function (data, status) {
                         if (data.success) {
                             $scope.asset.filesDetails[data.data.name].labels = data.data.labels;
@@ -697,7 +854,7 @@ angular.module('piAssets.controllers',[])
         $scope.delete= function(index){
             piPopup.confirm("File "+$state.params.file, function() {
                 $http
-                    .delete(piUrls.files+$state.params.file)
+                    .delete(piUrls.files+encodeURIComponent($state.params.file))
                     .success(function(data, status) {
                         if (data.success) {
                             //delete $scope.asset.filesDetails[$state.params.file];

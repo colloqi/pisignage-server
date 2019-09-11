@@ -2,13 +2,15 @@
 
 //ims Admin services
 
-angular.module('pisignage.services',[]).
+angular.module('pisignage.services',[]).factory('selectedLabel', function () {
+    return ({selectedLabel: null, labelsCount: {}})
+})
 
 factory('selectedLabel', function () {
     return ({selectedLabel: null, labelsCount: {}})
 }).
     //https://github.com/logicbomb/lvlFileUpload
-    factory('fileUploader', ['$rootScope', '$q', function($rootScope, $q) {
+    .factory('fileUploader', ['$rootScope', '$q', function($rootScope, $q) {
         var xhr, completeTransferDone;
         var svc = {
             post: function(files, data, progressCb) {

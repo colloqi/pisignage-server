@@ -17,6 +17,11 @@
                     label
                         input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[1].value")
                         small {{resolutions[1].name}}
+            .col-sm-4.col-sm-offset-4
+                .radio
+                    label
+                        input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[2].value")
+                        small {{resolutions[2].name}}
         .form-group.row
             .col-sm-4.text-right
                 .radio
@@ -254,7 +259,7 @@
                 .checkbox
                     label
                         input(type='checkbox',name='ffmpeg', ng-model='group.selectedGroup.enableMpv')
-                        small Avoid gap between videos (**BETA**, use only for short videos)
+                        small Use MPV to avoid gap between videos
 .modal-footer
     button.btn(ng-click='displayModal.close()') Cancel
     button.btn.btn-danger(ng-click='saveSettings()') OK
