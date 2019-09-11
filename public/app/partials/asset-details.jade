@@ -56,7 +56,7 @@
             .form-group.row(ng-if="urlLink.type == '.txt'|| urlLink.type == '.mrss'")
                 label.control-label.text-muted.col-sm-3.text-right: small Optional CSS
                 .col-sm-6
-                    input.form-control(type='text',name='style' ,placeholder='e.g. color:#eee; font-style:italic;',
+                    input.form-control(type='text',name='style',placeholder='e.g. color:#eee; font-style:italic;',
                         ng-model='urlLink.style')
 
             .form-group.row(ng-if="urlLink.type == '.txt'")
