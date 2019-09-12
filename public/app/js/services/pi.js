@@ -8,7 +8,7 @@ angular.module('pisignage.services',[]).factory('selectedLabel', function () {
 
 factory('selectedLabel', function () {
     return ({selectedLabel: null, labelsCount: {}})
-}).
+})
     //https://github.com/logicbomb/lvlFileUpload
     .factory('fileUploader', ['$rootScope', '$q', function($rootScope, $q) {
         var xhr, completeTransferDone;

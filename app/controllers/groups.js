@@ -257,12 +257,12 @@ function createSettings(config) {
 }
 
 function prepareExportZipFile(group) {
-    const EXPORT_ASSETS_NAME = '_export_assets';
-    const EXPORT_ASSETS_ARCHIVE = EXPORT_ASSETS_NAME + '.zip';
-    const ZIP_CMD = 'zip -r ';
+    var EXPORT_ASSETS_NAME = '_export_assets';
+    var EXPORT_ASSETS_ARCHIVE = EXPORT_ASSETS_NAME + '.zip';
+    var ZIP_CMD = 'zip -r ';
 
-    const exportAssetsDir = path.join(config.mediaDir, EXPORT_ASSETS_NAME);
-    const archiveFullPath = path.join(config.mediaDir, EXPORT_ASSETS_ARCHIVE);
+    var exportAssetsDir = path.join(config.mediaDir, EXPORT_ASSETS_NAME);
+    var archiveFullPath = path.join(config.mediaDir, EXPORT_ASSETS_ARCHIVE);
 
     var settings= Settings.findOne({}, function (err, data) {
         settings = data;
@@ -307,14 +307,14 @@ function prepareExportZipFile(group) {
                 return next();
         },
         function(next) {
-            const username = settings.authCredentials.user;
-            const password = settings.authCredentials.password;
+            var username = settings.authCredentials.user;
+            var password = settings.authCredentials.password;
             fs.writeFile(path.join(exportAssetsDir, '.wgetrc'), 'user = ' + username + '\npassword = ' + password, 'utf8', function(err) {
                 if (err) {
                     console.log("error", "wgetrc file creation error in exportAssets(to USB): " + err + "," + settings.installation + ',' + group.name)
                     return next(err);
                 }
-                const hash = require("apache-md5")(password);
+                var hash = require("apache-md5")(password);
                 fs.writeFile(path.join(exportAssetsDir, 'htpasswd'), username+":"+hash, 'utf8', function(err) {
                     if (err) {
                         console.log("error", "htpasswd file creation error in exportAssets(to USB): " + err + "," + settings.installation + ',' + group.name)
