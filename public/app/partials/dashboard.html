@@ -1,0 +1,31 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading">Player reporting status</div>
+  <div class="panel-body">
+    <div class="row statcards">
+      <div ng-repeat="bucket in playersStat  track by $index " class="col-sm-4 col-lg-2 m-b">
+        <div ng-class="'statcard-'+BUCKET_CLASS[$index]" class="statcard"><a ng-href="{{'#/dashboard/players?bucket='+$index}}" class="btn btn-block">
+            <div class="p-a text-white"><span class="statcard-desc">{{BUCKET_TITLE[$index]}}</span>
+              <h2 class="statcard-number">{{bucket}}</h2>
+            </div></a></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-heading">  Players expected to report now</div>
+  <div style="max-height:200px;overflow-y:scroll" class="panel-body">
+    <h4 ng-repeat="player in playersExpectedToReport | orderBy:'lastReported':true track by $index" class="text-center">{{player.name }}:&nbsp;<i class="text-muted">{{player.lastReported | timeAgo}}</i></h4>
+    <h6 ng-show="playersExpectedToReport.length == 0" class="text-center text-muted">There are no players went offline just now</h6>
+  </div>
+  <div class="panel-heading">  Players expected to report now</div>
+  <div class="panel-body">
+    <div class="row">
+      <div ng-repeat-start="playerTable in COUNT_FIELDS_TO_SHOW" class="col-md-6 m-b-md">
+        <div class="list-group">
+          <h4 class="list-group-item list-group-item-info">{{playerTable.name}}</h4><a ng-repeat="row in playersStatFieldWise[playerTable.field+'Count'] | limitTo:(displayLimit || 10) track by $index" ng-href="{{'#/dashboard/players?'+playerTable.field+'='+row.name}}" class="list-group-item text-primary">{{row.name}}<span class="pull-right text-muted">{{row.count}}</span></a>
+        </div><a ng-show="playersStatFieldWise[playerTable.field+'Count'].length &gt; 10" ng-click="displayLimit==1000?displayLimit=10:displayLimit=1000;" class="btn btn-primary-outline p-x">{{displayLimit==1000?"Show less":"All players"}}</a>
+      </div>
+      <div ng-if="$index % 2 == 1" class="clearfix"></div>
+      <div ng-repeat-end="ng-repeat-end"></div>
+    </div>
+  </div>
+</div>

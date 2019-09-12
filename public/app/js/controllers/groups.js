@@ -338,6 +338,17 @@ angular.module('piGroups.controllers', [])
                 if ($scope.forPlaylist.settings.enddate) {
                     $scope.forPlaylist.settings.enddate = new Date($scope.forPlaylist.settings.enddate)
                 }
+                $scope.today = new Date().toISOString().split("T")[0];
+                $scope.$watch("forPlaylist.settings.startdate", function(value) {
+                    if (value) {
+                        var endday = new Date(value);
+                        $scope.endday = endday.toISOString().split("T")[0];
+                        if (!$scope.forPlaylist.settings.enddate ||
+                            value > $scope.forPlaylist.settings.enddate)
+                            $scope.forPlaylist.settings.enddate = endday;
+                    }
+                });
+                
                 // if ($scope.forPlaylist.settings.starttimeObj) {
                 //     $scope.forPlaylist.settings.starttimeObj = new Date($scope.forPlaylist.settings.starttimeObj)
                 // }

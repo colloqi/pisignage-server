@@ -97,7 +97,24 @@ body {
 .text-lightgreen {
     color:lightgreen;
 }
-
+.success{
+  background:  	#00C993;
+}
+.primary{
+    background:  #01A9D8;
+}
+.info{
+    background: #A088F6;
+}
+.warning{
+    background: #E4D757;
+}
+.light-danger{
+    background: #EEA1A9;
+}
+.danger{
+    background: #EB4559;
+}
 .pl-5 {
     padding-left: 5px;
 }
@@ -127,6 +144,87 @@ body {
     max-width:988px;
     transform: rotate(90deg);
 }
+.statcard-number {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.statcard-number .label {
+    padding: .125em .5em;
+    font-size: 50%;
+    vertical-align: middle;
+}
+.statcard-desc {
+    font-size: 85%;
+    letter-spacing: .15em;
+    color: #888888;
+    text-transform: uppercase;
+}
+
+.statcard-primary,
+.statcard-success,
+.statcard-info,
+.statcard-warning,
+.statcard-danger {
+    color: #fff;
+    border-radius: 3px;
+}
+.statcard-primary .delta-negative,
+.statcard-success .delta-negative,
+.statcard-info .delta-negative,
+.statcard-warning .delta-negative,
+.statcard-danger .delta-negative,
+.statcard-primary .delta-positive,
+.statcard-success .delta-positive,
+.statcard-info .delta-positive,
+.statcard-warning .delta-positive,
+.statcard-danger .delta-positive,
+.statcard-primary .statcard-number,
+.statcard-success .statcard-number,
+.statcard-info .statcard-number,
+.statcard-warning .statcard-number,
+.statcard-danger .statcard-number {
+    font-weight: normal;
+    color: inherit;
+}
+.statcard-primary .statcard-desc,
+.statcard-success .statcard-desc,
+.statcard-info .statcard-desc,
+.statcard-warning .statcard-desc,
+.statcard-danger .statcard-desc {
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.65);
+}
+.statcard-primary .statcard-hr,
+.statcard-success .statcard-hr,
+.statcard-info .statcard-hr,
+.statcard-warning .statcard-hr,
+.statcard-danger .statcard-hr {
+    margin-left: -20px;
+    margin-right: -20px;
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+.statcard-primary {
+    background-color: #1CA8DD;
+}
+.statcard-success {
+    background-color: #1BC98E;
+}
+.statcard-info {
+    background-color: #9F86FF;
+}
+.statcard-warning {
+    background-color: #E4D836;
+}
+.statcard-danger {
+    background-color: #E64759;
+}
+
+.statcard-light-danger {
+    background-color:#eba1a9;
+}
+
+
+
 
 
 

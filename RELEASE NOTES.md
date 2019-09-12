@@ -66,4 +66,21 @@
 1. Programmable delay for sending keystrokes to webpage link screen instead of fixed 10 seconds - under weblink 
 
 
+**2.5.4**
+
+1. Inline with pisignage.com release 2.5.4 (**a8a234f96**)  
+    - Media RSS, video/image text messages, asset specific ticker message, zone4 video support, mute support for video streaming   
+    - Support for Pi 4 and 4K assets
+    - Support for start and end hour for asset validity period 
+    - Local folder/file play support 
+    - Support shuffle content before play and merge alternate assets from different playlists options for group playlists
+1. Added dashboard
+1. Remove deprecate warnings and server crashes 
+1. Default resolution of new groups changed to auto 
+1. Display CPU temperature both in Centigrade and Fahrenheit
+1. Auto adjustment of end-date when start-date is changed to the start date (if end date is earlier)
+1. Limits enhanced - file size for upload to 5GB, max files to 100, max playlists to schedule to 100  
+1. Issue fixes with UI 
+1. Lexicographic sorting of assets and playlists
+
 

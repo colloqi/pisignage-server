@@ -1,0 +1,31 @@
+.panel.panel-default
+    .panel-heading Player reporting status
+    .panel-body
+        .row.statcards
+            .col-sm-4.col-lg-2.m-b(ng-repeat='bucket in playersStat  track by $index ')
+                .statcard(ng-class="'statcard-'+BUCKET_CLASS[$index]")
+                    a.btn.btn-block(ng-href="{{'#/dashboard/players?bucket='+$index}}")
+                        .p-a.text-white
+                            span.statcard-desc {{BUCKET_TITLE[$index]}}
+                            h2.statcard-number {{bucket}}
+    .panel-heading   Players expected to report now
+    .panel-body(style="max-height:200px;overflow-y:scroll")
+            h4.text-center(ng-repeat="player in playersExpectedToReport | orderBy:'lastReported':true track by $index") {{player.name }}:&nbsp;
+                i.text-muted {{player.lastReported | timeAgo}}
+            h6.text-center.text-muted(ng-show="playersExpectedToReport.length == 0") There are no players went offline just now
+            
+    .panel-heading   Players expected to report now
+    .panel-body
+        .row
+            .col-md-6.m-b-md(ng-repeat-start="playerTable in COUNT_FIELDS_TO_SHOW" )
+                .list-group
+                    h4.list-group-item.list-group-item-info {{playerTable.name}}
+                    a.list-group-item.text-primary(ng-repeat="row in playersStatFieldWise[playerTable.field+'Count'] | limitTo:(displayLimit || 10) track by $index",
+                            ng-href="{{'#/dashboard/players?'+playerTable.field+'='+row.name}}")
+                        | {{row.name}}
+                        span.pull-right.text-muted {{row.count}}
+                a.btn.btn-primary-outline.p-x(ng-show="playersStatFieldWise[playerTable.field+'Count'].length > 10",ng-click="displayLimit==1000?displayLimit=10:displayLimit=1000;")
+                    | {{displayLimit==1000?"Show less":"All players"}}
+
+            .clearfix(ng-if="$index % 2 == 1")
+            div(ng-repeat-end)
