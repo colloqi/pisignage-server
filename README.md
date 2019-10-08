@@ -4,7 +4,13 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
 
     run npm install command after git pull and before starting the server
 
-**Upgrading to latest from existing versions**
+## Recommended Server configuration 
+- Intel CPU based VM or server
+- 2GB minimum memory
+- 30GB+ SSD or hard disk
+- Linux based OS
+
+## Upgrading to latest from existing versions**
 
 1. Change to pisignage-server directory where you have pulled the code last time
 1. Issue the command `git pull origin master`
