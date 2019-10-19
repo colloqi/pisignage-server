@@ -67,15 +67,16 @@ exports.deploy = function (installation,group, cb) {
                                             filesNotPresent.push(file)
                                         }
                                         iterative_cb();
-                                } else if (file.match(/^__.*\.json$/)) {
+                                // } else if (file.match(/^__.*\.json$/)) {
+                                } else {
                                     //copy the playlist files instead of symlink
                                     var cbCalled = false,
-                                        done = function(err) {
+                                        done = function (err) {
                                             if (!cbCalled) {
                                                 if (err) {
                                                     console.log(err)
                                                     var errMessage = "Unable to copy playlist " + file + " for " + installation
-                                                    util.log(errMessage )
+                                                    util.log(errMessage)
                                                     iterative_cb(errMessage);
                                                 } else
                                                     iterative_cb();
@@ -84,28 +85,28 @@ exports.deploy = function (installation,group, cb) {
                                         }
 
                                     var rd = fs.createReadStream(srcfile);
-                                    rd.on("error", function(err) {
+                                    rd.on("error", function (err) {
                                         done(err);
                                     });
                                     var wr = fs.createWriteStream(dstfile);
-                                    wr.on("error", function(err) {
+                                    wr.on("error", function (err) {
                                         done(err);
                                     });
-                                    wr.on("close", function(ex) {
+                                    wr.on("close", function (ex) {
                                         done();
                                     });
                                     rd.pipe(wr);
-
-                                } else {
-                                    //console.log("file is present; " + file)
-                                    fs.symlink(srcfile, dstfile, function (err) {
-                                        if (err && (err.code != 'ENOENT')) {
-                                            iterative_cb();
-                                        } else {
-                                            iterative_cb();
-                                        }
-                                    })
                                 }
+                                // } else {
+                                //     //console.log("file is present; " + file)
+                                //     fs.symlink(srcfile, dstfile, function (err) {
+                                //         if (err && (err.code != 'ENOENT')) {
+                                //             iterative_cb();
+                                //         } else {
+                                //             iterative_cb();
+                                //         }
+                                //     })
+                                // }
                             })
                         })
                     },
