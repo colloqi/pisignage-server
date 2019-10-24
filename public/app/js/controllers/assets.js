@@ -306,7 +306,7 @@ angular.module('piAssets.controllers',[])
                 type: '.tv',
                 link: null,
                 zoom: 1.0,
-                duration: 10,
+                duration: null, //playlist asset duration is used
                 hideTitle: 'title'    //actually show Rss text type
 
             },
