@@ -10,6 +10,11 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
 - 30GB+ SSD or hard disk
 - Linux based OS
 
+## Pi 4 and Ubuntu based pisignage-server image - Experimental
+
+- You could download the SD card image from [here](https://pisignage.s3.amazonaws.com/pisignage-server-images/Pi4-pisignage-server-ubuntu.img.zip)
+- The PDF guide for the same is available [here](https://pisignage.s3.amazonaws.com/pisignage-server-images/piServer+-+User+Guide.pdf)
+
 ## Upgrading to latest from existing versions**
 
 1. Change to pisignage-server directory where you have pulled the code last time
