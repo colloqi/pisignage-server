@@ -93,6 +93,12 @@ io.on('error', function (err) {console.log("caught ECONNRESET error 2");console.
 io.sockets.on('error', function (err) {console.log("caught ECONNRESET error 3");console.log(err)});
 ioNew.on('error', function (err) {console.log("caught ECONNRESET error 4");console.log(err)});
 ioNew.sockets.on('error', function (err) {console.log("caught ECONNRESET error 5");console.log(err)});
+process.on('uncaughtException', function(err, origin) {
+    fs.writeSync(
+        process.stderr.fd,
+        '***WARNING***  Caught exception: '+err+', Exception origin: '+origin + '*******\n'
+    );
+})
 
 // Expose app
 module.exports = app;
