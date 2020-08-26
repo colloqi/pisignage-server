@@ -151,7 +151,7 @@
           </label>
         </div>
       </div>
-      <div ng-show="group.selectedGroup.showClock.enable" class="col-sm-3">
+      <div ng-show="group.selectedGroup.showClock.enable" class="col-sm-2">
         <div class="radio">
           <label>
             <input type="radio" ng-model="group.selectedGroup.showClock.position" value="top"/><small>Top</small>
@@ -163,7 +163,7 @@
           </label>
         </div>
       </div>
-      <div ng-show="group.selectedGroup.showClock.enable" class="col-sm-3">
+      <div ng-show="group.selectedGroup.showClock.enable" class="col-sm-2">
         <div class="radio">
           <label>
             <input type="radio" ng-model="group.selectedGroup.showClock.format" value="12"/><small>12 hr</small>
@@ -172,6 +172,18 @@
         <div class="radio">
           <label>
             <input type="radio" ng-model="group.selectedGroup.showClock.format" value="24"/><small>24 hr</small>
+          </label>
+        </div>
+      </div>
+      <div ng-show="group.selectedGroup.showClock.enable" class="col-sm-2">
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.showClock.format" value="12d"/><small>date+12h</small>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="group.selectedGroup.showClock.format" value="24d"/><small>date+24h</small>
           </label>
         </div>
       </div>
