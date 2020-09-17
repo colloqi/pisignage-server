@@ -67,8 +67,8 @@ exports.deploy = function (installation,group, cb) {
                                             filesNotPresent.push(file)
                                         }
                                         iterative_cb();
-                                // } else if (file.match(/^__.*\.json$/)) {
-                                } else {
+                                //} else if (file.match(/^__.*\.json$/)) {     //uncomment this line and comment next line for symlinks
+                                } else if (true) {
                                     //copy the playlist files instead of symlink
                                     var cbCalled = false,
                                         done = function (err) {
@@ -96,17 +96,16 @@ exports.deploy = function (installation,group, cb) {
                                         done();
                                     });
                                     rd.pipe(wr);
+                                } else {
+                                    //console.log("file is present; " + file)
+                                    fs.symlink(srcfile, dstfile, function (err) {
+                                        if (err && (err.code != 'ENOENT')) {
+                                            iterative_cb();
+                                        } else {
+                                            iterative_cb();
+                                        }
+                                    })
                                 }
-                                // } else {
-                                //     //console.log("file is present; " + file)
-                                //     fs.symlink(srcfile, dstfile, function (err) {
-                                //         if (err && (err.code != 'ENOENT')) {
-                                //             iterative_cb();
-                                //         } else {
-                                //             iterative_cb();
-                                //         }
-                                //     })
-                                // }
                             })
                         })
                     },
