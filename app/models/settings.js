@@ -15,6 +15,8 @@ var SettingsSchema = new Schema({
     hideWelcomeNotice: {type: Boolean, default: false},
     reportIntervalMinutes:  {type: Number, default: 5},
     enableYoutubeDl : {type: Boolean, default: true},
+    date : {type: String, default: ''},
+    version : {type: String, default: ''},
     authCredentials: {
         user: {type: String , default: 'pi'},
         password: {type: String , default: 'pi'}

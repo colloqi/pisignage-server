@@ -70,7 +70,7 @@ var checkAndDownloadImage = function() {
         function (async_cb) {
             //read version, different from local one
             if (!update) {
-                fs.access(path.join(config.releasesDir,"piimage"+serverVersion+"-v6.zip"), (fs.constants || fs).F_OK, function(err) {
+                fs.access(path.join(config.releasesDir,"piimage"+serverVersion+"-v14.zip"), (fs.constants || fs).F_OK, function(err) {
                     if (err) {
                         update = true;
                         console.log(err);
@@ -92,7 +92,11 @@ var checkAndDownloadImage = function() {
             imageFileV6 = path.join(config.releasesDir,"piimage"+serverVersion+"-v6.zip"),
             linkFile = path.join(config.releasesDir,"pi-image.zip"),
             linkFileV6 = path.join(config.releasesDir,"pi-image-v6.zip"),
-            linkFileV6_2 = path.join(config.releasesDir,("piimage"+serverVersion).slice(0,("piimage"+serverVersion).indexOf(".")) + "-v6.zip")
+            linkFileV6_2 = path.join(config.releasesDir,("piimage"+serverVersion).slice(0,("piimage"+serverVersion).indexOf(".")) + "-v6.zip"),
+            serverLinkV14 = "http://pisignage.com/releases/piimage"+serverVersion+"-v14.zip",
+            imageFileV14 = path.join(config.releasesDir,"piimage"+serverVersion+"-v14.zip"),
+            linkFileV14 = path.join(config.releasesDir,"pi-image-v14.zip"),
+            linkFileV14_2 = path.join(config.releasesDir,("piimage"+serverVersion).slice(0,("piimage"+serverVersion).indexOf(".")) + "-v14.zip");
         download(serverLink,
             imageFile,
             function (err) {
@@ -104,32 +108,47 @@ var checkAndDownloadImage = function() {
                             if (err) {
                                 console.log(err)
                             } else {
-                                //create the symbolic link pi-image.zip to the the donwloaded zip file
-                                fs.unlink(linkFile, function (err) {
-                                    fs.symlink(imageFile, linkFile, function (err) {
-                                        if (err) console.log(err)
+                                download(serverLinkV14,
+                                    imageFileV14, function (err) {
+                                        if (err){
+                                            console.log(err);
+                                        } else {
+                                            //create the symbolic link pi-image.zip to the the donwloaded zip file
+                                            fs.unlink(linkFile, function (err) {
+                                                fs.symlink(imageFile, linkFile, function (err) {
+                                                    if (err) console.log(err)
+                                                })
+                                            })
+                                            fs.unlink(linkFileV6, function (err) {
+                                                fs.symlink(imageFileV6, linkFileV6, function (err) {
+                                                    if (err) console.log(err)
+                                                })
+                                            })
+                                            fs.unlink(linkFileV6_2, function (err) {
+                                                fs.symlink(imageFileV6, linkFileV6_2, function (err) {
+                                                    if (err) console.log(err)
+                                                })
+                                            })
+                                            fs.unlink(linkFileV14, function (err) {
+                                                fs.symlink(imageFileV14, linkFileV14, function (err) {
+                                                    if (err) console.log(err);
+                                                });
+                                            });
+                                            fs.unlink(linkFileV14_2, function (err) {
+                                                fs.symlink(imageFileV14, linkFileV14_2, function (err) {
+                                                    if (err) console.log(err);
+                                                });
+                                            });
+                                            // update local package.json with the downloaded one
+                                            fs.unlink(packageJsonFile, function (err) {
+                                                fs.rename(serverFile, packageJsonFile, function (err) {
+                                                    if (err) console.log(err)
+                                                })
+                                            })
+                                            console.log("piSignage image updated to " + serverVersion);
+                                        }
                                     })
 
-                                })
-                                fs.unlink(linkFileV6, function (err) {
-                                    fs.symlink(imageFileV6, linkFileV6, function (err) {
-                                        if (err) console.log(err)
-                                    })
-
-                                })
-                                fs.unlink(linkFileV6_2, function (err) {
-                                    fs.symlink(imageFileV6, linkFileV6_2, function (err) {
-                                        if (err) console.log(err)
-                                    })
-
-                                })
-                                // update local package.json with the downloaded one
-                                fs.unlink(packageJsonFile, function (err) {
-                                    fs.rename(serverFile, packageJsonFile, function (err) {
-                                        if (err) console.log(err)
-                                    })
-                                })
-                                console.log("piSignage image updated to " + serverVersion);
                             }
                         })
                 }
