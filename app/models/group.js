@@ -7,6 +7,7 @@ var GroupSchema = new Schema({
 
     playlists:              [],
     playlistToSchedule:      String,
+    defaultCustomTemplate:  String,
     combineDefaultPlaylist: {type: Boolean , default: false},
     playAllEligiblePlaylists: {type: Boolean , default: false},
     shuffleContent:         {type: Boolean , default: false},
@@ -24,14 +25,20 @@ var GroupSchema = new Schema({
     lastDeployed:           String,
 
     enableMpv:              {type: Boolean, default: false},
+    disableWebUi:           {type: Boolean, default: false},
+    disableWarnings:        {type: Boolean, default: false},
+    disableAp:              {type: Boolean, default: false},
+
     orientation:            {type: String,default: 'landscape'},
     animationEnable:        {type: Boolean, default: false},
     animationType:          {type: String, default: null},
     resizeAssets:           {type: Boolean, default: true},
     videoKeepAspect:        {type: Boolean, default: false},
+    videoShowSubtitles:     {type: Boolean, default: false},
     imageLetterboxed:       {type: Boolean, default: false},
     signageBackgroundColor: {type: String, default: "#000"},
     urlReloadDisable:       {type: Boolean, default: true},
+    keepWeblinksInMemory:   {type: Boolean, default: false},
     loadPlaylistOnCompletion:{type: Boolean, default: false},
     resolution:             {type: String,default: 'auto'},
     sleep: {
@@ -87,11 +94,10 @@ GroupSchema.statics = {
     list: function (options, cb) {
         var criteria = options.criteria || {}
 
-        if (!criteria.all) {
+        if (!(criteria.all || criteria.name)) {
             criteria.name = {"$not": /__player__/}
-        } else {
-            delete criteria.all
         }
+        delete criteria.all;
         this.find(criteria)
             .sort({name: 1}) // sort by date
             .limit(options.perPage)

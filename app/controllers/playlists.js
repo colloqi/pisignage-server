@@ -165,6 +165,10 @@ exports.savePlaylist = function (req, res) {
                 }
                 fileData.version = fileData.version || 0;
             }
+            if (req.body.name) {
+                fileData.name = req.body.name;
+                dirty = true;
+            }
             if (req.body.settings) {
                 fileData.settings = req.body.settings;
                 dirty = true;

@@ -3,6 +3,7 @@
 var fs = require('fs'),
 	path = require('path'),
 	async = require('async'),
+    exec = require('child_process').exec,
     _ = require('lodash');
 
 var serverIp = require('ip').address();
@@ -94,7 +95,17 @@ exports.getSettings = function(req,res) {
         } else {
             var obj = data.toObject()
             obj.serverIp = serverIp;
-            return rest.sendSuccess(res, 'Settings', obj);
+            exec('git log -1 --format=%cd;git rev-parse HEAD',function(err,stdout,stderr){
+                if(err || stderr){
+                    obj.date = 'N/A';
+                    obj.version = 'N/A';
+                }else{
+                    stdout = stdout.trim().split('\n');
+                    obj.date = [stdout[0].split(' ')[1],stdout[0].split(' ')[2],stdout[0].split(' ')[4]].join(' '); 
+                    obj.version = stdout[1].slice(0,6);
+                }
+                return rest.sendSuccess(res, 'Settings', obj);
+            });
         }
     })
 }

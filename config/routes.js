@@ -65,6 +65,9 @@ router.post('/api/snapshot/:playerid',players.takeSnapshot)
 router.post('/api/swupdate/:playerid', players.swupdate)
 router.post('/api/pitv/:playerid',players.tvPower);
 
+router.post('/api/playlistmedia/:playerid/:action',  players.playlistMedia);
+router.post('/api/setplaylist/:playerid/:playlist',  players.setPlaylist);
+
 router.param('playerid', players.loadObject)
 
 router.get('/api/labels', labels.index);
