@@ -95,8 +95,7 @@ var checkAndDownloadImage = function() {
             linkFileV6_2 = path.join(config.releasesDir,("piimage"+serverVersion).slice(0,("piimage"+serverVersion).indexOf(".")) + "-v6.zip"),
             serverLinkV14 = "http://pisignage.com/releases/piimage"+serverVersion+"-v14.zip",
             imageFileV14 = path.join(config.releasesDir,"piimage"+serverVersion+"-v14.zip"),
-            linkFileV14 = path.join(config.releasesDir,"pi-image-v14.zip"),
-            linkFileV14_2 = path.join(config.releasesDir,("piimage"+serverVersion).slice(0,("piimage"+serverVersion).indexOf(".")) + "-v14.zip");
+            linkFileV14 = path.join(config.releasesDir,"pi-image-v14.zip")
         download(serverLink,
             imageFile,
             function (err) {
@@ -131,11 +130,6 @@ var checkAndDownloadImage = function() {
                                             })
                                             fs.unlink(linkFileV14, function (err) {
                                                 fs.symlink(imageFileV14, linkFileV14, function (err) {
-                                                    if (err) console.log(err);
-                                                });
-                                            });
-                                            fs.unlink(linkFileV14_2, function (err) {
-                                                fs.symlink(imageFileV14, linkFileV14_2, function (err) {
                                                     if (err) console.log(err);
                                                 });
                                             });
