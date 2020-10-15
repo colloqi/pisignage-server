@@ -6,6 +6,7 @@ nav.navbar.navbar-default.navbar-fixed-top
                 i.fa.fa-bars
             a.navbar-brand(href='http://pisignage.com', target="_self")
                 img(src="app/img/pisignage-logo.png",height="32px")
+
         #navbar.navbar-collapse.collapse
             ul.nav.navbar-nav(style="margin-left:20px;")
                 li(ng-class="getClass('home.dashboard')")
@@ -28,7 +29,9 @@ nav.navbar.navbar-default.navbar-fixed-top
                         small.text-info follow us on&nbsp;
                             i.fa.fa-twitter-square.text-info
                             | &nbsp;for latest updates and tips
-                    small.text-info Hash: {{serverConfig.version}}, {{serverConfig.date}}
+                        br
+                        small.text-muted version hash: {{serverConfig.version}}, {{serverConfig.date}}
+
 
 
 .container.height100.overflow-hidden(ui-view="main",autoscroll="false")
