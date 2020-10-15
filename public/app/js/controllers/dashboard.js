@@ -84,7 +84,10 @@ angular.module('dashboard.controllers', [])
         getPlayers()
         $scope.playerFetchTimer =$interval(getPlayers,60000);
 
-        getPlayers();
+        $scope.refresh = function(e) {
+            getPlayers();
+            e.currentTarget.blur();
+        }
 
         $scope.$on("$destroy", function(){
             $interval.cancel($scope.playerFetchTimer)

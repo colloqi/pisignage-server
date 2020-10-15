@@ -89,7 +89,8 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                         formatName = metadata.format.format_name;
                                     if ((vdoInfo && vdoInfo.codec_name != 'h264') ||
                                         (formatName.indexOf('mp4') == -1) ||
-                                        (vdoInfo && vdoInfo.pix_fmt == 'yuv422p')
+                                        (vdoInfo && vdoInfo.pix_fmt == 'yuv422p') ||
+                                        (parseInt(vdoInfo.width) * parseInt(vdoInfo.height) > 2073600 )   //1080p pixels
                                     ) {
                                         new FFmpeg({source: src})
                                             .audioCodec('libfdk_aac')

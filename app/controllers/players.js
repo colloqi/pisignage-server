@@ -152,7 +152,9 @@ var sendConfig = function (player, group, periodic) {
         retObj.animationEnable =  group.animationEnable || false;
     retObj.resizeAssets = group.resizeAssets || false;
     retObj.videoKeepAspect = group.videoKeepAspect || false;
+    retObj.videoShowSubtitles = group.videoShowSubtitles || false;
     retObj.imageLetterboxed = group.imageLetterboxed || false;
+    retObj.brightness = group.brightness || { defaults: { control: 'None', level: 'Bright' }, schedule: [] };
     retObj.sleep = group.sleep || {enable: false, ontime: null , offtime: null };
     retObj.reboot = group.reboot || {enable: false, time: null };
     retObj.signageBackgroundColor =  group.signageBackgroundColor || "#000";
@@ -168,7 +170,12 @@ var sendConfig = function (player, group, periodic) {
     retObj.shuffleContent = group.shuffleContent || false;
     retObj.alternateContent = group.alternateContent || false;
     retObj.urlReloadDisable =  group.urlReloadDisable || false;
+    retObj.keepWeblinksInMemory =  group.keepWeblinksInMemory || false;
     retObj.loadPlaylistOnCompletion =  group.loadPlaylistOnCompletion || false;
+    retObj.disableWebUi =  group.disableWebUi || false;
+    retObj.disableWarnings =  group.disableWarnings || false;
+    retObj.disableAp =  group.disableAp || false;
+
     //if (!pipkgjson)
         //pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
     retObj.currentVersion = { version: pipkgjson.version, platform_version: pipkgjson.platform_version,
@@ -186,7 +193,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.reportIntervalMinutes=settings.reportIntervalMinutes;
     retObj.authCredentials = settings.authCredentials;
     retObj.enableLog = settings.enableLog || false;
-    retObj.enableYoutubeDl = settings.enableYoutubeDl || false;
+    retObj.enableYoutubeDl = true;
     if (settings.sshPassword)
         retObj.sshPassword = settings.sshPassword;
     retObj.currentTime = Date.now();
@@ -491,6 +498,87 @@ exports.shellAck = function (sid, response) {
     }
 
 }
+
+var pendingPlaylistChanges = {};
+var playlistChangeTimers = {};
+
+var pendingPlayerActions = {
+    pause: {},
+    forward: {},
+    backward: {}
+};
+var playerActionTimers = {
+    pause: {},
+    forward: {},
+    backward: {}
+};
+
+exports.playlistMedia = function (req, res) {
+    var object = req.object,
+        sid = object.socket;
+    var action = req.params.action;
+
+    // logger.log('info', 'Player action: ' + action);
+    var socketIO = (object.newSocketIo?newSocketio:oldSocketio);
+    socketIO.emitMessage(sid, 'playlist_media', action);
+
+    pendingPlayerActions[action][sid] = res;
+    clearTimeout(playerActionTimers[action][sid]);
+
+    playerActionTimers[action][sid] = setTimeout(function(){
+        if (playerActionTimers[action][sid]) {
+            delete playerActionTimers[action][sid];
+            rest.sendSuccess(res, 'Request Timeout',
+                { err: 'No response from the player, make sure the player is online and try again.'});
+            pendingPlayerActions[action][sid] = null;
+        }
+    },60000)
+
+};
+
+
+exports.setPlaylist = function(req, res) {
+    var object = req.object;
+    var playlist = req.params.playlist;
+    var sid = object.socket;
+    var socketIo = (object.newSocketIo ? newSocketio : oldSocketio);
+    socketIo.emitMessage(sid, 'setplaylist', playlist);
+
+    pendingPlaylistChanges[sid] = res;
+    clearTimeout(playlistChangeTimers[sid]);
+    playlistChangeTimers[sid] = setTimeout(function() {
+        delete playlistChangeTimers[sid];
+        if (pendingPlaylistChanges[sid]) {
+            var errMsg = 'Could not get response from the player for changing playlist, make sure player is online';
+            rest.sendSuccess(res, 'Request Timeout', { err: errMsg });
+            pendingPlaylistChanges[sid] = null;
+        }
+    }, 60000);
+};
+
+exports.playlistMediaAck = function(sid, response) {
+    var data = {};
+
+    if (response.action && pendingPlayerActions[response.action][sid]) {
+        clearTimeout(playerActionTimers[response.action][sid]);
+        delete playerActionTimers[response.action][sid];
+        data.action = response.action;
+        if (response.action === 'pause') {
+            data.isPaused = response.isPaused;
+        }
+        rest.sendSuccess(pendingPlayerActions[response.action][sid], response.msg, data);
+        pendingPlayerActions[response.action][sid] = null;
+    }
+};
+
+exports.playlistChangeAck = function(sid, response) {
+    if (pendingPlaylistChanges[sid]) {
+        clearTimeout(playlistChangeTimers[sid]);
+        delete playlistChangeTimers[sid];
+        rest.sendSuccess(pendingPlaylistChanges[sid], 'Playlist change response', response);
+        pendingPlaylistChanges[sid] = null;
+    }
+};
 
 exports.swupdate = function (req, res) {
     var object = req.object,

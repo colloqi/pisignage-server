@@ -957,6 +957,11 @@ angular.module('piGroups.controllers', [])
 
         $scope.playerFetchTimer =$interval(playerLoader.getPlayers,60000);
 
+        $scope.refresh = function(e) {
+            playerLoader.getPlayers();
+            e.currentTarget.blur();
+        };
+
         $scope.$on("$destroy", function(){
             $interval.cancel($scope.playerFetchTimer)
         });
