@@ -187,6 +187,11 @@ angular.module('piServerApp', [
                 
             })
 
+        angular.lowercase = function(text) {             //deprectaed in 1.7.x
+            return text.toLowerCase();
+        }
+
+
         $httpProvider.interceptors.push(function ($q, $rootScope) {
 
             var onlineStatus = false;

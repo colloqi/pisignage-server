@@ -207,7 +207,8 @@ angular.module('piAssets.controllers',[])
             ondone: function (files, data) {           //called when upload is done
                 $scope.uploadedFiles = files;
                 if (data.data) {
-                    data.data.forEach(function (item) {
+                    data.data.forEach(function (item,i) {
+                        $scope.uploadedFiles[i].name = item.name;
                         if ($scope.asset.files.indexOf(item.name) == -1)
                             $scope.asset.files.push(item.name);
                     });
@@ -462,7 +463,7 @@ angular.module('piAssets.controllers',[])
 
         $scope.scheduleValidity = function(asset) {
             $scope.forAsset = asset;
-            var validityField = asset.fileDetails.validity || {enable: false};
+            var validityField = asset.fileDetails && asset.fileDetails.validity || {enable: false};
             if (validityField.startdate)
                 validityField.startdate =
                     new Date(validityField.startdate)
