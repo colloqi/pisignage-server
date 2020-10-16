@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
 
 var oldSocketio = require('./server-socket'),
     newSocketio = require('./server-socket-new'),
+    webSocket = require('./server-socket-ws'),
     licenses = require('./licenses');
 
 var installation,
@@ -197,7 +198,7 @@ var sendConfig = function (player, group, periodic) {
     if (settings.sshPassword)
         retObj.sshPassword = settings.sshPassword;
     retObj.currentTime = Date.now();
-    var socketio = (player.newSocketIo?newSocketio:oldSocketio);
+    var socketio = (player.webSocket?webSocket:(player.newSocketIo?newSocketio:oldSocketio));
     socketio.emitMessage(player.socket, 'config', retObj);
 }
 
@@ -474,7 +475,7 @@ exports.shell = function (req, res) {
     var object = req.object,
         sid = object.socket;
     pendingCommands[sid] = res;
-    var socketio = (object.newSocketIo?newSocketio:oldSocketio);
+    var socketio = (object.webSocket?webSocket:(object.newSocketIo?newSocketio:oldSocketio));
     socketio.emitMessage(sid, 'shell', cmd);
 
     clearTimeout(shellCmdTimer[sid]);
@@ -586,7 +587,7 @@ exports.swupdate = function (req, res) {
     if (!version) {
         version = 'piimage'+pipkgjson.version+'.zip'
     }
-    var socketio = (object.newSocketIo?newSocketio:oldSocketio);
+    var socketio = (object.webSocket?webSocket:(object.newSocketIo?newSocketio:oldSocketio));
     socketio.emitMessage(object.socket, 'swupdate',version);
     //console.log("updating to "+(version?version:'piimage'+pipkgjson.version+'.zip'));
     return rest.sendSuccess(res, 'SW update command issued');
@@ -633,7 +634,7 @@ exports.upload = function (cpuId, filename, data) {
                     }
                 }
             }
-            var socketio = (player.newSocketIo?newSocketio:oldSocketio);
+            var socketio = (player.webSocket?webSocket:(player.newSocketIo?newSocketio:oldSocketio));
             socketio.emitMessage(player.socket, 'upload_ack', filename);
         } else {
             console.log("ignoring file upload: " + filename);
@@ -651,7 +652,7 @@ exports.tvPower = function(req,res){
         arg =  {off: req.body.status}
     }
 
-    var socketio = (object.newSocketIo?newSocketio:oldSocketio);
+    var socketio = (object.webSocket?webSocket:(object.newSocketIo?newSocketio:oldSocketio));
     socketio.emitMessage(object.socket,'cmd',cmd,arg );
     return rest.sendSuccess(res,'Player command issued');
 }
@@ -711,7 +712,7 @@ exports.takeSnapshot = function (req, res) { // send socket.io event
                 );
             })
         }, 60000)
-        var socketio = (object.newSocketIo?newSocketio:oldSocketio);
+        var socketio = (object.webSocket?webSocket:(object.newSocketIo?newSocketio:oldSocketio));
         socketio.emitMessage(object.socket, 'snapshot');
     }
 }

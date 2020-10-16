@@ -31,6 +31,7 @@ var PlayerSchema = new Schema({
     isConnected:            {type: Boolean,index: true},
     socket:                 {type: String,index: true},
     newSocketIo:            {type: Boolean,default:false},
+    webSocket:              {type: Boolean,default:false},
 
     registered:             {type: Boolean, default: false},
     serverServiceDisabled:  {type: Boolean, default: false},

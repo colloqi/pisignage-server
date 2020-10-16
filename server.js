@@ -6,9 +6,11 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var express = require('express'),
     oldSocketio = require('919.socket.io'),
     socketio = require('socket.io'),
+    WebSocket = require('ws'),
     mongoose= require('mongoose');
 
 var path = require('path'),
+    url = require('url'),
     fs = require('fs');
 
 // Application Config
@@ -63,7 +65,7 @@ else {
     server = require('http').createServer(app);
 }
 
-var io = oldSocketio.listen(server);
+var io = oldSocketio.listen(server,{'destroy upgrade':false});
 var ioNew = socketio(server,{
     path: '/newsocket.io',
     serveClient: true,
@@ -77,6 +79,16 @@ var ioNew = socketio(server,{
 //Bootstrap socket.io
 require('./app/controllers/server-socket').startSIO(io);
 require('./app/controllers/server-socket-new').startSIO(ioNew);
+var wss = new WebSocket.Server({server:server,path:"/websocket"});
+require("./app/controllers/server-socket-ws").startSIO(wss);
+            server.on('upgrade', function upgrade(request, socket, head) {
+                var pathname = url.parse(request.url).pathname;
+                if (pathname === '/WebSocket') {
+                    wss.handleUpgrade(request, socket, head, function done(ws) {
+                        wss.emit('connection', ws, request);
+                    });
+                }
+            });
 
 require('./app/controllers/scheduler');
 
