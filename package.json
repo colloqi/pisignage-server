@@ -45,7 +45,8 @@
     "serve-favicon": "^2.5.0",
     "serve-index": "^1.9.1",
     "socket.io": "^2.1.1",
-    "sshpk": ">=1.13.2"
+    "sshpk": ">=1.13.2",
+    "ws": "^7.3.1"
   },
   "devDependencies": {
     "nodemon": "latest"
