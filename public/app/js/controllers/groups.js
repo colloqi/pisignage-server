@@ -804,7 +804,7 @@ angular.module('piGroups.controllers', [])
             if (player.statusClass == "text-danger")
                 return console.log("Player is offline");
             $scope.msg = {player:player,curVer:player.version,
-                newVer:$scope.player.currentVersion.version, beta:$scope.player.currentVersion.beta};
+                newVer:player.player2?$scope.player.currentVersion.versionP2:$scope.player.currentVersion.version,};
             $scope.modal = $modal.open({
                 templateUrl: '/app/templates/swupdate-popup.html',
                 scope: $scope

@@ -20,6 +20,7 @@ var installation,
 
 var pipkgjson ={},
     pipkgjsonBeta = {},
+    pipkgjsonP2 ={},
     fs = require('fs');
 
 var readVersions = function() {
@@ -32,6 +33,13 @@ var readVersions = function() {
         pipkgjsonBeta = JSON.parse(fs.readFileSync('data/releases/package-beta.json', 'utf8'))
     } catch(e) {
         pipkgjsonBeta = {};
+    }
+    try{
+        pipkgjsonP2 = JSON.parse(fs.readFileSync('data/releases/package-p2.json', 'utf8'));
+        pipkgjson.versionP2 = pipkgjsonP2.version;
+    }
+    catch(e) {
+        pipkgjsonP2 = {};
     }
 }
 readVersions();
@@ -179,8 +187,11 @@ var sendConfig = function (player, group, periodic) {
 
     //if (!pipkgjson)
         //pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
-    retObj.currentVersion = { version: pipkgjson.version, platform_version: pipkgjson.platform_version,
-        beta: pipkgjsonBeta.version}
+    retObj.currentVersion = { 
+        version: pipkgjson.version, platform_version: pipkgjson.platform_version,
+        beta: pipkgjsonBeta.version,
+        versionP2:pipkgjson.versionP2
+    }
     // retObj.gcal = {
     //     id: config.gCalendar.CLIENT_ID,
     //     token: config.gCalendar.CLIENT_SECRET
@@ -199,6 +210,7 @@ var sendConfig = function (player, group, periodic) {
         retObj.sshPassword = settings.sshPassword;
     retObj.currentTime = Date.now();
     var socketio = (player.webSocket?webSocket:(player.newSocketIo?newSocketio:oldSocketio));
+    console.log(retObj)
     socketio.emitMessage(player.socket, 'config', retObj);
 }
 
@@ -272,8 +284,11 @@ exports.index = function (req, res) {
             pages: Math.ceil(objects.length / perPage),
             count: objects.length
         };
-        data.currentVersion = {version: pipkgjson.version, platform_version: pipkgjson.platform_version,
-                    beta: pipkgjsonBeta.version};
+        data.currentVersion = {
+                    version: pipkgjson.version, platform_version: pipkgjson.platform_version,
+                    beta: pipkgjsonBeta.version,
+                    versionP2:pipkgjson.versionP2
+                };
         return rest.sendSuccess(res, 'sending Player list', data);
     })
 }
@@ -588,7 +603,7 @@ exports.swupdate = function (req, res) {
         version = 'piimage'+pipkgjson.version+'.zip'
     }
     var socketio = (object.webSocket?webSocket:(object.newSocketIo?newSocketio:oldSocketio));
-    socketio.emitMessage(object.socket, 'swupdate',version);
+    socketio.emitMessage(object.socket, 'swupdate',version,'piimage'+pipkgjson.versionP2+'-p2.zip');
     //console.log("updating to "+(version?version:'piimage'+pipkgjson.version+'.zip'));
     return rest.sendSuccess(res, 'SW update command issued');
 }
