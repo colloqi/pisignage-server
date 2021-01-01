@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <button ng-click="cancel()" class="close">&times;</button>
+  <h3 class="text-danger">Enter license data</h3>
+</div>
+<div class="modal-body">
+  <input type="text" name="playerNumber1" placeholder="Player number..."ng-model="newLicenseData.playerId" />
+  <input type="text" name="siteName1" placeholder="Site name..." ng-model="newLicenseData.siteName" />
+</div>
+<div class="modal-footer">
+  <button ng-click="cancel()" class="btn">Cancel</button>
+  <button ng-click="ok()" class="btn btn-danger">Generate</button>
+</div>

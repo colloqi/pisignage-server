@@ -1,14 +1,20 @@
-
 <div class="row height100 overflow-auto">
   <div class="panel panel-info">
     <div class="panel-heading">
       <div class="row">
-        <div class="col-xs-10">
+        <div class="col-xs-8">
           <h4>Available Licenses in the server</h4>
         </div>
         <div class="col-xs-2">
           <button class="btn btn-success pull-right">
-            <nodeims-file-upload post-path="api/licensefiles" onstart="upload.onstart()" ondone="upload.ondone(status,msg)" onerror="upload.onerror(status,msg)"></nodeims-file-upload><strong style="color:white;">Upload</strong>
+            <nodeims-file-upload post-path="api/licensefiles" onstart="upload.onstart()"
+              ondone="upload.ondone(status,msg)" onerror="upload.onerror(status,msg)"></nodeims-file-upload><strong
+              style="color:white;">Upload</strong>
+          </button>
+        </div>
+        <div class="col-xs-2">
+          <button ng-click="generateLicense()" class="btn btn-success pull-right">
+            <strong style="color:white;">Generate license</strong>
           </button>
         </div>
       </div>
@@ -22,7 +28,8 @@
     <ul class="list-group">
       <li ng-repeat="file in savedFiles |  filter: searchLicense" class="list-group-item">
         <p>{{file}}
-          <button ng-click="deleteEntry(file)" class="btn btn-link btn-sm pull-right"><i class="fa fa-close text-danger"></i></button>
+          <button ng-click="deleteEntry(file)" class="btn btn-link btn-sm pull-right"><i
+              class="fa fa-close text-danger"></i></button>
         </p>
       </li>
     </ul>
@@ -37,14 +44,16 @@
           <label for="user" class="col-xs-4 control-label">username at pisignage.com</label>
           <div class="col-xs-4">
             <div class="input-group">
-              <input type="text" name="user" ng-model="settings.installation" required="" class="form-control"/><span class="input-group-btn"><a type="button" ng-click="saveSettings()" ng-disabled="!settingsForm.user.$dirty" class="btn btn-success">SAVE</a></span>
+              <input type="text" name="user" ng-model="settings.installation" required="" class="form-control" /><span
+                class="input-group-btn"><a type="button" ng-click="saveSettings()"
+                  ng-disabled="!settingsForm.user.$dirty" class="btn btn-success">SAVE</a></span>
             </div><small class="text-danger">{{loadMsg}}</small>
           </div>
         </div>
         <div class="form-group">
           <label class="col-xs-4 control-label">SSH Password</label>
           <div class="col-xs-2">
-            <input type="password" name="sshPassword" ng-model="settings.sshPassword"/>
+            <input type="password" name="sshPassword" ng-model="settings.sshPassword" />
           </div>
           <div class="col-xs-2">
             <button type="submit" ng-click="saveSettings()" class="btn btn-success"> Save</button>
@@ -53,7 +62,7 @@
         <div class="form-group">
           <label class="col-xs-4 control-label">Default Duration for Slides</label>
           <div class="col-xs-2">
-            <input type="text" name="duration" ng-model="settings.defaultDuration" class="form-control"/>
+            <input type="text" name="duration" ng-model="settings.defaultDuration" class="form-control" />
           </div>
           <div class="col-xs-2">
             <button type="submit" ng-click="saveSettings()" class="btn btn-success"> Save</button>
@@ -62,35 +71,41 @@
         <div class="form-group">
           <div class="checkbox">
             <label class="col-xs-8 col-xs-offset-4">
-              <input type="checkbox" name="youtubedl" ng-model="settings.enableYoutubeDl" ng-change="saveSettings()"/><span>Use youtube-dl program for livestreaming instead of livestreamer</span>
+              <input type="checkbox" name="youtubedl" ng-model="settings.enableYoutubeDl"
+                ng-change="saveSettings()" /><span>Use youtube-dl program for livestreaming instead of
+                livestreamer</span>
             </label>
           </div>
         </div>
         <div class="form-group">
           <div class="checkbox">
             <label class="col-xs-8 col-xs-offset-4">
-              <input type="checkbox" name="forcetvon" ng-model="settings.forceTvOn" ng-click="saveSettings()"/><span>Keep TV on by sending CEC tv-on/off message every 3 minutes</span>
+              <input type="checkbox" name="forcetvon" ng-model="settings.forceTvOn"
+                ng-click="saveSettings()" /><span>Keep TV on by sending CEC tv-on/off message every 3 minutes</span>
             </label>
           </div>
         </div>
         <div class="form-group">
           <div class="checkbox">
             <label class="col-xs-8 col-xs-offset-4">
-              <input type="checkbox" name="systemshow" ng-model="settings.systemMessagesHide" ng-click="saveSettings()"/><span>Hide system messages on TV Screen (e.g. Download in Progress)</span>
+              <input type="checkbox" name="systemshow" ng-model="settings.systemMessagesHide"
+                ng-click="saveSettings()" /><span>Hide system messages on TV Screen (e.g. Download in Progress)</span>
             </label>
           </div>
         </div>
         <div class="form-group">
           <div class="checkbox">
             <label class="col-xs-8 col-xs-offset-4">
-              <input type="checkbox" name="hidenotice" ng-model="settings.hideWelcomeNotice" ng-change="saveSettings()"/><span>Do not show startup welcome screen &  skip network diagnostics</span>
+              <input type="checkbox" name="hidenotice" ng-model="settings.hideWelcomeNotice"
+                ng-change="saveSettings()" /><span>Do not show startup welcome screen & skip network diagnostics</span>
             </label>
           </div>
         </div>
         <div class="form-group">
           <label class="col-xs-4 control-label">Player reporting interval in minutes</label>
           <div class="col-xs-2">
-            <input type="number" name="reportinterval" ng-model="settings.reportIntervalMinutes" placeholder="default 5 minutes" class="form-control"/>
+            <input type="number" name="reportinterval" ng-model="settings.reportIntervalMinutes"
+              placeholder="default 5 minutes" class="form-control" />
           </div>
           <div class="col-xs-2">
             <button type="submit" ng-click="saveSettings()" class="btn btn-success">Save</button>
@@ -99,7 +114,9 @@
         <div class="form-group">
           <div class="checkbox">
             <label class="col-xs-8 col-xs-offset-4">
-              <input type="checkbox" name="logs" ng-model="settings.enableLog" ng-change="saveSettings()"/><span class="text-warning">Enable log for file play count/details (network intensive, do not enable unless you need it!)</span>
+              <input type="checkbox" name="logs" ng-model="settings.enableLog" ng-change="saveSettings()" /><span
+                class="text-warning">Enable log for file play count/details (network intensive, do not enable unless you
+                need it!)</span>
             </label>
           </div>
         </div>
@@ -129,16 +146,18 @@
         <div class="form-group">
           <label for="user" class="col-xs-4 control-label">Username</label>
           <div class="col-xs-4">
-            <input type="text" name="user" ng-model="settings.authCredentials.user" required="" class="form-control"/>
+            <input type="text" name="user" ng-model="settings.authCredentials.user" required="" class="form-control" />
           </div>
         </div>
         <div class="form-group">
           <label for="password" class="col-xs-4 control-label">Password</label>
           <div class="col-xs-4">
-            <input type="password" name="password" ng-model="settings.authCredentials.password" required="" class="form-control col-xs-5"/>
+            <input type="password" name="password" ng-model="settings.authCredentials.password" required=""
+              class="form-control col-xs-5" />
           </div>
           <div class="col-xs-4">
-            <button type="submit" ng-click="saveSettings()" ng-disabled="downloadAccessForm.$invalid" class="btn btn-success"> Save</button>
+            <button type="submit" ng-click="saveSettings()" ng-disabled="downloadAccessForm.$invalid"
+              class="btn btn-success"> Save</button>
           </div>
         </div>
         <div class="form-group">
