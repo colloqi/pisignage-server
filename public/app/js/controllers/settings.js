@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('piSettings.controllers', []).
-    controller('SettingsCtrl', function ($scope, $http, piUrls, $state, $modal, $window) {
+    controller('SettingsCtrl', function ($scope, $http, piUrls, $state, $modal,$window) {
 
         //licenses part
 
@@ -65,52 +65,19 @@ angular.module('piSettings.controllers', []).
                 console.log(err);
             })
 
-        $scope.saveSettings = function () {
+        $scope.saveSettings= function(){
             $http.post(piUrls.settings, $scope.settings)
-                .success(function (data, status) {
+                .success(function(data, status) {
                     if (data.success) {
                     }
                     //if ($scope.settingsForm.user.$dirty) {
-                    $scope.settingsForm.$setPristine();
-                    $scope.loadMsg = "reloading..."
-                    setTimeout($window.location.reload.bind($window.location), 2000);
+                        $scope.settingsForm.$setPristine();
+                        $scope.loadMsg = "reloading..."
+                        setTimeout($window.location.reload.bind($window.location), 2000);
                     //}
                 })
-                .error(function (data, status) {
+                .error(function(data, status) {
                 });
         }
 
-        $scope.generateLicense = function () { // generate license
-            $scope.newLicenseData = {
-                playerId: '',
-                siteName: ''
-            };
-
-            $scope.modal = $modal.open({
-                animation: true,
-                scope: $scope,
-                templateUrl: '/app/templates/generateLicensePopup.html'
-            })
-
-            $scope.ok = function () {
-                $http.post(piUrls.licenseGenerate, {
-                    playerId: $scope.newLicenseData.playerId,
-                    siteName: $scope.newLicenseData.siteName
-                })
-                    .success(function (data) {
-                        if (data.success) {
-                            $scope.modal.dismiss();
-                        } else {
-                            //TODO notify better
-                            alert("something went wrong...")
-                        }
-
-                    }).error(function (err) {
-                        alert("something went wrong...")
-                    })
-            }
-            $scope.cancel = function () {
-                $scope.modal.dismiss();
-            }
-        }
     });

@@ -82,7 +82,6 @@ require('../app/controllers/licenses').getSettingsModel(function(err,settings){
 })
 router.get('/api/licensefiles',licenses.index);
 router.delete('/api/licensefiles/:filename',licenses.deleteLicense)
-router.post('/api/licensefiles/generate',licenses.generateLicense)
 
 router.get('/api/settings',licenses.getSettings)
 router.post('/api/settings',licenses.updateSettings)

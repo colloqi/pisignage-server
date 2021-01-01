@@ -21,7 +21,6 @@ angular.module('piConfig', [])
             calendars:       base + 'api/calendars/',
             links:           base + 'api/links/',
             licenses:        base + 'api/licensefiles/',
-            licenseGenerate: base + 'api/licensefiles/generate', // TODO: route for now..
             settings:        base + 'api/settings/',
             serverConfig:    base + 'api/serverconfig/',
 
