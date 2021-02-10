@@ -27,6 +27,28 @@ mongoose.connect(config.mongo.uri, config.mongo.options,function(error){
         process.exit(1);
     }
 });
+//create docker directories if needed
+fs.mkdir(config.releasesDir, function(err) {
+    if (err && (err.code != 'EEXIST')) {
+        console.log("Error creating logs directory, "+err.code)
+    }
+});
+fs.mkdir(config.licenseDir, function(err) {
+    if (err && (err.code != 'EEXIST')) {
+        console.log("Error creating logs directory, "+err.code)
+    }
+});
+fs.mkdir(config.syncDir, function(err) {
+    if (err && (err.code != 'EEXIST')) {
+        console.log("Error creating logs directory, "+err.code)
+    }
+});
+fs.mkdir(config.thumbnailDir, function(err) {
+    if (err && (err.code != 'EEXIST')) {
+        console.log("Error creating logs directory, "+err.code)
+    }
+});
+
 
 
 // check system 

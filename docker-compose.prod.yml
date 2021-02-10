@@ -1,0 +1,25 @@
+services:
+  mongo:
+    image: mongo:4.2.8
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
+  pisignage-server:
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    volumes:
+      - media:/media
+      - data:/data
+    depends_on:
+      mongo:
+        condition: service_started
+
+volumes:
+  mongodb:
+  mongodb_config:
+  media:
+  data:

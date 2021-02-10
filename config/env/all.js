@@ -3,9 +3,12 @@
 //installation and authCredentials has been moved to db, configure at settings tab
 var path = require('path');
 
+// var rootPath = process.cwd(),
+//     dataDir = path.join(rootPath, '/data'),
+//     assetDir = path.join(rootPath, '/../media');
 var rootPath = process.cwd(),
-    dataDir = path.join(rootPath, '/data'),
-    assetDir = path.join(rootPath, '/../media');
+    dataDir = path.join('/data'),
+    assetDir = path.join('/media');
 
 module.exports = {
     root: rootPath,
