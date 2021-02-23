@@ -1,6 +1,7 @@
 services:
   mongo:
     image: mongo:4.2.8
+    restart: unless-stopped
     ports:
       - 27017:27017
     volumes:
@@ -8,6 +9,7 @@ services:
       - mongodb_config:/data/configdb
   pisignage-server:
     image: pisignage/pisignage-server:latest
+    restart: unless-stopped
     ports:
       - 3000:3000
     volumes:
