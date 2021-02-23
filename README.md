@@ -4,6 +4,16 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
 
     run npm install command after git pull and before starting the server
 
+## Docker image available - beta
+- Install docker from https://docs.docker.com/get-docker/
+- Install git if needed  & issue `git clone https://github.com/colloqi/pisignage-server`
+  
+   OR 
+  
+   just get the file https://raw.githubusercontent.com/colloqi/pisignage-server/master/docker-compose.yml
+- docker-compose -d up
+- Use the url http://localhost:3000  to launch web application
+
 ## Recommended Server configuration 
 - Intel CPU based VM or server
 - 2GB minimum memory
