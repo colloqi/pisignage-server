@@ -11,7 +11,7 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
    OR 
   
    just get the file https://raw.githubusercontent.com/colloqi/pisignage-server/master/docker-compose.yml
-- docker-compose -d up
+- docker-compose  up -d
 - Use the url http://localhost:3000  to launch web application
 
 ## Recommended Server configuration 
