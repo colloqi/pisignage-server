@@ -15,7 +15,11 @@
     <form role="form" name="linkform" ng-show="fileType==&quot;link&quot;">
       <div ng-if="urlLink.type != '.txt'" class="form-group row">
         <label class="control-label text-muted col-sm-3 text-right"><small>Address</small></label>
-        <div class="col-xs-8"><span>{{urlLink.link}}<a ng-disabled="!urlLink.link" href="{{urlLink.link}}" target="_blank" class="btn btn-link"><i class="fa fa-external-link"></i></a></span></div>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <input type="text" name="linkAddress" ng-model="urlLink.link" required="" class="form-control "/><span class="input-group-btn"><a ng-disabled="!urlLink.link" href="{{urlLink.link}}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i></a></span>
+          </div>
+        </div>
       </div>
       <div class="form-group row">
         <label class="control-label text-muted col-sm-3 text-right"><small>Type</small></label>
