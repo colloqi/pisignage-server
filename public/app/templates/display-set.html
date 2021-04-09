@@ -13,21 +13,21 @@
       <div class="col-sm-4">
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.resolution" ng-value="resolutions[0].value"/><small>{{resolutions[0].name}}</small>
+            <input type="radio" ng-model="tempPopup.resolution" ng-value="resolutions[0].value"/><small>{{resolutions[0].name}}</small>
           </label>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.resolution" ng-value="resolutions[1].value"/><small>{{resolutions[1].name}}</small>
+            <input type="radio" ng-model="tempPopup.resolution" ng-value="resolutions[1].value"/><small>{{resolutions[1].name}}</small>
           </label>
         </div>
       </div>
       <div class="col-sm-4 col-sm-offset-4">
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.resolution" ng-value="resolutions[2].value"/><small>{{resolutions[2].name}}</small>
+            <input type="radio" ng-model="tempPopup.resolution" ng-value="resolutions[2].value"/><small>{{resolutions[2].name}}</small>
           </label>
         </div>
       </div>
@@ -41,14 +41,14 @@
       <div class="col-sm-4">
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.orientation" ng-value="orientations[0].value"/><small>{{orientations[0].name}}</small>
+            <input type="radio" ng-model="tempPopup.orientation" ng-value="orientations[0].value"/><small>{{orientations[0].name}}</small>
           </label>
         </div>
       </div>
       <div class="col-sm-4">
         <div ng-repeat="type in orientations" ng-if="$index &gt; 0" class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.orientation" ng-value="type.value"/><small>{{type.name}}</small>
+            <input type="radio" ng-model="tempPopup.orientation" ng-value="type.value"/><small>{{type.name}}</small>
           </label>
         </div>
       </div>
@@ -62,36 +62,36 @@
       <div class="col-sm-2">
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.animationEnable" ng-change="group.selectedGroup.animationType = null;" ng-value="false"/><small>Disable</small>
+            <input type="radio" ng-model="tempPopup.animationEnable" ng-change="tempPopup.animationType = null;" ng-value="false"/><small>Disable</small>
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="blend"/><small class="text-primary">Blend</small>
-          </label>
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="radio">
-          <label>
-            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="right"/><small>Slide right</small>
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="left"/><small>Slide left</small>
+            <input type="radio" ng-model="tempPopup.animationType" ng-change="tempPopup.animationEnable = true;" value="blend"/><small class="text-primary">Blend</small>
           </label>
         </div>
       </div>
       <div class="col-sm-3">
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="up"/><small>Slide up</small>
+            <input type="radio" ng-model="tempPopup.animationType" ng-change="tempPopup.animationEnable = true;" value="right"/><small>Slide right</small>
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.animationType" ng-change="group.selectedGroup.animationEnable = true;" value="down"/><small>Slide down</small>
+            <input type="radio" ng-model="tempPopup.animationType" ng-change="tempPopup.animationEnable = true;" value="left"/><small>Slide left</small>
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="tempPopup.animationType" ng-change="tempPopup.animationEnable = true;" value="up"/><small>Slide up</small>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="tempPopup.animationType" ng-change="tempPopup.animationEnable = true;" value="down"/><small>Slide down</small>
           </label>
         </div>
       </div>
@@ -105,7 +105,7 @@
       </div>
       <div class="col-xs-3">
         <div class="input-group input-group-sm">
-          <input type="color" ng-model="group.selectedGroup.signageBackgroundColor" class="form-control"/><small class="input-group-addon">{{group.selectedGroup.signageBackgroundColor}}</small>
+          <input type="color" ng-model="tempPopup.signageBackgroundColor" class="form-control"/><small class="input-group-addon">{{tempPopup.signageBackgroundColor}}</small>
         </div>
       </div>
       <div class="col-sm-2 col-sm-offset-1">
@@ -114,7 +114,7 @@
         </div>
       </div>
       <div class="col-sm-2">
-        <input type="number" min="0" max="100" ng-model="group.selectedGroup.omxVolume" class="form-control"/>
+        <input type="number" min="0" max="100" ng-model="tempPopup.omxVolume" class="form-control"/>
       </div>
     </div>
     <div class="form-group row">
@@ -124,17 +124,17 @@
         </div>
       </div>
       <div class="col-xs-4">
-        <button ng-click="showFileList()" class="btn btn-sm btn-link"><small>{{group.selectedGroup.logo || "Select a png image from Assets"}}</small></button>
-        <button ng-if="group.selectedGroup.logo" ng-click="group.selectedGroup.logo=null" class="btn btn-xs btn-warning">X</button>
+        <button ng-click="showFileList()" class="btn btn-sm btn-link"><small>{{tempPopup.logo || "Select a png image from Assets"}}</small></button>
+        <button ng-if="tempPopup.logo" ng-click="tempPopup.logo=null" class="btn btn-xs btn-warning">X</button>
       </div>
       <div class="col-xs-2">
         <div class="form-group">
-          <input type="text" placeholder="x pos" ng-model="group.selectedGroup.logox" class="input-sm form-control"/>
+          <input type="text" placeholder="x pos" ng-model="tempPopup.logox" class="input-sm form-control"/>
         </div>
       </div>
       <div class="col-xs-2">
         <div class="form-group">
-          <input type="text" placeholder="y pos" ng-model="group.selectedGroup.logoy" class="input-sm form-control"/>
+          <input type="text" placeholder="y pos" ng-model="tempPopup.logoy" class="input-sm form-control"/>
         </div>
       </div>
     </div>
@@ -147,43 +147,43 @@
       <div class="col-sm-2">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="show_clock" ng-model="group.selectedGroup.showClock.enable"/><small>Show</small>
+            <input type="checkbox" name="show_clock" ng-model="tempPopup.showClock.enable"/><small>Show</small>
           </label>
         </div>
       </div>
-      <div ng-show="group.selectedGroup.showClock.enable" class="col-sm-2">
+      <div ng-show="tempPopup.showClock.enable" class="col-sm-2">
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.showClock.position" value="top"/><small>Top</small>
+            <input type="radio" ng-model="tempPopup.showClock.position" value="top"/><small>Top</small>
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.showClock.position" value="bottom"/><small>Bottom</small>
-          </label>
-        </div>
-      </div>
-      <div ng-show="group.selectedGroup.showClock.enable" class="col-sm-2">
-        <div class="radio">
-          <label>
-            <input type="radio" ng-model="group.selectedGroup.showClock.format" value="12"/><small>12 hr</small>
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" ng-model="group.selectedGroup.showClock.format" value="24"/><small>24 hr</small>
+            <input type="radio" ng-model="tempPopup.showClock.position" value="bottom"/><small>Bottom</small>
           </label>
         </div>
       </div>
-      <div ng-show="group.selectedGroup.showClock.enable" class="col-sm-2">
+      <div ng-show="tempPopup.showClock.enable" class="col-sm-2">
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.showClock.format" value="12d"/><small>date+12h</small>
+            <input type="radio" ng-model="tempPopup.showClock.format" value="12"/><small>12 hr</small>
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.showClock.format" value="24d"/><small>date+24h</small>
+            <input type="radio" ng-model="tempPopup.showClock.format" value="24"/><small>24 hr</small>
+          </label>
+        </div>
+      </div>
+      <div ng-show="tempPopup.showClock.enable" class="col-sm-2">
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="tempPopup.showClock.format" value="12d"/><small>date+12h</small>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" ng-model="tempPopup.showClock.format" value="24d"/><small>date+24h</small>
           </label>
         </div>
       </div>
@@ -198,17 +198,17 @@
       <div class="col-sm-2">
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.imageSize" ng-value="0"/><small>Actual</small>
+            <input type="radio" ng-model="tempPopup.imageSize" ng-value="0"/><small>Actual</small>
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.imageSize" ng-value="1"/><small>Letterbox</small>
+            <input type="radio" ng-model="tempPopup.imageSize" ng-value="1"/><small>Letterbox</small>
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.imageSize" ng-value="2"/><small>Stretched</small>
+            <input type="radio" ng-model="tempPopup.imageSize" ng-value="2"/><small>Stretched</small>
           </label>
         </div>
       </div>
@@ -220,7 +220,7 @@
       <div class="col-sm-2">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="reload_checkbox" ng-model="group.selectedGroup.urlReloadDisable" ng-true-value="false" ng-false-value="true" ng-checked="group.selectedGroup.urlReloadDisable !== true"/><small>Enable</small>
+            <input type="checkbox" name="reload_checkbox" ng-model="tempPopup.urlReloadDisable" ng-true-value="false" ng-false-value="true" ng-checked="tempPopup.urlReloadDisable !== true"/><small>Enable</small>
           </label>
         </div>
       </div>
@@ -234,18 +234,18 @@
       <div class="col-sm-2">
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.videoSize" ng-value="1"/><small>Letterbox</small>
+            <input type="radio" ng-model="tempPopup.videoSize" ng-value="1"/><small>Letterbox</small>
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" ng-model="group.selectedGroup.videoSize" ng-value="2"/><small>Stretched</small>
+            <input type="radio" ng-model="tempPopup.videoSize" ng-value="2"/><small>Stretched</small>
           </label>
         </div>
       </div>
       <div class="col-sm-4 text-right"><small>Stop video every seconds to show adverts (0 to disable)</small></div>
       <div class="col-sm-2">
-        <input type="number" placeholder="secs" ng-model="group.selectedGroup.timeToStopVideo" class="input-sm form-control"/>
+        <input type="number" placeholder="secs" ng-model="tempPopup.timeToStopVideo" class="input-sm form-control"/>
       </div>
     </div>
     <hr/>
@@ -258,20 +258,20 @@
       <div class="col-sm-4">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="sleep_checkbox" ng-model="group.selectedGroup.sleep.enable"/><small>Enable</small>
+            <input type="checkbox" name="sleep_checkbox" ng-model="tempPopup.sleep.enable"/><small>Enable</small>
           </label>
         </div>
       </div>
     </div>
-    <div ng-show="group.selectedGroup.sleep.enable" class="form-group row">
+    <div ng-show="tempPopup.sleep.enable" class="form-group row">
       <div class="col-sm-4 col-sm-offset-4">
         <label><small>ON at</small>
-          <input type="time" ng-model="group.selectedGroup.sleep.ontimeObj" class="form-control"/>
+          <input type="time" ng-model="tempPopup.sleep.ontimeObj" class="form-control"/>
         </label>
       </div>
       <div class="col-sm-4">
         <label><small>OFF at</small>
-          <input type="time" ng-model="group.selectedGroup.sleep.offtimeObj" class="form-control"/>
+          <input type="time" ng-model="tempPopup.sleep.offtimeObj" class="form-control"/>
         </label>
       </div>
       <div class="col-sm-10 col-sm-offset-2"><small class="text-info">For finer control use TV_OFF playlist under group scheduling</small></div>
@@ -286,19 +286,19 @@
       <div class="col-sm-2">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="reboot_checkbox" ng-model="group.selectedGroup.reboot.enable"/><small>enable</small>
+            <input type="checkbox" name="reboot_checkbox" ng-model="tempPopup.reboot.enable"/><small>enable</small>
           </label>
         </div>
       </div>
       <div class="col-sm-2 text-right">
         <div class="radio">
-          <label class="text-muted"><small ng-show="group.selectedGroup.reboot.enable" class="text-muted">at</small></label>
+          <label class="text-muted"><small ng-show="tempPopup.reboot.enable" class="text-muted">at</small></label>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="checkbox">
           <label>
-            <input ng-show="group.selectedGroup.reboot.enable" type="time" ng-model="group.selectedGroup.reboot.time" class="input-sm form-control"/>
+            <input ng-show="tempPopup.reboot.enable" type="time" ng-model="tempPopup.reboot.time" class="input-sm form-control"/>
           </label>
         </div>
       </div>
@@ -313,18 +313,18 @@
       <div class="col-sm-2">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="kioskui_checkbox" ng-model="group.selectedGroup.kioskUi.enable"/><small>Enable</small>
+            <input type="checkbox" name="kioskui_checkbox" ng-model="tempPopup.kioskUi.enable"/><small>Enable</small>
           </label>
         </div>
       </div>
-      <div ng-show="group.selectedGroup.kioskUi.enable" class="col-sm-6">
+      <div ng-show="tempPopup.kioskUi.enable" class="col-sm-6">
         <div class="input-group input-group-sm"><small class="input-group-addon">URL</small>
-          <input type="text" placeholder="Leave blank for default" ng-model="group.selectedGroup.kioskUi.url" class="input-sm form-control"/>
+          <input type="text" placeholder="Leave blank for default" ng-model="tempPopup.kioskUi.url" class="input-sm form-control"/>
         </div>
       </div>
-      <div ng-show="group.selectedGroup.kioskUi.enable" class="col-sm-5 col-sm-offset-6">
+      <div ng-show="tempPopup.kioskUi.enable" class="col-sm-5 col-sm-offset-6">
         <div class="input-group input-group-sm"><small class="input-group-addon">Inactivitiy timeout</small>
-          <input type="number" placeholder="30 secs" ng-model="group.selectedGroup.kioskUi.timeout" class="input-sm form-control"/>
+          <input type="number" placeholder="30 secs" ng-model="tempPopup.kioskUi.timeout" class="input-sm form-control"/>
         </div>
       </div>
     </div>
@@ -338,7 +338,36 @@
       <div class="col-sm-8">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="ffmpeg" ng-model="group.selectedGroup.enableMpv"/><small>Use MPV to avoid gap between videos</small>
+            <input type="checkbox" name="ffmpeg" ng-model="tempPopup.enableMpv"/><small>Use MPV to avoid gap between videos</small>
+          </label>
+        </div>
+      </div>
+    </div>
+    <hr/>
+    <div class="form-group row">
+      <div class="col-sm-2">
+        <small><i translate="translate">Player settings</i></small>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input type="checkbox" name="disableAp" ng-model="tempPopup.disableAp" class="form-check-input"/>
+            <small translate="translate" class="text-muted pl-5">Disable player wifi AP</small>
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input type="checkbox" name="disablewebui" ng-model="tempPopup.disableWebUi" class="form-check-input"/>
+              <small translate="translate" class="text-muted pl-5">Disable player webUI</small>
+            </label>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input type="checkbox" name="disablewarnings" ng-model="tempPopup.disableWarnings" class="form-check-input"/>
+            <small translate="translate" class="text-warning pl-5">Disable player power/temperature warning</small><br/>
+            <small translate="translate" class="text-warning">use caution as this may spoil the hardware</small>
           </label>
         </div>
       </div>
@@ -346,6 +375,6 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button ng-click="displayModal.close()" class="btn">Cancel</button>
+  <button ng-click="displayModalCancel()" class="btn">Cancel</button>
   <button ng-click="saveSettings()" class="btn btn-danger">OK</button>
 </div>

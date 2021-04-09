@@ -191,7 +191,9 @@ angular.module('piGroups.controllers', [])
             if ($state.params.group) {
                 for (var i= 0,len=$scope.group.groups.length;i<len;i++) {
                     if ($state.params.group == $scope.group.groups[i]._id) {
-                        $scope.group.selectedGroup = $scope.group.groups[i];
+                        if(!$scope.tempPopup){
+                            $scope.group.selectedGroup = $scope.group.groups[i];
+                        }
                         $scope.sortable.playlistArray = $scope.group.selectedGroup.playlists
                         break;
                     }
@@ -483,7 +485,12 @@ angular.module('piGroups.controllers', [])
             $scope.scheduleCalendarModal.close();
         }
 
+        $scope.tempPopup;
+
         $scope.displaySet = function () {
+
+            $scope.tempPopup = JSON.parse(JSON.stringify($scope.group.selectedGroup));
+
             $scope.resolutions = [
                 {value: 'auto', name: "Auto based on TV settings(EDID)"},
                 {value: '1080p', name: "Full HD(1080p) Video & Browser 1920x1080"},
@@ -498,12 +505,12 @@ angular.module('piGroups.controllers', [])
                 {value: 'portrait270', name: "Portrait Left (Hardware)"}
             ];
 
-            $scope.group.selectedGroup.showClock = $scope.group.selectedGroup.showClock || {enable: false}
-            $scope.group.selectedGroup.showClock.format = $scope.group.selectedGroup.showClock.format || "12";
-            $scope.group.selectedGroup.showClock.position = $scope.group.selectedGroup.showClock.position || "bottom";
+            $scope.tempPopup.showClock = $scope.tempPopup.showClock || {enable: false}
+            $scope.tempPopup.showClock.format = $scope.tempPopup.showClock.format || "12";
+            $scope.tempPopup.showClock.position = $scope.tempPopup.showClock.position || "bottom";
 
-            $scope.group.selectedGroup.videoSize = $scope.group.selectedGroup.videoKeepAspect ? 1 : 2 ;
-            $scope.group.selectedGroup.imageSize = $scope.group.selectedGroup.resizeAssets ? ($scope.group.selectedGroup.imageLetterboxed?1:2) : 0;
+            $scope.tempPopup.videoSize = $scope.tempPopup.videoKeepAspect ? 1 : 2 ;
+            $scope.tempPopup.imageSize = $scope.tempPopup.resizeAssets ? ($scope.tempPopup.imageLetterboxed?1:2) : 0;
 
 
             $scope.scheduleCalendar = function (playlist) {
@@ -515,16 +522,16 @@ angular.module('piGroups.controllers', [])
                 });
             }
 
-            if ($scope.group.selectedGroup.sleep) {
-                if ($scope.group.selectedGroup.sleep.ontimeObj) {
-                    $scope.group.selectedGroup.sleep.ontimeObj = new Date($scope.group.selectedGroup.sleep.ontimeObj)
+            if ($scope.tempPopup.sleep) {
+                if ($scope.tempPopup.sleep.ontimeObj) {
+                    $scope.tempPopup.sleep.ontimeObj = new Date($scope.tempPopup.sleep.ontimeObj)
                 }
-                if ($scope.group.selectedGroup.sleep.offtimeObj) {
-                    $scope.group.selectedGroup.sleep.offtimeObj = new Date($scope.group.selectedGroup.sleep.offtimeObj)
+                if ($scope.tempPopup.sleep.offtimeObj) {
+                    $scope.tempPopup.sleep.offtimeObj = new Date($scope.tempPopup.sleep.offtimeObj)
                 }
             }
-            if ($scope.group.selectedGroup.reboot && $scope.group.selectedGroup.reboot.time) {
-                $scope.group.selectedGroup.reboot.time = new Date($scope.group.selectedGroup.reboot.time)
+            if ($scope.tempPopup.reboot && $scope.group.selectedGroup.reboot.time) {
+                $scope.tempPopup.reboot.time = new Date($scope.tempPopup.reboot.time)
             }
 
 
@@ -534,7 +541,17 @@ angular.module('piGroups.controllers', [])
             });
 
         }
+
+        $scope.displayModalCancel = function(){
+            $scope.tempPopup = {};
+            $scope.displayModal.close();
+        }
+
         $scope.saveSettings = function () {
+
+            $scope.group.selectedGroup = JSON.parse(JSON.stringify($scope.tempPopup));
+            $scope.tempPopup = {};
+
             $scope.displayModal.close();
             if ($scope.group.selectedGroup.sleep) {
                 if ($scope.group.selectedGroup.sleep.ontimeObj) {

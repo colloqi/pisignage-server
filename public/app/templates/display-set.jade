@@ -10,17 +10,17 @@
             .col-sm-4
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[0].value")
+                        input(type="radio",ng-model="tempPopup.resolution",ng-value="resolutions[0].value")
                         small {{resolutions[0].name}}
             .col-sm-4
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[1].value")
+                        input(type="radio",ng-model="tempPopup.resolution",ng-value="resolutions[1].value")
                         small {{resolutions[1].name}}
             .col-sm-4.col-sm-offset-4
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.resolution",ng-value="resolutions[2].value")
+                        input(type="radio",ng-model="tempPopup.resolution",ng-value="resolutions[2].value")
                         small {{resolutions[2].name}}
         .form-group.row
             .col-sm-4.text-right
@@ -29,12 +29,12 @@
             .col-sm-4
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="orientations[0].value")
+                        input(type="radio",ng-model="tempPopup.orientation",ng-value="orientations[0].value")
                         small {{orientations[0].name}}
             .col-sm-4
                 .radio(ng-repeat="type in orientations", ng-if="$index > 0")
                     label
-                        input(type="radio",ng-model="group.selectedGroup.orientation",ng-value="type.value")
+                        input(type="radio",ng-model="tempPopup.orientation",ng-value="type.value")
                         small {{type.name}}
         .form-group.row
             .col-sm-4.text-right
@@ -44,35 +44,35 @@
             .col-sm-2
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.animationEnable",
-                                    ng-change='group.selectedGroup.animationType = null;',ng-value="false")
+                        input(type="radio",ng-model="tempPopup.animationEnable",
+                                    ng-change='tempPopup.animationType = null;',ng-value="false")
                         small Disable
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.animationType",
-                                    ng-change='group.selectedGroup.animationEnable = true;',value="blend")
+                        input(type="radio",ng-model="tempPopup.animationType",
+                                    ng-change='tempPopup.animationEnable = true;',value="blend")
                         small.text-primary Blend
             .col-sm-3
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.animationType",
-                                    ng-change='group.selectedGroup.animationEnable = true;',value="right")
+                        input(type="radio",ng-model="tempPopup.animationType",
+                                    ng-change='tempPopup.animationEnable = true;',value="right")
                         small Slide right
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.animationType",
-                                    ng-change='group.selectedGroup.animationEnable = true;',value="left")
+                        input(type="radio",ng-model="tempPopup.animationType",
+                                    ng-change='tempPopup.animationEnable = true;',value="left")
                         small Slide left
             .col-sm-3
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.animationType",
-                                    ng-change='group.selectedGroup.animationEnable = true;',value="up")
+                        input(type="radio",ng-model="tempPopup.animationType",
+                                    ng-change='tempPopup.animationEnable = true;',value="up")
                         small Slide up
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.animationType",
-                                    ng-change='group.selectedGroup.animationEnable = true;',value="down")
+                        input(type="radio",ng-model="tempPopup.animationType",
+                                    ng-change='tempPopup.animationEnable = true;',value="down")
                         small Slide down
         hr
         .form-group.row
@@ -81,13 +81,13 @@
                     label.text-muted: small Screen Background
             .col-xs-3
                 .input-group.input-group-sm
-                    input.form-control(type='color',ng-model='group.selectedGroup.signageBackgroundColor')
-                    small.input-group-addon {{group.selectedGroup.signageBackgroundColor}}
+                    input.form-control(type='color',ng-model='tempPopup.signageBackgroundColor')
+                    small.input-group-addon {{tempPopup.signageBackgroundColor}}
             .col-sm-2.col-sm-offset-1
                 .radio(title="{{'Default volume output is 100%' }}")
                     label.text-muted: span( title="needs v1.7.0+") Volume(%)
             .col-sm-2
-                input.form-control(type='number',min=0,max=100,ng-model='group.selectedGroup.omxVolume')
+                input.form-control(type='number',min=0,max=100,ng-model='tempPopup.omxVolume')
 
         .form-group.row
             .col-xs-4.text-right
@@ -95,14 +95,14 @@
                     label.text-muted: small Display a Logo
             .col-xs-4
                 button.btn.btn-sm.btn-link(ng-click="showFileList()")
-                    small {{group.selectedGroup.logo || "Select a png image from Assets"}}
-                button.btn.btn-xs.btn-warning(ng-if="group.selectedGroup.logo",ng-click="group.selectedGroup.logo=null") X
+                    small {{tempPopup.logo || "Select a png image from Assets"}}
+                button.btn.btn-xs.btn-warning(ng-if="tempPopup.logo",ng-click="tempPopup.logo=null") X
             .col-xs-2
                 .form-group
-                    input.input-sm.form-control(type='text',placeholder="x pos",ng-model="group.selectedGroup.logox")
+                    input.input-sm.form-control(type='text',placeholder="x pos",ng-model="tempPopup.logox")
             .col-xs-2
                 .form-group
-                    input.input-sm.form-control(type='text',placeholder="y pos",ng-model="group.selectedGroup.logoy")
+                    input.input-sm.form-control(type='text',placeholder="y pos",ng-model="tempPopup.logoy")
 
         .form-group.row
             .col-sm-4.text-right
@@ -111,34 +111,34 @@
             .col-sm-2
                 .checkbox
                     label
-                        input(type='checkbox',name='show_clock', ng-model='group.selectedGroup.showClock.enable')
+                        input(type='checkbox',name='show_clock', ng-model='tempPopup.showClock.enable')
                         small Show
-            .col-sm-2(ng-show='group.selectedGroup.showClock.enable')
+            .col-sm-2(ng-show='tempPopup.showClock.enable')
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.showClock.position",value="top")
+                        input(type="radio",ng-model="tempPopup.showClock.position",value="top")
                         small() Top
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.showClock.position",value="bottom")
+                        input(type="radio",ng-model="tempPopup.showClock.position",value="bottom")
                         small() Bottom
-            .col-sm-2(ng-show='group.selectedGroup.showClock.enable')
+            .col-sm-2(ng-show='tempPopup.showClock.enable')
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.showClock.format",value="12")
+                        input(type="radio",ng-model="tempPopup.showClock.format",value="12")
                         small() 12 hr
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.showClock.format",value="24")
+                        input(type="radio",ng-model="tempPopup.showClock.format",value="24")
                         small() 24 hr
-            .col-sm-2(ng-show='group.selectedGroup.showClock.enable')
+            .col-sm-2(ng-show='tempPopup.showClock.enable')
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.showClock.format",value="12d")
+                        input(type="radio",ng-model="tempPopup.showClock.format",value="12d")
                         small() date+12h
                 .radio
                     label
-                        input(type="radio",ng-model="group.selectedGroup.showClock.format",value="24d")
+                        input(type="radio",ng-model="tempPopup.showClock.format",value="24d")
                         small() date+24h
 
         hr
@@ -150,15 +150,15 @@
             .col-sm-2
                 .radio
                     label
-                        input(type='radio', ng-model='group.selectedGroup.imageSize',ng-value="0")
+                        input(type='radio', ng-model='tempPopup.imageSize',ng-value="0")
                         small Actual
                 .radio
                     label
-                        input(type='radio', ng-model='group.selectedGroup.imageSize',ng-value="1")
+                        input(type='radio', ng-model='tempPopup.imageSize',ng-value="1")
                         small Letterbox
                 .radio
                     label
-                        input(type='radio', ng-model='group.selectedGroup.imageSize',ng-value="2")
+                        input(type='radio', ng-model='tempPopup.imageSize',ng-value="2")
                         small Stretched
             .col-sm-4
                 .checkbox
@@ -167,10 +167,10 @@
             .col-sm-2
                 .checkbox
                     label
-                        input(type='checkbox',name='reload_checkbox', ng-model='group.selectedGroup.urlReloadDisable',
+                        input(type='checkbox',name='reload_checkbox', ng-model='tempPopup.urlReloadDisable',
                         ng-true-value="false",
                         ng-false-value="true",
-                        ng-checked="group.selectedGroup.urlReloadDisable !== true"
+                        ng-checked="tempPopup.urlReloadDisable !== true"
                         )
                         small Enable
 
@@ -183,16 +183,16 @@
             .col-sm-2
                 .radio
                     label
-                        input(type='radio',ng-model='group.selectedGroup.videoSize',ng-value="1")
+                        input(type='radio',ng-model='tempPopup.videoSize',ng-value="1")
                         small Letterbox
                 .radio
                     label
-                        input(type='radio',ng-model='group.selectedGroup.videoSize',ng-value="2")
+                        input(type='radio',ng-model='tempPopup.videoSize',ng-value="2")
                         small Stretched
             .col-sm-4.text-right
                 small Stop video every seconds to show adverts (0 to disable)
             .col-sm-2
-                input.input-sm.form-control(type='number',placeholder="secs",ng-model='group.selectedGroup.timeToStopVideo')
+                input.input-sm.form-control(type='number',placeholder="secs",ng-model='tempPopup.timeToStopVideo')
 
         hr
 
@@ -204,17 +204,17 @@
             .col-sm-4
                 .checkbox
                     label
-                        input(type='checkbox',name='sleep_checkbox', ng-model='group.selectedGroup.sleep.enable')
+                        input(type='checkbox',name='sleep_checkbox', ng-model='tempPopup.sleep.enable')
                         small Enable
-        .form-group.row(ng-show='group.selectedGroup.sleep.enable')
+        .form-group.row(ng-show='tempPopup.sleep.enable')
             .col-sm-4.col-sm-offset-4
                 label
                     small ON at
-                    input.form-control(type='time',ng-model="group.selectedGroup.sleep.ontimeObj")
+                    input.form-control(type='time',ng-model="tempPopup.sleep.ontimeObj")
             .col-sm-4
                 label
                     small OFF at
-                    input.form-control(type='time',ng-model="group.selectedGroup.sleep.offtimeObj")
+                    input.form-control(type='time',ng-model="tempPopup.sleep.offtimeObj")
             .col-sm-10.col-sm-offset-2
                 small.text-info For finer control use TV_OFF playlist under group scheduling
 
@@ -227,16 +227,16 @@
             .col-sm-2
                 .checkbox
                     label
-                        input(type='checkbox',name='reboot_checkbox', ng-model='group.selectedGroup.reboot.enable')
+                        input(type='checkbox',name='reboot_checkbox', ng-model='tempPopup.reboot.enable')
                         small enable
             .col-sm-2.text-right
                 .radio
                     label.text-muted
-                        small.text-muted(ng-show="group.selectedGroup.reboot.enable") at
+                        small.text-muted(ng-show="tempPopup.reboot.enable") at
             .col-sm-4
                 .checkbox
                     label
-                        input.input-sm.form-control(ng-show='group.selectedGroup.reboot.enable',type='time',ng-model="group.selectedGroup.reboot.time")
+                        input.input-sm.form-control(ng-show='tempPopup.reboot.enable',type='time',ng-model="tempPopup.reboot.time")
 
         hr
         .form-group.row
@@ -247,16 +247,16 @@
             .col-sm-2
                 .checkbox
                     label
-                        input(type='checkbox',name='kioskui_checkbox', ng-model='group.selectedGroup.kioskUi.enable')
+                        input(type='checkbox',name='kioskui_checkbox', ng-model='tempPopup.kioskUi.enable')
                         small Enable
-            .col-sm-6(ng-show='group.selectedGroup.kioskUi.enable')
+            .col-sm-6(ng-show='tempPopup.kioskUi.enable')
                 .input-group.input-group-sm
                     small.input-group-addon URL
-                    input.input-sm.form-control(type='text',placeholder="Leave blank for default",ng-model="group.selectedGroup.kioskUi.url")
-            .col-sm-5.col-sm-offset-6(ng-show='group.selectedGroup.kioskUi.enable')
+                    input.input-sm.form-control(type='text',placeholder="Leave blank for default",ng-model="tempPopup.kioskUi.url")
+            .col-sm-5.col-sm-offset-6(ng-show='tempPopup.kioskUi.enable')
                 .input-group.input-group-sm
                     small.input-group-addon Inactivitiy timeout
-                    input.input-sm.form-control(type='number',placeholder="30 secs",ng-model='group.selectedGroup.kioskUi.timeout')
+                    input.input-sm.form-control(type='number',placeholder="30 secs",ng-model='tempPopup.kioskUi.timeout')
 
         hr
         .form-group.row
@@ -267,8 +267,36 @@
             .col-sm-8
                 .checkbox
                     label
-                        input(type='checkbox',name='ffmpeg', ng-model='group.selectedGroup.enableMpv')
+                        input(type='checkbox',name='ffmpeg', ng-model='tempPopup.enableMpv')
                         small Use MPV to avoid gap between videos
+
+         hr
+            .form-group.row
+                .col-sm-2
+                    small: i(translate) Player settings
+                .col-sm-4
+                    .form-check.form-check-inline
+                        label.form-check-label
+                            input.form-check-input(type='checkbox',name='disableAp', ng-model='tempPopup.disableAp')
+                            small.text-muted.pl-5(translate) Disable player wifi AP
+                    .form-check.form-check-inline
+                        label.form-check-label
+                            input.form-check-input(type='checkbox',name='disablewebui', ng-model='tempPopup.disableWebUi')
+                            small.text-muted.pl-5(translate) Disable player webUI
+
+                .col-sm-6
+                    //.form-check.form-check-inline
+                    //    label.form-check-label
+                    //        input.form-check-input(type='checkbox',name='disablessh', ng-model='tempPopup.disableSsh')
+                    //        small.text-muted.pl-5(translate) Disable ssh
+                    .form-check.form-check-inline
+                        label.form-check-label
+                            input.form-check-input(type='checkbox',name='disablewarnings', ng-model='tempPopup.disableWarnings')
+                            small.text-warning.pl-5(translate) Disable player power/temperature warning
+                            br
+                            small.text-warning(translate) use caution as this may spoil the hardware
+
+
 .modal-footer
-    button.btn(ng-click='displayModal.close()') Cancel
+    button.btn(ng-click='displayModalCancel()') Cancel
     button.btn.btn-danger(ng-click='saveSettings()') OK
