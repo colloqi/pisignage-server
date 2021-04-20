@@ -14,5 +14,6 @@ COPY ["package.json", "package-lock.json*", "./"]
 RUN npm install --production
 
 COPY . .
+RUN chmod +x /wait-for-it.sh
 
 CMD [ "node", "server.js" ]

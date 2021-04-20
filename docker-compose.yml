@@ -16,8 +16,8 @@ services:
       - media:/media
       - data:/data
     depends_on:
-      mongo:
-        condition: service_started
+      - mongo
+    command: ["./wait-for-it.sh", "mongo:27017", "--", "node", "server.js"]
 
 volumes:
   mongodb:
