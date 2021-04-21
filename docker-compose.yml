@@ -17,7 +17,6 @@ services:
       - data:/data
     depends_on:
       - mongo
-#    command: ["./wait-for-it.sh", "mongo:27017", "--", "node", "server.js"]
 
 volumes:
   mongodb:
