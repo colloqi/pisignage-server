@@ -1,4 +1,5 @@
 FROM node:14.15-alpine3.10
+RUN apk update && apk add bash
 RUN apk add git
 RUN apk add  ffmpeg
 RUN apk add imagemagick
@@ -14,6 +15,6 @@ COPY ["package.json", "package-lock.json*", "./"]
 RUN npm install --production
 
 COPY . .
-RUN chmod +x /wait-for-it.sh
+RUN chmod +x ./wait-for-it.sh
 
 CMD [ "node", "server.js" ]
