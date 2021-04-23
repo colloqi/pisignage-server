@@ -1,28 +1,28 @@
 
 <div class="modal-header">
-  <h4 class="text-primary"> Set Timings for Scheduled Playlist ({{forPlaylist.name}})</h4>
+  <h4 class="text-primary"><span translate="translate"> Set Timings for Scheduled Playlist&nbsp; </span>({{forPlaylist.name}})</h4>
 </div>
 <div class="modal-body">
   <form role="form" name="schedulecal">
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h4><strong>Duration</strong><small>&nbsp;&nbsp;Schedule between two Dates(both inclusive)</small></h4>
+        <h4><strong translate="translate">Duration</strong><small translate="translate">&nbsp;&nbsp;Schedule between two Dates(both inclusive)</small></h4>
       </div>
       <div class="panel-body">
         <div class="form-group">
           <div class="col-xs-2">
             <div class="checkbox">
               <label>
-                <input type="checkbox" ng-model="forPlaylist.settings.durationEnable"/><small ng-show="!forPlaylist.settings.durationEnable">Schedule</small><small ng-show="forPlaylist.settings.durationEnable">Begin</small>
+                <input type="checkbox" ng-model="forPlaylist.settings.durationEnable"><small ng-show="!forPlaylist.settings.durationEnable" translate="translate">Schedule</small><small ng-show="forPlaylist.settings.durationEnable" translate="translate">Begin</small>
               </label>
             </div>
           </div>
           <div class="col-xs-5">
-            <input type="date" ng-model="forPlaylist.settings.startdate" ng-model-options="{timezone:'UTC'}" ng-show="forPlaylist.settings.durationEnable" placeholder="Starting on" name="startdate" title="Enter Start Date" class="form-control input-sm"/>
+            <input class="form-control input-sm" type="date" ng-model="forPlaylist.settings.startdate" ng-model-options="{timezone:'UTC'}" ng-show="forPlaylist.settings.durationEnable" placeholder="{{'Starting on' | translate}}" name="startdate" title="{{'Enter Start Date' | translate}}">
           </div>
-          <div class="col-xs-1"><small ng-show="forPlaylist.settings.durationEnable">till</small></div>
+          <div class="col-xs-1"><small ng-show="forPlaylist.settings.durationEnable" translate="translate">till</small></div>
           <div class="col-xs-4">
-            <input type="date" ng-model="forPlaylist.settings.enddate" ng-model-options="{timezone:'UTC'}" ng-show="forPlaylist.settings.durationEnable" placeholder="Till date" name="enddate" title="Enter End Date" class="form-control input-sm"/>
+            <input class="form-control input-sm" type="date" ng-model="forPlaylist.settings.enddate" ng-model-options="{timezone:'UTC'}" ng-show="forPlaylist.settings.durationEnable" placeholder="Till date" name="enddate" title="{{'Enter End Date'|translate}}">
           </div>
         </div>
       </div>
@@ -48,55 +48,55 @@
     <!--                title='Enter playing date')-->
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h4><strong>Only on Selected Days</strong><small>&nbsp;&nbsp;Schedule on specific week days or month days (needs 1.7.0 for multiple days, previous versions take the first day only)</small></h4>
+        <h4><strong translate="translate">Only on Selected Days</strong><small translate="translate">&nbsp;&nbsp;Schedule on specific week days or month days (needs 1.7.0 for multiple days, previous versions take the first day only)</small></h4>
       </div>
       <div class="panel-body">
         <div class="form-group">
           <div class="col-xs-2">
-            <label class="control-label">Week Day(s)</label>
+            <label class="control-label" translate="translate">Week Day(s)</label>
           </div>
           <div class="col-xs-4">
             <!--select.form-control(ng-model='forPlaylist.settings.weekdays',-->
             <!--                    ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',-->
             <!--                    title='Select playing week days ')-->
-            <div ng-dropdown-multiselect="" options="ngDropdown.weekdays.list" selected-model="ngDropdown.weekdays.selectedDays" events="ngDropdown.weekdays.events" translation-texts="ngDropdown.weekdays.customTexts" extra-settings="ngDropdown.weekdays.extraSettings" checkboxes="true" class="pull-right"></div>
+            <div class="pull-right" ng-dropdown-multiselect="" options="ngDropdown.weekdays.list" selected-model="ngDropdown.weekdays.selectedDays" events="ngDropdown.weekdays.events" translation-texts="ngDropdown.weekdays.customTexts" extra-settings="ngDropdown.weekdays.extraSettings" checkboxes="true"></div>
           </div>
           <div class="col-xs-2">
-            <label class="control-label">Day(s) of Month</label>
+            <label class="control-label" translate="translate">Day(s) of Month</label>
           </div>
           <div class="col-xs-4">
             <!--select.form-control(ng-model='forPlaylist.settings.monthdays',-->
             <!--                        ng-options="dayslist.indexOf(day) as day for day in dayslist",-->
             <!--                        title='Enter playing dates ')-->
-            <div ng-dropdown-multiselect="" options="ngDropdown.monthdays.list" selected-model="ngDropdown.monthdays.selectedDays" events="ngDropdown.monthdays.events" translation-texts="ngDropdown.monthdays.customTexts" extra-settings="ngDropdown.monthdays.extraSettings" checkboxes="true" class="pull-right"></div>
+            <div class="pull-right" ng-dropdown-multiselect="" options="ngDropdown.monthdays.list" selected-model="ngDropdown.monthdays.selectedDays" events="ngDropdown.monthdays.events" translation-texts="ngDropdown.monthdays.customTexts" extra-settings="ngDropdown.monthdays.extraSettings" checkboxes="true"></div>
           </div>
         </div>
       </div>
     </div>
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h4><strong>At Specified Time</strong><small>&nbsp;&nbsp;Only at specific time of the day (for e.g. 7AM - 11AM)</small></h4>
+        <h4><strong translate="translate">At Specified Time</strong><small translate="translate">&nbsp;&nbsp;Only at specific time of the day (for e.g. 7AM - 11AM)</small></h4>
       </div>
       <div class="panel-body">
         <div class="form-group">
           <div class="col-xs-2">
             <div class="checkbox">
               <label>
-                <input type="checkbox" ng-model="forPlaylist.settings.timeEnable"/><small ng-show="!forPlaylist.settings.timeEnable">Schedule</small><small ng-show="forPlaylist.settings.timeEnable">Begin</small>
+                <input type="checkbox" ng-model="forPlaylist.settings.timeEnable"><small ng-show="!forPlaylist.settings.timeEnable" translate="translate">Schedule</small><small ng-show="forPlaylist.settings.timeEnable" translate="translate">Begin</small>
               </label>
             </div>
           </div>
           <div class="col-xs-5">
-            <input type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.starttimeObj" name="starttime" title="Enter Start Time" class="form-control"/>
+            <input class="form-control" type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.starttimeObj" name="starttime" title="{{'Enter Start Time' | translate}}">
           </div>
-          <div class="col-xs-1"><small ng-show="forPlaylist.settings.timeEnable">till</small></div>
+          <div class="col-xs-1"><small ng-show="forPlaylist.settings.timeEnable" translate="translate">till</small></div>
           <div class="col-xs-4">
-            <input type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.endtimeObj" name="endtime" title="Enter End Time" class="form-control"/>
+            <input class="form-control" type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.endtimeObj" name="endtime" title="Enter End Time">
           </div>
         </div>
       </div>
     </div>
   </form>
   <!--button.btn(ng-click="scheduleCalendarModal.close()") Cancel-->
-  <button ng-click="saveSchedules(schedulecal)" class="btn btn-success">OK</button>
+  <button class="btn btn-success" ng-click="saveSchedules(schedulecal)" translate="translate">OK</button>
 </div>

@@ -2,7 +2,7 @@ nav.navbar.navbar-default.navbar-fixed-top
     .container
         .navbar-header
             button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
-                span.sr-only Toggle navigation
+                span.sr-only(translate="translate") Toggle navigation
                 i.fa.fa-bars
             a.navbar-brand(href='http://pisignage.com', target="_self")
                 img(src="app/img/pisignage-logo.png",height="32px")
@@ -10,19 +10,18 @@ nav.navbar.navbar-default.navbar-fixed-top
         #navbar.navbar-collapse.collapse
             ul.nav.navbar-nav(style="margin-left:20px;")
                 li(ng-class="getClass('home.dashboard')")
-                    a(ui-sref="home.dashboard",ui-sref-opts="{reload:true}") Dashboard
+                    a(ui-sref="home.dashboard",ui-sref-opts="{reload:true}",translate="translate") Dashboard
                 li(ng-class="getClass('home.assets')")
-                    a(ui-sref="home.assets.main",ui-sref-opts="{reload: true}") Assets
+                    a(ui-sref="home.assets.main",ui-sref-opts="{reload: true}",translate="translate") Assets
                 li(ng-class="getClass('home.players')")
-                    a(ui-sref="home.players.players",ui-sref-opts="{reload: true}") Players
+                    a(ui-sref="home.players.players",ui-sref-opts="{reload: true}",translate="translate") Players
                 li(ng-class="getClass('home.license')")
-                    a(ui-sref="home.settings",ui-sref-opts="{reload: true}") Settings
+                    a(ui-sref="home.settings",ui-sref-opts="{reload: true}",translate="translate") Settings
             button.btn.btn-link.pull-right(ng-click="launchCastApp()", ng-show="castStatus.devicesAvailable")
                 img.img-thumbanail(ng-show="castStatus.deviceState == '0'",src="/app/img/ic_cast_black_24dp.png",
                 title="Chromecast devices available, add them to piSignage")
                 img.img-thumbanail(ng-show="castStatus.deviceState != '0'",src="/app/img/ic_cast_connected_black_24dp.png",
                 title="Chromecast device connected")
-
             ul.nav.navbar-nav.navbar-right
                 li
                     a(href="https://twitter.com/pisignage", target="_blank")
@@ -31,6 +30,7 @@ nav.navbar.navbar-default.navbar-fixed-top
                             | &nbsp;for latest updates and tips
                         br
                         small.text-muted version hash: {{serverConfig.version}}, {{serverConfig.date}}
+            button.btn.navbar-btn.navbar-right.btn-xs.btn-default(ng-click="languageSelect()") {{userSetting.language | uppercase}}
 
 
 

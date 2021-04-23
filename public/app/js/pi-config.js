@@ -85,6 +85,24 @@ angular.module('piConfig', [])
         }
     })())
 
+    .constant('piLanguages',(function(){
+        // language code and description to display to user
+        return [
+            { code:  'en', language:   'en_English' },
+            { code:  'fr', language:   'fr_French'  },
+            //8169
+            { code:  'de', language:   'de_German'  },
+            { code:  'es', language:   'es_Spanish' },
+            { code:  'ca', language:   'ca_Catalan' },
+            { code:  'it', language:   'it_Italian' },
+            { code:  'nb', language:   'nb_Norwegian_Bokmål'},
+            // { code:  'nl', language:   'nl_Dutch'   },
+            // { code:  'tr', language:   'tr_Turkish' },
+            { code:  'pt-br', language:   'pt_BR_Brazilian_Portuguese' },
+            { code:  'sv_SE', language:   'Sweden' }
+        ]
+    })())
+
     .constant('weeks',(function(){ // all weeks for playlist time setting
         return [
             'All Days',  'Sunday',

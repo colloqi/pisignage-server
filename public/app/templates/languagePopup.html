@@ -1,0 +1,18 @@
+
+<div class="modal-content">
+    <div class="modal-header bg-default">
+      <h4 class="modal-title" translate="translate">Select language (beta)</h4>
+    </div>
+    <div class="modal-body">
+      <p class="text-primary" ng-show="isPiSignage" translate="translate">We need help in translation to add your language.<br><span translate>If you wish to contribute please visit&nbsp;</span><a href="https://github.com/colloqi/piSignage/tree/master/translation-files" target="_blank" translate="translate">pisignage repo.</a></p><br ng-show="isPiSignage">
+      <form class="form-inline">
+        <div class="form-group">
+          <label class="text-muted" translate="translate">Select your Language&nbsp;</label>
+          <select class="form-control" ng-model="userSetting.language" ng-options="entry.code as entry.language for entry in languagesList"></select>
+        </div>
+        <button class="btn btn-primary" ng-click="changeLang()" translate="translate">Save</button>
+        <hr><small class="text-default"><i translate="translate">Translation Courtesy</i><br><i>French: Gionatan Fazio</i><br><i>German: Jonas Endersch/Eric Kühn/Pascal Seeber</i><br><i>Italian: Luca Zammarchi</i><br><i>Catalan: Jordi Blanch</i><br><i>Brazilian Portuguese: Henrique Tabaro</i><br><i>Norwegian bokmål: Asbjørn Stokka</i><br>
+          <!--ticket 8071--><i>Sweden: Skärstad Alliansförsamling</i></small>
+      </form>
+    </div>
+  </div>

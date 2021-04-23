@@ -1,7 +1,7 @@
 .panel.panel-info
     .panel-heading
         h3.panel-title
-            span(ng-click="collapsed = !collapsed;") Labels&nbsp;
+            span(ng-click="collapsed = !collapsed;",translate="translate") Labels&nbsp;
                 i.fa.fa-lg(ng-class="{'fa-caret-right':collapsed,'fa-caret-down':!collapsed}")
             a.btn.btn-sm.btn-link.pull-right(ng-click='fn.edit()'): em(ng-class="{'text-danger':!fn.editMode,'text-success':fn.editMode}")
                         | {{fn.editMode?'Done':'Edit'}}
@@ -9,7 +9,7 @@
     .form-group(ng-hide="collapsed")
         form(name="addform", ng-submit='fn.add()')
             .input-group.col-xs-12
-                input.form-control(type='text', ng-model='newLabel.name',placeholder="Add a new Label",required)
+                input.form-control(type='text', ng-model='newLabel.name',placeholder="{{'Add a new Label' | translate}}",required)
                 span.input-group-btn
                     button.btn.btn-default(type="submit")
                         i.fa.fa-plus
@@ -21,9 +21,4 @@
                 button.close(ng-click='fn.delete(tag); $event.stopPropagation()',ng-if="fn.editMode || fn.getClass(tag.name)")
                     i.fa.fa-times-circle.fa-lg(ng-class="{'text-danger': fn.editMode}")
         li(ng-if="!label.labels.length")
-            a There are no categories, Add a Category
-
-
-
-
-                    
+            a(translate="translate") There are no categories, Add a Category

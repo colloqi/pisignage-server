@@ -1,18 +1,18 @@
 .modal-header
     h4
-        span Player settings for the player&nbsp;
+        span(translate="translate") Player settings for the player&nbsp;
         span {{selectedPlayer.name || selectedPlayer.localName}}
-        button.btn.btn-info.btn-sm.pull-right(ng-click="settingsModal.close()") Done
+        button.btn.btn-info.btn-sm.pull-right(ng-click="settingsModal.close()",translate="translate") Done
 .modal-body
     form(role="form", name="playersettings")
         .form-group.row
-            label.control-label.col-sm-3 Selected Group
+            label.control-label.col-sm-3(translate="translate") Selected Group
             .col-sm-6
                 select.form-control(ng-model="selectedGroup",ng-change="assignGroup(selectedGroup)",
                                     ng-options="group for group in group.groupNames")
-                    option(value="") -- none --
+                    option(value="",translate="translate") -- none --
         .form-group.row(ng-show="playerLabels.length")
-            label.control-label.col-sm-3  Select Categories
+            label.control-label.col-sm-3(translate="translate")  Select Categories
             .col-sm-6(ng-if="playerLabels")
                 div( ng-dropdown-multiselect="",
                 options="playerLabels",
@@ -22,6 +22,6 @@
                 extra-settings="ngDropdown.extraSettings",checkboxes="true")
 .modal-footer
     .form-group.row
-        label.control-label.col-sm-7.col-sm-offset-3.text-danger  Delete the player from server data base
+        label.control-label.col-sm-7.col-sm-offset-3.text-danger(translate="translate")  Delete the player from server data base
         .col-sm-2
-            button.btn.btn-danger.btn-sm.pull-right(ng-click="deregister()") DELETE
+            button.btn.btn-danger.btn-sm.pull-right(ng-click="deregister()",translate="translate") DELETE

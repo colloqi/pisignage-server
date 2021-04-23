@@ -4,7 +4,7 @@
             .col-sm-2
                 h3.panel-title {{assetConfig.assets.assets.length}} Files in&nbsp;{{!assetConfig.allAssets && playlist.selectedPlaylist.name || "total"}}
             .col-sm-2
-                span.btn-group(ng-attr-title="Click this button to select, edit and add labels")
+                span.btn-group(ng-attr-title="{{'Click this button to select, edit and add labels' | translate}}")
                     button.btn.btn-info.btn-sm(ng-click="loadCategory()")
                         i.fa.fa-tags &nbsp;
                         span {{label.selectedLabel.trunc(10) || "Labels"}}
@@ -12,34 +12,35 @@
                         i.fa.fa-close
             .col-sm-2
                 form
-                    input.form-control(type="text",placeholder="filter",ng-model="searchFilename")
+                    input.form-control(type="text",placeholder="{{'filter ' | translate }}",ng-model="searchFilename")
             .col-sm-3.dropdown(dropdown,ng-if="!assetConfig.allAssets")
                 button.btn.btn-success.dropdown-toggle.pull-right(dropdown-toggle)
-                    i.fa.fa-plus &nbsp;ADD
+                    i.fa.fa-plus &nbsp;
+                    span(translate="translate") ADD
                 ul.dropdown-menu(role="menu")
                     li
                         nodeims-file-upload(onstart='upload.onstart()',
                                                 onprogress='upload.onprogress(percentDone)',
                                                 onerror='upload.onerror(files, type, msg)',
                                                 ondone='upload.ondone(files, data)')
-                            | Upload Files
+                            span(translate="translate") Upload Files
                     li
                         a.btn.btn-link.btn-block(ng-click="link.showPopup()")
-                            | Add a Link
+                            span(translate="translate") Add a Link
                     li
                         a.btn.btn-link.btn-block(ng-click="link.showPopup('txt')")
-                            | Add a Message
+                            span(translate="translate") Add a Message
                     li
                         a.btn.btn-link.btn-block(ng-click="link.showPopup('local')",
-                            title="{{'You can local folder/file here'}}")
-                            | Add a local folder/file
+                            title="{{'You can local folder/file here' | translate}}")
+                            span(translate="translate") Add a local folder/file
 
                     //li
                     //    a.btn.btn-link.btn-block(ng-click="configureGCalendar()")
                     //        | Add Calendar
             .col-sm-1(ng-if="!assetConfig.allAssets")
                 a.btn.btn-link(ng-click='fn.edit()')
-                    strong.text-muted EDIT
+                    strong.text-muted(translate="translate") EDIT
             .col-sm-2.pull-right(ng-hide="!ngDropdown.selectedAssets.length")
                 div.pull-right(ng-if="!assetConfig.allAssets",
                                     ng-dropdown-multiselect="",
@@ -50,7 +51,7 @@
                                     extra-settings="ngDropdown.label.extraSettings",checkboxes="true")
                 .btn-group-xs.pull-right
                     a.btn.btn-success(ng-if="assetConfig.allAssets",ng-click="ngDropdown.playlist.events.onItemSelect()")
-                        i.fa.fa-lg.fa-arrow-circle-right assign
+                        i.fa.fa-lg.fa-arrow-circle-right(translate="translate") assign
                     a.btn.btn-link(ng-click="ngDropdown.clearCheckboxes()"): i.fa.fa-times
 
 
@@ -95,7 +96,7 @@
                             small.text-muted {{file.fileDetails.type}},&nbsp;{{file.fileDetails.size}},&nbsp;
                                 | {{file.fileDetails.createdAt | date: 'MMM dd'}}
                         .col-sm-3
-                            button.btn.btn-link.btn-xs(title="{{'Add validity period for the asset'}}",
+                            button.btn.btn-link.btn-xs(title="{{'Add validity period for the asset' | translate}}",
                             ng-click="scheduleValidity(file)")
                                 i.fa.fa-calendar &nbsp;
                                 small(ng-if='!(file.fileDetails.validity.enable)')
@@ -111,12 +112,12 @@
 
 
 
-        h5.text-danger(ng-show="!assetConfig.assets.assets.length")
+        h5.text-danger(ng-show="!assetConfig.assets.assets.length",translate="translate")
             | &nbsp&nbsp Nothing to show, Use `Add` button to add an asset or 'Assign Assets' to assign assets to playlist
 
 .panel.panel-danger(ng-if="fn.editMode")
     .panel-heading
-        .panel-title Rename or delete files, tap Done when completed
+        .panel-title(translate="translate") Rename or delete files, tap Done when completed
             a.pull-right(ng-click='fn.edit()'):  strong.text-success  Done
     ul.list-group
         li.list-group-item(ng-repeat='name in names')
@@ -126,7 +127,7 @@
                         input.form-control(type='text', ng-model='name.name')
                         span.input-group-addon(ng-bind="name.ext", ng-hide="editform.$dirty")
                         span.input-group-btn(ng-click='fn.rename($index)', ng-show="editform.$dirty")
-                            a.btn.btn-success(type="button") SAVE
+                            a.btn.btn-success(type="button",translate="translate") SAVE
                 .col-xs-2
                     button.btn.btn-danger.pull-right(ng-click='fn.delete($index)')
                         i.fa.fa-times.fa-lg

@@ -6,23 +6,24 @@
             .col-sm-9
                 .btn-toolbar.pull-right
                     .btn-group
-                        a.btn.btn-default.btn-sm(ng-click='emergencyMessage()'): em.text-danger Emergency Message
-                        a.btn.btn-default.btn-sm(ng-click='groupTicker()'): em.text-danger Group Ticker
-                        a.btn.btn-default.btn-sm(ng-click='displaySet()'): em.text-danger Group Settings
+                        a.btn.btn-default.btn-sm(ng-click='emergencyMessage()'): em.text-danger(translate="translate") Emergency Message
+                        a.btn.btn-default.btn-sm(ng-click='groupTicker()'): em.text-danger(translate="translate") Set Group Ticker
+                        a.btn.btn-default.btn-sm(ng-click='displaySet()'): em.text-danger(translate="translate") Group Settings
                     .btn-group
-                        a.btn.btn-success.btn-sm(ng-disabled="!group.selectedGroup.playlists.length",ng-click='deploy()') Deploy to {{group.selectedGroup.name}}
+                        a.btn.btn-success.btn-sm(ng-disabled="!group.selectedGroup.playlists.length",ng-click='deploy()') Deploy to 
+                            span(translate="translate") {{group.selectedGroup.name}}
                         | &nbsp;
                         br
                         .checkbox-inline
                             label
                                 input(type="checkbox",ng-model="group.selectedGroup.loadPlaylistOnCompletion")
-                                small.text-info Change at the end<br> of current cycle
+                                small.text-info(translate="translate") Change at the end<br> of current cycle
                     .btn-group
-                        a.btn.btn-warning.btn-sm.pull-right(ng-click="closeWindow()") Close
+                        a.btn.btn-warning.btn-sm.pull-right(ng-click="closeWindow()",translate="translate") Close
     .panel-body
         form(role='form',name='deployform',as-sortable="sortable.options",ng-model="sortable.playlistArray")
             .row.form-group
-                label.control-label.col-sm-3 Default Playlist for the group
+                label.control-label.col-sm-3(translate="translate") Default Playlist for the group
                 .col-sm-5
                     select.form-control(ng-model="group.selectedGroup.playlists[0].name",
                                             ng-options="pl for pl in playlist.normalPlaylistNames track by pl",
@@ -33,9 +34,9 @@
                         label
                             input(type="checkbox",title="Default playlist assets will be played along with selected playlist",
                                             ng-model="group.selectedGroup.combineDefaultPlaylist")
-                            small Play together with scheduled playlist (v1.7.0+)
+                            small(translate="translate") Play together with scheduled playlist (v1.7.0+)
             .row.form-group(ng-show="group.selectedGroup.playlists[0].name.length")
-                h5.col-sm-8 You can select additional Playlists for Scheduling/Advt purposes
+                h5.col-sm-8(translate="translate") You can select additional Playlists for Scheduling/Advt purposes
                     //a.btn.btn-link(ng-click="collapsed = !collapsed;")
                         i.fa.fa-lg(ng-class="{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}")
                     a.btn.btn-info.btn-xs(ng-click="add()")
@@ -46,15 +47,15 @@
                         label
                             input(type="checkbox",title="Content from all the eligible playlists will be combined",
                             ng-model="group.selectedGroup.playAllEligiblePlaylists")
-                            small Combine content of all scheduled playlists
+                            small(translate="translate") Combine content of all scheduled playlists
                     .checkbox
                         label(ng-attr-title="Shuffle content from selected playlists and deploy")
                             input(type="checkbox", ng-model="group.selectedGroup.shuffleContent")
-                            small Shuffle content before deploying
+                            small(translate="translate") Shuffle content before deploying
                     .checkbox(ng-show="group.selectedGroup.playAllEligiblePlaylists")
                         label(ng-attr-title="Play content alternatively from selected playlists")
                             input(type="checkbox", ng-model="group.selectedGroup.alternateContent")
-                            small Alternate content from selected playlists
+                            small(translate="translate") Alternate content from selected playlists
 
 
 

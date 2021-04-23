@@ -1,0 +1,35 @@
+.modal-content
+    .modal-header.bg-default
+        h4.modal-title(translate='translate') Select language (beta)
+    .modal-body
+        p.text-primary(ng-show="isPiSignage",translate='translate') We need help in translation to add your language.
+            br
+            span(translate) If you wish to contribute please visit&nbsp;
+            a(href="https://github.com/colloqi/piSignage/tree/master/translation-files",target="_blank",translate='translate') pisignage repo.
+        br(ng-show="isPiSignage")
+        form.form-inline
+            .form-group
+                label.text-muted(translate='translate') Select your Language&nbsp;
+                select.form-control(ng-model='userSetting.language',
+                                ng-options='entry.code as entry.language for entry in languagesList')
+            button.btn.btn-primary(ng-click='changeLang()',translate='translate') Save
+            hr
+            small.text-default
+                i(translate='translate') Translation Courtesy
+                br
+                i French: Gionatan Fazio
+                br
+                i German: Jonas Endersch/Eric Kühn/Pascal Seeber
+                br
+                i Italian: Luca Zammarchi
+                br
+                i Catalan: Jordi Blanch
+                br
+                i Brazilian Portuguese: Henrique Tabaro
+                br
+                i Norwegian bokmål: Asbjørn Stokka
+                br
+                //ticket 8071
+                i Sweden: Skärstad Alliansförsamling
+
+

@@ -1,108 +1,108 @@
 .modal-header
-    h3.text-warning() Ticker for the Group
+    h3.text-warning(translate="translate") Ticker for the Group
 .modal-body
     form.form(name='group.tickerForm')
         .row.form-group
-            small.text-muted.control-label.col-sm-3.text-right() Ticker
+            small.text-muted.control-label.col-sm-3.text-right(translate="translate") Ticker
             .col-sm-9
                 .checkbox-inline
                     label
                         input(type='checkbox',name='ticker_checkbox', ng-model='group.selectedGroup.ticker.enable')
-                        small Show
+                        small(translate="translate") Show
         .row.form-group(ng-show='group.selectedGroup.ticker.enable')
-            small.text-muted.control-label.col-sm-3.text-right Type
+            small.text-muted.control-label.col-sm-3.text-right(translate="translate") Type
             .col-sm-9
                 .radio-inline
                     label
                         input(type='radio',value='slide',ng-model='group.selectedGroup.ticker.behavior')
-                        small() Slide
+                        small(translate="translate") Slide
                 .radio-inline
                     label
                         input(type='radio',value='scroll',ng-model='group.selectedGroup.ticker.behavior')
-                        small() Scroll left
+                        small(translate="translate") Scroll left
                 .radio-inline
                     label
                         input(type='radio',value='scrollRight',ng-model='group.selectedGroup.ticker.behavior')
-                        small() Scroll right
+                        small(translate="translate") Scroll right
         .radio-inline
                         label.text-info
-                            small OpenVG
+                            small(translate="translate") OpenVG
 
                     .radio-inline
                         label
                             input(type='radio',value='openvg_left',name="openvg_left",ng-model='group.selectedGroup.ticker.behavior')
-                            small left
+                            small(translate="translate") left
 
                     .radio-inline
                         label
                             input(type='radio',value='openvg_right',name="openvg_right",ng-model='group.selectedGroup.ticker.behavior')
-                            small right
+                            small(translate="translate") right
             .form-group.row(ng-show='group.selectedGroup.ticker.enable && group.selectedGroup.ticker.behavior!= "openvg_right"&& group.selectedGroup.ticker.behavior!= "openvg_left"')
-                label.control-label.text-muted.col-sm-3.text-right Optional CSS
+                label.control-label.text-muted.col-sm-3.text-right(translate="translate") Optional CSS
                 .col-sm-9
                     input.form-control.input-sm(type='text',placeholder='e.g. color:#eee; font-style:italic; ',ng-model='group.selectedGroup.ticker.style')
             .form-group.row(ng-show='group.selectedGroup.ticker.enable && (group.selectedGroup.ticker.behavior== "openvg_right" || group.selectedGroup.ticker.behavior== "openvg_left")')
-                label.control-label.text-muted.col-sm-3.text-right Font Size
+                label.control-label.text-muted.col-sm-3.text-right(translate="translate") Font Size
                 .col-sm-2
                     input.form-control.input-sm(type='text',placeholder='28',ng-model='group.selectedGroup.ticker.tickerFontSize')
-                label.control-label.text-muted.col-sm-3.text-right Width
+                label.control-label.text-muted.col-sm-3.text-right(translate="translate") Width
                 .col-sm-2
                     input.form-control.input-sm(type='text',placeholder='0(full)',ng-model='group.selectedGroup.ticker.tickerWidth')
 
             .form-group.row(ng-show='group.selectedGroup.ticker.enable && (group.selectedGroup.ticker.behavior== "openvg_right" || group.selectedGroup.ticker.behavior== "openvg_left")')
-                label.control-label.text-muted.col-sm-3.text-right x position
+                label.control-label.text-muted.col-sm-3.text-right(translate="translate") x position
                 .col-sm-2
                     input.form-control.input-sm(type='text',placeholder='0(left)',ng-model='group.selectedGroup.ticker.tickerX')
-                label.control-label.text-muted.col-sm-3.text-right y position
+                label.control-label.text-muted.col-sm-3.text-right(translate="translate") y position
 
-            small.text-muted.control-label.col-sm-3.text-right() Ticker Speed
+            small.text-muted.control-label.col-sm-3.text-right(translate="translate") Ticker Speed
             .col-sm-9
                 .radio-inline
                     label
                         input(type='radio',value='1',name="slow",ng-model='group.selectedGroup.ticker.textSpeed')
-                        small() Slow
+                        small(translate="translate") Slow
 
                 .radio-inline
                     label
                         input(type='radio',value='2',name="medium",ng-model='group.selectedGroup.ticker.textSpeed')
-                        small() Medium
+                        small(translate="translate") Medium
 
                 .radio-inline
                     label
                         input(type='radio',value='3',name="full",ng-model='group.selectedGroup.ticker.textSpeed')
-                        small() Full
+                        small(translate="translate") Full
 
         .row.form-group(ng-show='group.selectedGroup.ticker.enable')
             .col-sm-6.col-sm-offset-3
                 .checkbox-inline
                     label
                         input(type='checkbox',name='rss_checkbox', ng-model='group.selectedGroup.ticker.rss.enable')
-                        small() Use RSS feed
+                        small(translate="translate") Use RSS feed
 
         .form-group.row(ng-show="group.selectedGroup.ticker.enable && group.selectedGroup.ticker.rss.enable")
-            small.text-muted.col-sm-3.text-right Item duration
+            small.text-muted.col-sm-3.text-right(translate="translate") Item duration
             .col-sm-6
                 input.form-control(type='number',ng-model='group.selectedGroup.ticker.rss.feedDelay',placeholder="{{'rss item duration in slide mode'}}")
         .form-group.row(ng-show="group.selectedGroup.ticker.enable && group.selectedGroup.ticker.rss.enable")
-            small.text-muted.col-sm-3.text-right RSS feed Link
+            small.text-muted.col-sm-3.text-right(translate="translate") RSS feed Link
             .col-sm-8
                 input.form-control(type='text',ng-model='group.selectedGroup.ticker.rss.link',
                                     placeholder="enter your rss link ....")
                 .checkbox-inline
                     label
                         input(type='checkbox',name='rss_encoding',ng-model='group.selectedGroup.ticker.rss.encodeAsBinary')
-                        small: i.text-primary Use Binary encoding for RSS, enable this if characters are not displayed properly
+                        small: i.text-primary(translate="translate") Use Binary encoding for RSS, enable this if characters are not displayed properly
                 br
                 .checkbox-inline
                     label
                         input(type='checkbox',name='rss_field',ng-model='group.selectedGroup.ticker.rss.useDescription')
-                        small: i.text-primary Use description field of rss stream instead of title field
+                        small: i.text-primary(translate="translate") Use description field of rss stream instead of title field
         .form-group.row(ng-show="group.selectedGroup.ticker.enable && !group.selectedGroup.ticker.rss.enable")
-            small.text-muted.col-sm-3.text-right Add Messages for the ticker
+            small.text-muted.col-sm-3.text-right(translate="translate") Add Messages for the ticker
             .col-sm-8
                 textarea.form-control( name='ticker_messages',rows=5,
                                     ng-model='group.selectedGroup.ticker.messages',
                                     placeholder="Enter messages here")
         .form-group.row
             .col-sm-9.col-sm-offset-3
-                button.btn.btn-success(ng-click='tickerSave()') SAVE
+                button.btn.btn-success(ng-click='tickerSave()',translate="translate") SAVE

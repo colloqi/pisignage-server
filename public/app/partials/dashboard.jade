@@ -1,5 +1,5 @@
 .panel.panel-default
-    .panel-heading Player reporting status
+    .panel-heading(translate="translate")  Player reporting status
     .panel-body
         .row.statcards
             .col-sm-4.col-lg-2.m-b(ng-repeat='bucket in playersStat  track by $index ')
@@ -8,13 +8,13 @@
                         .p-a.text-white
                             span.statcard-desc {{BUCKET_TITLE[$index]}}
                             h2.statcard-number {{bucket}}
-    .panel-heading   Players expected to report now
+    .panel-heading(translate="translate")   Players expected to report now
     .panel-body(style="max-height:200px;overflow-y:scroll")
             h4.text-center(ng-repeat="player in playersExpectedToReport | orderBy:'lastReported':true track by $index") {{player.name }}:&nbsp;
                 i.text-muted {{player.lastReported | timeAgo}}
-            h6.text-center.text-muted(ng-show="playersExpectedToReport.length == 0") There are no players went offline just now
+            h6.text-center.text-muted(ng-show="playersExpectedToReport.length == 0",translate="translate") There are no players went offline just now
             
-    .panel-heading   Players expected to report now
+    .panel-heading(translate="translate")   Players expected to report now
     .panel-body
         .row
             .col-md-6.m-b-md(ng-repeat-start="playerTable in COUNT_FIELDS_TO_SHOW" )

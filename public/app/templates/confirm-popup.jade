@@ -1,11 +1,11 @@
 .modal-header
     button.close(ng-click='cancel()') &times;
-    h3.text-danger Please Confirm
+    h3.text-danger(translate="translate") Please Confirm
 .modal-body
     h5
-        span( ng-show="!noPrepend") Do you want to delete the&nbsp
-        b {{deleteText}}
+        span( ng-show="!noPrepend",translate="translate") Do you want to delete:
+        b &nbsp{{deleteText}}
         |&nbsp?
 .modal-footer
-    button.btn(ng-click='cancel()') Cancel
-    button.btn.btn-danger(ng-click='ok()') OK
+    button.btn(ng-click='cancel()',translate="translate") Cancel
+    button.btn.btn-danger(ng-click='ok()',translate="translate") OK

@@ -1,15 +1,15 @@
 
 <div class="modal-header">
   <!--button.close(ng-click='tickerModal.close()') &times;-->
-  <h3 class="modal-title">Display a text message in front of the Signage</h3>
+  <h3 class="modal-title" translate="translate">Display a text message in front of the Signage</h3>
 </div>
 <div class="modal-body">
   <form name="emsgForm">
     <div class="row form-group">
-      <label class="control-label col-sm-3 text-muted text-right">Enable Message</label>
+      <label class="control-label col-sm-3 text-muted text-right" translate="translate">Enable Message</label>
       <div class="col-sm-9">
         <label>
-          <input type="checkbox" name="emsg_enable" ng-model="group.selectedGroup.emergencyMessage.enable"/>
+          <input type="checkbox" name="emsg_enable" ng-model="group.selectedGroup.emergencyMessage.enable">
         </label>
       </div>
     </div>
@@ -28,35 +28,35 @@
     <!--            label-->
     <!--                input(type='radio',value='right',name="right",ng-model='group.selectedGroup.emergencyMessage.hPos')-->
     <!--                small() Right-->
-    <div ng-show="group.selectedGroup.emergencyMessage.enable" class="form-group row">
-      <label class="text-muted control-label col-sm-3 text-right">Vertical Position</label>
+    <div class="form-group row" ng-show="group.selectedGroup.emergencyMessage.enable">
+      <label class="text-muted control-label col-sm-3 text-right" translate="translate">Vertical Position</label>
       <div class="col-sm-9">
         <div class="radio-inline">
           <label>
-            <input type="radio" value="top" name="top" ng-model="group.selectedGroup.emergencyMessage.vPos"/><small>Top</small>
+            <input type="radio" value="top" name="top" ng-model="group.selectedGroup.emergencyMessage.vPos"><small translate="translate">Top</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" value="middle" name="vmiddle" ng-model="group.selectedGroup.emergencyMessage.vPos"/><small>Middle</small>
+            <input type="radio" value="middle" name="vmiddle" ng-model="group.selectedGroup.emergencyMessage.vPos"><small translate="translate">Middle</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" value="bottom" name="bottom" ng-model="group.selectedGroup.emergencyMessage.vPos"/><small>Bottom</small>
+            <input type="radio" value="bottom" name="bottom" ng-model="group.selectedGroup.emergencyMessage.vPos"><small translate="translate">Bottom</small>
           </label>
         </div>
       </div>
     </div>
-    <div ng-show="group.selectedGroup.emergencyMessage.enable" class="form-group row">
-      <label class="control-label text-muted col-sm-3 text-right">Message</label>
+    <div class="form-group row" ng-show="group.selectedGroup.emergencyMessage.enable">
+      <label class="control-label text-muted col-sm-3 text-right" translate="translate">Message</label>
       <div class="col-sm-9">
-        <input name="ticker_messages" rows="5" ng-model="group.selectedGroup.emergencyMessage.msg" placeholder="Enter the message to be displayed" class="form-control"/>
+        <input class="form-control" name="ticker_messages" rows="5" ng-model="group.selectedGroup.emergencyMessage.msg" placeholder="Enter the message to be displayed">
       </div>
     </div>
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" ng-click="emsgModal.close()" class="btn btn-default">Cancel</button>
-  <button ng-click="messageSave()" class="btn btn-primary">SAVE</button>
+  <button class="btn btn-default" type="button" ng-click="emsgModal.close()" translate="translate">Cancel</button>
+  <button class="btn btn-primary" ng-click="messageSave()" translate="translate">SAVE</button>
 </div>

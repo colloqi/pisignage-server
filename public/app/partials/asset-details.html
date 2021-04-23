@@ -2,121 +2,121 @@
 <div class="panel panel-primary">
   <div class="panel-heading">
     <div class="panel-title">{{filedetails.name || urlLink.name+urlLink.type || "Google User Account Details"}}
-      <button ng-click="delete()" class="btn btn-link btn-sm pull-right"><i class="fa fa-trash fa-lg text-danger"></i></button>
+      <button class="btn btn-link btn-sm pull-right" ng-click="delete()"><i class="fa fa-trash fa-lg text-danger"></i></button>
     </div>
   </div>
-  <div class="panel-body"><img ng-if="filedetails.type==&quot;image&quot;" ng-src="{{ filedetails.path }}" class="img-responsive img-rounded"/>
-    <video ng-if="filedetails.type==&quot;video&quot;" controls="controls" ng-src="{{ filedetails.path }}" class="img-responsive img-rounded"></video>
-    <audio ng-if="filedetails.type==&quot;audio&quot; || filedetails.type==&quot;radio&quot;" controls="controls">
-      <source ng-src="{{filedetails.path}}" type="audio/mpeg"/>
+  <div class="panel-body"><img class="img-responsive img-rounded" ng-if="filedetails.type==&quot;image&quot;" ng-src="{{ filedetails.path }}">
+    <video class="img-responsive img-rounded" ng-if="filedetails.type==&quot;video&quot;" controls ng-src="{{ filedetails.path }}"></video>
+    <audio ng-if="filedetails.type==&quot;audio&quot; || filedetails.type==&quot;radio&quot;" controls>
+      <source ng-src="{{filedetails.path}}" type="audio/mpeg">
     </audio>
     <iframe ng-if="filedetails.type==&quot;html&quot;" ng-src="{{ filedetails.path }}"></iframe>
     <iframe ng-if="filedetails.type==&quot;pdf&quot;" height="300px" width="100%" ng-src="{{filedetails.path}}"></iframe>
     <form role="form" name="linkform" ng-show="fileType==&quot;link&quot;">
-      <div ng-if="urlLink.type != '.txt'" class="form-group row">
-        <label class="control-label text-muted col-sm-3 text-right"><small>Address</small></label>
+      <div class="form-group row" ng-if="urlLink.type != '.txt'">
+        <label class="control-label text-muted col-sm-3 text-right"><small translate="translate">Address</small></label>
         <div class="col-sm-6">
           <div class="input-group">
-            <input type="text" name="linkAddress" ng-model="urlLink.link" required="" class="form-control "/><span class="input-group-btn"><a ng-disabled="!urlLink.link" href="{{urlLink.link}}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i></a></span>
+            <input class="form-control" type="text" name="linkAddress" ng-model="urlLink.link" required=""><span class="input-group-btn"></span><a class="btn btn-default" ng-disabled="!urlLink.link" href="{{urlLink.link}}" target="_blank"><i class="fa fa-external-link"></i></a>
           </div>
         </div>
       </div>
       <div class="form-group row">
-        <label class="control-label text-muted col-sm-3 text-right"><small>Type</small></label>
+        <label class="control-label text-muted col-sm-3 text-right"><small translate="translate">Type</small></label>
         <div class="col-xs-7"><span>{{urlLink.type == ".tv"?"You Tube":urlLink.type.slice(1)}}</span></div>
       </div>
-      <div ng-if="urlLink.type == '.mrss'" class="form-group row">
-        <label class="control-label text-muted col-sm-3 text-right"><small>RSS Text</small></label>
+      <div class="form-group row" ng-if="urlLink.type == '.mrss'">
+        <label class="control-label text-muted col-sm-3 text-right"><small translate="translate">RSS Text</small></label>
         <div class="col-sm-9">
           <div class="radio-inline">
             <label>
-              <input type="radio" name="radio_none" ng-model="urlLink.hideTitle" value="none"/><small>image</small>
+              <input type="radio" name="radio_none" ng-model="urlLink.hideTitle" value="none"><small translate="translate">image</small>
             </label>
           </div>
           <div class="radio-inline">
             <label>
-              <input type="radio" name="radio_title" ng-model="urlLink.hideTitle" value="title"/><small>image&title</small>
+              <input type="radio" name="radio_title" ng-model="urlLink.hideTitle" value="title"><small translate="translate">image&title</small>
             </label>
           </div>
           <div class="radio-inline">
             <label>
-              <input type="radio" name="radio_description" ng-model="urlLink.hideTitle" value="description"/><small>image&description</small>
+              <input type="radio" name="radio_description" ng-model="urlLink.hideTitle" value="description"><small translate="translate">image&description</small>
             </label>
           </div>
           <div class="radio-inline">
             <label>
-              <input type="radio" name="radio_title_noimg" ng-model="urlLink.hideTitle" value="onlytitle"/><small>title</small>
+              <input type="radio" name="radio_title_noimg" ng-model="urlLink.hideTitle" value="onlytitle"><small translate="translate">title</small>
             </label>
           </div>
           <div class="radio-inline">
             <label>
-              <input type="radio" name="radio_description_noimg" ng-model="urlLink.hideTitle" value="onlydescription"/><small>descr</small>
+              <input type="radio" name="radio_description_noimg" ng-model="urlLink.hideTitle" value="onlydescription"><small translate="translate">descr</small>
             </label>
           </div>
         </div>
       </div>
-      <div ng-if="urlLink.type == '.mrss'" class="form-group row">
-        <label class="control-label text-muted col-sm-3 text-right"><small>Number of Items</small></label>
+      <div class="form-group row" ng-if="urlLink.type == '.mrss'">
+        <label class="control-label text-muted col-sm-3 text-right"><small translate="translate">Number of Items</small></label>
         <div class="col-sm-3">
-          <input type="number" name="count" placeholder="{{&quot;Number of Items to show&quot; }}" ng-model="urlLink.numberOfItems" class="form-control"/>
+          <input class="form-control" type="number" name="count" placeholder="{{&quot;Number of Items to show&quot; }}" ng-model="urlLink.numberOfItems">
         </div>
-        <label class="control-label text-muted col-sm-3 text-right"><small>Item duration (use playlist duration & number of items instead after 2.4.0)</small></label>
+        <label class="control-label text-muted col-sm-3 text-right"><small translate="translate">Item duration (use playlist duration & number of items instead after 2.4.0)</small></label>
         <div class="col-sm-3">
-          <input type="number" name="duration" placeholder="{{&quot;Duration of each feed item&quot;}}" ng-model="urlLink.duration" class="form-control"/>
+          <input class="form-control" type="number" name="duration" placeholder="{{&quot;Duration of each feed item&quot;}}" ng-model="urlLink.duration">
         </div>
       </div>
-      <div ng-if="urlLink.type == '.txt'|| urlLink.type == '.mrss'" class="form-group row">
-        <label class="control-label text-muted col-sm-3 text-right"><small>Optional CSS</small></label>
+      <div class="form-group row" ng-if="urlLink.type == '.txt'|| urlLink.type == '.mrss'">
+        <label class="control-label text-muted col-sm-3 text-right"><small translate="translate">Optional CSS</small></label>
         <div class="col-sm-6">
-          <input type="text" name="style" placeholder="e.g. color:#eee; font-style:italic;" ng-model="urlLink.style" class="form-control"/>
+          <input class="form-control" type="text" name="style" placeholder="e.g. color:#eee; font-style:italic;" ng-model="urlLink.style">
         </div>
       </div>
-      <div ng-if="urlLink.type == '.txt'" class="form-group row">
-        <label class="control-label text-muted col-sm-3 text-right"><small>Message</small></label>
+      <div class="form-group row" ng-if="urlLink.type == '.txt'">
+        <label class="control-label text-muted col-sm-3 text-right"><small translate="translate">Message</small></label>
         <div class="col-sm-6">
-          <textarea rows="4" cols="50" name="message" ng-model="urlLink.message" required="" class="form-control"></textarea>
+          <textarea class="form-control" rows="4" cols="50" name="message" ng-model="urlLink.message" required=""></textarea>
         </div>
-      </div><br/>
-      <div ng-if="urlLink.type == '.weblink'" class="form-group row">
-        <label class="control-label text-muted col-sm-3 text-right"><small>Zoom level</small></label>
+      </div><br>
+      <div class="form-group row" ng-if="urlLink.type == '.weblink'">
+        <label class="control-label text-muted col-sm-3 text-right"><small translate="translate">Zoom level</small></label>
         <div class="col-sm-6">
-          <input type="number" step="0.01" name="style" placeholder="e.g. 0.75(75%), 1.25(125%) or leave blank for no-zoom" ng-model="urlLink.zoom" class="form-control"/>
+          <input class="form-control" type="number" step="0.01" name="style" placeholder="e.g. 0.75(75%), 1.25(125%) or leave blank for no-zoom" ng-model="urlLink.zoom">
         </div>
-      </div><br/>
-      <div ng-if="urlLink.type == '.weblink'" class="form-group row">
-        <label class="control-label text-muted col-sm-3 text-right"><small>Send Key strokes (optional)</small></label>
+      </div><br>
+      <div class="form-group row" ng-if="urlLink.type == '.weblink'">
+        <label class="control-label text-muted col-sm-3 text-right"><small translate="translate">Send Key strokes (optional)</small></label>
         <div class="col-sm-5">
-          <input type="text" name="keystrokes" placeholder="e.g. tab,shift+h,e,l,l,o,shift+!,enter" ng-model="urlLink.keystrokes" class="form-control"/><small>for key definitions refer http://robotjs.io/docs/syntax#key</small>
+          <input class="form-control" type="text" name="keystrokes" placeholder="e.g. tab,shift+h,e,l,l,o,shift+!,enter" ng-model="urlLink.keystrokes"><small>for key definitions refer http://robotjs.io/docs/syntax#key</small>
         </div>
         <label class="control-label text-muted col-sm-2 text-right"><small>after a delay of</small></label>
         <div class="col-sm-2">
-          <input type="text" name="keydelay" placeholder="10 secs" ng-model="urlLink.keydelay" class="form-control"/>
+          <input class="form-control" type="text" name="keydelay" placeholder="10 secs" ng-model="urlLink.keydelay">
         </div>
-      </div><br/>
+      </div><br>
       <div class="form-group row">
         <div class="col-sm-3 col-sm-offset-3">
-          <button ng-disabled="!(linkform.$dirty &amp;&amp; linkform.$valid)" ng-click="saveNewChanges()" class="btn btn-success">Update</button>
+          <button class="btn btn-success" ng-disabled="!(linkform.$dirty &amp;&amp; linkform.$valid)" ng-click="saveNewChanges()" translate="translate">Update</button>
         </div>
       </div>
     </form>
     <div ng-if="(fileType==&quot;gcal&quot;) &amp;&amp; calendar.list.length">
-      <h4><strong> Profile</strong></h4>
+      <h4><strong translate="translate"> Profile</strong></h4>
       <div class="media">
-        <div class="pull-right"><img ng-src="{{calendar.profile.picture}}" style="width:84px" class="media-object"/></div>
+        <div class="pull-right"><img class="media-object" ng-src="{{calendar.profile.picture}}" style="width:84px;"></div>
         <div class="media-body pull-left">
-          <h4 class="media-heading">  &nbspEmail:&nbsp&nbsp<span ng-bind="calendar.profile.email"></span><br/></h4>
+          <h4 class="media-heading">  &nbspEmail:&nbsp&nbsp<span ng-bind="calendar.profile.email"></span><br></h4>
         </div>
       </div>
-      <h3>Choose a Calendar for subscribing to Events</h3><br/>
+      <h3 translate="translate">Choose a Calendar for subscribing to Events</h3><br>
       <ul class="list-group">
-        <li ng-repeat="item in calendar.list" class="list-group-item">
+        <li class="list-group-item" ng-repeat="item in calendar.list">
           <div class="row">
             <div class="col-sm-8">
               <h4 class="media-heading"><strong>{{item.summary}}</strong></h4>
             </div>
             <div class="col-sm-4">
               <div class="radio">
-                <input type="radio" name="email" ng-click="selectedCalendar(item.id)" ng-checked="calendar.selected == item.summary"/>
+                <input type="radio" name="email" ng-click="selectedCalendar(item.id)" ng-checked="calendar.selected == item.summary">
               </div>
             </div>
           </div>

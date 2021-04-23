@@ -1,8 +1,8 @@
 .panel.panel-primary(style="margin-bottom:0px;")
     .panel-heading
         h4
-            span Available Files
-            button.btn.btn-default.pull-right(ng-click="fileDisplayModal.close()") Cancel
+            span(translate='translate') Available Files
+            button.btn.btn-default.pull-right(ng-click="fileDisplayModal.close()",translate='translate') Cancel
     ul.list-group
         li.list-group-item.list-group-item-info
             input.form-control(type="text",placeholder="{{'Filter by Name' }}",ng-model="search")

@@ -2,32 +2,31 @@
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><i class="fa fa-bars"></i></button><a href="http://pisignage.com" target="_self" class="navbar-brand"><img src="app/img/pisignage-logo.png" height="32px"/></a>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span class="sr-only" translate="translate">Toggle navigation</span><i class="fa fa-bars"></i></button><a class="navbar-brand" href="http://pisignage.com" target="_self"><img src="app/img/pisignage-logo.png" height="32px"></a>
     </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul style="margin-left:20px;" class="nav navbar-nav">
-        <li ng-class="getClass('home.dashboard')"><a ui-sref="home.dashboard" ui-sref-opts="{reload:true}">Dashboard</a></li>
-        <li ng-class="getClass('home.assets')"><a ui-sref="home.assets.main" ui-sref-opts="{reload: true}">Assets</a></li>
-        <li ng-class="getClass('home.players')"><a ui-sref="home.players.players" ui-sref-opts="{reload: true}">Players</a></li>
-        <li ng-class="getClass('home.license')"><a ui-sref="home.settings" ui-sref-opts="{reload: true}">Settings</a></li>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav" style="margin-left:20px;">
+        <li ng-class="getClass('home.dashboard')"><a ui-sref="home.dashboard" ui-sref-opts="{reload:true}" translate="translate">Dashboard</a></li>
+        <li ng-class="getClass('home.assets')"><a ui-sref="home.assets.main" ui-sref-opts="{reload: true}" translate="translate">Assets</a></li>
+        <li ng-class="getClass('home.players')"><a ui-sref="home.players.players" ui-sref-opts="{reload: true}" translate="translate">Players</a></li>
+        <li ng-class="getClass('home.license')"><a ui-sref="home.settings" ui-sref-opts="{reload: true}" translate="translate">Settings</a></li>
       </ul>
-      <button ng-click="launchCastApp()" ng-show="castStatus.devicesAvailable" class="btn btn-link pull-right"><img ng-show="castStatus.deviceState == '0'" src="/app/img/ic_cast_black_24dp.png" title="Chromecast devices available, add them to piSignage" class="img-thumbanail"/><img ng-show="castStatus.deviceState != '0'" src="/app/img/ic_cast_connected_black_24dp.png" title="Chromecast device connected" class="img-thumbanail"/></button>
+      <button class="btn btn-link pull-right" ng-click="launchCastApp()" ng-show="castStatus.devicesAvailable"><img class="img-thumbanail" ng-show="castStatus.deviceState == '0'" src="/app/img/ic_cast_black_24dp.png" title="Chromecast devices available, add them to piSignage"><img class="img-thumbanail" ng-show="castStatus.deviceState != '0'" src="/app/img/ic_cast_connected_black_24dp.png" title="Chromecast device connected"></button>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="https://twitter.com/pisignage" target="_blank"><small class="text-info">follow us on&nbsp;<i class="fa fa-twitter-square text-info"></i>&nbsp;for latest updates and tips</small><br/><small class="text-muted">version hash: {{serverConfig.version}}, {{serverConfig.date}}</small></a></li>
+        <li><a href="https://twitter.com/pisignage" target="_blank"><small class="text-info">follow us on&nbsp;<i class="fa fa-twitter-square text-info"></i>&nbsp;for latest updates and tips</small><br><small class="text-muted">version hash: {{serverConfig.version}}, {{serverConfig.date}}</small></a></li>
       </ul>
+      <button class="btn navbar-btn navbar-right btn-xs btn-default" ng-click="languageSelect()">{{userSetting.language | uppercase}}</button>
     </div>
   </div>
 </nav>
-<div ui-view="main" autoscroll="false" class="container height100 overflow-hidden">
+<div class="container height100 overflow-hidden" ui-view="main" autoscroll="false">
   <!--.row.height100.overflow-hidden(autoscroll="false")
-  <div class="col-sm-3 height100 overflow-auto">
-    <div ui-view="left1" autoscroll="false"></div>
-    <div ui-view="left2" autoscroll="false"></div>
-  </div>
-  <div autoscroll="false" class="col-sm-9 height100 overflow-auto">
-    <div ui-view="main1" autoscroll="false"></div>
-    <div ui-view="main2" autoscroll="false"></div>
-    <div ui-view="asset" autoscroll="false" class="height100 overflow-hidden"></div>
-  </div>
+  .col-sm-3.height100.overflow-auto
+      div(ui-view="left1", autoscroll="false")
+      div(ui-view="left2", autoscroll="false")
+  .col-sm-9.height100.overflow-auto(autoscroll="false")
+      div(ui-view="main1", autoscroll="false")
+      div(ui-view="main2", autoscroll="false")
+      div.height100.overflow-hidden(ui-view="asset", autoscroll="false")
   -->
 </div>

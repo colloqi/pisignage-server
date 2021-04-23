@@ -1,34 +1,36 @@
 .modal-header
-    h4.text-primary  Set Timings for Scheduled Playlist ({{forPlaylist.name}})
+    h4.text-primary
+        span(translate='translate')  Set Timings for Scheduled Playlist&nbsp; 
+        | ({{forPlaylist.name}})
 .modal-body
     form(role='form', name='schedulecal')
         .panel.panel-info
             .panel-heading
                 h4
-                    strong Duration
-                    small &nbsp;&nbsp;Schedule between two Dates(both inclusive)
+                    strong(translate='translate') Duration
+                    small(translate='translate') &nbsp;&nbsp;Schedule between two Dates(both inclusive)
             .panel-body
                 .form-group
                     .col-xs-2
                         .checkbox
                             label
                                 input(type="checkbox",ng-model="forPlaylist.settings.durationEnable")
-                                small(ng-show='!forPlaylist.settings.durationEnable') Schedule
-                                small(ng-show='forPlaylist.settings.durationEnable') Begin
+                                small(ng-show='!forPlaylist.settings.durationEnable',translate='translate') Schedule
+                                small(ng-show='forPlaylist.settings.durationEnable',translate='translate') Begin
                     .col-xs-5
                         input.form-control.input-sm(type='date', ng-model='forPlaylist.settings.startdate',
                         ng-model-options="{timezone:'UTC'}",
                         ng-show='forPlaylist.settings.durationEnable',
-                        placeholder="Starting on",
-                        name='startdate', title='Enter Start Date')
+                        placeholder="{{'Starting on' | translate}}",
+                        name='startdate', title="{{'Enter Start Date' | translate}}")
                     .col-xs-1
-                        small(ng-show='forPlaylist.settings.durationEnable') till
+                        small(ng-show='forPlaylist.settings.durationEnable',translate='translate') till
                     .col-xs-4
                         input.form-control.input-sm(type='date', ng-model='forPlaylist.settings.enddate',
                         ng-model-options="{timezone:'UTC'}",
                         ng-show='forPlaylist.settings.durationEnable',
                         placeholder="Till date",
-                        name='enddate', title='Enter End Date')
+                        name='enddate', title="{{'Enter End Date'|translate}}")
         ////.panel.panel-info
         //    .panel-heading
         //        h4
@@ -51,12 +53,12 @@
         .panel.panel-info
             .panel-heading
                 h4
-                    strong Only on Selected Days
-                    small &nbsp;&nbsp;Schedule on specific week days or month days (needs 1.7.0 for multiple days, previous versions take the first day only)
+                    strong(translate='translate') Only on Selected Days
+                    small(translate='translate') &nbsp;&nbsp;Schedule on specific week days or month days (needs 1.7.0 for multiple days, previous versions take the first day only)
             .panel-body
                 .form-group
                     .col-xs-2
-                        label.control-label Week Day(s)
+                        label.control-label(translate='translate') Week Day(s)
                     .col-xs-4
                         //select.form-control(ng-model='forPlaylist.settings.weekdays',
                         //                    ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',
@@ -69,7 +71,7 @@
                         extra-settings="ngDropdown.weekdays.extraSettings",checkboxes="true")
 
                     .col-xs-2
-                        label.control-label Day(s) of Month
+                        label.control-label(translate='translate') Day(s) of Month
                     .col-xs-4
                         //select.form-control(ng-model='forPlaylist.settings.monthdays',
                         //                        ng-options="dayslist.indexOf(day) as day for day in dayslist",
@@ -83,23 +85,23 @@
         .panel.panel-info
             .panel-heading
                 h4
-                    strong At Specified Time
-                    small &nbsp;&nbsp;Only at specific time of the day (for e.g. 7AM - 11AM)
+                    strong(translate='translate') At Specified Time
+                    small(translate='translate') &nbsp;&nbsp;Only at specific time of the day (for e.g. 7AM - 11AM)
             .panel-body
                 .form-group
                     .col-xs-2
                         .checkbox
                             label
                                 input(type="checkbox",ng-model="forPlaylist.settings.timeEnable")
-                                small(ng-show='!forPlaylist.settings.timeEnable') Schedule
-                                small(ng-show='forPlaylist.settings.timeEnable') Begin
+                                small(ng-show='!forPlaylist.settings.timeEnable',translate='translate') Schedule
+                                small(ng-show='forPlaylist.settings.timeEnable',translate='translate') Begin
                     .col-xs-5
                         input.form-control(type='time',
                                             ng-show='forPlaylist.settings.timeEnable',
                                             ng-model='forPlaylist.settings.starttimeObj',
-                                            name='starttime', title='Enter Start Time')
+                                            name='starttime', title="{{'Enter Start Time' | translate}}")
                     .col-xs-1
-                        small(ng-show='forPlaylist.settings.timeEnable') till
+                        small(ng-show='forPlaylist.settings.timeEnable',translate='translate') till
                     .col-xs-4
                         input.form-control(type='time',
                                                 ng-show='forPlaylist.settings.timeEnable',
@@ -107,6 +109,6 @@
                                                 name='endtime', title='Enter End Time')
 
     //button.btn(ng-click="scheduleCalendarModal.close()") Cancel
-    button.btn.btn-success(ng-click="saveSchedules(schedulecal)") OK
+    button.btn.btn-success(ng-click="saveSchedules(schedulecal)",translate='translate') OK
 
     

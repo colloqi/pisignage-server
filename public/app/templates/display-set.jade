@@ -1,12 +1,12 @@
 .modal-header
-    h4 Select Display Orientation and Resolution
+    h4(translate="translate") Select Display Orientation and Resolution
 .modal-body.overflow-auto
     form(role="form", name="formdisplay")
         .form-group.row
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        small Resolution
+                        small(translate="translate") Resolution
             .col-sm-4
                 .radio
                     label
@@ -25,7 +25,7 @@
         .form-group.row
             .col-sm-4.text-right
                 .radio
-                    label.text-muted: small TV Orientation
+                    label.text-muted: small(translate="translate") Orientation
             .col-sm-4
                 .radio
                     label
@@ -40,59 +40,59 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        small Animation
+                        small(translate="translate") Animation
             .col-sm-2
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationEnable",
                                     ng-change='group.selectedGroup.animationType = null;',ng-value="false")
-                        small Disable
+                        small(translate="translate") Disable
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationType",
                                     ng-change='group.selectedGroup.animationEnable = true;',value="blend")
-                        small.text-primary Blend
+                        small.text-primary(translate="translate") Blend
             .col-sm-3
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationType",
                                     ng-change='group.selectedGroup.animationEnable = true;',value="right")
-                        small Slide right
+                        small(translate="translate") Slide right
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationType",
                                     ng-change='group.selectedGroup.animationEnable = true;',value="left")
-                        small Slide left
+                        small(translate="translate") Slide left
             .col-sm-3
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationType",
                                     ng-change='group.selectedGroup.animationEnable = true;',value="up")
-                        small Slide up
+                        small(translate="translate") Slide up
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.animationType",
                                     ng-change='group.selectedGroup.animationEnable = true;',value="down")
-                        small Slide down
+                        small(translate="translate") Slide down
         hr
         .form-group.row
             .col-xs-4.text-right
                 .radio
-                    label.text-muted: small Screen Background
+                    label.text-muted: small(translate="translate") Background
             .col-xs-3
                 .input-group.input-group-sm
                     input.form-control(type='color',ng-model='group.selectedGroup.signageBackgroundColor')
                     small.input-group-addon {{group.selectedGroup.signageBackgroundColor}}
             .col-sm-2.col-sm-offset-1
-                .radio(title="{{'Default volume output is 100%' }}")
-                    label.text-muted: span( title="needs v1.7.0+") Volume(%)
+                .radio(title="{{'Default volume output is 100%' | translate}}")
+                    label.text-muted: span( title="needs v1.7.0+",translate="translate") Volume(%)
             .col-sm-2
                 input.form-control(type='number',min=0,max=100,ng-model='group.selectedGroup.omxVolume')
 
         .form-group.row
             .col-xs-4.text-right
                 .radio
-                    label.text-muted: small Display a Logo
+                    label.text-muted: small(translate="translate") Display a Logo
             .col-xs-4
                 button.btn.btn-sm.btn-link(ng-click="showFileList()")
                     small {{group.selectedGroup.logo || "Select a png image from Assets"}}
@@ -107,63 +107,63 @@
         .form-group.row
             .col-sm-4.text-right
                 .checkbox
-                    label.text-muted: small Display Clock
+                    label.text-muted: small(translate="translate") Display Clock
             .col-sm-2
                 .checkbox
                     label
                         input(type='checkbox',name='show_clock', ng-model='group.selectedGroup.showClock.enable')
-                        small Show
+                        small(translate="translate") Show
             .col-sm-2(ng-show='group.selectedGroup.showClock.enable')
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.showClock.position",value="top")
-                        small() Top
+                        small(translate="translate") Top
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.showClock.position",value="bottom")
-                        small() Bottom
+                        small(translate="translate") Bottom
             .col-sm-2(ng-show='group.selectedGroup.showClock.enable')
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.showClock.format",value="12")
-                        small() 12 hr
+                        small(translate="translate") 12 hr
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.showClock.format",value="24")
-                        small() 24 hr
+                        small(translate="translate") 24 hr
             .col-sm-2(ng-show='group.selectedGroup.showClock.enable')
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.showClock.format",value="12d")
-                        small() date+12h
+                        small(translate="translate") date+12h
                 .radio
                     label
                         input(type="radio",ng-model="group.selectedGroup.showClock.format",value="24d")
-                        small() date+24h
+                        small(translate="translate") date+24h
 
         hr
         .form-group.row
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        small Fit image
+                        small(translate="translate") Fit image
             .col-sm-2
                 .radio
                     label
                         input(type='radio', ng-model='group.selectedGroup.imageSize',ng-value="0")
-                        small Actual
+                        small(translate="translate") Actual
                 .radio
                     label
                         input(type='radio', ng-model='group.selectedGroup.imageSize',ng-value="1")
-                        small Letterbox
+                        small(translate="translate") Letterbox
                 .radio
                     label
                         input(type='radio', ng-model='group.selectedGroup.imageSize',ng-value="2")
-                        small Stretched
+                        small(translate="translate") Stretched
             .col-sm-4
                 .checkbox
                     label
-                        small Reload link URLs each time<br>(appends ?ts in chromeapp)
+                        small(translate="translate") Reload link URLs each time<br>(appends ?ts in chromeapp)
             .col-sm-2
                 .checkbox
                     label
@@ -172,25 +172,25 @@
                         ng-false-value="true",
                         ng-checked="group.selectedGroup.urlReloadDisable !== true"
                         )
-                        small Enable
+                        small(translate="translate") Enable
 
 
         .form-group.row
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        small Fit video
+                        small(translate="translate") Fit video
             .col-sm-2
                 .radio
                     label
                         input(type='radio',ng-model='group.selectedGroup.videoSize',ng-value="1")
-                        small Letterbox
+                        small(translate="translate") Letterbox
                 .radio
                     label
                         input(type='radio',ng-model='group.selectedGroup.videoSize',ng-value="2")
-                        small Stretched
+                        small(translate="translate") Stretched
             .col-sm-4.text-right
-                small Stop video every seconds to show adverts (0 to disable)
+                small(translate="translate") Stop video every seconds to show adverts (0 to disable)
             .col-sm-2
                 input.input-sm.form-control(type='number',placeholder="secs",ng-model='group.selectedGroup.timeToStopVideo')
 
@@ -200,35 +200,35 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        small Schedule Display OFF
+                        small(translate="translate") Schedule Display OFF
             .col-sm-4
                 .checkbox
                     label
                         input(type='checkbox',name='sleep_checkbox', ng-model='group.selectedGroup.sleep.enable')
-                        small Enable
+                        small(translate="translate") Enable
         .form-group.row(ng-show='group.selectedGroup.sleep.enable')
             .col-sm-4.col-sm-offset-4
                 label
-                    small ON at
+                    small(translate="translate") ON at
                     input.form-control(type='time',ng-model="group.selectedGroup.sleep.ontimeObj")
             .col-sm-4
                 label
-                    small OFF at
+                    small(translate="translate") OFF at
                     input.form-control(type='time',ng-model="group.selectedGroup.sleep.offtimeObj")
             .col-sm-10.col-sm-offset-2
-                small.text-info For finer control use TV_OFF playlist under group scheduling
+                small.text-info(translate="translate") For finer control use TV_OFF playlist under group scheduling
 
         hr
         .form-group.row
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        small Optional daily reboot
+                        small(translate="translate") Optional daily reboot
             .col-sm-2
                 .checkbox
                     label
                         input(type='checkbox',name='reboot_checkbox', ng-model='group.selectedGroup.reboot.enable')
-                        small enable
+                        small(translate="translate") enable
             .col-sm-2.text-right
                 .radio
                     label.text-muted
@@ -243,19 +243,19 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        small Kiosk Menu
+                        small(translate="translate") Kiosk Menu
             .col-sm-2
                 .checkbox
                     label
                         input(type='checkbox',name='kioskui_checkbox', ng-model='group.selectedGroup.kioskUi.enable')
-                        small Enable
+                        small(translate="translate") Enable
             .col-sm-6(ng-show='group.selectedGroup.kioskUi.enable')
                 .input-group.input-group-sm
-                    small.input-group-addon URL
+                    small.input-group-addon(translate="translate") URL
                     input.input-sm.form-control(type='text',placeholder="Leave blank for default",ng-model="group.selectedGroup.kioskUi.url")
             .col-sm-5.col-sm-offset-6(ng-show='group.selectedGroup.kioskUi.enable')
                 .input-group.input-group-sm
-                    small.input-group-addon Inactivitiy timeout
+                    small.input-group-addon(translate="translate") Inactivitiy timeout
                     input.input-sm.form-control(type='number',placeholder="30 secs",ng-model='group.selectedGroup.kioskUi.timeout')
 
         hr
@@ -263,12 +263,12 @@
             .col-sm-4.text-right
                 .radio
                     label.text-muted
-                        small Video Play
+                        small(translate="translate") Video Play
             .col-sm-8
                 .checkbox
                     label
                         input(type='checkbox',name='ffmpeg', ng-model='group.selectedGroup.enableMpv')
-                        small Use MPV to avoid gap between videos
+                        small(translate="translate") Use MPV to avoid gap between videos
 .modal-footer
-    button.btn(ng-click='displayModal.close()') Cancel
-    button.btn.btn-danger(ng-click='saveSettings()') OK
+    button.btn(ng-click='displayModal.close()',translate="translate") Cancel
+    button.btn.btn-danger(ng-click='saveSettings()',translate="translate") OK

@@ -2,11 +2,11 @@
     .panel-heading
         .row
             .col-sm-10
-                h5.panel-title {{asset.showAssets.assets.length}}&nbsp;items in&nbsp;
+                h5.panel-title(translate="translate") {{asset.showAssets.assets.length}}&nbsp;items in&nbsp;
                     | {{asset.showAssets.playlist.name}}&nbsp;
-                    span.text-muted &nbsp;(Drag to Add/Remove)
+                    span.text-muted(translate="translate") &nbsp;(Drag to Add/Remove)
             .col-sm-2
-                a.btn.btn-primary.pull-right(ng-click="done()") Done
+                a.btn.btn-primary.pull-right(ng-click="done()",translate="translate") Done
     ul.list-group(as-sortable="sortable.options",ng-model="asset.showAssets.assets",
                         style="min-height:50px;")
         li.list-group-item(ng-repeat='file in asset.showAssets.assets',
@@ -40,9 +40,9 @@
                         .col-sm-3
                             label.label(ng-class="{'label-danger':file.playlistDetails.fullscreen,'label-default':!file.playlistDetails.fullscreen}")
                                 input(type='checkbox',name='fullscreen', ng-model='file.playlistDetails.fullscreen')
-                                span &nbsp;show fullscreen
+                                span(translate="translate") &nbsp;show fullscreen
                         .col-sm-9
-                            small.text-primary Add other zone assets
+                            small.text-primary(translate="translate") Add other zone assets
                                 span(ng-repeat="zone in layoutOtherZones[asset.showAssets.playlist.layout]")
                                     .btn-group(ng-if="!customZonesPresent || customZonesPresent[zone]")
                                         button.btn.btn-xs.btn-info(ng-click="linkFile(file.playlistDetails,zone)")
@@ -54,20 +54,20 @@
                         .col-sm-3(ng-show='file.fileDetails.muteButtonEnable')
                             label.btn.btn-link.text-muted(title='mute the audio')
                                 input(type='checkbox', ng-model='file.playlistDetails.option.main',ng-model-options="{ debounce: 500 }")
-                                span.pl-5 mute audio
+                                span.pl-5(translate="translate") mute audio
                         .col-sm-3(ng-show='file.fileDetails.type == "audio" || file.fileDetails.type == "radio"')
                             label.btn.btn-link.text-muted( title='play in background')
                                 input(type='checkbox', ng-model='file.playlistDetails.option.main',ng-model-options="{ debounce: 500 }",
                                 ng-true-value="false", ng-false-value="true",
                                 ng-checked="file.playlistDetails.option.main !== true")
-                                span.pl-5  play in background
+                                span.pl-5(translate="translate")  play in background
                         .col-sm-3(ng-show='file.fileDetails.type == "image" || file.fileDetails.type == "video"')
                             label.btn.btn-link.text-muted(title='add a text message over image or video')
                                 input(type='text', ng-model='file.playlistDetails.option.bannerText',placeholder="text message over the image/video", ng-model-options="{ debounce: 500 }")
                         .col-sm-3(ng-show='file.fileDetails.type == "pdf"')
                             label.btn.btn-link.text-muted(title='use presentation mode')
                                 input(type='checkbox', ng-model='file.playlistDetails.option.main',ng-model-options="{ debounce: 500 }")
-                                span.pl-5 use presentation mode
+                                span.pl-5(translate="translate") use presentation mode
                             input.form-control.input-sm(ng-show='file.playlistDetails.option.main',
                             type='number', ng-model='file.playlistDetails.option.subduration',min="1",placeholder="duration for each slide",
                             ng-model-options="{ debounce: 500 }")
@@ -90,6 +90,6 @@
 
 
         li.list-group-item(ng-if="!asset.showAssets.assets.length")
-            h4.text-danger Nothing to show, Please Drag Assets to this box
+            h4.text-danger(translate="translate") Nothing to show, Please Drag Assets to this box
 
 

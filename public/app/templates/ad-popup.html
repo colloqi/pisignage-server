@@ -1,203 +1,195 @@
 
 <div class="modal-content">
   <div class="modal-header bg-info">
-    <h4 class="text-center">Make this as Advt. Playlist</h4>
+    <h4 class="text-center" translate="translate">Make this as Advt. Playlist</h4>
   </div>
   <div class="modal-body">
     <form class="form-horizontal">
       <div class="form-group">
         <div class="col-sm-6">
-          <p>
-            By making this as Advt. playlist, you can insert the assets of this playlist periodically in between the currently
-            playing playlist.
-          </p>
+          <p translate="translate">
+            By making this as Advt. playlist, you can insert the assets of this playlist periodically in between the currentlyplaying playlist.</p>
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.adPlaylist"/><span>Make this as Advt. Playlist</span>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.adPlaylist" translate><span translate="translate">Make this as Advt. Playlist</span>
             </label>
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist">
         <div class="col-sm-6">
-          <p>
-              You can play the assets only on side and banner zones by disabling main zone here.
-            Still you have to select dummy file for main zone
-          </p>
+          <p translate="translate">
+              You can play the assets only on side and banner zones by disabling main zone here.Still you have to select dummy file for main zone</p>
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.noMainPlay"/><span>Play only in side/banner zones</span>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.noMainPlay"><span translate="translate">Play only in side/banner zones</span>
             </label>
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist">
         <label class="col-sm-4 control-label">Play</label>
         <div class="col-sm-3">
           <div class="input-group">
-            <input type="number" ng-model="playlist.selectedPlaylist.settings.ads.adCount" class="form-control"/>
-            <div class="input-group-addon"><small class="text-muted"> assets</small></div>
+            <input class="form-control" type="number" ng-model="playlist.selectedPlaylist.settings.ads.adCount">
+            <div class="input-group-addon"><small class="text-muted" translate="translate"> assets</small></div>
           </div>
         </div>
         <div class="col-sm-5">
           <div class="input-group">
-            <div class="input-group-addon"><small class="text-muted"> after every</small></div>
-            <input type="number" ng-model="playlist.selectedPlaylist.settings.ads.adInterval" class="form-control"/>
-            <div class="input-group-addon"><small class="text-muted"> seconds</small></div>
+            <div class="input-group-addon"><small class="text-muted" translate="translate"> after every</small></div>
+            <input class="form-control" type="number" ng-model="playlist.selectedPlaylist.settings.ads.adInterval">
+            <div class="input-group-addon"><small class="text-muted" translate="translate"> seconds</small></div>
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-6">
-          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+          <button class="btn btn-success" ng-click="saveSettings()" translate="translate">Save</button>
         </div>
       </div>
     </form>
   </div>
   <div class="modal-header bg-info">
-    <h4 class="text-center">Play this playlist only once during selected duration</h4>
+    <h4 class="text-center" translate="translate">Play this playlist only once during selected duration</h4>
   </div>
   <div class="modal-body">
     <form class="form-horizontal">
       <div class="form-group">
         <div class="col-sm-6">
-          <p>
-            Play this playlist once every selected duration by stopping regular playlist
-            ,acts like insertion of advt at fixed intervals
-          </p>
+          <p translate="translate">
+            Play this playlist once every selected duration by stopping regular playlist,acts like insertion of advt at fixed intervals</p>
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.domination.enable"/><span>Enable (Domination Content)</span>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.domination.enable"><span translate="translate">Enable (Domination Content)</span>
             </label>
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.domination.enable" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.domination.enable">
         <div class="col-sm-6">
-          <p>Play after every</p>
+          <p translate="translate">Play after every</p>
         </div>
         <div class="col-sm-6">
           <div class="input-group">
-            <input type="number" ng-model="playlist.selectedPlaylist.settings.domination.timeInterval" class="form-control"/>
-            <div class="input-group-addon"><small> minutes</small></div>
+            <input class="form-control" type="number" ng-model="playlist.selectedPlaylist.settings.domination.timeInterval">
+            <div class="input-group-addon"><small translate="translate"> minutes</small></div>
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-6">
-          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+          <button class="btn btn-success" ng-click="saveSettings()" translate="translate">Save</button>
         </div>
       </div>
     </form>
   </div>
   <div class="modal-header bg-info">
-    <h4 class="text-center">Play this as independent Audio Playlist for the aux port</h4>
+    <h4 class="text-center" translate="translate">Play this as independent Audio Playlist for the aux port</h4>
   </div>
   <div class="modal-body">
     <form class="form-horizontal">
       <div class="form-group">
         <div class="col-sm-6">
-          <p>
-            In addition to signage functionality, you can play audio from a playlist
-            through the 3.5mm jack
-          </p>
+          <p translate="translate">
+            In addition to signage functionality, you can play audio from a playlistthrough the 3.5mm jack</p>
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.enable"/><span>Play songs from this playlist (need to contain only mp3 files)</span>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.enable"><span translate="translate">Play songs from this playlist (need to contain only mp3 files)</span>
             </label>
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.audio.enable" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.audio.enable">
         <div class="col-sm-6">
           <p></p>
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.random"/><span>Play in random order</span>
+              <input type="checkbox" ,ng-model="playlist.selectedPlaylist.settings.audio.random"><span translate="translate">Play in random order</span>
             </label>
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.audio.enable" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.audio.enable">
         <div class="col-sm-6">
-          <p>Volume</p>
+          <p translate="translate">Volume</p>
         </div>
         <div class="col-sm-6">
-          <input type="number" min="0" max="100" ng-model="playlist.selectedPlaylist.settings.audio.volume" placeholder="{{'Enter value in %' }}" class="form-control"/>
+          <input class="form-control" type="number" min="0" max="100" ng-model="playlist.selectedPlaylist.settings.audio.volume" placeholder="{{'Enter value in %' }}">
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.audio.enable" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.audio.enable">
         <div class="col-sm-6"></div>
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.hdmi"/><span>Output audio in HDMI port also</span>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.hdmi"><span translate="translate">Output audio in HDMI port also</span>
             </label>
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-6">
-          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+          <button class="btn btn-success" ng-click="saveSettings()" translate="translate">Save</button>
         </div>
       </div>
     </form>
   </div>
   <div class="modal-header bg-info">
-    <h4 class="text-center">Make this as Event Playlist</h4>
+    <h4 class="text-center" translate="translate">Make this as Event Playlist</h4>
   </div>
   <div class="modal-body">
     <form class="form-horizontal">
       <div class="form-group">
         <div class="col-sm-6">
-          <p>When SIGUSR2 event is signalled this playlist is played if eligible</p>
+          <p translate="translate">When SIGUSR2 event is signalled this playlist is played if eligible</p>
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.event.enable"/><span>Enable</span>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.event.enable"><span translate="translate">Enable</span>
             </label>
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.event.enable" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.event.enable">
         <div class="col-sm-6">
-          <p>Duration of the playlist, 0 to play till next event</p>
+          <p translate="translate">Duration of the playlist, 0 to play till next event</p>
         </div>
         <div class="col-sm-6">
-          <input type="text" ng-model="playlist.selectedPlaylist.settings.event.duration" placeholder="{{'Enter value in seconds'}}" class="form-control"/>
+          <input class="form-control" type="text" ng-model="playlist.selectedPlaylist.settings.event.duration" placeholder="{{'Enter value in seconds'}}">
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-6">
-          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+          <button class="btn btn-success" ng-click="saveSettings()" translate="translate">Save</button>
         </div>
       </div>
     </form>
   </div>
   <div class="modal-header bg-info">
-    <h4 class="modal-title">Play this playlist only when online</h4>
+    <h4 class="modal-title" translate="translate">Play this playlist only when online</h4>
   </div>
   <div class="modal-body">
     <form class="form-horizontal">
       <div class="form-group">
         <div class="col-sm-6">
-          <p>Schedule this playlist to play only when player is online</p>
+          <p translate="translate">Schedule this playlist to play only when player is online</p>
         </div>
         <div class="col-sm-5">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.onlineOnly"/><span>Enable</span>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.onlineOnly"><span translate="translate">Enable</span>
             </label>
           </div>
         </div>

@@ -7,21 +7,21 @@
                         i.fa.fa-lg(ng-class="{'fa-carret-right':collapsed,'fa-carret-down':!collapsed}")
             .col-sm-3
                 a.btn.btn-success.pull-right(ui-sref="home.playlists.playlistAddAssets({playlist:playlist.selectedPlaylist.name})",
-                                                ui-sref-opts="{reload: true, notify: true}") Assign Assets
+                                                ui-sref-opts="{reload: true, notify: true}",translate="translate") Assign Assets
             .col-sm-1
                 a.pull-right.close(ng-click="closeWindow()") &times;
 
     .panel-body(ng-show="!collapsed")
         form.form-horizontal
             .form-group
-                label.control-label.col-sm-4.text-muted Selected Layout for the playlist&nbsp;
+                label.control-label.col-sm-4.text-muted(translate="translate") Selected Layout for the playlist&nbsp;
                 .col-sm-8
                     .btn-group
                         button.btn.btn-default(ng-click="openLayout ()")
                             strong {{playlist.selectedPlaylist.layout}}
                             span :{{layouts[playlist.selectedPlaylist.layout].title}}
             .form-group
-                label.control-label.col-sm-4.text-muted Configure Ticker
+                label.control-label.col-sm-4.text-muted(translate="translate") Configure Ticker
                 .col-sm-8
                     button.btn.btn-default(ng-click="openTicker ()")
                         span {{playlist.selectedPlaylist.settings.ticker.enable?"Enabled":"Disabled"}}
@@ -34,14 +34,14 @@
                             button.btn.btn-default.pull-right(ng-click='saveSettings()')
                                 i.fa.fa-check
             .form-group
-                label.control-label.col-sm-4.text-muted Configure playlist
+                label.control-label.col-sm-4.text-muted(translate="translate") Configure playlist
                 .col-sm-8
-                    button.btn.btn-default(ng-click="openAd ()") Settings&nbsp;
+                    button.btn.btn-default(ng-click="openAd ()",translate="translate") Settings&nbsp;
                         span.badge
-                            small(ng-if= "playlist.selectedPlaylist.settings.ads && playlist.selectedPlaylist.settings.ads.adPlaylist") advert
-                            small(ng-if= "playlist.selectedPlaylist.settings.domination && playlist.selectedPlaylist.settings.domination.enable") domination
-                            small(ng-if= "playlist.selectedPlaylist.settings.event && playlist.selectedPlaylist.settings.event.enable") event
-                            small(ng-if= "playlist.selectedPlaylist.settings.audio && playlist.selectedPlaylist.settings.audio.enable") audio
+                            small(ng-if= "playlist.selectedPlaylist.settings.ads && playlist.selectedPlaylist.settings.ads.adPlaylist",translate="translate") advert
+                            small(ng-if= "playlist.selectedPlaylist.settings.domination && playlist.selectedPlaylist.settings.domination.enable",translate="translate") domination
+                            small(ng-if= "playlist.selectedPlaylist.settings.event && playlist.selectedPlaylist.settings.event.enable",translate="translate") event
+                            small(ng-if= "playlist.selectedPlaylist.settings.audio && playlist.selectedPlaylist.settings.audio.enable",translate="translate") audio
 
                     //.checkbox
                         label

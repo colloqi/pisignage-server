@@ -7,6 +7,7 @@ angular.module('piServerApp', [
     'yaru22.angular-timeago',
     'angularjs-dropdown-multiselect',
     'piConfig',
+    'gettext',
     'piIndex.controllers',
     'piGroups.controllers',
     'dashboard.controllers',

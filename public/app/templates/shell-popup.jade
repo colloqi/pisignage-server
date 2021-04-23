@@ -2,8 +2,8 @@
     h4
         span.text-warning {{msg.player.statusClass == "text-danger"?"Player is OFFLINE":"Pi Shell"}}
         span.pull-right.btn-group
-            button.btn.btn-sm(ng-class="msg.player.tvStatus? 'btn-primary':'btn-default'",ng-click="changeTvState(false)") Tv On
-            button.btn.btn-sm(ng-class="!msg.player.tvStatus? 'btn-primary':'btn-default'",ng-click="changeTvState(true)") Tv OFF
+            button.btn.btn-sm(ng-class="msg.player.tvStatus? 'btn-primary':'btn-default'",ng-click="changeTvState(false)",translate='translate') Tv On
+            button.btn.btn-sm(ng-class="!msg.player.tvStatus? 'btn-primary':'btn-default'",ng-click="changeTvState(true)",translate='translate') Tv OFF
     small.text-danger.pull-right(ng-if="confirmmsg") {{confirmmsg}}
 .modal-body
     form(name="shellform",ng-submit='execute()')
@@ -11,9 +11,9 @@
             .input-group.col-xs-12
                 input.form-control(type='text', ng-model='msg.cmd',ng-keydown='getOldEntry($event)')
                 span.input-group-btn
-                    button.btn.btn-success(type="submit") EXECUTE
+                    button.btn.btn-success(type="submit",translate='translate') EXECUTE
             small
-                i.text-success Use arrow keys &nbsp &#8593; &nbsp and &nbsp &#8595; &nbsp to check Commands history
+                i.text-success(translate='translate') Use arrow keys &nbsp &#8593; &nbsp and &nbsp &#8595; &nbsp to check Commands history
     .alert.alert-info
         pre(ng-if="msg.err"): small.text-danger {{msg.err}}
         pre(ng-if="msg.stdout"): small.text-info stdout: {{msg.stdout}}
@@ -26,7 +26,7 @@
                 button.btn.btn-block.btn-success {{snapshot.buttonTxt}}&nbsp;(needs v1.6.0+)
 
         .col-sm-2
-            button.btn.btn-warning.pull-right(ng-click='modal.dismiss()') Dismiss
+            button.btn.btn-warning.pull-right(ng-click='modal.dismiss()',translate='translate') Dismiss
 
 //.modal-footer
     button.btn.btn-warning(ng-click='modal.dismiss()') Dismiss

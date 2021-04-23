@@ -1,11 +1,11 @@
 .panel.panel-primary(style="margin-bottom:0px;")
     .panel-heading
-        h4.text-center Select Display Layout (default 1)
-            button.btn.btn-success.pull-right(ng-click="modal.close()") DONE
+        h4.text-center(translate='translate') Select Display Layout (default 1)
+            button.btn.btn-success.pull-right(ng-click="modal.close()",translate='translate') DONE
     .panel-body
         tabset
             tab(heading='Layouts')
-                i: small The Display can be divided into multiple zones with each zone playing different content. Video files can be played
+                i: small(translate='translate') The Display can be divided into multiple zones with each zone playing different content. Video files can be played
                     | only in the main Zone. Select a file in the playlist to play in the main zone,add other zone files to the main file
                     | by clicking zone file button. If there is no file attached to a particular zone, the previous content for that zone
                     | will continue to play.
@@ -20,7 +20,7 @@
                                         strong.text-primary {{ltype}}: &nbsp;{{item.title}}
                                         p: small ({{item.description}})
                                 button.btn.btn-sm.btn-link.dropdown-toggle(dropdown-toggle,ng-if="ltype.indexOf('custom') === 0")
-                                    small.text-muted layout file:&nbsp;
+                                    small.text-muted(translate='translate') layout file:&nbsp;
                                     small {{playlist.selectedPlaylist.templateName || "Select a custom_layout*.html file from Assets"}}
                                     i.fa.fa-caret-down
                                 ul.dropdown-menu(role="menu",ng-if="ltype.indexOf('custom') === 0")
@@ -29,29 +29,29 @@
                             .col-sm-2
                                 img(height="40px",ng-src="/app/img/{{ltype}}.png")
             tab(heading='Main Video Window')
-                h4 Change Main Zone video window size
+                h4(translate='translate') Change Main Zone video window size
                 i
-                    small This section is for Advanced user only!! Changing any parameter would affect the video display size.
+                    small(translate='translate') This section is for Advanced user only!! Changing any parameter would affect the video display size.
                     | If encountered any problem just click 'Restore Defaults'. The `length` and `width` parameters define the actual window size,
                     | `Left-offset` and `Top-Offset` defines the position of the window across your display.
-                    b USE THIS FEATURE CAUTIOUSLY
+                    b(translate='translate') USE THIS FEATURE CAUTIOUSLY
                 form(name="layoutform")
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small Width:
+                            label.control-label: small(translate='translate') Width:
                         .col-sm-2
                             input.form-control(type="text",ng-model='videoWindow.length',required='')
                         .col-sm-2
-                            label.control-label: small Height:
+                            label.control-label: small(translate='translate') Height:
                         .col-sm-2
                             input.form-control(type="text",ng-model="videoWindow.width",required='')
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small Left-Offset:
+                            label.control-label: small(translate='translate') Left-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="videoWindow.xoffset",required='')
                         .col-sm-2
-                            label.control-label: small Top-Offset:
+                            label.control-label: small(translate='translate') Top-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="videoWindow.yoffset",required='')
                     .form-group.row
@@ -61,100 +61,100 @@
                                     input(type='checkbox',name='fullscreen_checkbox', ng-model='videoWindow.mainzoneOnly',
                                             ng-true-value="false", ng-false-value="true",
                                             ng-checked="videoWindow.mainzoneOnly !== true")
-                                    small.text-muted.pl-5 Use as FULL SCREEN dimensions also(for custom displays)
+                                    small.text-muted.pl-5(translate='translate') Use as FULL SCREEN dimensions also(for custom displays)
                     .form-group.row
                         .col-sm-3
-                            button.btn.btn-danger(ng-click="setVideoWindow(null)") Restore Defaults
+                            button.btn.btn-danger(ng-click="setVideoWindow(null)",translate='translate') Restore Defaults
                         .col-sm-3
                             button.btn.btn-info(ng-click="setVideoWindow(videoWindow)",
-                            ng-disabled="!layoutform.$valid") Save New Changes
+                            ng-disabled="!layoutform.$valid",translate='translate') Save New Changes
             tab(heading='Side/Bottom Video Window')
-                h4 Change video window position for other zones
+                h4(translate='translate') Change video window position for other zones
                 i
-                    small This section is for custom layouts only !! Changing  Any parameter would affect the video display size in side and bottom zones.
+                    small(translate='translate') This section is for custom layouts only !! Changing  Any parameter would affect the video display size in side and bottom zones.
 
                 form(name='sideZoneForm')
-                    .alert.alert-info.text-center Side Zone Values
+                    .alert.alert-info.text-center(translate='translate') Side Zone Values
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small Width:
+                            label.control-label: small(translate='translate') Width:
                         .col-sm-2
                             input.form-control(type="text",ng-model='zoneVideoWindow.side.length',required='')
                         .col-sm-2
-                            label.control-label: small Height:
+                            label.control-label: small(translate='translate') Height:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.side.width",required='')
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small Left-Offset:
+                            label.control-label: small(translate='translate') Left-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.side.xoffset",required='')
                         .col-sm-2
-                            label.control-label: small Top-Offset:
+                            label.control-label: small(translate='translate') Top-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.side.yoffset",required='')
                     .form-group.row
                         .col-sm-6
-                            button.btn.btn-danger(ng-click="setZoneVideoWindow('side',null)") Restore Side Zone Defaults
+                            button.btn.btn-danger(ng-click="setZoneVideoWindow('side',null)",translate='translate') Restore Side Zone Defaults
                         .col-sm-6
                             button.btn.btn-info(ng-click="setZoneVideoWindow('side',zoneVideoWindow.side)",
-                            ng-disabled="!sideZoneForm.$valid") Save New Changes
+                            ng-disabled="!sideZoneForm.$valid",translate='translate') Save New Changes
                     hr
                 form(name='bottomZoneForm')
-                    .alert.alert-info.text-center Bottom Zone Values
+                    .alert.alert-info.text-center(translate='translate') Bottom Zone Values
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small Width:
+                            label.control-label: small(translate='translate') Width:
                         .col-sm-2
                             input.form-control(type="text",ng-model='zoneVideoWindow.bottom.length',required='')
                         .col-sm-2
-                            label.control-label: small Height:
+                            label.control-label: small(translate='translate') Height:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.bottom.width",required='')
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small Left-Offset:
+                            label.control-label: small(translate='translate') Left-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.bottom.xoffset",required='')
                         .col-sm-2
-                            label.control-label: small Top-Offset:
+                            label.control-label: small(translate='translate') Top-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.bottom.yoffset",required='')
                     .form-group.row
                         .col-sm-6
-                            button.btn.btn-danger(ng-click="setZoneVideoWindow('bottom',null)") Restore Bottom Zone Defaults
+                            button.btn.btn-danger(ng-click="setZoneVideoWindow('bottom',null)",translate='translate') Restore Bottom Zone Defaults
                         .col-sm-6
                             button.btn.btn-info(ng-click="setZoneVideoWindow('bottom',zoneVideoWindow.bottom)",
-                            ng-disabled="!bottomZoneForm.$valid") Save New Changes
+                            ng-disabled="!bottomZoneForm.$valid",translate='translate') Save New Changes
 
             tab(heading='Zone4 Video',ng-if="playlist.selectedPlaylist.layout.indexOf('custom') === 0")
-                h4 Change video window position for zone4
+                h4(translate='translate') Change video window position for zone4
                 i
-                    small This section is for custom layouts only !! Changing  Any parameter would affect the video display size in zone4.
+                    small(translate='translate') This section is for custom layouts only !! Changing  Any parameter would affect the video display size in zone4.
 
                 form(name='zone4Form')
-                    .alert.alert-info.text-center Zone4 Values
+                    .alert.alert-info.text-center(translate='translate') Zone4 Values
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small(translate) Width:
+                            label.control-label: small(translate='translate') Width:
                         .col-sm-2
                             input.form-control(type="text",ng-model='zoneVideoWindow.zone4.length',required='')
                         .col-sm-2
-                            label.control-label: small(translate) Height:
+                            label.control-label: small(translate='translate') Height:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.zone4.width",required='')
                     .form-group.row
                         .col-sm-2.col-sm-offset-2
-                            label.control-label: small(translate) Left-Offset:
+                            label.control-label: small(translate='translate') Left-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.zone4.xoffset",required='')
                         .col-sm-2
-                            label.control-label: small(translate) Top-Offset:
+                            label.control-label: small(translate='translate') Top-Offset:
                         .col-sm-2
                             input.form-control(type="text",ng-model="zoneVideoWindow.zone4.yoffset",required='')
                     .form-group.row
                         .col-sm-6
-                            button.btn.btn-danger(ng-click="setZoneVideoWindow('zone4',null)") Restore Zone4 Defaults
+                            button.btn.btn-danger(ng-click="setZoneVideoWindow('zone4',null)",translate='translate') Restore Zone4 Defaults
                         .col-sm-6
                             button.btn.btn-info(ng-click="setZoneVideoWindow('zone4',zoneVideoWindow.zone4)",
-                                ng-disabled="!zone4Form.$valid") Save New Changes
+                                ng-disabled="!zone4Form.$valid",translate='translate') Save New Changes

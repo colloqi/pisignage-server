@@ -1,146 +1,146 @@
 
 <div class="modal-header">
-  <h3 class="text-warning">Ticker for the Play-list</h3>
+  <h3 class="text-warning" translate="translate">Ticker for the Play-list</h3>
 </div>
 <div class="modal-body">
-  <form name="playlist.popForm" class="form">
+  <form class="form" name="playlist.popForm">
     <div class="row form-group">
-      <label class="text-muted control-label col-sm-3 text-right"><small>Ticker</small></label>
+      <label class="text-muted control-label col-sm-3 text-right"><small translate="translate">Ticker</small></label>
       <div class="col-sm-2">
         <div class="checkbox-inline">
           <label>
-            <input type="checkbox" name="ticker_checkbox" ng-model="tickerObj.enable"/><small>Show</small>
+            <input type="checkbox" name="ticker_checkbox" ng-model="tickerObj.enable"><small translate="translate">Show</small>
           </label>
         </div>
       </div>
-      <label class="text-muted control-label col-sm-4 text-right"><small>Show asset associated text</small></label>
+      <label class="text-muted control-label col-sm-4 text-right"><small translate="translate">Show asset associated text</small></label>
       <div class="col-sm-2">
         <div class="checkbox-inline">
           <label>
-            <input type="checkbox" name="ticker_enable" ng-model="tickerObj.bannerText"/><small>&nbsp;</small>
+            <input type="checkbox" name="ticker_enable" ng-model="tickerObj.bannerText"><small>&nbsp;</small>
           </label>
         </div>
       </div>
     </div>
-    <div ng-show="tickerObj.enable" class="row form-group">
-      <label class="text-muted control-label col-sm-3 text-right"><small>Type</small></label>
+    <div class="row form-group" ng-show="tickerObj.enable">
+      <label class="text-muted control-label col-sm-3 text-right"><small translate="translate">Type</small></label>
       <div class="col-sm-9">
         <div class="radio-inline">
           <label>
-            <input type="radio" value="slide" ng-model="tickerObj.behavior"/><small>Slide</small>
+            <input type="radio" value="slide" ng-model="tickerObj.behavior"><small translate="translate">Slide</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" value="scroll" ng-model="tickerObj.behavior"/><small>Scroll left</small>
+            <input type="radio" value="scroll" ng-model="tickerObj.behavior"><small translate="translate">Scroll left</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" value="scrollRight" ng-model="tickerObj.behavior"/><small>Scroll right</small>
+            <input type="radio" value="scrollRight" ng-model="tickerObj.behavior"><small translate="translate">Scroll right</small>
           </label>
         </div>
         <div class="radio-inline">
-          <label class="text-info"><small>OpenVG</small><br/></label>
+          <label class="text-info"><small translate="translate">OpenVG</small><br><i>(beta)</i></label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" value="openvg_left" name="openvg_left" ng-model="tickerObj.behavior"/><small>left</small>
+            <input type="radio" value="openvg_left" name="openvg_left" ng-model="tickerObj.behavior"><small translate="translate">left</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" value="openvg_right" name="openvg_right" ng-model="tickerObj.behavior"/><small>right</small>
+            <input type="radio" value="openvg_right" name="openvg_right" ng-model="tickerObj.behavior"><small translate="translate">right</small>
           </label>
         </div>
       </div>
     </div>
-    <div ng-show="tickerObj.enable &amp;&amp; tickerObj.behavior!= &quot;openvg_right&quot;&amp;&amp; tickerObj.behavior!= &quot;openvg_left&quot;" class="form-group row">
-      <label class="control-label text-muted col-sm-3 text-right"><small>Optional CSS</small></label>
+    <div class="form-group row" ng-show="tickerObj.enable &amp;&amp; tickerObj.behavior!= &quot;openvg_right&quot;&amp;&amp; tickerObj.behavior!= &quot;openvg_left&quot;">
+      <label class="control-label text-muted col-sm-3 text-right"><small translate="translate">Optional CSS</small></label>
       <div class="col-sm-9">
-        <input type="text" placeholder="e.g. color:#eee; font-style:italic; " ng-model="tickerObj.style" class="form-control input-sm"/>
+        <input class="form-control input-sm" type="text" placeholder="e.g. color:#eee; font-style:italic; " ng-model="tickerObj.style">
       </div>
     </div>
-    <div ng-show="tickerObj.enable &amp;&amp; (tickerObj.behavior== &quot;openvg_right&quot; || tickerObj.behavior== &quot;openvg_left&quot;)" class="form-group row">
-      <label class="control-label text-muted col-sm-3 text-right"><small> Font Size</small></label>
+    <div class="form-group row" ng-show="tickerObj.enable &amp;&amp; (tickerObj.behavior== &quot;openvg_right&quot; || tickerObj.behavior== &quot;openvg_left&quot;)">
+      <label class="control-label text-muted col-sm-3 text-right"><small translate="translate"> Font Size</small></label>
       <div class="col-sm-2">
-        <input type="text" placeholder="28" ng-model="tickerObj.tickerFontSize" class="form-control input-sm"/>
+        <input class="form-control input-sm" type="text" placeholder="28" ng-model="tickerObj.tickerFontSize">
       </div>
-      <label class="control-label text-muted col-sm-3 text-right"><small> Width</small></label>
+      <label class="control-label text-muted col-sm-3 text-right"><small translate="translate"> Width</small></label>
       <div class="col-sm-2">
-        <input type="text" placeholder="0(full)" ng-model="tickerObj.tickerWidth" class="form-control input-sm"/>
-      </div>
-    </div>
-    <div ng-show="tickerObj.enable &amp;&amp; (tickerObj.behavior== &quot;openvg_right&quot; || tickerObj.behavior== &quot;openvg_left&quot;)" class="form-group row">
-      <label class="control-label text-muted col-sm-3 text-right"><small> x position</small></label>
-      <div class="col-sm-2">
-        <input type="text" placeholder="0(left)" ng-model="tickerObj.tickerX" class="form-control input-sm"/>
-      </div>
-      <label class="control-label text-muted col-sm-3 text-right"><small> y position</small></label>
-      <div class="col-sm-2">
-        <input type="text" placeholder="0(bottom)" ng-model="tickerObj.tickerY" class="form-control input-sm"/>
+        <input class="form-control input-sm" type="text" placeholder="0(full)" ng-model="tickerObj.tickerWidth">
       </div>
     </div>
-    <div ng-show="tickerObj.enable" class="form-group row">
-      <label class="text-muted control-label col-sm-3 text-right"><small> Ticker Speed</small></label>
+    <div class="form-group row" ng-show="tickerObj.enable &amp;&amp; (tickerObj.behavior== &quot;openvg_right&quot; || tickerObj.behavior== &quot;openvg_left&quot;)">
+      <label class="control-label text-muted col-sm-3 text-right"><small translate="translate"> x position</small></label>
+      <div class="col-sm-2">
+        <input class="form-control input-sm" type="text" placeholder="0(left)" ng-model="tickerObj.tickerX">
+      </div>
+      <label class="control-label text-muted col-sm-3 text-right"><small translate="translate"> y position</small></label>
+      <div class="col-sm-2">
+        <input class="form-control input-sm" type="text" placeholder="0(bottom)" ng-model="tickerObj.tickerY">
+      </div>
+    </div>
+    <div class="form-group row" ng-show="tickerObj.enable">
+      <label class="text-muted control-label col-sm-3 text-right"><small translate="translate"> Ticker Speed</small></label>
       <div class="col-sm-9">
         <div class="radio-inline">
           <label>
-            <input type="radio" value="1" name="slow" ng-model="tickerObj.textSpeed"/><small>Slow</small>
+            <input type="radio" value="1" name="slow" ng-model="tickerObj.textSpeed"><small translate="translate">Slow</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" value="2" name="medium" ng-model="tickerObj.textSpeed"/><small>Medium</small>
+            <input type="radio" value="2" name="medium" ng-model="tickerObj.textSpeed"><small translate="translate">Medium</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" value="3" name="full" ng-model="tickerObj.textSpeed"/><small>Full</small>
+            <input type="radio" value="3" name="full" ng-model="tickerObj.textSpeed"><small translate="translate">Full</small>
           </label>
         </div>
       </div>
     </div>
-    <div ng-show="tickerObj.enable" class="row form-group">
+    <div class="row form-group" ng-show="tickerObj.enable">
       <div class="col-sm-6 col-sm-offset-3">
         <div class="checkbox-inline">
           <label>
-            <input type="checkbox" name="rss_checkbox" ng-model="tickerObj.rss.enable"/><small>Use RSS feed</small>
+            <input type="checkbox" name="rss_checkbox" ng-model="tickerObj.rss.enable"><small translate="translate">Use RSS feed</small>
           </label>
         </div>
       </div>
     </div>
-    <div ng-show="tickerObj.enable &amp;&amp; tickerObj.rss.enable" class="form-group row">
-      <label class="text-muted control-label col-sm-3 text-right"><small>Item duration</small></label>
+    <div class="form-group row" ng-show="tickerObj.enable &amp;&amp; tickerObj.rss.enable">
+      <label class="text-muted control-label col-sm-3 text-right"><small translate="translate">Item duration</small></label>
       <div class="col-sm-6">
-        <input type="number" ng-model="tickerObj.rss.feedDelay" placeholder="{{'rss item duration in slide mode'}}" class="form-control"/>
+        <input class="form-control" type="number" ng-model="tickerObj.rss.feedDelay" placeholder="{{'rss item duration in slide mode' | translate}}">
       </div>
     </div>
-    <div ng-show="tickerObj.enable &amp;&amp; tickerObj.rss.enable" class="form-group row">
-      <label class="text-muted control-label col-sm-3 text-right"><small>RSS feed Link</small></label>
+    <div class="form-group row" ng-show="tickerObj.enable &amp;&amp; tickerObj.rss.enable">
+      <label class="text-muted control-label col-sm-3 text-right"><small translate="translate">RSS feed Link</small></label>
       <div class="col-sm-8">
-        <input type="text" ng-model="tickerObj.rss.link" placeholder="enter your rss link ...." class="form-control"/>
+        <input class="form-control" type="text" ng-model="tickerObj.rss.link" placeholder="enter your rss link ....">
         <div class="checkbox-inline">
           <label>
-            <input type="checkbox" name="rss_encoding" ng-model="tickerObj.rss.encodeAsBinary"/><small><i class="text-primary">Use Binary encoding for RSS, enable this if characters are not displayed properly</i></small>
+            <input type="checkbox" name="rss_encoding" ng-model="tickerObj.rss.encodeAsBinary"><small><i class="text-primary" translate="translate">Use Binary encoding for RSS, enable this if characters are not displayed properly</i></small>
           </label>
-        </div><br/>
+        </div><br>
         <div class="checkbox-inline">
           <label>
-            <input type="checkbox" name="rss_field" ng-model="tickerObj.rss.useDescription"/><small><i class="text-primary">Use description field of rss stream instead of title field</i></small>
+            <input type="checkbox" name="rss_field" ng-model="tickerObj.rss.useDescription"><small><i class="text-primary" translate="translate">Use description field of rss stream instead of title field</i></small>
           </label>
         </div>
       </div>
     </div>
-    <div ng-show="tickerObj.enable &amp;&amp; !tickerObj.rss.enable" class="form-group row">
-      <label class="text-muted control-label col-sm-3 text-right"><small>Add Messages for the ticker</small></label>
+    <div class="form-group row" ng-show="tickerObj.enable &amp;&amp; !tickerObj.rss.enable">
+      <label class="text-muted control-label col-sm-3 text-right"><small translate="translate">Add Messages for the ticker</small></label>
       <div class="col-sm-8">
-        <textarea name="ticker_messages" rows="5" ng-model="tickerObj.messages" placeholder="Enter messages here" class="form-control"></textarea>
+        <textarea class="form-control" name="ticker_messages" rows="5" ng-model="tickerObj.messages" placeholder="Enter messages here"></textarea>
       </div>
     </div>
     <div class="form-group row">
       <div class="col-sm-9 col-sm-offset-3">
-        <button ng-click="saveTickerSettings()" class="btn btn-success">SAVE</button>
+        <button class="btn btn-success" ng-click="saveTickerSettings()" translate="translate">SAVE</button>
       </div>
     </div>
   </form>

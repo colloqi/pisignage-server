@@ -1,7 +1,7 @@
 .modal-header
-        h4 File to be played in the {{selectedZone}} zone
-            button.btn.btn-default.pull-right(ng-click="modal.close()") Done
-        p along with {{selectedAsset.filename}}
+        h4(translate='translate') File to be played in the {{selectedZone}} zone
+            button.btn.btn-default.pull-right(ng-click="modal.close()",translate='translate') Done
+        p(translate='translate') along with {{selectedAsset.filename}}
 .modal-body
     .panel-body
         tabset
@@ -26,18 +26,18 @@
                                         label.text-muted(ng-show='file.fileDetails.type == "video" && file.fileDetails.name==selectedAsset[selectedZone]',
                                         title='Mute video')
                                             input(type='checkbox', ng-model='file.fileDetails.option[selectedZone]')
-                                            span.pl-5 mute audio
+                                            span.pl-5(translate='translate') mute audio
                                 .row
                                     .col-sm-12
                                         strong.pr-5 {{file.fileDetails.type}}
                                         small.pr-5
-                                            span.text-muted duration:
+                                            span.text-muted(translate='translate') duration:
                                             | {{file.fileDetails.duration}} secs
                                         small.pr-5(ng-if="file.fileDetails.size")
-                                            span.text-muted size:
+                                            span.text-muted(translate='translate') size:
                                             | {{file.fileDetails.size}}
                                         small.pr-5(ng-if="file.fileDetails.resolution.width")
-                                            span.text-muted resolution:
+                                            span.text-muted(translate='translate') resolution:
                                             span {{file.fileDetails.resolution.width}}x
                                             span {{file.fileDetails.resolution.height}}
 
@@ -61,7 +61,7 @@
                                     .col-sm-4
                                         label.text-muted(ng-show="pl.plName==selectedAsset[selectedZone]",title='Continuously play independent of main zone')
                                             input(type='checkbox', ng-model='selectedAsset.option[selectedZone]')
-                                            span.pl-5 play independently
+                                            span.pl-5(translate='translate') play independently
                                 
                                 
 

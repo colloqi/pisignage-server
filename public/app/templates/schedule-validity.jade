@@ -2,50 +2,50 @@
     .modal-header.bg-default
         button.close(ng-click='scheduleValidityModal.close()') &times;
         h4.modal-title
-            span.pr-5.text-muted  Add validity period for the asset:
+            span.pr-5.text-muted(translate='translate')  Add validity period for the asset:
             | {{forAsset.fileDetails.name}}
     .modal-body
         form(role='form', id='schedulecal', name='schedulecal')
             .form-group
-                span.help-block You can add validity period for an asset to be shown on the screen (for e.g. sale duration)
+                span.help-block(translate='translate') You can add validity period for an asset to be shown on the screen (for e.g. sale duration)
 
             .form-group
                 .checkbox
                     label
                         input(type="checkbox",ng-model="forAsset.fileDetails.validity.enable")
-                        span Add validity period
+                        span(translate='translate') Add validity period
 
             .form-group.row(ng-show='forAsset.fileDetails.validity.enable')
-                label.col-sm-2.control-label Valid from
+                label.col-sm-2.control-label(translate='translate') Valid from
                 .col-sm-4
                     input.form-control.input-sm(type='date', ng-model='forAsset.fileDetails.validity.startdate',
                     ng-model-options="{timezone:'UTC'}",
-                    placeholder="{{'Starting on' }}",
-                    name='startdate', ng-attr-title='{{"Enter Start Date" }}')
+                    placeholder="{{'Starting on' | translate}}",
+                    name='startdate', ng-attr-title='{{"Enter Start Date" | translate}}')
 
-                label.col-sm-2.control-label.text-right till
+                label.col-sm-2.control-label.text-right(translate='translate') till
                 .col-sm-4
                     input.form-control.input-sm(type='date', ng-model='forAsset.fileDetails.validity.enddate',
                     ng-model-options="{timezone:'UTC'}",
                     placeholder="Till date",
-                    name='enddate', title='{{"Enter End Date"}}')
+                    name='enddate', title='{{"Enter End Date" | translate}}')
             .form-group.row
-                label.col-sm-4.control-label.text-muted(ng-show='forAsset.fileDetails.validity.startdate')  optional start hour (0-23)
+                label.col-sm-4.control-label.text-muted(ng-show='forAsset.fileDetails.validity.startdate',translate='translate')  optional start hour (0-23)
                 .col-sm-2(ng-show='forAsset.fileDetails.validity.startdate')
                     input.form-control.input-sm(type='number', ng-model='forAsset.fileDetails.validity.starthour',
-                        placeholder="0-23",
+                        placeholder="{{'0-23' | translate}}",
                         ng-min="0",ng-max="23",
-                        name='starttime', ng-attr-title='Enter the hour on start date to start 0-23')
+                        name='starttime', ng-attr-title="{{'Enter the hour on start date to start 0-23' | translate}}")
 
-                label.col-sm-4.control-label.text-muted(ng-show='forAsset.fileDetails.validity.enddate') end hour (1-24)
+                label.col-sm-4.control-label.text-muted(ng-show='forAsset.fileDetails.validity.enddate',translate='translate') end hour (1-24)
                 .col-sm-2(ng-show='forAsset.fileDetails.validity.enddate')
                     input.form-control.input-sm(type='number', ng-model='forAsset.fileDetails.validity.endhour',
-                        placeholder="1-24",
+                        placeholder="{{'1-24' | translate}}",
                         ng-min="1",ng-max="24",
                         name='endtime', title='Enter hour on end date to end 1-24')
 
 
     .modal-footer
-        button.btn.btn-default(type="button",ng-click='scheduleValidityModal.close()') Cancel
-        button.btn.btn-primary(ng-click='saveValidity()') SAVE
+        button.btn.btn-default(type="button",ng-click='scheduleValidityModal.close()',translate='translate') Cancel
+        button.btn.btn-primary(ng-click='saveValidity()',translate='translate') SAVE
 

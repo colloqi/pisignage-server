@@ -1,11 +1,11 @@
 .modal-header
     //button.close(ng-click='tickerModal.close()') &times;
-    h3.modal-title() Display a text message in front of the Signage
+    h3.modal-title(translate="translate") Display a text message in front of the Signage
 .modal-body
     form(name='emsgForm')
 
         .row.form-group
-            label.control-label.col-sm-3.text-muted.text-right() Enable Message
+            label.control-label.col-sm-3.text-muted.text-right(translate="translate") Enable Message
             .col-sm-9
                 label
                     input(type='checkbox',name="emsg_enable", ng-model='group.selectedGroup.emergencyMessage.enable')
@@ -25,28 +25,28 @@
         //                input(type='radio',value='right',name="right",ng-model='group.selectedGroup.emergencyMessage.hPos')
         //                small() Right
         .form-group.row(ng-show='group.selectedGroup.emergencyMessage.enable')
-            label.text-muted.control-label.col-sm-3.text-right() Vertical Position
+            label.text-muted.control-label.col-sm-3.text-right(translate="translate") Vertical Position
             .col-sm-9
                 .radio-inline
                     label
                         input(type='radio',value='top',name="top",ng-model='group.selectedGroup.emergencyMessage.vPos')
-                        small() Top
+                        small(translate="translate") Top
                 .radio-inline
                     label
                         input(type='radio',value='middle',name="vmiddle",ng-model='group.selectedGroup.emergencyMessage.vPos')
-                        small() Middle
+                        small(translate="translate") Middle
                 .radio-inline
                     label
                         input(type='radio',value='bottom',name="bottom",ng-model='group.selectedGroup.emergencyMessage.vPos')
-                        small() Bottom
+                        small(translate="translate") Bottom
 
         .form-group.row(ng-show='group.selectedGroup.emergencyMessage.enable')
-            label.control-label.text-muted.col-sm-3.text-right() Message
+            label.control-label.text-muted.col-sm-3.text-right(translate="translate") Message
             .col-sm-9
                 input.form-control( name='ticker_messages',rows=5,
                 ng-model='group.selectedGroup.emergencyMessage.msg',placeholder="Enter the message to be displayed")
 
 .modal-footer
-    button.btn.btn-default(type="button",ng-click='emsgModal.close()',) Cancel
-    button.btn.btn-primary(ng-click='messageSave()',) SAVE
+    button.btn.btn-default(type="button",ng-click='emsgModal.close()',translate="translate") Cancel
+    button.btn.btn-primary(ng-click='messageSave()',translate="translate") SAVE
 

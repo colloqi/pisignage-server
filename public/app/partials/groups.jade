@@ -2,9 +2,9 @@
     .panel-heading
         .row
             .col-sm-12
-                h3.panel-title Groups
+                h3.panel-title(translate="translate") Groups
                     .btn-toolbar.btn-group-sm.pull-right
-                        button.btn.btn-info(ng-click="globalSync()") Deploy all
+                        button.btn.btn-info(ng-click="globalSync()",translate="translate") Deploy all
                         a.btn.btn-default(ng-click='fn.edit()'): em.text-danger {{fn.editMode?'Done':'Edit'}}
     .panel-body
         ul.nav.nav-pills.nav-stacked

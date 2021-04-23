@@ -1,43 +1,43 @@
 
 <div class="modal-content">
   <div class="modal-header bg-default">
-    <button ng-click="scheduleValidityModal.close()" class="close">&times;</button>
-    <h4 class="modal-title"><span class="pr-5 text-muted"> Add validity period for the asset:</span>{{forAsset.fileDetails.name}}</h4>
+    <button class="close" ng-click="scheduleValidityModal.close()">&times;</button>
+    <h4 class="modal-title"><span class="pr-5 text-muted" translate="translate"> Add validity period for the asset:</span>{{forAsset.fileDetails.name}}</h4>
   </div>
   <div class="modal-body">
     <form role="form" id="schedulecal" name="schedulecal">
-      <div class="form-group"><span class="help-block">You can add validity period for an asset to be shown on the screen (for e.g. sale duration)</span></div>
+      <div class="form-group"><span class="help-block" translate="translate">You can add validity period for an asset to be shown on the screen (for e.g. sale duration)</span></div>
       <div class="form-group">
         <div class="checkbox">
           <label>
-            <input type="checkbox" ng-model="forAsset.fileDetails.validity.enable"/><span>Add validity period</span>
+            <input type="checkbox" ng-model="forAsset.fileDetails.validity.enable"><span translate="translate">Add validity period</span>
           </label>
         </div>
       </div>
-      <div ng-show="forAsset.fileDetails.validity.enable" class="form-group row">
-        <label class="col-sm-2 control-label">Valid from</label>
+      <div class="form-group row" ng-show="forAsset.fileDetails.validity.enable">
+        <label class="col-sm-2 control-label" translate="translate">Valid from</label>
         <div class="col-sm-4">
-          <input type="date" ng-model="forAsset.fileDetails.validity.startdate" ng-model-options="{timezone:'UTC'}" placeholder="{{'Starting on' }}" name="startdate" ng-attr-title="{{&quot;Enter Start Date&quot; }}" class="form-control input-sm"/>
+          <input class="form-control input-sm" type="date" ng-model="forAsset.fileDetails.validity.startdate" ng-model-options="{timezone:'UTC'}" placeholder="{{'Starting on' | translate}}" name="startdate" ng-attr-title="{{&quot;Enter Start Date&quot; | translate}}">
         </div>
-        <label class="col-sm-2 control-label text-right">till</label>
+        <label class="col-sm-2 control-label text-right" translate="translate">till</label>
         <div class="col-sm-4">
-          <input type="date" ng-model="forAsset.fileDetails.validity.enddate" ng-model-options="{timezone:'UTC'}" placeholder="Till date" name="enddate" title="{{&quot;Enter End Date&quot;}}" class="form-control input-sm"/>
+          <input class="form-control input-sm" type="date" ng-model="forAsset.fileDetails.validity.enddate" ng-model-options="{timezone:'UTC'}" placeholder="Till date" name="enddate" title="{{&quot;Enter End Date&quot; | translate}}">
         </div>
       </div>
       <div class="form-group row">
-        <label ng-show="forAsset.fileDetails.validity.startdate" class="col-sm-4 control-label text-muted"> optional start hour (0-23)</label>
-        <div ng-show="forAsset.fileDetails.validity.startdate" class="col-sm-2">
-          <input type="number" ng-model="forAsset.fileDetails.validity.starthour" placeholder="0-23" ng-min="0" ng-max="23" name="starttime" ng-attr-title="Enter the hour on start date to start 0-23" class="form-control input-sm"/>
+        <label class="col-sm-4 control-label text-muted" ng-show="forAsset.fileDetails.validity.startdate" translate="translate"> optional start hour (0-23)</label>
+        <div class="col-sm-2" ng-show="forAsset.fileDetails.validity.startdate">
+          <input class="form-control input-sm" type="number" ng-model="forAsset.fileDetails.validity.starthour" placeholder="{{'0-23' | translate}}" ng-min="0" ng-max="23" name="starttime" ng-attr-title="{{'Enter the hour on start date to start 0-23' | translate}}">
         </div>
-        <label ng-show="forAsset.fileDetails.validity.enddate" class="col-sm-4 control-label text-muted">end hour (1-24)</label>
-        <div ng-show="forAsset.fileDetails.validity.enddate" class="col-sm-2">
-          <input type="number" ng-model="forAsset.fileDetails.validity.endhour" placeholder="1-24" ng-min="1" ng-max="24" name="endtime" title="Enter hour on end date to end 1-24" class="form-control input-sm"/>
+        <label class="col-sm-4 control-label text-muted" ng-show="forAsset.fileDetails.validity.enddate" translate="translate">end hour (1-24)</label>
+        <div class="col-sm-2" ng-show="forAsset.fileDetails.validity.enddate">
+          <input class="form-control input-sm" type="number" ng-model="forAsset.fileDetails.validity.endhour" placeholder="{{'1-24' | translate}}" ng-min="1" ng-max="24" name="endtime" title="Enter hour on end date to end 1-24">
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" ng-click="scheduleValidityModal.close()" class="btn btn-default">Cancel</button>
-    <button ng-click="saveValidity()" class="btn btn-primary">SAVE</button>
+    <button class="btn btn-default" type="button" ng-click="scheduleValidityModal.close()" translate="translate">Cancel</button>
+    <button class="btn btn-primary" ng-click="saveValidity()" translate="translate">SAVE</button>
   </div>
 </div>

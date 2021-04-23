@@ -3,69 +3,70 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-sm-4">
-        <h3 class="panel-title">Reported Players
-          <div ng-init="alphabetical=false" class="btn-group btn-group-sm">
-            <button ng-click="alphabetical=false" class="fa fa-clock-o fa-lg text-muted btn btn-info"></button>
-            <button ng-click="alphabetical=true" class="fa fa-sort-alpha-asc fa-lg text-muted btn btn-info"></button>
+        <h3 class="panel-title" translate="translate">Reported Players
+          <div class="btn-group btn-group-sm" ng-init="alphabetical=false">
+            <button class="fa fa-clock-o fa-lg text-muted btn btn-info" ng-click="alphabetical=false"></button>
+            <button class="fa fa-sort-alpha-asc fa-lg text-muted btn btn-info" ng-click="alphabetical=true"></button>
           </div>
         </h3>
       </div>
-      <div class="col-sm-2"><span ng-attr-title="Click this button to select, edit and add labels" class="btn-group">
-          <button ng-click="loadCategory()" class="btn btn-info btn-sm"><i class="fa fa-tags">&nbsp;</i><span>{{label.selectedPlayerLabel.trunc(10) || "Labels"}}</span></button>
-          <button ng-show="label.selectedPlayerLabel" ng-click="clearCategory()" class="btn btn-info btn-sm"><i class="fa fa-close"></i></button></span></div>
+      <div class="col-sm-2"><span class="btn-group" ng-attr-title="Click this button to select, edit and add labels">
+          <button class="btn btn-info btn-sm" ng-click="loadCategory()"><i class="fa fa-tags">&nbsp;</i><span translate="translate">{{label.selectedPlayerLabel.trunc(10) || "Labels"}}</span></button>
+          <button class="btn btn-info btn-sm" ng-show="label.selectedPlayerLabel" ng-click="clearCategory()"><i class="fa fa-close"></i></button></span></div>
     </div>
   </div>
   <ul class="list-group">
-    <li ng-show="player.players.length!=0" ng-repeat="item in player.players | filter:labelFilter | filter:search | orderBy:(alphabetical? &quot;name&quot;:&quot;lastReported&quot;):(alphabetical?false:true)" class="list-group-item">
+    <li class="list-group-item" ng-show="player.players.length!=0" ng-repeat="item in player.players | filter:labelFilter | filter:search | orderBy:(alphabetical? &quot;name&quot;:&quot;lastReported&quot;):(alphabetical?false:true)">
       <div class="row">
         <div class="col-sm-4">
           <!--h6.text-primary.truncate  {{item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}--><a href="#">
-            <h6 ng-show="!nameEdit" ng-class="item.licensed ? 'text-primary': 'text-warning'" class="truncate"><span ng-click="nameEdit=true;">{{item.name || item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}</span>
-              <button ng-click="shellCommand(item)" class="btn btn-link btn-xs pull-right"><i class="fa fa-lg fa-terminal fa-border bg-info"></i></button>
+            <h6 class="truncate" ng-show="!nameEdit" ng-class="item.licensed ? 'text-primary': 'text-warning'"><span ng-click="nameEdit=true;">{{item.name || item.localName || ("Player "+item.cpuSerialNumber.slice(12))}}</span>
+              <button class="btn btn-link btn-xs pull-right" ng-click="shellCommand(item)"><i class="fa fa-lg fa-terminal fa-border bg-info"></i></button>
             </h6></a>
-          <div ng-show="nameEdit" class="input-group">
-            <input type="text" ng-model="item.name" class="input-sm form-control"/>
+          <div class="input-group" ng-show="nameEdit">
+            <input class="input-sm form-control" type="text" ng-model="item.name">
             <div class="input-group-btn">
-              <button ng-click="saveName(item);nameEdit=false;" class="btn btn-sm btn-success"><i class="fa fa fa-check"></i></button>
+              <button class="btn btn-sm btn-success" ng-click="saveName(item);nameEdit=false;"><i class="fa fa fa-check"></i></button>
             </div>
           </div>
         </div>
         <div class="col-sm-3">
           <div class="row">
-            <div style="padding-right:3px;" popover-placement="right" popover="{{item.ethMac+'
-'+item.wifiMac}}" class="col-sm-6"><small class="text-primary truncate"> {{item.myIpAddress || "IP:NA"}}</small></div>
-            <div style="padding:3px;" class="col-sm-6">
-              <select ng-model="item.TZ" ng-change="changeTZ(item)" ng-options="tz for tz in tzNames" class="form-control select-xs">
-                <option value="" selected="selected"> --No TZ--</option>
+            <div class="col-sm-6" style="padding-right:3px;" popover-placement="right" popover="{{item.ethMac+'
+'+item.wifiMac}}"><small class="text-primary truncate"> {{item.myIpAddress || "IP:NA"}}</small></div>
+            <div class="col-sm-6" style="padding:3px;">
+              <select class="form-control select-xs" ng-model="item.TZ" ng-change="changeTZ(item)" ng-options="tz for tz in tzNames">
+                <option value="" selected> --No TZ--</option>
               </select>
             </div>
           </div>
         </div>
-        <div class="col-sm-3"><i ng-class="item.statusClass" title="{{item.isConnected?(item.playlistOn?'online &amp; playing, tv-on:'+item.tvStatus:'online &amp; not playing, tv-on:'+item.tvStatus):'offline'}}" class="fa fa-circle fa-lg"></i><a ng-href="#" ng-click="gotoPlaylist(item.currentPlaylist)">&nbsp;{{item.currentPlaylist}}</a></div>
+        <div class="col-sm-3"><i class="fa fa-circle fa-lg" ng-class="item.statusClass" title="{{item.isConnected?(item.playlistOn?'online &amp; playing, tv-on:'+item.tvStatus:'online &amp; not playing, tv-on:'+item.tvStatus):'offline'}}"></i><a ng-href="#" ng-click="gotoPlaylist(item.currentPlaylist)">&nbsp;{{item.currentPlaylist}}</a></div>
         <!--.col-sm-2
-        <select ng-model="item.group.name" ng-change="assignGroup(item)" ng-options="gr for gr in group.groupNames" class="form-control select-xs"></select>
+        select.form-control.select-xs(ng-model="item.group.name",ng-change="assignGroup(item)",
+                                                            ng-options="gr for gr in group.groupNames")
         -->
         <div class="col-sm-2"><a ng-href="/#/players/players?group={{item.group._id}}"><small class="text-primary"> {{ item.group.name.length>12?item.group.name.slice(0,10)+'..':item.group.name }}</small></a>
-          <button ng-click="loadPlayerDetails(item)" class="btn btn-default btn-xs pull-right"><i class="fa fa-cog fa-lg text-warning"></i></button>
+          <button class="btn btn-default btn-xs pull-right" ng-click="loadPlayerDetails(item)"><i class="fa fa-cog fa-lg text-warning"></i></button>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-4">
-          <h6 class="text-primary"><small>{{item.cpuSerialNumber}}<small title="player on since" class="text-info pl-5">{{item.uptimeFormatted }}</small><small title="cpu temperature" class="text-info pl-5">{{item.piTemperature}}</small><small title="disk space available" class="text-info pl-5">{{item.diskSpaceAvailable}}</small></small></h6>
+          <h6 class="text-primary"><small>{{item.cpuSerialNumber}}<small class="text-info pl-5" title="player on since">{{item.uptimeFormatted }}</small><small class="text-info pl-5" title="cpu temperature">{{item.piTemperature}}</small><small class="text-info pl-5" title="disk space available">{{item.diskSpaceAvailable}}</small></small></h6>
         </div>
         <div class="col-sm-3">
           <h6 class="text-primary truncate"><small>last seen:&nbsp;{{item.lastReported?(item.lastReported | timeAgo):"never"}}</small></h6>
         </div>
         <div class="col-sm-3">
-          <h6 ng-if="!item.isConnected || !item.syncInProgress" class="text-primary truncate"><small>last sync:&nbsp;{{item.lastUpload?(item.lastUpload | timeAgo):"never"}}</small></h6>
-          <h6 ng-if="item.isConnected &amp;&amp; item.syncInProgress" class="text-primary"><i class="fa fa-spinner fa-spin"></i><small class="truncate">&nbsp;{{item.wgetBytes }} &nbsp;{{item.wgetSpeed }}B/sec</small></h6>
+          <h6 class="text-primary truncate" ng-if="!item.isConnected || !item.syncInProgress"><small>last sync:&nbsp;{{item.lastUpload?(item.lastUpload | timeAgo):"never"}}</small></h6>
+          <h6 class="text-primary" ng-if="item.isConnected &amp;&amp; item.syncInProgress"><i class="fa fa-spinner fa-spin"></i><small class="truncate">&nbsp;{{item.wgetBytes }} &nbsp;{{item.wgetSpeed }}B/sec</small></h6>
         </div>
-        <div ng-if="item.version" class="col-sm-2">
+        <div class="col-sm-2" ng-if="item.version">
           <h6 class="text-primary truncate"><small>ver:&nbsp;{{item.version}}/{{item.platform_version}}&nbsp;
-              <button ng-if="item.version != player.currentVersion.version" ng-click="swUpdate(item)" class="btn btn-warning btn-xs"><i class="fa fa-arrow-circle-up"></i></button></small></h6>
+              <button class="btn btn-warning btn-xs" ng-if="item.version != player.currentVersion.version" ng-click="swUpdate(item)"><i class="fa fa-arrow-circle-up"></i></button></small></h6>
         </div>
       </div>
     </li>
   </ul>
 </div>
-<li ng-show="player.players.length == 0" class="list-group-item list-group-item">There are no Players</li>
+<li class="list-group-item list-group-item" ng-show="player.players.length == 0" translate="translate">There are no Players</li>

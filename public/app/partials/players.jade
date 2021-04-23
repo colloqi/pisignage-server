@@ -2,7 +2,7 @@
     .panel-heading
         .row
             .col-sm-4
-                h3.panel-title Reported Players
+                h3.panel-title(translate="translate") Reported Players
                     .btn-group.btn-group-sm(ng-init="alphabetical=false")
                         button.fa.fa-clock-o.fa-lg.text-muted.btn.btn-info(ng-click="alphabetical=false")
                         button.fa.fa-sort-alpha-asc.fa-lg.text-muted.btn.btn-info(ng-click="alphabetical=true")
@@ -10,7 +10,7 @@
                 span.btn-group(ng-attr-title="Click this button to select, edit and add labels")
                     button.btn.btn-info.btn-sm(ng-click="loadCategory()")
                         i.fa.fa-tags &nbsp;
-                        span {{label.selectedPlayerLabel.trunc(10) || "Labels"}}
+                        span(translate="translate") {{label.selectedPlayerLabel.trunc(10) || "Labels"}}
                     button.btn.btn-info.btn-sm(ng-show="label.selectedPlayerLabel",ng-click="clearCategory()")
                         i.fa.fa-close
 
@@ -72,6 +72,6 @@
                         button.btn.btn-warning.btn-xs(ng-if="item.version != player.currentVersion.version",ng-click="swUpdate(item)")
                             i.fa.fa-arrow-circle-up
 
- li.list-group-item(ng-show="player.players.length == 0",class="list-group-item") There are no Players
+li.list-group-item(ng-show="player.players.length == 0",class="list-group-item",translate="translate") There are no Players
 
 

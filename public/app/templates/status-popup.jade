@@ -1,7 +1,7 @@
 .modal-header
     button.close(ng-click='cancel()') &times;
-    h3.text-warning {{msg.title || "Status" }}
+    h3.text-warning {{msg.title || ( "Status" | translate  )}}
 .modal-body
     h5(style="white-space: pre;") {{msg.msg}}
 .modal-footer
-    button.btn.btn-warning(ng-click='cancel()') Dismiss
+    button.btn.btn-warning(ng-click='cancel()',translate='translate') Dismiss

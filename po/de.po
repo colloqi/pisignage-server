@@ -1,0 +1,1290 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: PiSignage\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: public/app/partials/assets.html:71
+msgid "&nbsp&nbsp Nothing to show, Use `Add` button to add an asset or 'Assign Assets' to assign assets to playlist"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:78
+msgid "&nbsp;&nbsp;Only at specific time of the day (for e.g. 7AM - 11AM)"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:9
+msgid "&nbsp;&nbsp;Schedule between two Dates(both inclusive)"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:51
+msgid "&nbsp;&nbsp;Schedule on specific week days or month days (needs 1.7.0 for multiple days, previous versions take the first day only)"
+msgstr ""
+
+#: public/app/partials/playlist-add.html:7
+msgid "&nbsp;(Drag to Add/Remove)"
+msgstr ""
+
+#: public/app/partials/playlist-add.html:35
+msgid "&nbsp;show fullscreen"
+msgstr ""
+
+#: public/app/templates/groupChangePopUp.html:13
+msgid "-- none --"
+msgstr ""
+
+#: public/app/templates/schedule-validity.html:30
+msgid "0-23"
+msgstr ""
+
+#: public/app/templates/schedule-validity.html:34
+msgid "1-24"
+msgstr ""
+
+#: public/app/templates/display-set.html:169
+msgid "12 hr"
+msgstr ""
+
+#: public/app/templates/display-set.html:174
+msgid "24 hr"
+msgstr ""
+
+#: public/app/partials/assets.html:17
+msgid "ADD"
+msgstr ""
+
+#: public/app/templates/display-set.html:201
+msgid "Actual"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:117
+#: public/app/templates/ticker-popup.html:136
+msgid "Add Messages for the ticker"
+msgstr ""
+
+#: public/app/partials/assets.html:22
+msgid "Add a Link"
+msgstr ""
+
+#: public/app/partials/assets.html:23
+#: public/app/templates/link-popup.html:6
+msgid "Add a Message"
+msgstr ""
+
+#: public/app/partials/assets.html:24
+msgid "Add a local folder/file"
+msgstr ""
+
+#: public/app/partials/labels.html:9
+msgid "Add a new Label"
+msgstr ""
+
+#: public/app/partials/playlist-add.html:38
+msgid ""
+"Add other zone assets<span ng-repeat=\"zone in layoutOtherZones[asset.showAssets.playlist.layout]\">\n"
+"                  <div class=\"btn-group\" ng-if=\"!customZonesPresent || customZonesPresent[zone]\">\n"
+"                    <button class=\"btn btn-xs btn-info\" ng-click=\"linkFile(file.playlistDetails,zone)\"><small>{{zone}}: {{file.playlistDetails[zone]}}&nbsp;</small><i class=\"fa fa-paperclip\" ng-if=\"!file.playlistDetails[zone]\"></i></button>\n"
+"                    <button class=\"btn btn-xs btn-warning\" ng-if=\"file.playlistDetails[zone]\" ng-click=\"removeLinkFile(file,zone)\">X</button>\n"
+"                  </div></span>"
+msgstr ""
+
+#: public/app/templates/schedule-validity.html:13
+msgid "Add validity period"
+msgstr ""
+
+#: public/app/partials/assets.html:63
+msgid "Add validity period for the asset"
+msgstr ""
+
+#: public/app/templates/schedule-validity.html:5
+msgid "Add validity period for the asset:"
+msgstr ""
+
+#: public/app/partials/asset-details.html:17
+msgid "Address"
+msgstr ""
+
+#: public/app/partials/group-details.html:58
+msgid "Alternate content from selected playlists"
+msgstr ""
+
+#: public/app/templates/display-set.html:59
+msgid "Animation"
+msgstr ""
+
+#: public/app/partials/menu.html:10
+msgid "Assets"
+msgstr ""
+
+#: public/app/partials/playlist-details.html:8
+msgid "Assign Assets"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:78
+msgid "At Specified Time"
+msgstr ""
+
+#: public/app/templates/listFilePopup.html:4
+msgid "Available Files"
+msgstr ""
+
+#: public/app/partials/settings.html:7
+msgid "Available Licenses in the server"
+msgstr ""
+
+#: public/app/templates/display-set.html:103
+msgid "Background"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:16
+#: public/app/templates/schedule-calendar.html:85
+msgid "Begin"
+msgstr ""
+
+#: public/app/templates/display-set.html:70
+msgid "Blend"
+msgstr ""
+
+#: public/app/templates/display-set.html:162
+#: public/app/templates/emergencyMessagePopup.html:46
+msgid "Bottom"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:129
+msgid "Bottom Zone Values"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:10
+msgid "By making this as Advt. playlist, you can insert the assets of this playlist periodically in between the currentlyplaying playlist."
+msgstr ""
+
+#: public/app/templates/confirm-popup.html:9
+#: public/app/templates/display-set.html:349
+#: public/app/templates/emergencyMessagePopup.html:60
+#: public/app/templates/listFilePopup.html:5
+#: public/app/templates/schedule-validity.html:40
+#: public/app/templates/upload-popup.html:22
+msgid "Cancel"
+msgstr ""
+
+#: public/app/js/controllers/assets.js:253
+msgid "Category exists"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:35
+msgid "Change Main Zone video window size"
+msgstr ""
+
+#: public/app/partials/group-details.html:14
+msgid "Change at the end<br> of current cycle"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:87
+msgid "Change video window position for other zones"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:169
+msgid "Change video window position for zone4"
+msgstr ""
+
+#: public/app/partials/asset-details.html:110
+msgid "Choose a Calendar for subscribing to Events"
+msgstr ""
+
+#: public/app/partials/assets.html:8
+msgid "Click this button to select, edit and add labels"
+msgstr ""
+
+#: public/app/partials/group-details.html:18
+msgid "Close"
+msgstr ""
+
+#: public/app/partials/group-details.html:48
+msgid "Combine content of all scheduled playlists"
+msgstr ""
+
+#: public/app/partials/playlist-details.html:23
+msgid "Configure Ticker"
+msgstr ""
+
+#: public/app/partials/playlist-details.html:39
+msgid "Configure playlist"
+msgstr ""
+
+#: public/app/templates/groupChangePopUp.html:29
+msgid "DELETE"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:5
+msgid "DONE"
+msgstr ""
+
+#: public/app/partials/menu.html:9
+msgid "Dashboard"
+msgstr ""
+
+#: public/app/templates/link-popup.html:19
+msgid "Data will be saved in this file"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:65
+msgid "Day(s) of Month"
+msgstr ""
+
+#: public/app/partials/settings.html:54
+msgid "Default Duration for Slides"
+msgstr ""
+
+#: public/app/partials/group-details.html:26
+msgid "Default Playlist for the group"
+msgstr ""
+
+#: public/app/templates/display-set.html:112
+msgid "Default volume output is 100%"
+msgstr ""
+
+#: public/app/templates/groupChangePopUp.html:27
+msgid "Delete the player from server data base"
+msgstr ""
+
+#: public/app/partials/groups.html:8
+msgid "Deploy all"
+msgstr ""
+
+#: public/app/templates/display-set.html:65
+msgid "Disable"
+msgstr ""
+
+#: public/app/partials/settings.html:79
+msgid "Disable CEC power check of TV every 3 minutes"
+msgstr ""
+
+#: public/app/templates/shell-popup.html:25
+#: public/app/templates/status-popup.html:10
+msgid "Dismiss"
+msgstr ""
+
+#: public/app/templates/display-set.html:144
+msgid "Display Clock"
+msgstr ""
+
+#: public/app/templates/display-set.html:123
+msgid "Display a Logo"
+msgstr ""
+
+#: public/app/templates/emergencyMessagePopup.html:4
+msgid "Display a text message in front of the Signage"
+msgstr ""
+
+#: public/app/partials/settings.html:93
+msgid "Do not show startup welcome screen &  skip network diagnostics"
+msgstr ""
+
+#: public/app/templates/confirm-popup.html:6
+msgid "Do you want to delete:"
+msgstr ""
+
+#: public/app/partials/playlist-add.html:9
+#: public/app/templates/groupChangePopUp.html:4
+#: public/app/templates/linkfile-popup.html:4
+msgid "Done"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:9
+msgid "Duration"
+msgstr ""
+
+#: public/app/templates/link-popup.html:67
+msgid "Duration of each feed item"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:167
+msgid "Duration of the playlist, 0 to play till next event"
+msgstr ""
+
+#: public/app/partials/assets.html:30
+msgid "EDIT"
+msgstr ""
+
+#: public/app/templates/shell-popup.html:12
+msgid "EXECUTE"
+msgstr ""
+
+#: public/app/partials/group-details.html:10
+msgid "Emergency Message"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:160
+#: public/app/templates/ad-popup.html:192
+#: public/app/templates/display-set.html:223
+#: public/app/templates/display-set.html:261
+#: public/app/templates/display-set.html:316
+msgid "Enable"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:70
+msgid "Enable (Domination Content)"
+msgstr ""
+
+#: public/app/templates/emergencyMessagePopup.html:9
+msgid "Enable Message"
+msgstr ""
+
+#: public/app/partials/settings.html:109
+msgid "Enable log for file play count/details (network intensive, do not enable unless you need it!)"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:25
+#: public/app/templates/schedule-validity.html:24
+msgid "Enter End Date"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:21
+#: public/app/templates/schedule-validity.html:20
+msgid "Enter Start Date"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:90
+msgid "Enter Start Time"
+msgstr ""
+
+#: public/app/templates/gcal-popup.html:9
+msgid "Enter Your Google User ID"
+msgstr ""
+
+#: public/app/templates/schedule-validity.html:30
+msgid "Enter the hour on start date to start 0-23"
+msgstr ""
+
+#: public/app/templates/link-popup.html:17
+msgid "File Name"
+msgstr ""
+
+#: public/app/templates/link-popup.html:23
+msgid "File Type"
+msgstr ""
+
+#: public/app/templates/linkfile-popup.html:3
+msgid ""
+"File to be played in the {{selectedZone}} zone\n"
+"    <button class=\"btn btn-default pull-right\" ng-click=\"modal.close()\" translate=\"translate\">Done</button>"
+msgstr ""
+
+#: public/app/templates/display-set.html:195
+msgid "Fit image"
+msgstr ""
+
+#: public/app/templates/display-set.html:231
+msgid "Fit video"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:55
+#: public/app/templates/ticker-popup.html:65
+msgid "Font Size"
+msgstr ""
+
+#: public/app/templates/display-set.html:277
+msgid "For finer control use TV_OFF playlist under group scheduling"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:84
+#: public/app/templates/ticker-popup.html:99
+msgid "Full"
+msgstr ""
+
+#: public/app/templates/gcal-popup.html:8
+msgid "Google User ID"
+msgstr ""
+
+#: public/app/partials/group-details.html:10
+msgid "Group Settings"
+msgstr ""
+
+#: public/app/partials/groups.html:6
+msgid ""
+"Groups\n"
+"          <div class=\"btn-toolbar btn-group-sm pull-right\">\n"
+"            <button class=\"btn btn-info\" ng-click=\"globalSync()\" translate=\"translate\">Deploy all</button><a class=\"btn btn-default\" ng-click=\"fn.edit()\"><em class=\"text-danger\">{{fn.editMode?'Done':'Edit'}}</em></a>\n"
+"          </div>"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:138
+#: public/app/templates/layout-popup.html:180
+#: public/app/templates/layout-popup.html:47
+#: public/app/templates/layout-popup.html:98
+msgid "Height:"
+msgstr ""
+
+#: public/app/partials/settings.html:86
+msgid "Hide system messages on TV Screen (e.g. Download in Progress)"
+msgstr ""
+
+#: public/app/templates/languagePopup.html:7
+msgid "If you wish to contribute please visit&nbsp;"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:100
+msgid "In addition to signage functionality, you can play audio from a playlistthrough the 3.5mm jack"
+msgstr ""
+
+#: public/app/templates/display-set.html:326
+msgid "Inactivitiy timeout"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:97
+#: public/app/templates/ticker-popup.html:114
+msgid "Item duration"
+msgstr ""
+
+#: public/app/partials/asset-details.html:63
+msgid "Item duration (use playlist duration & number of items instead after 2.4.0)"
+msgstr ""
+
+#: public/app/templates/link-popup.html:65
+msgid "Item duration (use playlist duration instead from 2.4.0)"
+msgstr ""
+
+#: public/app/partials/settings.html:72
+msgid "Keep TV on by sending CEC tv-on/off message every 3 minutes"
+msgstr ""
+
+#: public/app/templates/display-set.html:310
+msgid "Kiosk Menu"
+msgstr ""
+
+#: public/app/partials/labels.html:4
+msgid "Labels&nbsp;<i class=\"fa fa-lg\" ng-class=\"{'fa-caret-right':collapsed,'fa-caret-down':!collapsed}\"></i>"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:106
+#: public/app/templates/layout-popup.html:146
+#: public/app/templates/layout-popup.html:188
+#: public/app/templates/layout-popup.html:55
+msgid "Left-Offset:"
+msgstr ""
+
+#: public/app/templates/display-set.html:206
+#: public/app/templates/display-set.html:237
+msgid "Letterbox"
+msgstr ""
+
+#: public/app/templates/link-popup.html:71
+msgid "Link Address"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:16
+#: public/app/templates/ad-popup.html:4
+msgid "Make this as Advt. Playlist"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:149
+msgid "Make this as Event Playlist"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:79
+#: public/app/templates/ticker-popup.html:94
+msgid "Medium"
+msgstr ""
+
+#: public/app/partials/asset-details.html:75
+#: public/app/templates/emergencyMessagePopup.html:52
+#: public/app/templates/link-popup.html:90
+msgid "Message"
+msgstr ""
+
+#: public/app/templates/emergencyMessagePopup.html:41
+msgid "Middle"
+msgstr ""
+
+#: public/app/partials/playlist-add.html:82
+msgid "Nothing to show, Please Drag Assets to this box"
+msgstr ""
+
+#: public/app/partials/asset-details.html:59
+#: public/app/templates/link-popup.html:59
+msgid "Number of Items"
+msgstr ""
+
+#: public/app/templates/link-popup.html:61
+msgid "Number of Items to show"
+msgstr ""
+
+#: public/app/templates/display-set.html:273
+msgid "OFF at"
+msgstr ""
+
+#: public/app/templates/confirm-popup.html:10
+#: public/app/templates/display-set.html:350
+#: public/app/templates/schedule-calendar.html:101
+msgid "OK"
+msgstr ""
+
+#: public/app/templates/display-set.html:268
+msgid "ON at"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:51
+msgid "Only on Selected Days"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:36
+#: public/app/templates/ticker-popup.html:44
+msgid "OpenVG"
+msgstr ""
+
+#: public/app/partials/asset-details.html:69
+#: public/app/templates/group-ticker-popup-deprecated.html:49
+#: public/app/templates/link-popup.html:84
+#: public/app/templates/ticker-popup.html:59
+msgid "Optional CSS"
+msgstr ""
+
+#: public/app/templates/display-set.html:283
+msgid "Optional daily reboot"
+msgstr ""
+
+#: public/app/templates/display-set.html:38
+msgid "Orientation"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:136
+msgid "Output audio in HDMI port also"
+msgstr ""
+
+#: public/app/partials/settings.html:144
+msgid "Password"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:77
+msgid "Play after every"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:118
+msgid "Play in random order"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:29
+msgid "Play only in side/banner zones"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:106
+msgid "Play songs from this playlist (need to contain only mp3 files)"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:94
+msgid "Play this as independent Audio Playlist for the aux port"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:64
+msgid "Play this playlist once every selected duration by stopping regular playlist,acts like insertion of advt at fixed intervals"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:58
+msgid "Play this playlist only once during selected duration"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:181
+msgid "Play this playlist only when online"
+msgstr ""
+
+#: public/app/partials/group-details.html:35
+msgid "Play together with scheduled playlist (v1.7.0+)"
+msgstr ""
+
+#: public/app/partials/settings.html:98
+msgid "Player reporting interval in minutes"
+msgstr ""
+
+#: public/app/partials/dashboard.html:3
+msgid "Player reporting status"
+msgstr ""
+
+#: public/app/templates/groupChangePopUp.html:3
+msgid "Player settings for the player&nbsp;"
+msgstr ""
+
+#: public/app/partials/menu.html:11
+msgid "Players"
+msgstr ""
+
+#: public/app/partials/dashboard.html:14
+#: public/app/partials/dashboard.html:19
+msgid "Players expected to report now"
+msgstr ""
+
+#: public/app/partials/playlists.html:4
+msgid "Playlists&nbsp;<i ng-class=\"{'fa-caret-right':collapsed,'fa-caret-down':!collapsed}\" class=\"fa fa-lg\"></i>"
+msgstr ""
+
+#: public/app/templates/confirm-popup.html:3
+msgid "Please Confirm"
+msgstr ""
+
+#: public/app/partials/settings.html:16
+msgid ""
+"Please register the player ID\n"
+"      at pisignage.com to generate the license files.Then either save the license file from the email or download\n"
+"      at pisignage.com/subscriptions.<br><br>\n"
+"      By uploading license files to your local server, they are downloaded to players automatically."
+msgstr ""
+
+#: public/app/templates/gcal-popup.html:13
+msgid "Proceed >>"
+msgstr ""
+
+#: public/app/partials/asset-details.html:103
+msgid "Profile"
+msgstr ""
+
+#: public/app/partials/asset-details.html:29
+#: public/app/templates/link-popup.html:29
+msgid "RSS Text"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:102
+#: public/app/templates/ticker-popup.html:120
+msgid "RSS feed Link"
+msgstr ""
+
+#: public/app/templates/display-set.html:217
+msgid "Reload link URLs each time<br>(appends ?ts in chromeapp)"
+msgstr ""
+
+#: public/app/partials/assets.html:76
+msgid "Rename or delete files, tap Done when completed<a class=\"pull-right\" ng-click=\"fn.edit()\"><strong class=\"text-success\"> Done</strong></a>"
+msgstr ""
+
+#: public/app/partials/players.html:6
+msgid ""
+"Reported Players\n"
+"          <div class=\"btn-group btn-group-sm\" ng-init=\"alphabetical=false\">\n"
+"            <button class=\"fa fa-clock-o fa-lg text-muted btn btn-info\" ng-click=\"alphabetical=false\"></button>\n"
+"            <button class=\"fa fa-sort-alpha-asc fa-lg text-muted btn btn-info\" ng-click=\"alphabetical=true\"></button>\n"
+"          </div>"
+msgstr ""
+
+#: public/app/templates/display-set.html:10
+msgid "Resolution"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:160
+msgid "Restore Bottom Zone Defaults"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:78
+msgid "Restore Defaults"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:120
+msgid "Restore Side Zone Defaults"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:202
+msgid "Restore Zone4 Defaults"
+msgstr ""
+
+#: public/app/partials/assets.html:83
+#: public/app/partials/settings.html:40
+#: public/app/templates/emergencyMessagePopup.html:61
+#: public/app/templates/group-ticker-popup-deprecated.html:124
+#: public/app/templates/schedule-validity.html:41
+#: public/app/templates/ticker-popup.html:143
+msgid "SAVE"
+msgstr ""
+
+#: public/app/partials/settings.html:45
+msgid "SSH Password"
+msgstr ""
+
+#: public/app/partials/settings.html:103
+#: public/app/partials/settings.html:149
+#: public/app/partials/settings.html:50
+#: public/app/partials/settings.html:59
+#: public/app/templates/ad-popup.html:143
+#: public/app/templates/ad-popup.html:175
+#: public/app/templates/ad-popup.html:52
+#: public/app/templates/ad-popup.html:88
+#: public/app/templates/languagePopup.html:13
+#: public/app/templates/link-popup.html:9
+msgid "Save"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:123
+#: public/app/templates/layout-popup.html:163
+#: public/app/templates/layout-popup.html:205
+#: public/app/templates/layout-popup.html:81
+msgid "Save New Changes"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:16
+#: public/app/templates/schedule-calendar.html:85
+msgid "Schedule"
+msgstr ""
+
+#: public/app/templates/display-set.html:255
+msgid "Schedule Display OFF"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:187
+msgid "Schedule this playlist to play only when player is online"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:25
+#: public/app/templates/ticker-popup.html:35
+msgid "Scroll left"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:30
+#: public/app/templates/ticker-popup.html:40
+msgid "Scroll right"
+msgstr ""
+
+#: public/app/templates/groupChangePopUp.html:18
+msgid "Select Categories"
+msgstr ""
+
+#: public/app/templates/upload-popup.html:9
+msgid "Select Categories for the files"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:4
+msgid ""
+"Select Display Layout (default 1)\n"
+"      <button class=\"btn btn-success pull-right\" ng-click=\"modal.close()\" translate=\"translate\">DONE</button>"
+msgstr ""
+
+#: public/app/templates/display-set.html:3
+msgid "Select Display Orientation and Resolution"
+msgstr ""
+
+#: public/app/templates/languagePopup.html:4
+msgid "Select language (beta)"
+msgstr ""
+
+#: public/app/templates/languagePopup.html:10
+msgid "Select your Language&nbsp;"
+msgstr ""
+
+#: public/app/templates/groupChangePopUp.html:10
+msgid "Selected Group"
+msgstr ""
+
+#: public/app/partials/player-details.html:6
+msgid "Selected Group for the Player"
+msgstr ""
+
+#: public/app/partials/playlist-details.html:15
+msgid "Selected Layout for the playlist&nbsp;"
+msgstr ""
+
+#: public/app/partials/asset-details.html:87
+msgid "Send Key strokes (optional)"
+msgstr ""
+
+#: public/app/partials/group-details.html:10
+msgid "Set Group Ticker"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:3
+msgid "Set Timings for Scheduled Playlist&nbsp;"
+msgstr ""
+
+#: public/app/partials/settings.html:133
+msgid "Set Username and Password for Download Access"
+msgstr ""
+
+#: public/app/partials/menu.html:12
+msgid "Settings"
+msgstr ""
+
+#: public/app/partials/playlist-details.html:41
+msgid "Settings&nbsp;<span class=\"badge\"><small ng-if=\"playlist.selectedPlaylist.settings.ads &amp;&amp; playlist.selectedPlaylist.settings.ads.adPlaylist\" translate=\"translate\">advert</small><small ng-if=\"playlist.selectedPlaylist.settings.domination &amp;&amp; playlist.selectedPlaylist.settings.domination.enable\" translate=\"translate\">domination</small><small ng-if=\"playlist.selectedPlaylist.settings.event &amp;&amp; playlist.selectedPlaylist.settings.event.enable\" translate=\"translate\">event</small><small ng-if=\"playlist.selectedPlaylist.settings.audio &amp;&amp; playlist.selectedPlaylist.settings.audio.enable\" translate=\"translate\">audio</small></span>"
+msgstr ""
+
+#: public/app/templates/display-set.html:150
+#: public/app/templates/group-ticker-popup-deprecated.html:11
+#: public/app/templates/ticker-popup.html:12
+msgid "Show"
+msgstr ""
+
+#: public/app/templates/ticker-popup.html:16
+msgid "Show asset associated text"
+msgstr ""
+
+#: public/app/partials/group-details.html:53
+msgid "Shuffle content before deploying"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:89
+msgid "Side Zone Values"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:20
+#: public/app/templates/ticker-popup.html:30
+msgid "Slide"
+msgstr ""
+
+#: public/app/templates/display-set.html:94
+msgid "Slide down"
+msgstr ""
+
+#: public/app/templates/display-set.html:82
+msgid "Slide left"
+msgstr ""
+
+#: public/app/templates/display-set.html:77
+msgid "Slide right"
+msgstr ""
+
+#: public/app/templates/display-set.html:89
+msgid "Slide up"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:74
+#: public/app/templates/ticker-popup.html:89
+msgid "Slow"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:21
+#: public/app/templates/schedule-validity.html:20
+msgid "Starting on"
+msgstr ""
+
+#: public/app/templates/display-set.html:246
+msgid "Stop video every seconds to show adverts (0 to disable)"
+msgstr ""
+
+#: public/app/templates/link-popup.html:5
+msgid "Stream From Internet"
+msgstr ""
+
+#: public/app/templates/display-set.html:211
+#: public/app/templates/display-set.html:242
+msgid "Stretched"
+msgstr ""
+
+#: public/app/templates/gcal-popup.html:3
+msgid "Subscribe to a Google Calendar for Events"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:10
+msgid ""
+"The Display can be divided into multiple zones with each zone playing different content. Video files can be played\n"
+"            only in the main Zone. Select a file in the playlist to play in the main zone,add other zone files to the main file\n"
+"            by clicking zone file button. If there is no file attached to a particular zone, the previous content for that zone\n"
+"            will continue to play."
+msgstr ""
+
+#: public/app/partials/players.html:72
+msgid "There are no Players"
+msgstr ""
+
+#: public/app/partials/labels.html:17
+msgid "There are no categories, Add a Category"
+msgstr ""
+
+#: public/app/partials/dashboard.html:17
+msgid "There are no players went offline just now"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:35
+msgid "This section is for Advanced user only!! Changing any parameter would affect the video display size."
+msgstr ""
+
+#: public/app/templates/layout-popup.html:87
+msgid "This section is for custom layouts only !! Changing  Any parameter would affect the video display size in side and bottom zones."
+msgstr ""
+
+#: public/app/templates/layout-popup.html:169
+msgid "This section is for custom layouts only !! Changing  Any parameter would affect the video display size in zone4."
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:7
+#: public/app/templates/ticker-popup.html:8
+msgid "Ticker"
+msgstr ""
+
+#: public/app/templates/ticker-popup.html:85
+msgid "Ticker Speed"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:70
+msgid ""
+"Ticker Speed\n"
+"      <div class=\"col-sm-9\">\n"
+"        <div class=\"radio-inline\">\n"
+"          <label>\n"
+"            <input type=\"radio\" value=\"1\" name=\"slow\" ng-model=\"group.selectedGroup.ticker.textSpeed\"><small translate=\"translate\">Slow</small>\n"
+"          </label>\n"
+"        </div>\n"
+"        <div class=\"radio-inline\">\n"
+"          <label>\n"
+"            <input type=\"radio\" value=\"2\" name=\"medium\" ng-model=\"group.selectedGroup.ticker.textSpeed\"><small translate=\"translate\">Medium</small>\n"
+"          </label>\n"
+"        </div>\n"
+"        <div class=\"radio-inline\">\n"
+"          <label>\n"
+"            <input type=\"radio\" value=\"3\" name=\"full\" ng-model=\"group.selectedGroup.ticker.textSpeed\"><small translate=\"translate\">Full</small>\n"
+"          </label>\n"
+"        </div>\n"
+"      </div>"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:3
+msgid "Ticker for the Group"
+msgstr ""
+
+#: public/app/templates/ticker-popup.html:3
+msgid "Ticker for the Play-list"
+msgstr ""
+
+#: public/app/partials/menu.html:5
+msgid "Toggle navigation"
+msgstr ""
+
+#: public/app/templates/display-set.html:157
+#: public/app/templates/emergencyMessagePopup.html:36
+msgid "Top"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:112
+#: public/app/templates/layout-popup.html:152
+#: public/app/templates/layout-popup.html:194
+#: public/app/templates/layout-popup.html:61
+msgid "Top-Offset:"
+msgstr ""
+
+#: public/app/templates/languagePopup.html:14
+msgid "Translation Courtesy"
+msgstr ""
+
+#: public/app/templates/shell-popup.html:5
+msgid "Tv OFF"
+msgstr ""
+
+#: public/app/templates/shell-popup.html:4
+msgid "Tv On"
+msgstr ""
+
+#: public/app/partials/asset-details.html:25
+#: public/app/templates/group-ticker-popup-deprecated.html:16
+#: public/app/templates/ticker-popup.html:26
+msgid "Type"
+msgstr ""
+
+#: public/app/templates/display-set.html:321
+msgid "URL"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:37
+msgid "USE THIS FEATURE CAUTIOUSLY"
+msgstr ""
+
+#: public/app/partials/asset-details.html:98
+msgid "Update"
+msgstr ""
+
+#: public/app/partials/settings.html:11
+msgid "Upload"
+msgstr ""
+
+#: public/app/partials/assets.html:20
+msgid "Upload Files"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:107
+#: public/app/templates/ticker-popup.html:125
+msgid "Use Binary encoding for RSS, enable this if characters are not displayed properly"
+msgstr ""
+
+#: public/app/templates/display-set.html:341
+msgid "Use MPV to avoid gap between videos"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:92
+#: public/app/templates/ticker-popup.html:108
+msgid "Use RSS feed"
+msgstr ""
+
+#: public/app/templates/shell-popup.html:13
+msgid "Use arrow keys &nbsp &#8593; &nbsp and &nbsp &#8595; &nbsp to check Commands history"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:71
+msgid "Use as FULL SCREEN dimensions also(for custom displays)"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:112
+#: public/app/templates/ticker-popup.html:130
+msgid "Use description field of rss stream instead of title field"
+msgstr ""
+
+#: public/app/partials/settings.html:65
+msgid "Use youtube-dl program for livestreaming instead of livestreamer"
+msgstr ""
+
+#: public/app/partials/settings.html:138
+msgid "Username"
+msgstr ""
+
+#: public/app/templates/schedule-validity.html:18
+msgid "Valid from"
+msgstr ""
+
+#: public/app/templates/emergencyMessagePopup.html:32
+msgid "Vertical Position"
+msgstr ""
+
+#: public/app/templates/display-set.html:335
+msgid "Video Play"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:125
+msgid "Volume"
+msgstr ""
+
+#: public/app/templates/display-set.html:113
+msgid "Volume(%)"
+msgstr ""
+
+#: public/app/templates/languagePopup.html:7
+msgid "We need help in translation to add your language.<br><span translate=\"\">If you wish to contribute please visit&nbsp;</span><a href=\"https://github.com/colloqi/piSignage/tree/master/translation-files\" target=\"_blank\" translate=\"translate\">pisignage repo.</a>"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:56
+msgid "Week Day(s)"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:155
+msgid "When SIGUSR2 event is signalled this playlist is played if eligible"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:59
+#: public/app/templates/ticker-popup.html:69
+msgid "Width"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:132
+#: public/app/templates/layout-popup.html:174
+#: public/app/templates/layout-popup.html:41
+#: public/app/templates/layout-popup.html:92
+msgid "Width:"
+msgstr ""
+
+#: public/app/templates/schedule-validity.html:9
+msgid "You can add validity period for an asset to be shown on the screen (for e.g. sale duration)"
+msgstr ""
+
+#: public/app/partials/assets.html:24
+msgid "You can local folder/file here"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:23
+msgid "You can play the assets only on side and banner zones by disabling main zone here.Still you have to select dummy file for main zone"
+msgstr ""
+
+#: public/app/partials/group-details.html:41
+msgid ""
+"You can select additional Playlists for Scheduling/Advt purposes\n"
+"          <!--a.btn.btn-link(ng-click=\"collapsed = !collapsed;\")i.fa.fa-lg(ng-class=\"{'fa-chevron-circle-right':collapsed,'fa-chevron-circle-down':!collapsed}\")\n"
+"          --><a class=\"btn btn-info btn-xs\" ng-click=\"add()\"><i class=\"fa fa-lg fa-plus\">add</i></a><span class=\"text-info\" ng-show=\"showMaxErr\">&nbsp&nbsp {{'Maximum allowed Playlist Schedules (30)'}}</span>"
+msgstr ""
+
+#: public/app/templates/gcal-popup.html:11
+msgid "You will be redirected to Google Accounts page now with the chosen ID as the account.  After logging into the account, accept the permisson request from PiSignage app."
+msgstr ""
+
+#: public/app/templates/layout-popup.html:171
+msgid "Zone4 Values"
+msgstr ""
+
+#: public/app/partials/asset-details.html:81
+#: public/app/templates/link-popup.html:78
+msgid "Zoom level"
+msgstr ""
+
+#: public/app/partials/playlist-details.html:41
+msgid "advert"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:44
+msgid "after every"
+msgstr ""
+
+#: public/app/templates/linkfile-popup.html:6
+msgid "along with {{selectedAsset.filename}}"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:39
+msgid "assets"
+msgstr ""
+
+#: public/app/partials/assets.html:33
+msgid "assign"
+msgstr ""
+
+#: public/app/partials/playlist-details.html:41
+msgid "audio"
+msgstr ""
+
+#: public/app/templates/display-set.html:181
+msgid "date+12h"
+msgstr ""
+
+#: public/app/templates/display-set.html:186
+msgid "date+24h"
+msgstr ""
+
+#: public/app/partials/asset-details.html:53
+#: public/app/templates/link-popup.html:53
+msgid "descr"
+msgstr ""
+
+#: public/app/partials/playlist-details.html:41
+msgid "domination"
+msgstr ""
+
+#: public/app/templates/linkfile-popup.html:33
+msgid "duration:"
+msgstr ""
+
+#: public/app/templates/display-set.html:289
+msgid "enable"
+msgstr ""
+
+#: public/app/templates/schedule-validity.html:32
+msgid "end hour (1-24)"
+msgstr ""
+
+#: public/app/partials/playlist-details.html:41
+msgid "event"
+msgstr ""
+
+#: public/app/partials/assets.html:13
+msgid "filter"
+msgstr ""
+
+#: public/app/partials/asset-details.html:33
+#: public/app/templates/link-popup.html:33
+msgid "image"
+msgstr ""
+
+#: public/app/templates/link-popup.html:43
+msgid "image&descr"
+msgstr ""
+
+#: public/app/partials/asset-details.html:43
+msgid "image&description"
+msgstr ""
+
+#: public/app/partials/asset-details.html:38
+#: public/app/templates/link-popup.html:38
+msgid "image&title"
+msgstr ""
+
+#: public/app/templates/layout-popup.html:24
+msgid "layout file:&nbsp;"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:40
+#: public/app/templates/ticker-popup.html:48
+msgid "left"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:82
+msgid "minutes"
+msgstr ""
+
+#: public/app/partials/playlist-add.html:47
+#: public/app/templates/linkfile-popup.html:28
+msgid "mute audio"
+msgstr ""
+
+#: public/app/templates/upload-popup.html:13
+msgid "new"
+msgstr ""
+
+#: public/app/templates/schedule-validity.html:28
+msgid "optional start hour (0-23)"
+msgstr ""
+
+#: public/app/templates/languagePopup.html:7
+msgid "pisignage repo."
+msgstr ""
+
+#: public/app/partials/playlist-add.html:52
+msgid "play in background"
+msgstr ""
+
+#: public/app/templates/linkfile-popup.html:57
+msgid "play independently"
+msgstr ""
+
+#: public/app/templates/linkfile-popup.html:33
+msgid "resolution:"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:45
+#: public/app/templates/ticker-popup.html:53
+msgid "right"
+msgstr ""
+
+#: public/app/templates/ticker-popup.html:116
+msgid "rss item duration in slide mode"
+msgstr ""
+
+#: public/app/templates/ad-popup.html:46
+msgid "seconds"
+msgstr ""
+
+#: public/app/templates/linkfile-popup.html:33
+msgid "size:"
+msgstr ""
+
+#: public/app/templates/schedule-calendar.html:23
+#: public/app/templates/schedule-calendar.html:92
+#: public/app/templates/schedule-validity.html:22
+msgid "till"
+msgstr ""
+
+#: public/app/partials/asset-details.html:48
+#: public/app/templates/link-popup.html:48
+msgid "title"
+msgstr ""
+
+#: public/app/partials/playlist-add.html:62
+msgid "use presentation mode"
+msgstr ""
+
+#: public/app/partials/settings.html:37
+msgid "username at pisignage.com"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:65
+#: public/app/templates/ticker-popup.html:75
+msgid "x position"
+msgstr ""
+
+#: public/app/templates/group-ticker-popup-deprecated.html:69
+#: public/app/templates/ticker-popup.html:79
+msgid "y position"
+msgstr ""
+
+#: public/app/partials/playlist-add.html:6
+msgid "{{asset.showAssets.assets.length}}&nbsp;items in&nbsp;{{asset.showAssets.playlist.name}}&nbsp;<span class=\"text-muted\" translate=\"translate\">&nbsp;(Drag to Add/Remove)</span>"
+msgstr ""
+
+#: public/app/partials/group-details.html:11
+msgid "{{group.selectedGroup.name}}"
+msgstr ""
+
+#: public/app/partials/players.html:14
+msgid "{{label.selectedPlayerLabel.trunc(10) || \"Labels\"}}"
+msgstr ""

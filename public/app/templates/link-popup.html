@@ -2,94 +2,94 @@
 <div class="modal-header">
   <div class="row">
     <div class="col-xs-8">
-      <h4 ng-show="link.obj.type != '.txt'">Stream From Internet</h4>
-      <h4 ng-show="link.obj.type == '.txt'">Add a Message</h4>
+      <h4 ng-show="link.obj.type != '.txt'" translate="translate">Stream From Internet</h4>
+      <h4 ng-show="link.obj.type == '.txt'" translate="translate">Add a Message</h4>
     </div>
     <div class="col-xs-4 pull-right">
-      <button ng-disabled="Utubeform.$invalid" ng-click="link.save()" class="btn btn-success btn-block">Save</button>
+      <button class="btn btn-success btn-block" ng-disabled="Utubeform.$invalid" ng-click="link.save()" translate="translate">Save</button>
     </div>
   </div>
 </div>
 <div class="modal-body">
-  <p ng-if="errorMessage" class="text-danger">{{errorMessage}}</p>
-  <form role="form" name="Utubeform" class="form-horizontal">
+  <p class="text-danger" ng-if="errorMessage">{{errorMessage}}</p>
+  <form class="form-horizontal" role="form" name="Utubeform">
     <div class="form-group">
-      <label class="col-sm-4 control-label">File Name</label>
+      <label class="col-sm-4 control-label" translate="translate">File Name</label>
       <div class="col-sm-8">
-        <input type="text" name="linkname" ng-model="link.obj.name" placeholder="Data will be saved in this file" required="" class="form-control"/>
+        <input class="form-control" type="text" name="linkname" ng-model="link.obj.name" placeholder="{{'Data will be saved in this file' | translate}}" required="">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">File Type</label>
+      <label class="col-sm-4 control-label" translate="translate">File Type</label>
       <div class="col-sm-8">
-        <select ng-options="entry.ext as entry.name for entry in link.types" name="linktype" ng-model="link.obj.type" required="" class="form-control"></select>
+        <select class="form-control" ng-options="entry.ext as entry.name for entry in link.types" name="linktype" ng-model="link.obj.type" required=""></select>
       </div>
     </div>
-    <div ng-if="link.obj.type == '.mrss'" class="form-group">
-      <label class="col-sm-4 control-label">RSS Text</label>
+    <div class="form-group" ng-if="link.obj.type == '.mrss'">
+      <label class="col-sm-4 control-label" translate="translate">RSS Text</label>
       <div class="col-xs-8">
         <div class="radio-inline">
           <label>
-            <input type="radio" name="radio_none" ng-model="link.obj.hideTitle" value="none"/><small>image</small>
+            <input type="radio" name="radio_none" ng-model="link.obj.hideTitle" value="none"><small translate="translate">image</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" name="radio_title" ng-model="link.obj.hideTitle" value="title"/><small>image&title</small>
+            <input type="radio" name="radio_title" ng-model="link.obj.hideTitle" value="title"><small translate="translate">image&title</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" name="radio_description" ng-model="link.obj.hideTitle" value="description"/><small>image&descr</small>
+            <input type="radio" name="radio_description" ng-model="link.obj.hideTitle" value="description"><small translate="translate">image&descr</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" name="radio_title_noimg" ng-model="link.obj.hideTitle" value="onlytitle"/><small>title</small>
+            <input type="radio" name="radio_title_noimg" ng-model="link.obj.hideTitle" value="onlytitle"><small translate="translate">title</small>
           </label>
         </div>
         <div class="radio-inline">
           <label>
-            <input type="radio" name="radio_description_noimg" ng-model="link.obj.hideTitle" value="onlydescription"/><small>descr</small>
+            <input type="radio" name="radio_description_noimg" ng-model="link.obj.hideTitle" value="onlydescription"><small translate="translate">descr</small>
           </label>
         </div>
       </div>
     </div>
-    <div ng-if="link.obj.type == '.mrss'" class="form-group">
-      <label translate="translate" class="control-label col-sm-4 text-right">Number of Items</label>
+    <div class="form-group" ng-if="link.obj.type == '.mrss'">
+      <label class="control-label col-sm-4 text-right" translate="translate">Number of Items</label>
       <div class="col-sm-2">
-        <input type="number" name="count" placeholder="{{&quot;Number of Items to show&quot; }}" ng-model="link.obj.numberOfItems" class="form-control"/>
+        <input class="form-control" type="number" name="count" placeholder="{{&quot;Number of Items to show&quot; | translate}}" ng-model="link.obj.numberOfItems">
       </div>
     </div>
-    <div ng-if="link.obj.type == '.mrss'" class="form-group">
-      <label class="control-label col-sm-4 text-right">Item duration (use playlist duration instead from 2.4.0)</label>
+    <div class="form-group" ng-if="link.obj.type == '.mrss'">
+      <label class="control-label col-sm-4 text-right" translate="translate">Item duration (use playlist duration instead from 2.4.0)</label>
       <div class="col-sm-2">
-        <input type="number" name="duration" placeholder="{{&quot;Duration of each feed item&quot;}}" ng-model="link.obj.duration" class="form-control"/>
+        <input class="form-control" type="number" name="duration" placeholder="{{&quot;Duration of each feed item&quot; | translate}}" ng-model="link.obj.duration">
       </div>
     </div>
-    <div ng-if="link.obj.type != '.txt'" class="form-group">
-      <label class="col-sm-4 control-label">Link Address</label>
+    <div class="form-group" ng-if="link.obj.type != '.txt'">
+      <label class="col-sm-4 control-label" translate="translate">Link Address</label>
       <div class="col-sm-8">
-        <input ng-if="link.obj.type == '.local'" type="text" name="linkUrl" ng-model="link.obj.link" placeholder="e.g. http(s)://site.com or rtsp://" required="" class="form-control"/>
-        <input ng-if="link.obj.type != '.local'" type="text" name="linkUrl" ng-model="link.obj.link" ng-pattern="/^(http(s?)|rtsp|udp|rtmp):///" placeholder="e.g. http(s)://site.com or rtsp://" required="" class="form-control"/>
+        <input class="form-control" ng-if="link.obj.type == '.local'" type="text" name="linkUrl" ng-model="link.obj.link" placeholder="e.g. http(s)://site.com or rtsp://" required="">
+        <input class="form-control" ng-if="link.obj.type != '.local'" type="text" name="linkUrl" ng-model="link.obj.link" ng-pattern="/^(http(s?)|rtsp|udp|rtmp):///" placeholder="e.g. http(s)://site.com or rtsp://" required="">
       </div>
     </div>
-    <div ng-if="link.obj.type == '.weblink'" class="form-group">
-      <label class="control-label col-sm-4">Zoom level</label>
+    <div class="form-group" ng-if="link.obj.type == '.weblink'">
+      <label class="control-label col-sm-4" translate="translate">Zoom level</label>
       <div class="col-sm-2">
-        <input type="number" step="0.01" name="style" placeholder="Leave blank for no-zoom" ng-model="link.obj.zoom" class="form-control"/>
+        <input class="form-control" type="number" step="0.01" name="style" placeholder="Leave blank for no-zoom" ng-model="link.obj.zoom">
       </div>
     </div>
-    <div ng-if="link.obj.type == '.txt' || link.obj.type == '.mrss'" class="form-group">
-      <label class="col-sm-4 control-label">Optional CSS</label>
+    <div class="form-group" ng-if="link.obj.type == '.txt' || link.obj.type == '.mrss'">
+      <label class="col-sm-4 control-label" translate="translate">Optional CSS</label>
       <div class="col-sm-8">
-        <input type="text" name="style" placeholder="e.g. color:#eee; font-style:italic;" ng-model="link.obj.style" class="form-control"/>
+        <input class="form-control" type="text" name="style" placeholder="e.g. color:#eee; font-style:italic;" ng-model="link.obj.style">
       </div>
     </div>
-    <div ng-if="link.obj.type == '.txt'" class="form-group">
-      <label class="col-sm-4 control-label">Message</label>
+    <div class="form-group" ng-if="link.obj.type == '.txt'">
+      <label class="col-sm-4 control-label" translate="translate">Message</label>
       <div class="col-sm-8">
-        <textarea rows="4" cols="50" name="message" ng-model="link.obj.message" required="" class="form-control"></textarea>
+        <textarea class="form-control" rows="4" cols="50" name="message" ng-model="link.obj.message" required=""></textarea>
       </div>
     </div>
   </form>

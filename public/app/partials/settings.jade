@@ -3,17 +3,17 @@
         .panel-heading
             .row
                 .col-xs-10
-                    h4 Available Licenses in the server
+                    h4(translate="translate") Available Licenses in the server
                 .col-xs-2
                     button.btn.btn-success.pull-right
                         nodeims-file-upload(post-path='api/licensefiles',
                         onstart='upload.onstart()',
                         ondone='upload.ondone(status,msg)',
                         onerror='upload.onerror(status,msg)')
-                        strong(style="color:white;") Upload
+                        strong(style="color:white;",translate="translate") Upload
 
 
-        .panel-body(ng-show='savedFiles.length == 0')
+        .panel-body(ng-show='savedFiles.length == 0',translate="translate")
                 | Please register the player ID
                 | at pisignage.com to generate the license files.Then either save the license file from the email or download
                 | at pisignage.com/subscriptions.<br><br>
@@ -31,65 +31,65 @@
         .panel-body
             form.form-horizontal(role='form', name='settingsForm')
                 .form-group
-                    label.col-xs-4.control-label(for="user") username at pisignage.com
+                    label.col-xs-4.control-label(for="user",translate="translate") username at pisignage.com
                     div.col-xs-4
                         .input-group
                             input.form-control(type='text', name='user', ng-model='settings.installation', required='')
                             span.input-group-btn
                                 a.btn.btn-success(type="button",ng-click='saveSettings()',
-                                                ng-disabled="!settingsForm.user.$dirty") SAVE
+                                                ng-disabled="!settingsForm.user.$dirty",translate="translate") SAVE
                         small.text-danger {{loadMsg}}
                 .form-group
-                    label.col-xs-4.control-label SSH Password
+                    label.col-xs-4.control-label(translate="translate") SSH Password
                     .col-xs-2
                         input(type='password',name='sshPassword', ng-model='settings.sshPassword')
                     .col-xs-2
-                        button.btn.btn-success(type='submit', ng-click='saveSettings()')  Save
+                        button.btn.btn-success(type='submit', ng-click='saveSettings()',translate="translate")  Save
                 .form-group
-                    label.col-xs-4.control-label Default Duration for Slides
+                    label.col-xs-4.control-label(translate="translate") Default Duration for Slides
                     div.col-xs-2
                         input.form-control(type='text', name='duration', ng-model='settings.defaultDuration')
                     div.col-xs-2
-                        button.btn.btn-success(type='submit', ng-click='saveSettings()')  Save
+                        button.btn.btn-success(type='submit', ng-click='saveSettings()',translate="translate")  Save
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',name='youtubedl', ng-model='settings.enableYoutubeDl', ng-change="saveSettings()")
-                            span Use youtube-dl program for livestreaming instead of livestreamer
+                            span(translate="translate") Use youtube-dl program for livestreaming instead of livestreamer
  
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',name='forcetvon', ng-model='settings.forceTvOn', ng-click="saveSettings()")
-                            span Keep TV on by sending CEC tv-on/off message every 3 minutes
+                            span(translate="translate") Keep TV on by sending CEC tv-on/off message every 3 minutes
 
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',name='cecpowercheck', ng-model='settings.disableCECPowerCheck', ng-click="saveSettings()")
-                            span Disable CEC power check of TV every 3 minutes
+                            span(translate="translate") Disable CEC power check of TV every 3 minutes
 
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',name='systemshow', ng-model='settings.systemMessagesHide', ng-click="saveSettings()")
-                            span Hide system messages on TV Screen (e.g. Download in Progress)
+                            span(translate="translate") Hide system messages on TV Screen (e.g. Download in Progress)
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',name='hidenotice', ng-model='settings.hideWelcomeNotice', ng-change="saveSettings()")
-                            span Do not show startup welcome screen &  skip network diagnostics
+                            span(translate="translate") Do not show startup welcome screen &  skip network diagnostics
                 .form-group
-                    label.col-xs-4.control-label Player reporting interval in minutes
+                    label.col-xs-4.control-label(translate="translate") Player reporting interval in minutes
                     .col-xs-2
                         input.form-control(type="number", name="reportinterval", ng-model="settings.reportIntervalMinutes", placeholder="default 5 minutes")
                     .col-xs-2
-                        button.btn.btn-success(type="submit", ng-click="saveSettings()") Save
+                        button.btn.btn-success(type="submit", ng-click="saveSettings()",translate="translate") Save
                 .form-group
                     .checkbox
                         label.col-xs-8.col-xs-offset-4
                             input(type='checkbox',name='logs', ng-model='settings.enableLog', ng-change="saveSettings()")
-                            span.text-warning Enable log for file play count/details (network intensive, do not enable unless you need it!)
+                            span.text-warning(translate="translate") Enable log for file play count/details (network intensive, do not enable unless you need it!)
 
 
                 //.form-group
@@ -107,20 +107,20 @@
 
     .panel.panel-info
         .panel-heading
-            h4 Set Username and Password for Download Access
+            h4(translate="translate") Set Username and Password for Download Access
         .panel-body
             form.form-horizontal(role='form', name='downloadAccessForm')
                 .form-group
-                    label.col-xs-4.control-label(for="user") Username
+                    label.col-xs-4.control-label(for="user",translate="translate") Username
                     div.col-xs-4
                         input.form-control(type='text', name='user', ng-model='settings.authCredentials.user', required='')
                 .form-group
-                    label.col-xs-4.control-label(for="password") Password
+                    label.col-xs-4.control-label(for="password",translate="translate") Password
                     div.col-xs-4
                         input.form-control.col-xs-5(type='password', name='password', ng-model='settings.authCredentials.password', required='')
                     div.col-xs-4
                         button.btn.btn-success(type='submit', ng-click='saveSettings()',
-                        ng-disabled='downloadAccessForm.$invalid')  Save
+                        ng-disabled='downloadAccessForm.$invalid',translate="translate")  Save
                 .form-group
                     .col-xs-4.col-xs-offset-4
                         p.text-danger {{loadMsg}}

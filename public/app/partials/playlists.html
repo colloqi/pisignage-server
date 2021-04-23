@@ -1,7 +1,7 @@
 
 <div class="panel panel-info">
   <div class="panel-heading">
-    <h3 class="panel-title"><span ng-click="collapsed = !collapsed;">Playlists&nbsp;<i ng-class="{'fa-caret-right':collapsed,'fa-caret-down':!collapsed}" class="fa fa-lg"></i></span><a ng-click="fn.edit()" class="btn btn-sm btn-link pull-right"><em ng-class="{'text-danger':!fn.editMode,'text-success':fn.editMode}">{{fn.editMode?'Done':'Edit'}}</em></a></h3>
+    <h3 class="panel-title"><span ng-click="collapsed = !collapsed;" translate="translate">Playlists&nbsp;<i ng-class="{'fa-caret-right':collapsed,'fa-caret-down':!collapsed}" class="fa fa-lg"></i></span><a ng-click="fn.edit()" class="btn btn-sm btn-link pull-right"><em ng-class="{'text-danger':!fn.editMode,'text-success':fn.editMode}">{{fn.editMode?'Done':'Edit'}}</em></a></h3>
   </div>
   <div ng-hide="collapsed" class="form-group">
     <form name="addform" ng-submit="fn.add()">

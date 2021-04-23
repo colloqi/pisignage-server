@@ -1,7 +1,7 @@
 .panel.panel-info
     .panel-heading
         h3.panel-title
-            span(ng-click="collapsed = !collapsed;") Playlists&nbsp;
+            span(ng-click="collapsed = !collapsed;",translate="translate") Playlists&nbsp;
                 i.fa.fa-lg(ng-class="{'fa-caret-right':collapsed,'fa-caret-down':!collapsed}")
             a.btn.btn-sm.btn-link.pull-right(ng-click='fn.edit()'): em(ng-class="{'text-danger':!fn.editMode,'text-success':fn.editMode}")
                 | {{fn.editMode?'Done':'Edit'}}
