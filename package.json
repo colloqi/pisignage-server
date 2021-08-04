@@ -41,7 +41,7 @@
     "node-schedule": "^0.2.9",
     "passport": "0.2.0",
     "passport-google-oauth": "~0.1.5",
-    "sanitize-html": "^1.11.1",
+    "sanitize-html": "^2.3.2",
     "serve-favicon": "^2.5.0",
     "serve-index": "^1.9.1",
     "socket.io": "^2.1.1",

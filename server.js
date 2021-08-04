@@ -98,9 +98,23 @@ var ioNew = socketio(server,{
     maxHttpBufferSize: 10e7
 });
 
+var ioNewWebsocketOnly = socketio(server, {
+    path: "/wssocket.io",
+    serveClient: true,
+    // below are engine.IO options
+    pingInterval: 45000,
+    pingTimeout: 180000,
+    upgradeTimeout: 180000,
+    maxHttpBufferSize: 10e7
+});
+
+
+
 //Bootstrap socket.io
 require('./app/controllers/server-socket').startSIO(io);
 require('./app/controllers/server-socket-new').startSIO(ioNew);
+require("./app/controllers/server-socket-new").startSIOWebsocketOnly(ioNewWebsocketOnly);
+
 var wss = new WebSocket.Server({server:server,path:"/websocket"});
 require("./app/controllers/server-socket-ws").startSIO(wss);
             server.on('upgrade', function upgrade(request, socket, head) {
