@@ -42,7 +42,7 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
 1. Authentication has been added to the server UI which can be changed under settings (default pi:pi)
 
 
-##2.0.0 compatible release-features
+## 2.0.0 compatible release-features
 
 1. Introduction of domination playlist
 1. Play multiple assets when a advertisement event is triggered
