@@ -1,6 +1,7 @@
 'use strict';
 
 var iosockets = null;     //holds all the clients io.sockets
+var iosocketsWebsocketOnly = null;     //holds all the clients io.sockets
 
 var players = require('./players'),
     _ = require('lodash');
@@ -55,8 +56,12 @@ var handleClient = function (socket) {
 
 exports.startSIO = function (io) {
     io.sockets.on('connection', handleClient);
-    //io.set('log level', 0);
     iosockets = io.sockets;
+}
+
+exports.startSIOWebsocketOnly = function(io) {
+    io.sockets.on('connection', handleClient);
+    iosocketsWebsocketOnly = io.sockets;
 }
 
 exports.emitMessage = function (sid) {

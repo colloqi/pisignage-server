@@ -2,12 +2,12 @@
 
 module.exports = {
     env: 'production',
-    https: true,
-    port: process.env.PORT || 443,
+    https: false,
+    port: process.env.PORT || 3000,
     mongo: {
         uri: process.env.MONGOLAB_URI ||
-        process.env.MONGOHQ_URL ||
-        'mongodb://127.0.0.1:27017/pisignage-server',
+            process.env.MONGOHQ_URL ||
+            'mongodb://mongo:27017/pisignage-server-dev',
         options: {useMongoClient: true}
     }
 };
