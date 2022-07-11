@@ -43,19 +43,6 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
 12. Upload new licenses bought to the local server so that they are automatically installed in the pi
 13. Authentication has been added to the server UI which can be changed under settings (default pi:pi)
 
-
-## 2.0.0 compatible release-features
-
-1. Introduction of domination playlist
-1. Play multiple assets when a advertisement event is triggered
-1. PDF slide mode
-1. Media RSS option to show only text
-1. Zoom and sending keystrokes option for webpage links (can be used for login and other uses)
-1. Blend transition mode
-1. Option to use youtube-dl, disable welcome screen
-1. Letterboxed and stretched mode for video and image
-
-
 ## Getting Started
 
 
