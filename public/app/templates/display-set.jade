@@ -3,96 +3,100 @@
 .modal-body.overflow-auto
     form(role="form", name="formdisplay")
         .form-group.row
-            .col-sm-4.text-right
-                .radio
-                    label.text-muted
-                        small Resolution
-            .col-sm-4
-                .radio
-                    label
-                        input(type="radio",ng-model="tempPopup.resolution",ng-value="resolutions[0].value")
-                        small {{resolutions[0].name}}
-            .col-sm-4
-                .radio
-                    label
-                        input(type="radio",ng-model="tempPopup.resolution",ng-value="resolutions[1].value")
-                        small {{resolutions[1].name}}
-            .col-sm-4.col-sm-offset-4
-                .radio
-                    label
-                        input(type="radio",ng-model="tempPopup.resolution",ng-value="resolutions[2].value")
-                        small {{resolutions[2].name}}
-        .form-group.row
-            .col-sm-4.text-right
-                .radio
-                    label.text-muted: small TV Orientation
-            .col-sm-4
-                .radio
-                    label
-                        input(type="radio",ng-model="tempPopup.orientation",ng-value="orientations[0].value")
-                        small {{orientations[0].name}}
-            .col-sm-4
-                .radio(ng-repeat="type in orientations", ng-if="$index > 0")
-                    label
-                        input(type="radio",ng-model="tempPopup.orientation",ng-value="type.value")
-                        small {{type.name}}
-        .form-group.row
-            .col-sm-4.text-right
-                .radio
-                    label.text-muted
-                        small Animation
             .col-sm-2
-                .radio
-                    label
-                        input(type="radio",ng-model="tempPopup.animationEnable",
+                small: i Resolution & Orientation
+            .col-sm-6
+                .form-check.form-check-inline(ng-repeat='entry in resolutions')
+                    label.form-check-label
+                        input.form-check-input(type="radio",ng-model="tempPopup.resolution",ng-value="entry.value")
+                        small.text-muted.pl-5: i {{entry.name}}
+            .col-sm-4
+                .form-check.form-check-inline(ng-repeat="type in orientations")
+                    label.form-check-label
+                            input.form-check-input(type="radio",ng-model="tempPopup.orientation",ng-value="type.value")
+                            small.text-muted.pl-5: i {{type.name}}
+        .form-group.row
+            .col-sm-2
+                small: i Dual Screen (Pi4,v4.x only)
+            .col-sm-3
+                .form-check.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type="radio",ng-model="tempPopup.monitorArrangement.mode",value="mirror")
+                        small.text-muted.pl-5.pr-10 Mirror Screens
+                .form-check.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type="radio",ng-model="tempPopup.monitorArrangement.mode",value="tile-horizontal")
+                        small.text-muted.pl-5.pr-10  Tile Horizontal
+            .col-sm-3
+                .form-check.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type="radio",ng-model="tempPopup.monitorArrangement.mode",value="4k")
+                        small.text-muted.pl-5.pr-10 Enable 4K
+                .form-check.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type="radio",ng-model="tempPopup.monitorArrangement.mode",value="tile-vertical")
+                        small.text-muted.pl-5.pr-10 Tile Vertical
+            .col-sm-3
+                .form-check.form-check-inline
+                    label.form-check-label
+                        //input.form-check-input(type="radio",ng-model="group.monitorArrangement.mode",value="single")
+                        small.text-muted.pl-5.pr-10  &nbsp;
+                .form-check.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type='checkbox',name='reverseDisplays',ng-model='tempPopup.monitorArrangement.reverse')
+                        small.text-muted.pl-5  Reverse order
+        .form-group.row
+            .col-sm-2
+                small: i Animation
+            .col-sm-3
+                .form-check.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type="radio",ng-model="tempPopup.animationEnable",
                                     ng-change='tempPopup.animationType = null;',ng-value="false")
-                        small Disable
-                .radio
-                    label
-                        input(type="radio",ng-model="tempPopup.animationType",
+                        small.text-muted.pl-5 Disable
+                .form-check.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type="radio",ng-model="tempPopup.animationType",
                                     ng-change='tempPopup.animationEnable = true;',value="blend")
-                        small.text-primary Blend
+                        small.text-muted.pl-5 Blend
             .col-sm-3
-                .radio
-                    label
-                        input(type="radio",ng-model="tempPopup.animationType",
+                .form-check.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type="radio",ng-model="tempPopup.animationType",
                                     ng-change='tempPopup.animationEnable = true;',value="right")
-                        small Slide right
-                .radio
-                    label
-                        input(type="radio",ng-model="tempPopup.animationType",
+                        small.text-muted.pl-5 Slide right
+                .form-check.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type="radio",ng-model="tempPopup.animationType",
                                     ng-change='tempPopup.animationEnable = true;',value="left")
-                        small Slide left
+                        small.text-muted.pl-5 Slide left
             .col-sm-3
-                .radio
-                    label
-                        input(type="radio",ng-model="tempPopup.animationType",
+                    .form-check.form-check-inline
+                        label.form-check-label
+                        input.form-check-input(type="radio",ng-model="tempPopup.animationType",
                                     ng-change='tempPopup.animationEnable = true;',value="up")
-                        small Slide up
-                .radio
-                    label
-                        input(type="radio",ng-model="tempPopup.animationType",
+                        small.text-muted.pl-5 Slide up
+                    .form-check.form-check-inline
+                        label.form-check-label
+                        input.form-check-input(type="radio",ng-model="tempPopup.animationType",
                                     ng-change='tempPopup.animationEnable = true;',value="down")
-                        small Slide down
+                        small.text-muted.pl-5 Slide down
         hr
         .form-group.row
-            .col-xs-4.text-right
-                .radio
-                    label.text-muted: small Screen Background
+            .col-xs-2
+                small: i  Background
             .col-xs-3
                 .input-group.input-group-sm
                     input.form-control(type='color',ng-model='tempPopup.signageBackgroundColor')
                     small.input-group-addon {{tempPopup.signageBackgroundColor}}
             .col-sm-2.col-sm-offset-1
-                .radio(title="{{'Default volume output is 100%' }}")
-                    label.text-muted: span( title="needs v1.7.0+") Volume(%)
+                small: i(title="{{'Default volume output is 100%' }}") Volume(%)
             .col-sm-2
-                input.form-control(type='number',min=0,max=100,ng-model='tempPopup.omxVolume')
+                input.form-control.input-sm(type='number',min=0,max=100,ng-model='tempPopup.omxVolume')
 
         .form-group.row
-            .col-xs-4.text-right
-                .radio
-                    label.text-muted: small Display a Logo
+            .col-xs-2
+                small: i Show Logo
             .col-xs-4
                 button.btn.btn-sm.btn-link(ng-click="showFileList()")
                     small {{tempPopup.logo || "Select a png image from Assets"}}
@@ -105,196 +109,195 @@
                     input.input-sm.form-control(type='text',placeholder="y pos",ng-model="tempPopup.logoy")
 
         .form-group.row
-            .col-sm-4.text-right
-                .checkbox
-                    label.text-muted: small Display Clock
             .col-sm-2
-                .checkbox
+                small: i Display Clock
+            .col-sm-2
+                .form-check.form-check-inline
                     label
                         input(type='checkbox',name='show_clock', ng-model='tempPopup.showClock.enable')
-                        small Show
+                        small.text-muted.pl-5 Show
             .col-sm-2(ng-show='tempPopup.showClock.enable')
-                .radio
+                .form-check.form-check-inline
                     label
                         input(type="radio",ng-model="tempPopup.showClock.position",value="top")
-                        small() Top
-                .radio
+                        small.text-muted.pl-5 Top
+                .form-check.form-check-inline
                     label
                         input(type="radio",ng-model="tempPopup.showClock.position",value="bottom")
-                        small() Bottom
+                        small.text-muted.pl-5 Bottom
             .col-sm-2(ng-show='tempPopup.showClock.enable')
-                .radio
+                .form-check.form-check-inline
                     label
                         input(type="radio",ng-model="tempPopup.showClock.format",value="12")
-                        small() 12 hr
-                .radio
+                        small.text-muted.pl-5 12 hr
+                .form-check.form-check-inline
                     label
                         input(type="radio",ng-model="tempPopup.showClock.format",value="24")
-                        small() 24 hr
+                        small.text-muted.pl-5 24 hr
             .col-sm-2(ng-show='tempPopup.showClock.enable')
-                .radio
+                .form-check.form-check-inline
                     label
                         input(type="radio",ng-model="tempPopup.showClock.format",value="12d")
-                        small() date+12h
-                .radio
+                        small.text-muted.pl-5 date+12h
+                .form-check.form-check-inline
                     label
                         input(type="radio",ng-model="tempPopup.showClock.format",value="24d")
-                        small() date+24h
+                        small.text-muted.pl-5 date+24h
 
         hr
         .form-group.row
-            .col-sm-4.text-right
-                .radio
-                    label.text-muted
-                        small Fit image
             .col-sm-2
-                .radio
+                small: i Fit image
+            .col-sm-10
+                .form-check.form-check-inline
                     label
                         input(type='radio', ng-model='tempPopup.imageSize',ng-value="0")
-                        small Actual
-                .radio
-                    label
+                        small.text-muted.pl-5.pr-10 Actual
                         input(type='radio', ng-model='tempPopup.imageSize',ng-value="1")
-                        small Letterbox
-                .radio
-                    label
+                        small.text-muted.pl-5.pr-10 Letterbox
                         input(type='radio', ng-model='tempPopup.imageSize',ng-value="2")
-                        small Stretched
-            .col-sm-4
-                .checkbox
-                    label
-                        small Reload link URLs each time<br>(appends ?ts in chromeapp)
-            .col-sm-2
-                .checkbox
-                    label
-                        input(type='checkbox',name='reload_checkbox', ng-model='tempPopup.urlReloadDisable',
-                        ng-true-value="false",
-                        ng-false-value="true",
-                        ng-checked="tempPopup.urlReloadDisable !== true"
-                        )
-                        small Enable
-
-
+                        small.text-muted.pl-5.pr-10 Stretched
         .form-group.row
-            .col-sm-4.text-right
-                .radio
-                    label.text-muted
-                        small Fit video
             .col-sm-2
-                .radio
+                small: i Fit video
+            .col-sm-10
+                .form-check.form-check-inline
                     label
                         input(type='radio',ng-model='tempPopup.videoSize',ng-value="1")
-                        small Letterbox
-                .radio
-                    label
+                        small.text-muted.pl-5.pr-10 Letterbox
                         input(type='radio',ng-model='tempPopup.videoSize',ng-value="2")
-                        small Stretched
-            .col-sm-4.text-right
-                small Stop video every seconds to show adverts (0 to disable)
+                        small.text-muted.pl-5.pr-10 Stretched
+        hr
+        .form-group.row
             .col-sm-2
-                input.input-sm.form-control(type='number',placeholder="secs",ng-model='tempPopup.timeToStopVideo')
+                small: i URL Reload
+            .col-sm-4
+                .form-check.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type='checkbox',name='reload_checkbox', ng-model='tempPopup.urlReloadDisable',
+                            ng-true-value="false", ng-false-value="true",
+                            ng-checked="tempPopup.urlReloadDisable !== true"
+                        )
+                        small.text-muted.pl-5 Reload link URLs each time
+            .col-sm-6
+                .form-check.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type='checkbox',name='keepweblink', ng-model='tempPopup.keepWeblinksInMemory')
+                        small.text-muted.pl-5 Keep webpages in memory
 
+        .form-group.row
+            .col-sm-2
+                small: i Break Video
+            .col-sm-8
+                .input-group.input-group-sm
+                    .input-group-addon
+                        small.text-muted Stop video after every
+                    input.input-sm.form-control(type='number',placeholder="secs",ng-model='tempPopup.timeToStopVideo')
+                    .input-group-addon
+                        small.text-muted()  seconds (0 to disable) to show adverts
         hr
 
         .form-group.row
-            .col-sm-4.text-right
-                .radio
-                    label.text-muted
-                        small Schedule Display OFF
-            .col-sm-4
-                .checkbox
-                    label
-                        input(type='checkbox',name='sleep_checkbox', ng-model='tempPopup.sleep.enable')
-                        small Enable
-        .form-group.row(ng-show='tempPopup.sleep.enable')
-            .col-sm-4.col-sm-offset-4
-                label
-                    small ON at
-                    input.form-control(type='time',ng-model="tempPopup.sleep.ontimeObj")
-            .col-sm-4
-                label
-                    small OFF at
-                    input.form-control(type='time',ng-model="tempPopup.sleep.offtimeObj")
+            .col-sm-2
+                small: i Schedule Display OFF
+            .col-sm-2
+                input(type='checkbox',name='sleep_checkbox', ng-model='tempPopup.sleep.enable')
+                small.text-muted.pl-5 Enable
+            .col-sm-4(ng-show='tempPopup.sleep.enable')
+                .input-group.input-group-sm
+                    small.input-group-addon ON at
+                    input.input-sm.form-control(type='time',ng-model="tempPopup.sleep.ontimeObj")
+            .col-sm-4(ng-show='tempPopup.sleep.enable')
+                .input-group.input-group-sm
+                    small.input-group-addon OFF at
+                    input.input-sm.form-control(type='time',ng-model="tempPopup.sleep.offtimeObj")
             .col-sm-10.col-sm-offset-2
                 small.text-info For finer control use TV_OFF playlist under group scheduling
 
         hr
         .form-group.row
-            .col-sm-4.text-right
-                .radio
-                    label.text-muted
-                        small Optional daily reboot
             .col-sm-2
-                .checkbox
-                    label
-                        input(type='checkbox',name='reboot_checkbox', ng-model='tempPopup.reboot.enable')
-                        small enable
-            .col-sm-2.text-right
-                .radio
-                    label.text-muted
-                        small.text-muted(ng-show="tempPopup.reboot.enable") at
-            .col-sm-4
-                .checkbox
-                    label
-                        input.input-sm.form-control(ng-show='tempPopup.reboot.enable',type='time',ng-model="tempPopup.reboot.time")
+                small: i Optional daily reboot
+            .col-sm-2
+                input(type='checkbox',name='reboot_checkbox', ng-model='tempPopup.reboot.enable')
+                small.text-muted.pl-5 Enable
+            .col-sm-4(ng-show="tempPopup.reboot.enable")
+                .input-group.input-group-sm
+                    small.input-group-addon reboot at
+                    input.input-sm.form-control(ng-show='tempPopup.reboot.enable',type='time',ng-model="tempPopup.reboot.time")
 
         hr
         .form-group.row
-            .col-sm-4.text-right
-                .radio
-                    label.text-muted
-                        small Kiosk Menu
             .col-sm-2
-                .checkbox
-                    label
-                        input(type='checkbox',name='kioskui_checkbox', ng-model='tempPopup.kioskUi.enable')
-                        small Enable
-            .col-sm-6(ng-show='tempPopup.kioskUi.enable')
+                small:i Kiosk Menu
+            .col-sm-2
+                input(type='checkbox',name='kioskui_checkbox', ng-model='tempPopup.kioskUi.enable')
+                small.text-muted.pl-5 Enable
+            .col-sm-8(ng-show='tempPopup.kioskUi.enable')
                 .input-group.input-group-sm
                     small.input-group-addon URL
                     input.input-sm.form-control(type='text',placeholder="Leave blank for default",ng-model="tempPopup.kioskUi.url")
-            .col-sm-5.col-sm-offset-6(ng-show='tempPopup.kioskUi.enable')
+        .form-group.row
+            .col-sm-4.col-sm-offset-4(ng-show='tempPopup.kioskUi.enable')
                 .input-group.input-group-sm
                     small.input-group-addon Inactivitiy timeout
                     input.input-sm.form-control(type='number',placeholder="30 secs",ng-model='tempPopup.kioskUi.timeout')
 
         hr
         .form-group.row
-            .col-sm-4.text-right
-                .radio
-                    label.text-muted
-                        small Video Play
-            .col-sm-8
-                .checkbox
-                    label
-                        input(type='checkbox',name='ffmpeg', ng-model='tempPopup.enableMpv')
-                        small Use MPV to avoid gap between videos
+            .col-sm-2
+                small: i Video Play
+            //.col-sm-8
+            //    input(type='checkbox',name='ffmpeg', ng-model='tempPopup.enableMpv')
+            //    small.text-muted.pl-5 Use MPV to avoid gap between videos
+            .col-sm-10
+                .form-check.form-check-inline
+                        input.form-check-input(type="radio",ng-model="tempPopup.selectedVideoPlayer",value="default")
+                        small.pl-5.pr-10 Default
+                        small.text-muted.pl-5.pr-10 (omxplayer in versions less than 4, chromium in versions >= 4.x.x)
+                .form-check.form-check-inline
+                        input.form-check-input(type="radio",ng-model="tempPopup.selectedVideoPlayer",value="mpv")
+                        small.pl-5.pr-10 MPV
+                        small.text-muted.pl-5.pr-10 (for avoiding gap between videos, certain YouTube streaming)
+                    .input-group(ng-show='tempPopup.selectedVideoPlayer === "mpv"')
+                        .input-group-addon
+                            small Optional Audio-Video Delay in secs
+                        input.input-sm.form-control(type='text',placeholder="0",ng-model="tempPopup.mpvAudioDelay")
 
-         hr
-            .form-group.row
-                .col-sm-2
-                    small: i(translate) Player settings
-                .col-sm-4
-                    .form-check.form-check-inline
-                        label.form-check-label
-                            input.form-check-input(type='checkbox',name='disableAp', ng-model='tempPopup.disableAp')
-                            small.text-muted.pl-5(translate) Disable player wifi AP
-                    .form-check.form-check-inline
-                        label.form-check-label
-                            input.form-check-input(type='checkbox',name='disablewebui', ng-model='tempPopup.disableWebUi')
-                            small.text-muted.pl-5(translate) Disable player webUI
+                .form-check.form-check-inline
+                        input.form-check-input(type='radio', ng-model='tempPopup.selectedVideoPlayer',value="cvlc")
+                        small.pl-5.pr-10 VLC(Experimental)
+                        small.text-muted.pl-5.pr-10 (for 4K support in versions >= 4.x.x for Raspberry Pi)
 
-                .col-sm-6
-                    //.form-check.form-check-inline
-                    //    label.form-check-label
-                    //        input.form-check-input(type='checkbox',name='disablessh', ng-model='tempPopup.disableSsh')
-                    //        small.text-muted.pl-5(translate) Disable ssh
-                    .form-check.form-check-inline
-                        label.form-check-label
-                            input.form-check-input(type='checkbox',name='disablewarnings', ng-model='tempPopup.disableWarnings')
-                            small.text-warning.pl-5(translate) Disable player power/temperature warning
-                            br
-                            small.text-warning(translate) use caution as this may spoil the hardware
+        hr
+        .form-group.row
+            .col-sm-2
+                small: i Player settings
+            .col-sm-4
+                .form-check.form-check-inline
+                        input.form-check-input(type='checkbox',name='disableAp', ng-model='tempPopup.disableAp')
+                        small.text-muted.pl-5 Disable player wifi AP
+                .form-check.form-check-inline
+                        input.form-check-input(type='checkbox',name='disablewebui', ng-model='tempPopup.disableWebUi')
+                        small.text-muted.pl-5 Disable player webUI
+
+            .col-sm-6
+                //.form-check.form-check-inline
+                //    label.form-check-label
+                //        input.form-check-input(type='checkbox',name='disablessh', ng-model='tempPopup.disableSsh')
+                //        small.text-muted.pl-5 Disable ssh
+                .form-check.form-check-inline
+                        input.form-check-input(type='checkbox',name='disablewarnings', ng-model='tempPopup.disableWarnings')
+                        small.text-danger.pl-5 Disable player power/temperature warning
+                        br
+                        small.pl-10: i.pl-10.text-muted use caution as this may spoil the hardware
+                .form-check.form-check-inline
+                        input.form-check-input(type='checkbox',name='enablepio', ng-model='tempPopup.enablePio')
+                        small.text-muted.pl-5(title="{{'enable only if you use, may affect performance'}}",) Enable GPIO media control (17,18,27)
+                        br
+                        a.pl-10(href="https://github.com/colloqi/piSignage/blob/master/GPIO%20media%20control%20Instructions.md",target="_blank")
+                            i.pl-10 for details refer GPIO instructions
+
 
 
 .modal-footer
