@@ -179,8 +179,9 @@ exports.getFileDetails = function (req, res) {
 
 exports.deleteFile = function (req, res) {
 
-    var file = req.params['file'],
-        ext = path.extname(file);
+    var file = req.params['file'];
+    var ext = path.extname(file);
+    var thumbnailPath = null;
 
     async.series([
         function(next) {
@@ -191,6 +192,20 @@ exports.deleteFile = function (req, res) {
                     next()
             })
         },
+        function(next){
+            if(file.match(config.videoRegex) || file.match(config.imageRegex)){
+                Asset.findOne({name:file},function(err,dbdata){
+                    if(dbdata && dbdata["thumbnail"]){
+                        var imageThumbnailName = dbdata["thumbnail"].replace("/media/_thumbnails/","");
+                        thumbnailPath = path.join(config.thumbnailDir,imageThumbnailName) ;
+                    }
+                    next();
+                })
+            }
+            else{
+                next();
+            }
+        },
         function(next) {
             Asset.remove({name: file}, function (err) {
                 if (err)
@@ -199,9 +214,6 @@ exports.deleteFile = function (req, res) {
             })
         },
         function(next) {
-            var thumbnailPath = path.join(config.thumbnailDir, file);
-            if (file.match(config.videoRegex))
-                thumbnailPath += '.png';
             if(file.match(config.videoRegex) || file.match(config.imageRegex)){
                 fs.unlink(thumbnailPath, function (err) {
                     if (err)
