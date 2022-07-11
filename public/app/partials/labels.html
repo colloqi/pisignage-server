@@ -1,19 +1,19 @@
 
 <div class="panel panel-info">
   <div class="panel-heading">
-    <h3 class="panel-title"><span ng-click="collapsed = !collapsed;">Labels&nbsp;<i ng-class="{'fa-caret-right':collapsed,'fa-caret-down':!collapsed}" class="fa fa-lg"></i></span><a ng-click="fn.edit()" class="btn btn-sm btn-link pull-right"><em ng-class="{'text-danger':!fn.editMode,'text-success':fn.editMode}">{{fn.editMode?'Done':'Edit'}}</em></a></h3>
+    <h3 class="panel-title"><span ng-click="collapsed = !collapsed;">Labels&nbsp;<i class="fa fa-lg" ng-class="{'fa-caret-right':collapsed,'fa-caret-down':!collapsed}"></i></span><a class="btn btn-sm btn-link pull-right" ng-click="fn.edit()"><em ng-class="{'text-danger':!fn.editMode,'text-success':fn.editMode}">{{fn.editMode?'Done':'Edit'}}</em></a></h3>
   </div>
-  <div ng-hide="collapsed" class="form-group">
+  <div class="form-group" ng-hide="collapsed">
     <form name="addform" ng-submit="fn.add()">
       <div class="input-group col-xs-12">
-        <input type="text" ng-model="newLabel.name" placeholder="Add a new Label" required="required" class="form-control"/><span class="input-group-btn">
-          <button type="submit" class="btn btn-default"><i class="fa fa-plus"></i></button></span>
+        <input class="form-control" type="text" ng-model="newLabel.name" placeholder="Add a new Label" required="required"/><span class="input-group-btn">
+          <button class="btn btn-default" type="submit"><i class="fa fa-plus"></i></button></span>
       </div>
     </form>
   </div>
-  <ul ng-hide="collapsed" class="nav nav-pills nav-stacked">
-    <li ng-repeat="tag in label.labels | orderBy:'name' | filter:modeFilter" ng-class="fn.getClass(tag.name)"><a ng-click="fn.selected(tag.name)"><small>{{ tag.name }}</small><span ng-if="!fn.editMode &amp;&amp; !fn.getClass(tag.name)" class="pull-right">{{label.labelsCount[tag.name] || '0'}}</span>
-        <button ng-click="fn.delete(tag); $event.stopPropagation()" ng-if="fn.editMode || fn.getClass(tag.name)" class="close"><i ng-class="{'text-danger': fn.editMode}" class="fa fa-times-circle fa-lg"></i></button></a></li>
+  <ul class="nav nav-pills nav-stacked" ng-hide="collapsed">
+    <li ng-repeat="tag in label.labels | orderBy:'name' | filter:modeFilter" ng-class="fn.getClass(tag.name)"><a ng-click="fn.selected(tag.name)"><small>{{ tag.name }}</small><span class="pull-right" ng-if="!fn.editMode &amp;&amp; !fn.getClass(tag.name)">{{label.labelsCount[tag.name] || '0'}}</span>
+        <button class="close" ng-click="fn.delete(tag); $event.stopPropagation()" ng-if="fn.editMode || fn.getClass(tag.name)"><i class="fa fa-times-circle fa-lg" ng-class="{'text-danger': fn.editMode}"></i></button></a></li>
     <li ng-if="!label.labels.length"><a>There are no categories, Add a Category</a></li>
   </ul>
 </div>

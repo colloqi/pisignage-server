@@ -8,9 +8,7 @@
       <div class="form-group">
         <div class="col-sm-6">
           <p>
-            By making this as Advt. playlist, you can insert the assets of this playlist periodically in between the currently
-            playing playlist.
-          </p>
+            By making this as Advt. playlist, you can insert the assets of this playlist periodically in between the currentlyplaying playlist.</p>
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
@@ -20,40 +18,38 @@
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist">
         <div class="col-sm-6">
           <p>
-              You can play the assets only on side and banner zones by disabling main zone here.
-            Still you have to select dummy file for main zone
-          </p>
+              You can play the assets only on side and banner zones by disabling main zone here.Still you have to select dummy file for main zone</p>
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.ads.noMainPlay"/><span>Play only in side/banner zones</span>
+              <input type="checkbox" ="" ng-model="playlist.selectedPlaylist.settings.ads.noMainPlay"/><span>Play only in side/banner zones</span>
             </label>
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.ads.adPlaylist">
         <label class="col-sm-4 control-label">Play</label>
         <div class="col-sm-3">
           <div class="input-group">
-            <input type="number" ng-model="playlist.selectedPlaylist.settings.ads.adCount" class="form-control"/>
+            <input class="form-control" type="number" ng-model="playlist.selectedPlaylist.settings.ads.adCount"/>
             <div class="input-group-addon"><small class="text-muted"> assets</small></div>
           </div>
         </div>
         <div class="col-sm-5">
           <div class="input-group">
             <div class="input-group-addon"><small class="text-muted"> after every</small></div>
-            <input type="number" ng-model="playlist.selectedPlaylist.settings.ads.adInterval" class="form-control"/>
+            <input class="form-control" type="number" ng-model="playlist.selectedPlaylist.settings.ads.adInterval"/>
             <div class="input-group-addon"><small class="text-muted"> seconds</small></div>
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-6">
-          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+          <button class="btn btn-success" ng-click="saveSettings()">Save</button>
         </div>
       </div>
     </form>
@@ -66,9 +62,7 @@
       <div class="form-group">
         <div class="col-sm-6">
           <p>
-            Play this playlist once every selected duration by stopping regular playlist
-            ,acts like insertion of advt at fixed intervals
-          </p>
+            Play this playlist once every selected duration by stopping regular playlist,acts like insertion of advt at fixed intervals</p>
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
@@ -78,20 +72,20 @@
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.domination.enable" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.domination.enable">
         <div class="col-sm-6">
           <p>Play after every</p>
         </div>
         <div class="col-sm-6">
           <div class="input-group">
-            <input type="number" ng-model="playlist.selectedPlaylist.settings.domination.timeInterval" class="form-control"/>
+            <input class="form-control" type="number" ng-model="playlist.selectedPlaylist.settings.domination.timeInterval"/>
             <div class="input-group-addon"><small> minutes</small></div>
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-6">
-          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+          <button class="btn btn-success" ng-click="saveSettings()">Save</button>
         </div>
       </div>
     </form>
@@ -104,9 +98,7 @@
       <div class="form-group">
         <div class="col-sm-6">
           <p>
-            In addition to signage functionality, you can play audio from a playlist
-            through the 3.5mm jack
-          </p>
+            In addition to signage functionality, you can play audio from a playlistthrough the 3.5mm jack</p>
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
@@ -116,27 +108,27 @@
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.audio.enable" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.audio.enable">
         <div class="col-sm-6">
           <p></p>
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.audio.random"/><span>Play in random order</span>
+              <input type="checkbox" ="" ng-model="playlist.selectedPlaylist.settings.audio.random"/><span>Play in random order</span>
             </label>
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.audio.enable" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.audio.enable">
         <div class="col-sm-6">
           <p>Volume</p>
         </div>
         <div class="col-sm-6">
-          <input type="number" min="0" max="100" ng-model="playlist.selectedPlaylist.settings.audio.volume" placeholder="{{'Enter value in %' }}" class="form-control"/>
+          <input class="form-control" type="number" min="0" max="100" ng-model="playlist.selectedPlaylist.settings.audio.volume" placeholder="{{'Enter value in %' }}"/>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.audio.enable" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.audio.enable">
         <div class="col-sm-6"></div>
         <div class="col-sm-6">
           <div class="checkbox">
@@ -148,7 +140,7 @@
       </div>
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-6">
-          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+          <button class="btn btn-success" ng-click="saveSettings()">Save</button>
         </div>
       </div>
     </form>
@@ -170,17 +162,17 @@
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.event.enable" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.event.enable">
         <div class="col-sm-6">
           <p>Duration of the playlist, 0 to play till next event</p>
         </div>
         <div class="col-sm-6">
-          <input type="text" ng-model="playlist.selectedPlaylist.settings.event.duration" placeholder="{{'Enter value in seconds'}}" class="form-control"/>
+          <input class="form-control" type="text" ng-model="playlist.selectedPlaylist.settings.event.duration" placeholder="{{'Enter value in seconds'}}"/>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-6">
-          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+          <button class="btn btn-success" ng-click="saveSettings()">Save</button>
         </div>
       </div>
     </form>
@@ -202,17 +194,17 @@
           </div>
         </div>
       </div>
-      <div ng-show="playlist.selectedPlaylist.settings.keyPress.enable" class="form-group">
+      <div class="form-group" ng-show="playlist.selectedPlaylist.settings.keyPress.enable">
         <div class="col-sm-6">
           <p>KeyCode to be pressed to play this playlist</p><small>(Usual keycodes are, key_0:11, key_1:2, key_2:3 ,..., key_9:10)</small>
         </div>
         <div class="col-sm-6">
-          <input type="text" ng-model="playlist.selectedPlaylist.settings.keyPress.key" placeholder="{{'Enter the keycode for the playlist'}}" class="form-control"/>
+          <input class="form-control" type="text" ng-model="playlist.selectedPlaylist.settings.keyPress.key" placeholder="{{'Enter the keycode for the playlist'}}"/>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-6">
-          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+          <button class="btn btn-success" ng-click="saveSettings()">Save</button>
         </div>
       </div>
     </form>

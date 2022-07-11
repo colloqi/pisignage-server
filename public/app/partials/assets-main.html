@@ -1,15 +1,14 @@
 
-<div autoscroll="false" class="row height100 overflow-hidden">
+<div class="row height100 overflow-hidden" autoscroll="false">
   <div class="col-sm-3 height100 overflow-auto">
     <div ui-view="left" autoscroll="false"></div>
     <div ui-view="left2" autoscroll="false"></div>
   </div>
-  <div autoscroll="false" class="height100 overflow-auto">
+  <div class="height100 overflow-auto" autoscroll="false">
     <!--,ng-class="{'col-sm-9':!selected.rightWindowNeeded,'col-sm-6':selected.rightWindowNeeded}"-->
     <div ui-view="details" autoscroll="false"></div>
     <div ui-view="list" autoscroll="false"></div>
   </div>
-  <!--.col-sm-6.height100.overflow-auto(ng-show="selected.rightWindowNeeded")
-  <div ui-view="right" autoscroll="false"></div>
+  <!--.col-sm-6.height100.overflow-auto(ng-show="selected.rightWindowNeeded")div(ui-view="right", autoscroll="false")
   -->
 </div>

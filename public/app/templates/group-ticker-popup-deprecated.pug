@@ -24,19 +24,19 @@
                     label
                         input(type='radio',value='scrollRight',ng-model='group.selectedGroup.ticker.behavior')
                         small() Scroll right
-        .radio-inline
+                .radio-inline
                         label.text-info
                             small OpenVG
 
-                    .radio-inline
-                        label
-                            input(type='radio',value='openvg_left',name="openvg_left",ng-model='group.selectedGroup.ticker.behavior')
-                            small left
+                .radio-inline
+                    label
+                        input(type='radio',value='openvg_left',name="openvg_left",ng-model='group.selectedGroup.ticker.behavior')
+                        small left
 
-                    .radio-inline
-                        label
-                            input(type='radio',value='openvg_right',name="openvg_right",ng-model='group.selectedGroup.ticker.behavior')
-                            small right
+                .radio-inline
+                    label
+                        input(type='radio',value='openvg_right',name="openvg_right",ng-model='group.selectedGroup.ticker.behavior')
+                        small right
             .form-group.row(ng-show='group.selectedGroup.ticker.enable && group.selectedGroup.ticker.behavior!= "openvg_right"&& group.selectedGroup.ticker.behavior!= "openvg_left"')
                 label.control-label.text-muted.col-sm-3.text-right Optional CSS
                 .col-sm-9

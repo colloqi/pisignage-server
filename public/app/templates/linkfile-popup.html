@@ -1,7 +1,7 @@
 
 <div class="modal-header">
   <h4>File to be played in the {{selectedZone}} zone
-    <button ng-click="modal.close()" class="btn btn-default pull-right">Done</button>
+    <button class="btn btn-default pull-right" ng-click="modal.close()">Done</button>
   </h4>
   <p>along with {{selectedAsset.filename}}</p>
 </div>
@@ -11,12 +11,12 @@
       <tab index="0" heading="Assets">
         <ul class="list-group">
           <li class="list-group-item list-group-item-info">
-            <input type="text" placeholder="Filter by Name" ng-model="search" class="form-control"/>
+            <input class="form-control" type="text" placeholder="Filter by Name" ng-model="search"/>
           </li>
-          <li ng-repeat="file in filteredAssets | filter:search " ng-class="{'list-group-item-success':file.fileDetails.name==selectedAsset[selectedZone]}" ng-click="linkFileSave(file.fileDetails.name)" class="list-group-item">
+          <li class="list-group-item" ng-repeat="file in filteredAssets | filter:search " ng-class="{'list-group-item-success':file.fileDetails.name==selectedAsset[selectedZone]}" ng-click="linkFileSave(file.fileDetails.name)">
             <div class="media">
-              <div class="media-left"><a href="#" ng-if="file.fileDetails.thumbnail" class="pull-left"><img ng-src="{{file.fileDetails.thumbnail}}" class="media-object"/></a>
-                <div ng-if="!file.fileDetails.thumbnail" class="media-object letter-box img-rounded pull-left">{{file.fileDetails.type.slice(0,1) || 'N' }}</div>
+              <div class="media-left"><a class="pull-left" href="#" ng-if="file.fileDetails.thumbnail"><img class="media-object" ng-src="{{file.fileDetails.thumbnail}}"/></a>
+                <div class="media-object letter-box img-rounded pull-left" ng-if="!file.fileDetails.thumbnail">{{file.fileDetails.type.slice(0,1) || 'N' }}</div>
               </div>
               <div class="media-body">
                 <div class="row">
@@ -24,13 +24,13 @@
                     <h4 class="media-heading">&nbsp;{{file.fileDetails.name}}</h4>
                   </div>
                   <div class="col-sm-4">
-                    <label ng-show="file.fileDetails.type == &quot;video&quot; &amp;&amp; file.fileDetails.name==selectedAsset[selectedZone]" title="Mute video" class="text-muted">
+                    <label class="text-muted" ng-show="file.fileDetails.type == &quot;video&quot; &amp;&amp; file.fileDetails.name==selectedAsset[selectedZone]" title="Mute video">
                       <input type="checkbox" ng-model="file.fileDetails.option[selectedZone]"/><span class="pl-5">mute audio</span>
                     </label>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-12"><strong class="pr-5">{{file.fileDetails.type}}</strong><small class="pr-5"><span class="text-muted">duration:</span>{{file.fileDetails.duration}} secs</small><small ng-if="file.fileDetails.size" class="pr-5"><span class="text-muted">size:</span>{{file.fileDetails.size}}</small><small ng-if="file.fileDetails.resolution.width" class="pr-5"><span class="text-muted">resolution:</span><span>{{file.fileDetails.resolution.width}}x</span><span>{{file.fileDetails.resolution.height}}</span></small></div>
+                  <div class="col-sm-12"><strong class="pr-5">{{file.fileDetails.type}}</strong><small class="pr-5"><span class="text-muted">duration:</span>{{file.fileDetails.duration}} secs</small><small class="pr-5" ng-if="file.fileDetails.size"><span class="text-muted">size:</span>{{file.fileDetails.size}}</small><small class="pr-5" ng-if="file.fileDetails.resolution.width"><span class="text-muted">resolution:</span><span>{{file.fileDetails.resolution.width}}x</span><span>{{file.fileDetails.resolution.height}}</span></small></div>
                 </div>
               </div>
             </div>
@@ -40,9 +40,9 @@
       <tab index="1" heading="Playlists(needs 1.7.0)">
         <ul class="list-group">
           <li class="list-group-item list-group-item-info">
-            <input type="text" placeholder="{{'Filter by Name' }}" ng-model="search" class="form-control"/>
+            <input class="form-control" type="text" placeholder="{{'Filter by Name' }}" ng-model="search"/>
           </li>
-          <li ng-repeat="pl in playlistsList  | filter:search " ng-class="{'list-group-item-success':pl.plName==selectedAsset[selectedZone]}" ng-click="linkFileSave(pl.plName)" class="list-group-item">
+          <li class="list-group-item" ng-repeat="pl in playlistsList  | filter:search " ng-class="{'list-group-item-success':pl.plName==selectedAsset[selectedZone]}" ng-click="linkFileSave(pl.plName)">
             <div class="media">
               <div class="media-left">
                 <div class="media-object letter-box img-rounded pull-left"><i class="fa fa-list-alt"></i></div>
@@ -53,7 +53,7 @@
                     <p class="media-heading">&nbsp;{{pl.displayName}}</p>
                   </div>
                   <div class="col-sm-4">
-                    <label ng-show="pl.plName==selectedAsset[selectedZone]" title="Continuously play independent of main zone" class="text-muted">
+                    <label class="text-muted" ng-show="pl.plName==selectedAsset[selectedZone]" title="Continuously play independent of main zone">
                       <input type="checkbox" ng-model="selectedAsset.option[selectedZone]"/><span class="pl-5">play independently</span>
                     </label>
                   </div>

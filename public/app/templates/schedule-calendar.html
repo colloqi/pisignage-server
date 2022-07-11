@@ -18,11 +18,11 @@
             </div>
           </div>
           <div class="col-xs-5">
-            <input type="date" ng-model="forPlaylist.settings.startdate" ng-model-options="{timezone:'UTC'}" ng-show="forPlaylist.settings.durationEnable" placeholder="Starting on" name="startdate" title="Enter Start Date" class="form-control input-sm"/>
+            <input class="form-control input-sm" type="date" ng-model="forPlaylist.settings.startdate" ng-model-options="{timezone:'UTC'}" ng-show="forPlaylist.settings.durationEnable" placeholder="Starting on" name="startdate" title="Enter Start Date"/>
           </div>
           <div class="col-xs-1"><small ng-show="forPlaylist.settings.durationEnable">till</small></div>
           <div class="col-xs-4">
-            <input type="date" ng-model="forPlaylist.settings.enddate" ng-model-options="{timezone:'UTC'}" ng-show="forPlaylist.settings.durationEnable" placeholder="Till date" name="enddate" title="Enter End Date" class="form-control input-sm"/>
+            <input class="form-control input-sm" type="date" ng-model="forPlaylist.settings.enddate" ng-model-options="{timezone:'UTC'}" ng-show="forPlaylist.settings.durationEnable" placeholder="Till date" name="enddate" title="Enter End Date"/>
           </div>
         </div>
       </div>
@@ -59,7 +59,7 @@
             <!--select.form-control(ng-model='forPlaylist.settings.weekdays',-->
             <!--                    ng-options='weeklist.indexOf(weekday) as weekday for weekday in weeklist',-->
             <!--                    title='Select playing week days ')-->
-            <div ng-dropdown-multiselect="" options="ngDropdown.weekdays.list" selected-model="ngDropdown.weekdays.selectedDays" events="ngDropdown.weekdays.events" translation-texts="ngDropdown.weekdays.customTexts" extra-settings="ngDropdown.weekdays.extraSettings" checkboxes="true" class="pull-right"></div>
+            <div class="pull-right" ng-dropdown-multiselect="" options="ngDropdown.weekdays.list" selected-model="ngDropdown.weekdays.selectedDays" events="ngDropdown.weekdays.events" translation-texts="ngDropdown.weekdays.customTexts" extra-settings="ngDropdown.weekdays.extraSettings" checkboxes="true"></div>
           </div>
           <div class="col-xs-2">
             <label class="control-label">Day(s) of Month</label>
@@ -68,7 +68,7 @@
             <!--select.form-control(ng-model='forPlaylist.settings.monthdays',-->
             <!--                        ng-options="dayslist.indexOf(day) as day for day in dayslist",-->
             <!--                        title='Enter playing dates ')-->
-            <div ng-dropdown-multiselect="" options="ngDropdown.monthdays.list" selected-model="ngDropdown.monthdays.selectedDays" events="ngDropdown.monthdays.events" translation-texts="ngDropdown.monthdays.customTexts" extra-settings="ngDropdown.monthdays.extraSettings" checkboxes="true" class="pull-right"></div>
+            <div class="pull-right" ng-dropdown-multiselect="" options="ngDropdown.monthdays.list" selected-model="ngDropdown.monthdays.selectedDays" events="ngDropdown.monthdays.events" translation-texts="ngDropdown.monthdays.customTexts" extra-settings="ngDropdown.monthdays.extraSettings" checkboxes="true"></div>
           </div>
         </div>
       </div>
@@ -87,16 +87,16 @@
             </div>
           </div>
           <div class="col-xs-5">
-            <input type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.starttimeObj" name="starttime" title="Enter Start Time" class="form-control"/>
+            <input class="form-control" type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.starttimeObj" name="starttime" title="Enter Start Time"/>
           </div>
           <div class="col-xs-1"><small ng-show="forPlaylist.settings.timeEnable">till</small></div>
           <div class="col-xs-4">
-            <input type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.endtimeObj" name="endtime" title="Enter End Time" class="form-control"/>
+            <input class="form-control" type="time" ng-show="forPlaylist.settings.timeEnable" ng-model="forPlaylist.settings.endtimeObj" name="endtime" title="Enter End Time"/>
           </div>
         </div>
       </div>
     </div>
   </form>
   <!--button.btn(ng-click="scheduleCalendarModal.close()") Cancel-->
-  <button ng-click="saveSchedules(schedulecal)" class="btn btn-success">OK</button>
+  <button class="btn btn-success" ng-click="saveSchedules(schedulecal)">OK</button>
 </div>

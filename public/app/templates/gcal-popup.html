@@ -4,14 +4,12 @@
 </div>
 <div class="modal-body">
   <form name="emailForm" action="/api/gcal/authorize" method="POST">
-    <div ng-class="{ 'has-error': emailForm.email.$invalid &amp;&amp; emailForm.email.$dirty }" class="form-group">
+    <div class="form-group" ng-class="{ 'has-error': emailForm.email.$invalid &amp;&amp; emailForm.email.$dirty }">
       <h4>Google User ID</h4>
-      <input type="email" name="email" ng-model="email" placeholder="Enter Your Google User ID" required="required" class="form-control"/>
+      <input class="form-control" type="email" name="email" ng-model="email" placeholder="Enter Your Google User ID" required="required"/>
     </div>
     <p>
-      You will be redirected to Google Accounts page now with the chosen ID as the account.
-        After logging into the account, accept the permisson request from PiSignage app.
-    </p>
-    <button type="submit" ng-disabled="emailForm.email.$error.required" class="btn btn-primary">Proceed >></button>
+      You will be redirected to Google Accounts page now with the chosen ID as the account.  After logging into the account, accept the permisson request from PiSignage app.</p>
+    <button class="btn btn-primary" type="submit" ng-disabled="emailForm.email.$error.required">Proceed >></button>
   </form>
 </div>

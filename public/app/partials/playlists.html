@@ -1,26 +1,26 @@
 
 <div class="panel panel-info">
   <div class="panel-heading">
-    <h3 class="panel-title"><span ng-click="collapsed = !collapsed;">Playlists&nbsp;<i ng-class="{'fa-caret-right':collapsed,'fa-caret-down':!collapsed}" class="fa fa-lg"></i></span><a ng-click="fn.edit()" class="btn btn-sm btn-link pull-right"><em ng-class="{'text-danger':!fn.editMode,'text-success':fn.editMode}">{{fn.editMode?'Done':'Edit'}}</em></a></h3>
+    <h3 class="panel-title"><span ng-click="collapsed = !collapsed;">Playlists&nbsp;<i class="fa fa-lg" ng-class="{'fa-caret-right':collapsed,'fa-caret-down':!collapsed}"></i></span><a class="btn btn-sm btn-link pull-right" ng-click="fn.edit()"><em ng-class="{'text-danger':!fn.editMode,'text-success':fn.editMode}">{{fn.editMode?'Done':'Edit'}}</em></a></h3>
   </div>
-  <div ng-hide="collapsed" class="form-group">
+  <div class="form-group" ng-hide="collapsed">
     <form name="addform" ng-submit="fn.add()">
       <div class="input-group col-xs-12">
-        <input type="text" ng-model="newPlaylist.name" placeholder="Add a new Playlist" required="required" class="form-control"/><span class="input-group-btn">
-          <button type="submit" class="btn btn-default"><i class="fa fa-plus"></i></button></span>
+        <input class="form-control" type="text" ng-model="newPlaylist.name" placeholder="Add a new Playlist" required="required"/><span class="input-group-btn">
+          <button class="btn btn-default" type="submit"><i class="fa fa-plus"></i></button></span>
       </div>
     </form>
   </div>
-  <ul ng-hide="collapsed" class="nav nav-pills nav-stacked">
+  <ul class="nav nav-pills nav-stacked" ng-hide="collapsed">
     <li ng-repeat="playlist in playlist.playlists" ng-class="fn.getClass(playlist)"><a ng-click="fn.selected(playlist)">
         <div class="row">
           <div class="col-sm-10"><small ng-hide="playlist.renameEnable &amp;&amp; fn.editMode">{{ playlist.name }}</small>
-            <div ng-show="playlist.renameEnable &amp;&amp; fn.editMode" class="form-group">
-              <input type="text" ng-model="playlist.newname" ng-blur="fn.rename($index)" class="form-control"/>
+            <div class="form-group" ng-show="playlist.renameEnable &amp;&amp; fn.editMode">
+              <input class="form-control" type="text" ng-model="playlist.newname" ng-blur="fn.rename($index)"/>
             </div>
           </div>
           <div class="col-sm-2">
-            <button ng-click="$event.stopPropagation();fn.delete($index);" ng-if="fn.editMode" class="close"><i ng-class="{'text-danger': fn.editMode}" class="fa fa-times-circle"></i></button>
+            <button class="close" ng-click="$event.stopPropagation();fn.delete($index);" ng-if="fn.editMode"><i class="fa fa-times-circle" ng-class="{'text-danger': fn.editMode}"></i></button>
           </div>
         </div></a></li>
   </ul>

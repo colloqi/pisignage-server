@@ -1,88 +1,89 @@
 
-<div ng-if="!fn.editMode" class="panel panel-info">
+<div class="panel panel-info" ng-if="!fn.editMode">
   <div class="panel-heading">
     <div class="row">
       <div class="col-sm-2">
         <h3 class="panel-title">{{assetConfig.assets.assets.length}} Files in&nbsp;{{!assetConfig.allAssets && playlist.selectedPlaylist.name || "total"}}</h3>
       </div>
-      <div class="col-sm-2"><span ng-attr-title="Click this button to select, edit and add labels" class="btn-group">
-          <button ng-click="loadCategory()" class="btn btn-info btn-sm"><i class="fa fa-tags">&nbsp;</i><span>{{label.selectedLabel.trunc(10) || "Labels"}}</span></button>
-          <button ng-show="label.selectedLabel" ng-click="label.selectedLabel=null;" class="btn btn-info btn-sm"><i class="fa fa-close"></i></button></span></div>
+      <div class="col-sm-2"><span class="btn-group" ng-attr-title="Click this button to select, edit and add labels">
+          <button class="btn btn-info btn-sm" ng-click="loadCategory()"><i class="fa fa-tags">&nbsp;</i><span>{{label.selectedLabel.trunc(10) || "Labels"}}</span></button>
+          <button class="btn btn-info btn-sm" ng-show="label.selectedLabel" ng-click="label.selectedLabel=null;"><i class="fa fa-close"></i></button></span></div>
       <div class="col-sm-2">
         <form>
-          <input type="text" placeholder="filter" ng-model="searchFilename" class="form-control"/>
+          <input class="form-control" type="text" placeholder="filter" ng-model="searchFilename"/>
         </form>
       </div>
-      <div dropdown="dropdown" ng-if="!assetConfig.allAssets" class="col-sm-3 dropdown">
-        <button dropdown-toggle="dropdown-toggle" class="btn btn-success dropdown-toggle pull-right"><i class="fa fa-plus">&nbsp;ADD</i></button>
-        <ul role="menu" class="dropdown-menu">
+      <div class="col-sm-3 dropdown" dropdown="dropdown" ng-if="!assetConfig.allAssets">
+        <button class="btn btn-success dropdown-toggle pull-right" dropdown-toggle="dropdown-toggle"><i class="fa fa-plus">&nbsp;ADD</i></button>
+        <ul class="dropdown-menu" role="menu">
           <li>
             <nodeims-file-upload onstart="upload.onstart()" onprogress="upload.onprogress(percentDone)" onerror="upload.onerror(files, type, msg)" ondone="upload.ondone(files, data)">Upload Files</nodeims-file-upload>
           </li>
-          <li><a ng-click="link.showPopup()" class="btn btn-link btn-block">Add a Link</a></li>
-          <li><a ng-click="link.showPopup('txt')" class="btn btn-link btn-block">Add a Message</a></li>
-          <li><a ng-click="link.showPopup('local')" title="{{'You can local folder/file here'}}" class="btn btn-link btn-block">Add a local folder/file</a></li>
+          <li><a class="btn btn-link btn-block" ng-click="link.showPopup()">Add a Link</a></li>
+          <li><a class="btn btn-link btn-block" ng-click="link.showPopup('txt')">Add a Message</a></li>
+          <li><a class="btn btn-link btn-block" ng-click="link.showPopup('local')" title="{{'You can local folder/file here'}}">Add a local folder/file</a></li>
           <!--li-->
           <!--    a.btn.btn-link.btn-block(ng-click="configureGCalendar()")-->
           <!--        | Add Calendar-->
         </ul>
       </div>
-      <div ng-if="!assetConfig.allAssets" class="col-sm-1"><a ng-click="fn.edit()" class="btn btn-link"><strong class="text-muted">EDIT</strong></a></div>
-      <div ng-hide="!ngDropdown.selectedAssets.length" class="col-sm-2 pull-right">
-        <div ng-if="!assetConfig.allAssets" ng-dropdown-multiselect="" options="ngDropdown.label.Label.labels" selected-model="ngDropdown.label.selectedLabels" events="ngDropdown.label.events" translation-texts="ngDropdown.label.customTexts" extra-settings="ngDropdown.label.extraSettings" checkboxes="true" class="pull-right"></div>
-        <div class="btn-group-xs pull-right"><a ng-if="assetConfig.allAssets" ng-click="ngDropdown.playlist.events.onItemSelect()" class="btn btn-success"><i class="fa fa-lg fa-arrow-circle-right">assign</i></a><a ng-click="ngDropdown.clearCheckboxes()" class="btn btn-link"><i class="fa fa-times"></i></a></div>
+      <div class="col-sm-1" ng-if="!assetConfig.allAssets"><a class="btn btn-link" ng-click="fn.edit()"><strong class="text-muted">EDIT</strong></a></div>
+      <div class="col-sm-2 pull-right" ng-hide="!ngDropdown.selectedAssets.length">
+        <div class="pull-right" ng-if="!assetConfig.allAssets" ng-dropdown-multiselect="" options="ngDropdown.label.Label.labels" selected-model="ngDropdown.label.selectedLabels" events="ngDropdown.label.events" translation-texts="ngDropdown.label.customTexts" extra-settings="ngDropdown.label.extraSettings" checkboxes="true"></div>
+        <div class="btn-group-xs pull-right"><a class="btn btn-success" ng-if="assetConfig.allAssets" ng-click="ngDropdown.playlist.events.onItemSelect()"><i class="fa fa-lg fa-arrow-circle-right">assign</i></a><a class="btn btn-link" ng-click="ngDropdown.clearCheckboxes()"><i class="fa fa-times"></i></a></div>
       </div>
     </div>
   </div>
-  <ul as-sortable="sortable.options" ng-model="assetConfig.assets.assets" style="min-height:50px;" class="list-group">
-    <li ng-repeat="file in assetConfig.assets.assets | filter:labelFilter" as-sortable-item="as-sortable-item" ng-show="([file.fileDetails.name] | filter:searchFilename).length" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" style="margin:0px;min-height:70px;" class="list-group-item">
-      <div as-sortable-item-handle="as-sortable-item-handle" class="row">
-        <div class="col-sm-2"><a ng-click="fn.showDetails(file.fileDetails.name)"><img ng-if="file.fileDetails.thumbnail" ng-src="{{file.fileDetails.thumbnail}}" class="media-object img-rounded"/>
-            <div ng-if="!file.fileDetails.thumbnail" class="letter-box media-object img-rounded"><span ng-if="file.fileDetails.type == &quot;audio&quot; || file.fileDetails.type == &quot;radio&quot;"><i class="fa fa-music"></i></span><span ng-if="file.fileDetails.type != &quot;audio&quot; &amp;&amp; file.fileDetails.type != &quot;radio&quot;">{{file.fileDetails.type.slice(0,1) || 'N'}}</span></div></a></div>
+  <ul class="list-group" as-sortable="sortable.options" ng-model="assetConfig.assets.assets" style="min-height:50px;">
+    <li class="list-group-item" ng-repeat="file in assetConfig.assets.assets | filter:labelFilter" as-sortable-item="as-sortable-item" ng-show="([file.fileDetails.name] | filter:searchFilename).length" ng-class="{&quot;list-group-item-danger&quot;:file.deleted}" style="margin:0px;min-height:70px;">
+      <div class="row" as-sortable-item-handle="as-sortable-item-handle">
+        <div class="col-sm-2"><a ng-click="fn.showDetails(file.fileDetails.name)"><img class="media-object img-rounded" ng-if="file.fileDetails.thumbnail" ng-src="{{file.fileDetails.thumbnail}}"/>
+            <div class="letter-box media-object img-rounded" ng-if="!file.fileDetails.thumbnail"><span ng-if="file.fileDetails.type == &quot;audio&quot; || file.fileDetails.type == &quot;radio&quot;"><i class="fa fa-music"></i></span><span ng-if="file.fileDetails.type != &quot;audio&quot; &amp;&amp; file.fileDetails.type != &quot;radio&quot;">{{file.fileDetails.type.slice(0,1) || 'N'}}</span></div></a></div>
         <div class="col-sm-10">
           <div class="row">
             <div class="col-sm-6"><small>{{file.fileDetails.name }}<small ng-if="playlist.selectedPlaylist &amp;&amp; !assetConfig.allAssets">&nbsp;{{file.playlistDetails.side}} &nbsp;{{file.playlistDetails.bottom}}</small></small></div>
-            <!--.col-sm-2
-            <p>{{file.fileDetails.size}}</p>
+            <!--.col-sm-2p {{file.fileDetails.size}}
             -->
-            <div class="col-sm-3"><small ng-if="file.fileDetails.resolution.width" class="text-muted">{{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}</small></div>
-            <div ng-if="playlist.selectedPlaylist  &amp;&amp; !assetConfig.allAssets" class="col-sm-2"><small class="text-muted"> {{file.playlistDetails.duration}} seconds</small></div>
+            <div class="col-sm-3"><small class="text-muted" ng-if="file.fileDetails.resolution.width">{{file.fileDetails.resolution.width}}x{{file.fileDetails.resolution.height}}</small></div>
+            <div class="col-sm-2" ng-if="playlist.selectedPlaylist  &amp;&amp; !assetConfig.allAssets"><small class="text-muted"> {{file.playlistDetails.duration}} seconds</small></div>
             <div class="col-sm-1 pull-right">
               <input type="checkbox" name="checkbox" ng-model="file.selected" ng-change="ngDropdown.checkbox(file)"/>
             </div>
-            <!--.col-sm-1.pull-right(ng-if="assetConfig.allAssets")<a ng-click=""><i class="fa fa-lg fa-arrow-circle-right text-success"></i></a>
+            <!--.col-sm-1.pull-right(ng-if="assetConfig.allAssets")
+            a(ng-click="")
+                i.fa.fa-lg.fa-arrow-circle-right.text-success
+            
             -->
           </div>
           <div class="row">
             <div class="col-sm-6"><small class="text-info">{{file.fileDetails.labels.join(',')}}</small></div>
             <div class="col-sm-3"><small class="text-muted">
-                {{file.fileDetails.type}},&nbsp;{{file.fileDetails.size}},&nbsp;
-                {{file.fileDetails.createdAt | date: 'MMM dd'}}</small></div>
+                {{file.fileDetails.type}},&nbsp;{{file.fileDetails.size}},&nbsp;{{file.fileDetails.createdAt | date: 'MMM dd'}}</small></div>
             <div class="col-sm-3">
-              <button title="{{'Add validity period for the asset'}}" ng-click="scheduleValidity(file)" class="btn btn-link btn-xs"><i class="fa fa-calendar">&nbsp;</i><small ng-if="!(file.fileDetails.validity.enable)">add validity</small><small ng-if="file.fileDetails.validity.enable">{{file.fileDetails.validity.startdate | date:'MMM d':'UTC'}}<small ng-if="file.fileDetails.validity.startdate &amp;&amp; file.fileDetails.validity.starthour">({{file.fileDetails.validity.starthour}}h)</small>-
-                  {{file.fileDetails.validity.enddate | date:'MMM d':'UTC'}}<small ng-if="file.fileDetails.validity.enddate &amp;&amp; file.fileDetails.validity.endhour" class="text-muted">({{file.fileDetails.validity.endhour}}h)</small></small></button>
+              <button class="btn btn-link btn-xs" title="{{'Add validity period for the asset'}}" ng-click="scheduleValidity(file)"><i class="fa fa-calendar">&nbsp;</i><small ng-if="!(file.fileDetails.validity.enable)">add validity</small><small ng-if="file.fileDetails.validity.enable">{{file.fileDetails.validity.startdate | date:'MMM d':'UTC'}}<small ng-if="file.fileDetails.validity.startdate &amp;&amp; file.fileDetails.validity.starthour">({{file.fileDetails.validity.starthour}}h)</small>-
+                  {{file.fileDetails.validity.enddate | date:'MMM d':'UTC'}}<small class="text-muted" ng-if="file.fileDetails.validity.enddate &amp;&amp; file.fileDetails.validity.endhour">({{file.fileDetails.validity.endhour}}h)</small></small></button>
             </div>
           </div>
         </div>
       </div>
     </li>
-    <h5 ng-show="!assetConfig.assets.assets.length" class="text-danger">&nbsp&nbsp Nothing to show, Use `Add` button to add an asset or 'Assign Assets' to assign assets to playlist</h5>
+    <h5 class="text-danger" ng-show="!assetConfig.assets.assets.length">&nbsp&nbsp Nothing to show, Use `Add` button to add an asset or 'Assign Assets' to assign assets to playlist</h5>
   </ul>
 </div>
-<div ng-if="fn.editMode" class="panel panel-danger">
+<div class="panel panel-danger" ng-if="fn.editMode">
   <div class="panel-heading">
-    <div class="panel-title">Rename or delete files, tap Done when completed<a ng-click="fn.edit()" class="pull-right"><strong class="text-success"> Done</strong></a></div>
+    <div class="panel-title">Rename or delete files, tap Done when completed<a class="pull-right" ng-click="fn.edit()"><strong class="text-success"> Done</strong></a></div>
   </div>
   <ul class="list-group">
-    <li ng-repeat="name in names" class="list-group-item">
-      <form name="editform" class="row">
-        <div ng-class="editform.$dirty?'':fieldStatus" class="form-group col-xs-10">
+    <li class="list-group-item" ng-repeat="name in names">
+      <form class="row" name="editform">
+        <div class="form-group col-xs-10" ng-class="editform.$dirty?'':fieldStatus">
           <div class="input-group col-xs-12">
-            <input type="text" ng-model="name.name" class="form-control"/><span ng-bind="name.ext" ng-hide="editform.$dirty" class="input-group-addon"></span><span ng-click="fn.rename($index)" ng-show="editform.$dirty" class="input-group-btn"><a type="button" class="btn btn-success">SAVE</a></span>
+            <input class="form-control" type="text" ng-model="name.name"/><span class="input-group-addon" ng-bind="name.ext" ng-hide="editform.$dirty"></span><span class="input-group-btn" ng-click="fn.rename($index)" ng-show="editform.$dirty"><a class="btn btn-success" type="button">SAVE</a></span>
           </div>
         </div>
         <div class="col-xs-2">
-          <button ng-click="fn.delete($index)" class="btn btn-danger pull-right"><i class="fa fa-times fa-lg"></i></button>
+          <button class="btn btn-danger pull-right" ng-click="fn.delete($index)"><i class="fa fa-times fa-lg"></i></button>
         </div>
       </form>
     </li>

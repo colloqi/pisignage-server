@@ -1,12 +1,12 @@
 
 <div class="modal-header">
-  <button ng-click="cancel()" class="close">&times;</button>
+  <button class="close" ng-click="cancel()">&times;</button>
   <h3 class="text-danger">Please Confirm</h3>
 </div>
 <div class="modal-body">
   <h5><span ng-show="!noPrepend">Do you want to delete the&nbsp</span><b>{{deleteText}}</b>&nbsp?</h5>
 </div>
 <div class="modal-footer">
-  <button ng-click="cancel()" class="btn">Cancel</button>
-  <button ng-click="ok()" class="btn btn-danger">OK</button>
+  <button class="btn" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-danger" ng-click="ok()">OK</button>
 </div>

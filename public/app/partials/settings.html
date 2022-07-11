@@ -13,16 +13,16 @@
         </div>
       </div>
     </div>
-    <div ng-show="savedFiles.length == 0" class="panel-body">
+    <div class="panel-body" ng-show="savedFiles.length == 0">
       Please register the player ID
       at pisignage.com to generate the license files.Then either save the license file from the email or download
       at pisignage.com/subscriptions.<br><br>
       By uploading license files to your local server, they are downloaded to players automatically.
-    </div><small ng-show="statusMsg" class="alert alert-danger">{{statusMsg}}</small>
+    </div><small class="alert alert-danger" ng-show="statusMsg">{{statusMsg}}</small>
     <ul class="list-group">
-      <li ng-repeat="file in savedFiles |  filter: searchLicense" class="list-group-item">
+      <li class="list-group-item" ng-repeat="file in savedFiles |  filter: searchLicense">
         <p>{{file}}
-          <button ng-click="deleteEntry(file)" class="btn btn-link btn-sm pull-right"><i class="fa fa-close text-danger"></i></button>
+          <button class="btn btn-link btn-sm pull-right" ng-click="deleteEntry(file)"><i class="fa fa-close text-danger"></i></button>
         </p>
       </li>
     </ul>
@@ -32,12 +32,12 @@
       <h4>Installation Settings</h4>
     </div>
     <div class="panel-body">
-      <form role="form" name="settingsForm" class="form-horizontal">
+      <form class="form-horizontal" role="form" name="settingsForm">
         <div class="form-group">
-          <label for="user" class="col-xs-4 control-label">username at pisignage.com</label>
+          <label class="col-xs-4 control-label" for="user">username at pisignage.com</label>
           <div class="col-xs-4">
             <div class="input-group">
-              <input type="text" name="user" ng-model="settings.installation" required="" class="form-control"/><span class="input-group-btn"><a type="button" ng-click="saveSettings()" ng-disabled="!settingsForm.user.$dirty" class="btn btn-success">SAVE</a></span>
+              <input class="form-control" type="text" name="user" ng-model="settings.installation" required=""/><span class="input-group-btn"><a class="btn btn-success" type="button" ng-click="saveSettings()" ng-disabled="!settingsForm.user.$dirty">SAVE</a></span>
             </div><small class="text-danger">{{loadMsg}}</small>
           </div>
         </div>
@@ -47,16 +47,16 @@
             <input type="password" name="sshPassword" ng-model="settings.sshPassword"/>
           </div>
           <div class="col-xs-2">
-            <button type="submit" ng-click="saveSettings()" class="btn btn-success"> Save</button>
+            <button class="btn btn-success" type="submit" ng-click="saveSettings()"> Save</button>
           </div>
         </div>
         <div class="form-group">
           <label class="col-xs-4 control-label">Default Duration for Slides</label>
           <div class="col-xs-2">
-            <input type="text" name="duration" ng-model="settings.defaultDuration" class="form-control"/>
+            <input class="form-control" type="text" name="duration" ng-model="settings.defaultDuration"/>
           </div>
           <div class="col-xs-2">
-            <button type="submit" ng-click="saveSettings()" class="btn btn-success"> Save</button>
+            <button class="btn btn-success" type="submit" ng-click="saveSettings()"> Save</button>
           </div>
         </div>
         <div class="form-group">
@@ -97,10 +97,10 @@
         <div class="form-group">
           <label class="col-xs-4 control-label">Player reporting interval in minutes</label>
           <div class="col-xs-2">
-            <input type="number" name="reportinterval" ng-model="settings.reportIntervalMinutes" placeholder="default 5 minutes" class="form-control"/>
+            <input class="form-control" type="number" name="reportinterval" ng-model="settings.reportIntervalMinutes" placeholder="default 5 minutes"/>
           </div>
           <div class="col-xs-2">
-            <button type="submit" ng-click="saveSettings()" class="btn btn-success">Save</button>
+            <button class="btn btn-success" type="submit" ng-click="saveSettings()">Save</button>
           </div>
         </div>
         <div class="form-group">
@@ -111,18 +111,19 @@
           </div>
         </div>
         <!--.form-group
-        <div class="checkbox">
-          <label class="col-xs-8 col-xs-offset-4">
-            <input type="checkbox" id="log" name="checkbox" ng-model="settings.assetLogEnable" ng-change="saveSettings()"/><span>Enable Log for Files Play Statistics</span>
-          </label>
-        </div>
+        .checkbox
+            label.col-xs-8.col-xs-offset-4
+                input(type='checkbox',id="log", name='checkbox', ng-model='settings.assetLogEnable', ng-change="saveSettings()")
+                span Enable Log for Files Play Statistics
         -->
         <!--.form-group
-        <div class="checkbox">
-          <label class="col-xs-8 col-xs-offset-4">
-            <input type="checkbox" id="layout" name="checkbox" ng-model="settings.newLayoutsEnable" ng-change="saveSettings()"/><span>Enable new Layouts 3c,3d,4c,4d</span><br/><strong class="text-danger">WARNING: ALL players in the GROUP should be of version >= 1.2.2</strong>
-          </label>
-        </div>
+        .checkbox
+            label.col-xs-8.col-xs-offset-4
+                input(type='checkbox',id="layout", name='checkbox', ng-model='settings.newLayoutsEnable', ng-change="saveSettings()")
+                span Enable new Layouts 3c,3d,4c,4d
+                br
+                strong.text-danger WARNING: ALL players in the GROUP should be of version >= 1.2.2
+        
         -->
       </form>
     </div>
@@ -132,20 +133,20 @@
       <h4>Set Username and Password for Download Access</h4>
     </div>
     <div class="panel-body">
-      <form role="form" name="downloadAccessForm" class="form-horizontal">
+      <form class="form-horizontal" role="form" name="downloadAccessForm">
         <div class="form-group">
-          <label for="user" class="col-xs-4 control-label">Username</label>
+          <label class="col-xs-4 control-label" for="user">Username</label>
           <div class="col-xs-4">
-            <input type="text" name="user" ng-model="settings.authCredentials.user" required="" class="form-control"/>
+            <input class="form-control" type="text" name="user" ng-model="settings.authCredentials.user" required=""/>
           </div>
         </div>
         <div class="form-group">
-          <label for="password" class="col-xs-4 control-label">Password</label>
+          <label class="col-xs-4 control-label" for="password">Password</label>
           <div class="col-xs-4">
-            <input type="password" name="password" ng-model="settings.authCredentials.password" required="" class="form-control col-xs-5"/>
+            <input class="form-control col-xs-5" type="password" name="password" ng-model="settings.authCredentials.password" required=""/>
           </div>
           <div class="col-xs-4">
-            <button type="submit" ng-click="saveSettings()" ng-disabled="downloadAccessForm.$invalid" class="btn btn-success"> Save</button>
+            <button class="btn btn-success" type="submit" ng-click="saveSettings()" ng-disabled="downloadAccessForm.$invalid"> Save</button>
           </div>
         </div>
         <div class="form-group">
