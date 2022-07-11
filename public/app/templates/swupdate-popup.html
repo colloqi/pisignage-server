@@ -4,11 +4,11 @@
   <h3 class="text-danger">Software Update</h3>
 </div>
 <div class="modal-body">
-  <h5 ng-if="msg.player.version == currentVersion.version"><b>Your player Up-to-Date</b></h5>
-  <h5 ng-if="msg.player.version != currentVersion.version">Do you want to update Software from {{msg.curVer}} to {{msg.newVer}}</h5>
+  <h5 ng-if="msg.player.version == msg.newVer"><b>Your player Up-to-Date</b></h5>
+  <h5 ng-if="msg.player.version != msg.newVer">Do you want to update Software from {{msg.curVer}} to {{msg.newVer}}</h5>
 </div>
 <div class="modal-footer">
-  <button ng-if="currentVersion.beta &amp;&amp; msg.player.version != currentVersion.beta" ng-click="confirmUpdate(&quot;piimage-beta.zip&quot;)" class="btn btn-xs btn-link pull-left"><em class="text-danger">Update to beta &nbsp;{{currentVersion.beta}}</em></button>
+  <button ng-if="currentVersion.beta &amp;&amp; !msg.player.player2 &amp;&amp; msg.player.version != currentVersion.beta" ng-click="confirmUpdate(&quot;piimage-beta.zip&quot;)" class="btn btn-xs btn-link pull-left"><em class="text-danger">Update to beta &nbsp;{{currentVersion.beta}}</em></button>
   <button ng-click="modal.dismiss()" class="btn">Cancel</button>
   <button ng-click="confirmUpdate()" class="btn btn-danger">OK</button>
 </div>

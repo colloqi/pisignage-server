@@ -87,7 +87,8 @@ angular.module('piPlayers.services', [])
                                     var f = parseInt(parseInt(player.piTemperature) * 9/5 +32)
                                     player.piTemperature = player.piTemperature + "/" +f+"'F"
                             }
-
+                            if(player.cpuSerialNumber.charAt(0) === "4")
+                                player.player2 = true;
 
                             if (!player.lastReported)
                                 player.lastReported = 0;    //never reported
