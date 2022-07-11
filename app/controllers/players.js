@@ -215,7 +215,6 @@ var sendConfig = function (player, group, periodic) {
         retObj.sshPassword = settings.sshPassword;
     retObj.currentTime = Date.now();
     var socketio = (player.webSocket?webSocket:(player.newSocketIo?newSocketio:oldSocketio));
-    console.log(retObj)
     socketio.emitMessage(player.socket, 'config', retObj);
 }
 
