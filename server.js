@@ -27,6 +27,28 @@ mongoose.connect(config.mongo.uri,function(error){
         process.exit(1);
     }
 });
+//create docker directories if needed
+fs.mkdir(config.releasesDir, function(err) {
+    if (err && (err.code != 'EEXIST')) {
+        console.log("Error creating logs directory, "+err.code)
+    }
+});
+fs.mkdir(config.licenseDir, function(err) {
+    if (err && (err.code != 'EEXIST')) {
+        console.log("Error creating logs directory, "+err.code)
+    }
+});
+fs.mkdir(config.syncDir, function(err) {
+    if (err && (err.code != 'EEXIST')) {
+        console.log("Error creating logs directory, "+err.code)
+    }
+});
+fs.mkdir(config.thumbnailDir, function(err) {
+    if (err && (err.code != 'EEXIST')) {
+        console.log("Error creating logs directory, "+err.code)
+    }
+});
+
 
 
 // check system 
@@ -76,9 +98,23 @@ var ioNew = socketio(server,{
     maxHttpBufferSize: 10e7
 });
 
+var ioNewWebsocketOnly = socketio(server, {
+    path: "/wssocket.io",
+    serveClient: true,
+    // below are engine.IO options
+    pingInterval: 45000,
+    pingTimeout: 180000,
+    upgradeTimeout: 180000,
+    maxHttpBufferSize: 10e7
+});
+
+
+
 //Bootstrap socket.io
 require('./app/controllers/server-socket').startSIO(io);
 require('./app/controllers/server-socket-new').startSIO(ioNew);
+require("./app/controllers/server-socket-new").startSIOWebsocketOnly(ioNewWebsocketOnly);
+
 var wss = new WebSocket.Server({server:server,path:"/websocket"});
 require("./app/controllers/server-socket-ws").startSIO(wss);
             server.on('upgrade', function upgrade(request, socket, head) {

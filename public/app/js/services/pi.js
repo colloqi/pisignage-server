@@ -130,6 +130,7 @@ angular.module('pisignage.services',[]).
                         groupPlList.settings.ads = playlistsObj[itemIndex].settings.ads
                         groupPlList.settings.domination = playlistsObj[itemIndex].settings.domination
                         groupPlList.settings.event = playlistsObj[itemIndex].settings.event
+                        groupPlList.settings.keyPress = playlistsObj[itemIndex].settings.keyPress
                         groupPlList.settings.onlineOnly = playlistsObj[itemIndex].settings.onlineOnly
                         groupPlList.settings.audio = playlistsObj[itemIndex].settings.audio
                         if (playlistsObj[itemIndex].name != 'TV_OFF') {
@@ -145,6 +146,8 @@ angular.module('pisignage.services',[]).
                                     groupPlList.plType = "domination";
                                 else if (playlistsObj[itemIndex].settings.event && playlistsObj[itemIndex].settings.event.enable)
                                     groupPlList.plType = "event";
+                                else if (playlistsObj[itemIndex].settings.keyPress && playlistsObj[itemIndex].settings.keyPress.enable)
+                                    groupPlList.plType = "keyPress";
                                 else if (playlistsObj[itemIndex].settings.audio && playlistsObj[itemIndex].settings.audio.enable)
                                     groupPlList.plType = "audio";
                                 else {

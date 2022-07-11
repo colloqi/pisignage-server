@@ -145,6 +145,8 @@ var sendConfig = function (player, group, periodic) {
     retObj.resolution = group.resolution || '720p';
     retObj.orientation = group.orientation || 'landscape';
     retObj.enableMpv =  group.enableMpv || false;
+    retObj.mpvAudioDelay =  group.mpvAudioDelay || '0';
+    retObj.selectedVideoPlayer =  group.selectedVideoPlayer || 'default';
     retObj.kioskUi = group.kioskUi || {enable: false};
     retObj.animationType =  group.animationType || "right";
     if (!player.version || parseInt(player.version.replace(/\D/g,"")) < 180)
@@ -165,6 +167,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.logox =  group.logox;
     retObj.logoy =  group.logoy;
     retObj.showClock = group.showClock || {enable: false};
+    retObj.monitorArrangement = group.monitorArrangement || { mode: "mirror"};
     retObj.emergencyMessage = group.emergencyMessage || {enable: false};
     retObj.combineDefaultPlaylist = group.combineDefaultPlaylist || false;
     retObj.playAllEligiblePlaylists = group.playAllEligiblePlaylists || false;
@@ -176,6 +179,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.disableWebUi =  group.disableWebUi || false;
     retObj.disableWarnings =  group.disableWarnings || false;
     retObj.disableAp =  group.disableAp || false;
+    retObj.enablePio =  group.enablePio || false;
 
     //if (!pipkgjson)
         //pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))

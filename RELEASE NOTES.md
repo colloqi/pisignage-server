@@ -74,13 +74,20 @@
     - Support for start and end hour for asset validity period 
     - Local folder/file play support 
     - Support shuffle content before play and merge alternate assets from different playlists options for group playlists
-1. Added dashboard
-1. Remove deprecate warnings and server crashes 
-1. Default resolution of new groups changed to auto 
-1. Display CPU temperature both in Centigrade and Fahrenheit
-1. Auto adjustment of end-date when start-date is changed to the start date (if end date is earlier)
-1. Limits enhanced - file size for upload to 5GB, max files to 100, max playlists to schedule to 100  
-1. Issue fixes with UI 
-1. Lexicographic sorting of assets and playlists
+2. Added dashboard
+3. Remove deprecate warnings and server crashes 
+4. Default resolution of new groups changed to auto 
+5. Display CPU temperature both in Centigrade and Fahrenheit
+6. Auto adjustment of end-date when start-date is changed to the start date (if end date is earlier)
+7. Limits enhanced - file size for upload to 5GB, max files to 100, max playlists to schedule to 100  
+8. Issue fixes with UI 
+9. Lexicographic sorting of assets and playlists
+
+**3.2.0a**
+
+1. syncing with 3.2.0a player software features
+2. Additional Groups and Player specific playlists are not available
+3. Week number schedule is not available
+ 
 
 

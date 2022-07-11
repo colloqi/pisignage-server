@@ -1,6 +1,6 @@
 {
   "name": "pisignage-server",
-  "version": "2.5.4",
+  "version": "2.9.4",
   "description": "Server to manage piSignage players in a LAN or Private Network.",
   "author": "colloqi <info@pisignage.com>",
   "engines": {
@@ -26,11 +26,11 @@
     "fluent-ffmpeg": "^2.0.0-rc3",
     "fresh": ">=0.5.2",
     "gm": "^1.17.0",
-    "googleapis": "^14.1.0",
+    "googleapis": "^39.1.0",
     "http-auth": "~2.2.5",
-    "ip": "^1.1.0",
+    "ip": "^1.1.8",
     "jade": "^1.11.0",
-    "lodash": ">=4.17.5",
+    "lodash": ">=4.17.21",
     "method-override": "~2.3.2",
     "mime": ">=1.4.1",
     "mongoose": "^5.10.16",
@@ -41,12 +41,12 @@
     "node-schedule": "^0.2.9",
     "passport": "0.2.0",
     "passport-google-oauth": "~0.1.5",
-    "sanitize-html": "^1.11.1",
+    "sanitize-html": "^2.3.2",
     "serve-favicon": "^2.5.0",
     "serve-index": "^1.9.1",
-    "socket.io": "^2.1.1",
+    "socket.io": "^2.4.0",
     "sshpk": ">=1.13.2",
-    "ws": "^7.3.1"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "nodemon": "latest"
