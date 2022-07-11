@@ -177,6 +177,7 @@ angular.module('piPlayers.services', [])
                                     return (!((playerLoader.playlist.playlists[itemIndex].settings.ads && playerLoader.playlist.playlists[itemIndex].settings.ads.adPlaylist) ||
                                         (playerLoader.playlist.playlists[itemIndex].settings.domination && playerLoader.playlist.playlists[itemIndex].settings.domination.enable)  ||
                                         (playerLoader.playlist.playlists[itemIndex].settings.event && playerLoader.playlist.playlists[itemIndex].settings.event.enable)            ||
+                                        (playerLoader.playlist.playlists[itemIndex].settings.keyPress && playerLoader.playlist.playlists[itemIndex].settings.keyPress.enable)            ||
                                         (playerLoader.playlist.playlists[itemIndex].settings.audio && playerLoader.playlist.playlists[itemIndex].settings.audio.enable)
                                     ))
                                 });

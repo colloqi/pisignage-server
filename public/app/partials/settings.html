@@ -76,6 +76,13 @@
         <div class="form-group">
           <div class="checkbox">
             <label class="col-xs-8 col-xs-offset-4">
+              <input type="checkbox" name="cecpowercheck" ng-model="settings.disableCECPowerCheck" ng-click="saveSettings()"/><span>Disable CEC power check of TV every 3 minutes</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label class="col-xs-8 col-xs-offset-4">
               <input type="checkbox" name="systemshow" ng-model="settings.systemMessagesHide" ng-click="saveSettings()"/><span>Hide system messages on TV Screen (e.g. Download in Progress)</span>
             </label>
           </div>

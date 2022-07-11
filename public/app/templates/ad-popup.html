@@ -186,6 +186,39 @@
     </form>
   </div>
   <div class="modal-header bg-info">
+    <h4 class="text-center">Make this as Key Event Playlist</h4>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+      <div class="form-group">
+        <div class="col-sm-6">
+          <p>When the assigned key is pressed this playlist is played if eligible</p>
+        </div>
+        <div class="col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="playlist.selectedPlaylist.settings.keyPress.enable"/><span>Enable</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div ng-show="playlist.selectedPlaylist.settings.keyPress.enable" class="form-group">
+        <div class="col-sm-6">
+          <p>KeyCode to be pressed to play this playlist</p>
+          <small>(Usual keycodes are, key_0:11, key_1:2, key_2:3 ,..., key_9:10)</small>
+        </div>
+        <div class="col-sm-6">
+          <input type="text" ng-model="playlist.selectedPlaylist.settings.keyPress.key" placeholder="{{'Enter the keycode for the playlist'}}" class="form-control"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-6">
+          <button ng-click="saveSettings()" class="btn btn-success">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-header bg-info">
     <h4 class="modal-title">Play this playlist only when online</h4>
   </div>
   <div class="modal-body">

@@ -6,6 +6,7 @@ var SettingsSchema = new Schema({
     newLayoutsEnable: {type: Boolean , default: false},
     systemMessagesHide: {type: Boolean, default: false},
     forceTvOn: {type: Boolean, default: false},
+    disableCECPowerCheck: {type: Boolean, default: false},
     defaultDuration: {type: Number, default: 10},
     language: {type: String , default: 'en'},
     logo: {type: String},

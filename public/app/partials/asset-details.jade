@@ -12,9 +12,11 @@
         form(role="form",name="linkform",ng-show='fileType=="link"')
             .form-group.row(ng-if="urlLink.type != '.txt'")
                 label.control-label.text-muted.col-sm-3.text-right: small Address
-                .col-xs-8
-                    span {{urlLink.link}}
-                        a.btn.btn-link(ng-disabled='!urlLink.link',href="{{urlLink.link}}",target="_blank")
+                .col-sm-6
+                    .input-group
+                        input.form-control(type='text' name='linkAddress' ng-model='urlLink.link' required='')
+                        span.input-group-btn
+                        a.btn.btn-default(ng-disabled='!urlLink.link' href='{{urlLink.link}}' target='_blank')
                             i.fa.fa-external-link
             .form-group.row
                 label.control-label.text-muted.col-sm-3.text-right: small Type
