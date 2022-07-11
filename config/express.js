@@ -123,7 +123,7 @@ module.exports = function (app) {
     app.use('/media', express.static(path.join(config.mediaDir)));
     app.use(express.static(path.join(config.root, 'public')));
 
-    app.set('view engine', 'jade');
+    app.set('view engine', 'pug');
     app.locals.basedir = config.viewDir; //for jade root
 
     app.set('views', config.viewDir);
