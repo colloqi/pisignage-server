@@ -33,9 +33,7 @@
                         small() Scroll right
                 .radio-inline
                         label.text-info
-                            small OpenVG
-                            br
-                                i (beta)
+                            small Hardware
                 .radio-inline
                         label
                             input(type='radio',value='openvg_left',name="openvg_left",ng-model='tickerObj.behavior')
@@ -82,8 +80,27 @@
                         input(type='radio',value='3',name="full",ng-model='tickerObj.textSpeed')
                         small() Full
 
+        .form-group.row(ng-show='tickerObj.enable')
+            label.text-muted.control-label.col-sm-3.text-right Ticker Height
+            .col-sm-5
+                .radio-inline
+                    label
+                        input(type='radio',value='60',name="regular",ng-model='tickerObj.tickerHeight')
+                        small Default(60px)
 
-        .row.form-group(ng-show='tickerObj.enable')
+                .radio-inline
+                    label
+                        input(type='radio',value='100',name="large",ng-model='tickerObj.tickerHeight')
+                        small Large(100px)
+
+            .col-sm-4
+                label.text-muted.col-sm-4.text-right custom
+                .col-sm-8
+                    input.input-sm.form-control(type='text',ng-model='tickerObj.tickerHeight',placeholder="Custom")
+
+
+
+    .row.form-group(ng-show='tickerObj.enable')
             .col-sm-6.col-sm-offset-3
                 .checkbox-inline
                     label
