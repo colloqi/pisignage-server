@@ -42,11 +42,11 @@
                 .radio-inline
                     label
                         input(type="radio",name="radio_description_noimg",ng-model="link.obj.hideTitle",value="onlytitledescr")
-                        small(translate,title="{{'title and description' | translate}}") title&descr
+                        small(,title="{{'title and description'}}") title&descr
 
 
         .form-group(ng-if="link.obj.type == '.mrss'")
-            label.control-label.col-sm-4.text-right(translate) Number of Items
+            label.control-label.col-sm-4.text-right() Number of Items
             .col-sm-2
                 input.form-control(type='number',name='count',placeholder='{{"Number of Items to show" }}',
                     ng-model='link.obj.numberOfItems')

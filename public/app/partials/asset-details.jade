@@ -48,7 +48,7 @@
                     .radio-inline
                         label
                             input(type="radio",name="radio_description_noimg",ng-model="urlLink.hideTitle",value="onlytitledescr")
-                            small(translate,title="{{'title and description' | translate}}") title&descr
+                            small(title="{{'title and description' }}") title&descr
 
             .form-group.row(ng-if="urlLink.type == '.mrss'")
                 label.control-label.text-muted.col-sm-3.text-right: small Number of Items
@@ -61,7 +61,7 @@
                         ng-model='urlLink.duration')
 
             .form-group.row(ng-if="urlLink.type == '.stream'")
-                label.col-sm-2.control-label.text-muted.text-right(translate) TCP Stream
+                label.col-sm-2.control-label.text-muted.text-right TCP Stream
                 .col-sm-4
                     label
                         input(type='checkbox',name="tcp_stream", ng-model='urlLink.tcp')
@@ -98,7 +98,7 @@
                     .checkbox
                         label
                             input(type='checkbox',name='scroll',ng-model='urlLink.scroll')
-                //label.col-sm-2.control-label.text-muted(translate) after every
+                //label.col-sm-2.control-label.text-muted() after every
                 //.col-sm-2
                 //    input.form-control(type='text',name="scrollDelay",placeholder="2 secs",ng-model="urlLink.scrollDelay")
             br

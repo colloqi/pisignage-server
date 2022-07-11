@@ -55,7 +55,7 @@
           </div>
           <div class="radio-inline">
             <label>
-              <input type="radio" name="radio_description_noimg" ng-model="urlLink.hideTitle" value="onlytitledescr"/><small translate="translate" title="{{'title and description' | translate}}">title&descr</small>
+              <input type="radio" name="radio_description_noimg" ng-model="urlLink.hideTitle" value="onlytitledescr"/><small title="{{'title and description' }}">title&descr</small>
             </label>
           </div>
         </div>
@@ -71,7 +71,7 @@
         </div>
       </div>
       <div ng-if="urlLink.type == '.stream'" class="form-group row">
-        <label translate="translate" class="col-sm-2 control-label text-muted text-right">TCP Stream</label>
+        <label class="col-sm-2 control-label text-muted text-right">TCP Stream</label>
         <div class="col-sm-4">
           <label>
             <input type="checkbox" name="tcp_stream" ng-model="urlLink.tcp"/>
@@ -115,7 +115,7 @@
             </label>
           </div>
         </div>
-        <!--label.col-sm-2.control-label.text-muted(translate) after every-->
+        <!--label.col-sm-2.control-label.text-muted() after every-->
         <!--.col-sm-2-->
         <!--    input.form-control(type='text',name="scrollDelay",placeholder="2 secs",ng-model="urlLink.scrollDelay")-->
       </div><br/>
