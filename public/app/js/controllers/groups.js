@@ -191,7 +191,9 @@ angular.module('piGroups.controllers', [])
             if ($state.params.group) {
                 for (var i= 0,len=$scope.group.groups.length;i<len;i++) {
                     if ($state.params.group == $scope.group.groups[i]._id) {
-                        $scope.group.selectedGroup = $scope.group.groups[i];
+                        if(!$scope.tempPopup){
+                            $scope.group.selectedGroup = $scope.group.groups[i];
+                        }
                         $scope.sortable.playlistArray = $scope.group.selectedGroup.playlists
                         break;
                     }
@@ -483,7 +485,12 @@ angular.module('piGroups.controllers', [])
             $scope.scheduleCalendarModal.close();
         }
 
+        $scope.tempPopup;
+
         $scope.displaySet = function () {
+
+            $scope.tempPopup = JSON.parse(JSON.stringify($scope.group.selectedGroup));
+
             $scope.resolutions = [
                 {value: 'auto', name: "Auto based on TV settings(EDID)"},
                 {value: '1080p', name: "Full HD(1080p) Video & Browser 1920x1080"},
@@ -498,33 +505,38 @@ angular.module('piGroups.controllers', [])
                 {value: 'portrait270', name: "Portrait Left (Hardware)"}
             ];
 
-            $scope.group.selectedGroup.showClock = $scope.group.selectedGroup.showClock || {enable: false}
-            $scope.group.selectedGroup.showClock.format = $scope.group.selectedGroup.showClock.format || "12";
-            $scope.group.selectedGroup.showClock.position = $scope.group.selectedGroup.showClock.position || "bottom";
+            $scope.tempPopup.monitorArrangement = $scope.tempPopup.monitorArrangement || {};
+            $scope.tempPopup.monitorArrangement.mode = $scope.tempPopup.monitorArrangement.mode || "mirror" ;
+            $scope.tempPopup.monitorArrangement.reverse = $scope.tempPopup.monitorArrangement.reverse || false ;
 
-            $scope.group.selectedGroup.videoSize = $scope.group.selectedGroup.videoKeepAspect ? 1 : 2 ;
-            $scope.group.selectedGroup.imageSize = $scope.group.selectedGroup.resizeAssets ? ($scope.group.selectedGroup.imageLetterboxed?1:2) : 0;
+            $scope.tempPopup.kioskUi = $scope.tempPopup.kioskUi || {enable: false}
+            $scope.tempPopup.showClock = $scope.tempPopup.showClock || {enable: false}
+            $scope.tempPopup.showClock.format = $scope.tempPopup.showClock.format || "12";
+            $scope.tempPopup.showClock.position = $scope.tempPopup.showClock.position || "bottom";
 
+            $scope.tempPopup.videoSize = $scope.tempPopup.videoKeepAspect ? 1 : 2 ;
+            $scope.tempPopup.imageSize = $scope.tempPopup.resizeAssets ? ($scope.tempPopup.imageLetterboxed?1:2) : 0;
 
-            $scope.scheduleCalendar = function (playlist) {
-                $scope.forPlaylist = playlist;
+            $scope.tempPopup.selectedVideoPlayer = $scope.tempPopup.selectedVideoPlayer || "default"
+            if ($scope.tempPopup.enableMpv == true)
+                $scope.tempPopup.selectedVideoPlayer = "mpv"
 
-                $scope.scheduleCalendarModal = $modal.open({
-                    templateUrl: '/app/templates/schedule-calendar.html',
-                    scope: $scope
-                });
+            $scope.tempPopup.sleep.ontimeObj = new Date($scope.tempPopup.sleep.ontimeObj || 0)
+            $scope.tempPopup.sleep.offtimeObj = new Date($scope.tempPopup.sleep.offtimeObj || 0)
+            if ($scope.tempPopup.sleep && $scope.tempPopup.sleep.ontime) {
+                $scope.tempPopup.sleep.ontimeObj = new Date(0)
+                var t = getHoursMinutes($scope.tempPopup.sleep.ontime)
+                $scope.tempPopup.sleep.ontimeObj.setHours(t.h)
+                $scope.tempPopup.sleep.ontimeObj.setMinutes(t.m)
             }
-
-            if ($scope.group.selectedGroup.sleep) {
-                if ($scope.group.selectedGroup.sleep.ontimeObj) {
-                    $scope.group.selectedGroup.sleep.ontimeObj = new Date($scope.group.selectedGroup.sleep.ontimeObj)
-                }
-                if ($scope.group.selectedGroup.sleep.offtimeObj) {
-                    $scope.group.selectedGroup.sleep.offtimeObj = new Date($scope.group.selectedGroup.sleep.offtimeObj)
-                }
+            if ($scope.tempPopup.sleep && $scope.tempPopup.sleep.offtime) {
+                $scope.tempPopup.sleep.offtimeObj = new Date(0)
+                var t = getHoursMinutes($scope.tempPopup.sleep.offtime)
+                $scope.tempPopup.sleep.offtimeObj.setHours(t.h)
+                $scope.tempPopup.sleep.offtimeObj.setMinutes(t.m)
             }
-            if ($scope.group.selectedGroup.reboot && $scope.group.selectedGroup.reboot.time) {
-                $scope.group.selectedGroup.reboot.time = new Date($scope.group.selectedGroup.reboot.time)
+            if ($scope.tempPopup.reboot && $scope.tempPopup.reboot.time) {
+                $scope.tempPopup.reboot.time = new Date($scope.tempPopup.reboot.time)
             }
 
 
@@ -534,17 +546,30 @@ angular.module('piGroups.controllers', [])
             });
 
         }
-        $scope.saveSettings = function () {
+
+        $scope.displayModalCancel = function(){
+            $scope.tempPopup = {};
             $scope.displayModal.close();
-            if ($scope.group.selectedGroup.sleep) {
-                if ($scope.group.selectedGroup.sleep.ontimeObj) {
-                    var time = $scope.group.selectedGroup.sleep.ontimeObj.toTimeString().split(' ')[0].slice(0,5)
-                    $scope.group.selectedGroup.sleep.ontime = time
-                }
-                if ($scope.group.selectedGroup.sleep.offtimeObj) {
-                    var time = $scope.group.selectedGroup.sleep.offtimeObj.toTimeString().split(' ')[0].slice(0,5)
-                    $scope.group.selectedGroup.sleep.offtime = time
-                }
+        }
+
+        $scope.saveSettings = function () {
+
+            $scope.group.selectedGroup = JSON.parse(JSON.stringify($scope.tempPopup));
+            $scope.tempPopup = {};
+
+            $scope.displayModal.close();
+            var minutes,hours;
+            if ($scope.tempPopup.sleep && $scope.tempPopup.sleep.ontimeObj) {
+                hours = $scope.tempPopup.sleep.ontimeObj.getHours()
+                $scope.group.selectedGroup.sleep.ontime = (hours < 10)?("0"+hours):(""+hours);
+                minutes = $scope.tempPopup.sleep.ontimeObj.getMinutes();
+                $scope.group.selectedGroup.sleep.ontime += (minutes < 10)?(":0"+minutes):":"+minutes;
+            }
+            if ($scope.tempPopup.sleep && $scope.tempPopup.sleep.offtimeObj) {
+                hours = $scope.tempPopup.sleep.offtimeObj.getHours()
+                $scope.group.selectedGroup.sleep.offtime = (hours < 10)?("0"+hours):(""+hours);
+                minutes = $scope.tempPopup.sleep.offtimeObj.getMinutes();
+                $scope.group.selectedGroup.offtime += (minutes < 10)?(":0"+minutes):":"+minutes;
             }
 
             switch ($scope.group.selectedGroup.imageSize) {
@@ -570,7 +595,7 @@ angular.module('piGroups.controllers', [])
                     $scope.group.selectedGroup.videoKeepAspect = false;
             }
 
-
+            $scope.group.selectedGroup.enableMpv = $scope.group.selectedGroup.selectedVideoPlayer === "mpv"
             $scope.updateGroup();
         }
 
@@ -660,7 +685,7 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.saveAssetFile = function(filename) {
-            $scope.group.selectedGroup.logo = filename;
+            $scope.tempPopup.logo = filename;
             $scope.fileDisplayModal.close();
         }
 
@@ -804,7 +829,7 @@ angular.module('piGroups.controllers', [])
             if (player.statusClass == "text-danger")
                 return console.log("Player is offline");
             $scope.msg = {player:player,curVer:player.version,
-                newVer:$scope.player.currentVersion.version, beta:$scope.player.currentVersion.beta};
+                newVer:player.player2?$scope.player.currentVersion.versionP2:$scope.player.currentVersion.version,};
             $scope.modal = $modal.open({
                 templateUrl: '/app/templates/swupdate-popup.html',
                 scope: $scope

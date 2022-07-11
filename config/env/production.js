@@ -8,6 +8,10 @@ module.exports = {
         uri: process.env.MONGOLAB_URI ||
             process.env.MONGOHQ_URL ||
             'mongodb://mongo:27017/pisignage-server-dev',
-        options: {useMongoClient: true}
+        /*
+        options: {
+            //useMongoClient: true , //deprecated in Mongoose 5.x
+        }
+        */
     }
 };

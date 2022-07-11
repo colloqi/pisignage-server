@@ -2,12 +2,12 @@
     button.close(ng-click='modal.dismiss()') &times;
     h3.text-danger Software Update
 .modal-body
-    h5(ng-if="msg.player.version == currentVersion.version")
+    h5(ng-if="msg.player.version == msg.newVer")
         b Your player Up-to-Date
-    h5(ng-if="msg.player.version != currentVersion.version")
+    h5(ng-if="msg.player.version != msg.newVer")
         | Do you want to update Software from {{msg.curVer}} to {{msg.newVer}}
 .modal-footer
-    button.btn.btn-xs.btn-link.pull-left(ng-if="currentVersion.beta && msg.player.version != currentVersion.beta",
+    button.btn.btn-xs.btn-link.pull-left(ng-if="currentVersion.beta && !msg.player.player2 && msg.player.version != currentVersion.beta",
                 ng-click='confirmUpdate("piimage-beta.zip")')
         em.text-danger Update to beta &nbsp;{{currentVersion.beta}}
     button.btn(ng-click='modal.dismiss()') Cancel

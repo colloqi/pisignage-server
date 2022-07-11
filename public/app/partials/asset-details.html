@@ -17,7 +17,7 @@
         <label class="control-label text-muted col-sm-3 text-right"><small>Address</small></label>
         <div class="col-sm-6">
           <div class="input-group">
-            <input type="text" name="linkAddress" ng-model="urlLink.link" required="" class="form-control "/><span class="input-group-btn"><a ng-disabled="!urlLink.link" href="{{urlLink.link}}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i></a></span>
+            <input type="text" name="linkAddress" ng-model="urlLink.link" required="" class="form-control"/><span class="input-group-btn"></span><a ng-disabled="!urlLink.link" href="{{urlLink.link}}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i></a>
           </div>
         </div>
       </div>
@@ -53,6 +53,11 @@
               <input type="radio" name="radio_description_noimg" ng-model="urlLink.hideTitle" value="onlydescription"/><small>descr</small>
             </label>
           </div>
+          <div class="radio-inline">
+            <label>
+              <input type="radio" name="radio_description_noimg" ng-model="urlLink.hideTitle" value="onlytitledescr"/><small translate="translate" title="{{'title and description' | translate}}">title&descr</small>
+            </label>
+          </div>
         </div>
       </div>
       <div ng-if="urlLink.type == '.mrss'" class="form-group row">
@@ -63,6 +68,14 @@
         <label class="control-label text-muted col-sm-3 text-right"><small>Item duration (use playlist duration & number of items instead after 2.4.0)</small></label>
         <div class="col-sm-3">
           <input type="number" name="duration" placeholder="{{&quot;Duration of each feed item&quot;}}" ng-model="urlLink.duration" class="form-control"/>
+        </div>
+      </div>
+      <div ng-if="urlLink.type == '.stream'" class="form-group row">
+        <label translate="translate" class="col-sm-2 control-label text-muted text-right">TCP Stream</label>
+        <div class="col-sm-4">
+          <label>
+            <input type="checkbox" name="tcp_stream" ng-model="urlLink.tcp"/>
+          </label>
         </div>
       </div>
       <div ng-if="urlLink.type == '.txt'|| urlLink.type == '.mrss'" class="form-group row">
@@ -93,41 +106,30 @@
           <input type="text" name="keydelay" placeholder="10 secs" ng-model="urlLink.keydelay" class="form-control"/>
         </div>
       </div><br/>
+      <div ng-if="urlLink.type == '.weblink'" class="form-group row">
+        <label class="col-sm-2 control-label text-muted text-right">Auto scroll</label>
+        <div class="col-sm-1">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="scroll" ng-model="urlLink.scroll"/>
+            </label>
+          </div>
+        </div>
+        <!--label.col-sm-2.control-label.text-muted(translate) after every-->
+        <!--.col-sm-2-->
+        <!--    input.form-control(type='text',name="scrollDelay",placeholder="2 secs",ng-model="urlLink.scrollDelay")-->
+      </div><br/>
+      <div ng-if="urlLink.type == '.weblink'" class="form-group row">
+        <label class="col-sm-2 control-label text-muted text-right">Optional Headers (4.x only)</label>
+        <div class="col-sm-6">
+          <input type="text" name="weblinkHeaders" placeholder="e.g: Authorization: Basic 123456, Content-Type: application/json" ng-model="urlLink.weblinkHeaders" class="form-control"/>
+        </div>
+      </div><br/>
       <div class="form-group row">
         <div class="col-sm-3 col-sm-offset-3">
           <button ng-disabled="!(linkform.$dirty &amp;&amp; linkform.$valid)" ng-click="saveNewChanges()" class="btn btn-success">Update</button>
         </div>
       </div>
     </form>
-    <div ng-if="(fileType==&quot;gcal&quot;) &amp;&amp; calendar.list.length">
-      <h4><strong> Profile</strong></h4>
-      <div class="media">
-        <div class="pull-right"><img ng-src="{{calendar.profile.picture}}" style="width:84px" class="media-object"/></div>
-        <div class="media-body pull-left">
-          <h4 class="media-heading">  &nbspEmail:&nbsp&nbsp<span ng-bind="calendar.profile.email"></span><br/></h4>
-        </div>
-      </div>
-      <h3>Choose a Calendar for subscribing to Events</h3><br/>
-      <ul class="list-group">
-        <li ng-repeat="item in calendar.list" class="list-group-item">
-          <div class="row">
-            <div class="col-sm-8">
-              <h4 class="media-heading"><strong>{{item.summary}}</strong></h4>
-            </div>
-            <div class="col-sm-4">
-              <div class="radio">
-                <input type="radio" name="email" ng-click="selectedCalendar(item.id)" ng-checked="calendar.selected == item.summary"/>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
   </div>
-  <!--.panel-footer-->
-  <!--    .row-->
-  <!--        .col-sm-10-->
-  <!--            categories(selected-labels="selectedLabels")-->
-  <!--        .col-sm-2.pull-right-->
-  <!--            button.btn.btn-success.pull-right(ng-click='save()') DONE-->
 </div>

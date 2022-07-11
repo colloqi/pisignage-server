@@ -25,8 +25,11 @@ var GroupSchema = new Schema({
     lastDeployed:           String,
 
     enableMpv:              {type: Boolean, default: false},
+    mpvAudioDelay:          {type: String, default: '0'},
+    selectedVideoPlayer:    {type: String, default: 'default'},
     disableWebUi:           {type: Boolean, default: false},
     disableWarnings:        {type: Boolean, default: false},
+    enablePio:              {type: Boolean, default: false},
     disableAp:              {type: Boolean, default: false},
 
     orientation:            {type: String,default: 'landscape'},
@@ -41,23 +44,19 @@ var GroupSchema = new Schema({
     keepWeblinksInMemory:   {type: Boolean, default: false},
     loadPlaylistOnCompletion:{type: Boolean, default: false},
     resolution:             {type: String,default: 'auto'},
-    sleep: {
-                            enable: {type: Boolean, default: false},
+    sleep:                  {   enable: {type: Boolean,default: false},
                             ontime: {type: String},
-                            offtime: {type: String},
-                            ontimeObj: {type: String},
-                            offtimeObj: {type: String}
+                                offtime: {type: String}
     },
-    reboot:                 {
-                                enable: {type: Boolean,default: false},
+    reboot:                 {   enable: {type: Boolean,default: false},
                                 time: { type: String}
                             },
-    kioskUi:                {
-                                enable:     {type: Boolean, default: false},
+    kioskUi:                {   enable: {type: Boolean,default: false},
                                 url:        {type: String},
                                 timeout:    {type: Number}
                             },
     omxVolume:              {type: Number , default: 100 },
+
     logo:                   {type: String,default: null},
     logox:                  {type: Number,default: 10},
     logoy:                  {type: Number,default: 10},
@@ -66,13 +65,16 @@ var GroupSchema = new Schema({
                                 format: {type: String, default: "12"},
                                 position: {type: String, default: "bottom"}
                             },
+    monitorArrangement:   {
+                                mode: {type: String, default: "mirror"},
+                                reverse: {type: Boolean, default: false}
+                            },
     emergencyMessage:       {
                                 enable: false,
                                 msg: {type: String, default: ""},
                                 hPos: {type: String, default: "middle"},
                                 vPos: {type: String, default: "middle"}
                             },
-
     createdAt:              {type: Date, default: Date.now},
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}
 }, {

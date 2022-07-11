@@ -62,7 +62,7 @@
         </div>
         <div ng-if="item.version" class="col-sm-2">
           <h6 class="text-primary truncate"><small>ver:&nbsp;{{item.version}}/{{item.platform_version}}&nbsp;
-              <button ng-if="item.version != player.currentVersion.version" ng-click="swUpdate(item)" class="btn btn-warning btn-xs"><i class="fa fa-arrow-circle-up"></i></button></small></h6>
+              <button ng-if="(item.version != player.currentVersion.version || player.currentVersion.beta) &amp;&amp; (item.version != player.currentVersion.versionP2)" ng-click="swUpdate(item)" class="btn btn-warning btn-xs"><i class="fa fa-arrow-circle-up"></i></button></small></h6>
         </div>
       </div>
     </li>

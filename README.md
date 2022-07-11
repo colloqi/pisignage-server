@@ -29,30 +29,19 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
 ## Upgrading to latest from existing versions**
 
 1. Change to pisignage-server directory where you have pulled the code last time
-1. Issue the command `git pull origin master`
+2. Issue the command `git pull origin master`
    ***IMPORTANT: If you are upadating from before 24 Nov 2016, after git pull, please change the uri variable in config/env/development.js to 'mongodb://localhost/pisignage-dev' to retain the old data***
-1. Apply your code changes if any
-1. Do "npm install" 
-1. Start the pisignage-server and go to url localhost:3000
-1. Enter the username of yours at pisignage.com (not the email ID) (or change under settings, otherwise player license will not be enabled)
-1. Default authentication credentials for player webUI has been changed to pi:pi
-1. New settings tab has been added for settings instead of config/env/all.js file
-1. New player software upgrades are automatically pulled to the server and you can upgrade from the local server itself
-1. Upload new licenses bought to the local server so that they are automatically installed in the pi
-1. Authentication has been added to the server UI which can be changed under settings (default pi:pi)
-
-
-##2.0.0 compatible release-features
-
-1. Introduction of domination playlist
-1. Play multiple assets when a advertisement event is triggered
-1. PDF slide mode
-1. Media RSS option to show only text
-1. Zoom and sending keystrokes option for webpage links (can be used for login and other uses)
-1. Blend transition mode
-1. Option to use youtube-dl, disable welcome screen
-1. Letterboxed and stretched mode for video and image
-
+3. Apply your code changes if any
+4. rm package-lock.json
+5. rm -rf node_modules (entire directory and its contents)
+6. Do "npm install" 
+7. Start the pisignage-server and go to url localhost:3000
+8. Enter the username of yours at pisignage.com (not the email ID) (or change under settings, otherwise player license will not be enabled)
+9. Default authentication credentials for player webUI has been changed to pi:pi
+10. New settings tab has been added for settings instead of config/env/all.js file
+11. New player software upgrades are automatically pulled to the server and you can upgrade from the local server itself
+12. Upload new licenses bought to the local server so that they are automatically installed in the pi
+13. Authentication has been added to the server UI which can be changed under settings (default pi:pi)
 
 ## Getting Started
 
