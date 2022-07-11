@@ -6,7 +6,7 @@
         <label class="text-primary"><span>Selected Group for the Player</span><span>&nbsp;{{player.name}}</span></label>
       </div>
       <div class="col-sm-6">
-        <select ng-model="selectedGroup" ng-change="assignGroup()" ng-options="group for group in group.groupNames" class="form-control">
+        <select class="form-control" ng-model="selectedGroup" ng-change="assignGroup()" ng-options="group for group in group.groupNames">
           <option value="">-- none --</option>
         </select>
       </div>

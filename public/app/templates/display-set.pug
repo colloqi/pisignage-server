@@ -259,10 +259,10 @@
                         input.form-check-input(type="radio",ng-model="tempPopup.selectedVideoPlayer",value="mpv")
                         small.pl-5.pr-10 MPV
                         small.text-muted.pl-5.pr-10 (for avoiding gap between videos, certain YouTube streaming)
-                    .input-group(ng-show='tempPopup.selectedVideoPlayer === "mpv"')
-                        .input-group-addon
-                            small Optional Audio-Video Delay in secs
-                        input.input-sm.form-control(type='text',placeholder="0",ng-model="tempPopup.mpvAudioDelay")
+                        .input-group(ng-show='tempPopup.selectedVideoPlayer === "mpv"')
+                            .input-group-addon
+                                small Optional Audio-Video Delay in secs
+                            input.input-sm.form-control(type='text',placeholder="0",ng-model="tempPopup.mpvAudioDelay")
 
                 .form-check.form-check-inline
                         input.form-check-input(type='radio', ng-model='tempPopup.selectedVideoPlayer',value="cvlc")

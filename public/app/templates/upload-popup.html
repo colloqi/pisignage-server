@@ -11,14 +11,14 @@
     <form class="form-inline">
       <div class="form-group">
         <label><small>new</small></label>
-        <input type="text" ng-model="newLabel.name" required="required" class="form-control input-sm"/>
+        <input class="form-control input-sm" type="text" ng-model="newLabel.name" required="required"/>
       </div>
-      <button type="submit" ng-click="upload.addLabel()" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
+      <button class="btn btn-success btn-xs" type="submit" ng-click="upload.addLabel()"><i class="fa fa-plus"></i></button>
     </form>
-    <div ng-if="msg.error" ng-bind="msg.error" class="text-danger"></div>
+    <div class="text-danger" ng-if="msg.error" ng-bind="msg.error"></div>
   </div>
 </div>
 <div class="modal-footer">
-  <button ng-click="upload.abort()" ng-show="msg.buttonText == 'Uploading' " class="btn btn-danger">Cancel</button>
-  <button ng-click="upload.modalOk()" ng-bind="msg.buttonText" ng-disabled="msg.disable" class="btn btn-warning"></button>
+  <button class="btn btn-danger" ng-click="upload.abort()" ng-show="msg.buttonText == 'Uploading' ">Cancel</button>
+  <button class="btn btn-warning" ng-click="upload.modalOk()" ng-bind="msg.buttonText" ng-disabled="msg.disable"></button>
 </div>

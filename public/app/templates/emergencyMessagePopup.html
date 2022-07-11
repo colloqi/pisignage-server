@@ -28,7 +28,7 @@
     <!--            label-->
     <!--                input(type='radio',value='right',name="right",ng-model='group.selectedGroup.emergencyMessage.hPos')-->
     <!--                small() Right-->
-    <div ng-show="group.selectedGroup.emergencyMessage.enable" class="form-group row">
+    <div class="form-group row" ng-show="group.selectedGroup.emergencyMessage.enable">
       <label class="text-muted control-label col-sm-3 text-right">Vertical Position</label>
       <div class="col-sm-9">
         <div class="radio-inline">
@@ -48,15 +48,15 @@
         </div>
       </div>
     </div>
-    <div ng-show="group.selectedGroup.emergencyMessage.enable" class="form-group row">
+    <div class="form-group row" ng-show="group.selectedGroup.emergencyMessage.enable">
       <label class="control-label text-muted col-sm-3 text-right">Message</label>
       <div class="col-sm-9">
-        <input name="ticker_messages" rows="5" ng-model="group.selectedGroup.emergencyMessage.msg" placeholder="Enter the message to be displayed" class="form-control"/>
+        <input class="form-control" name="ticker_messages" rows="5" ng-model="group.selectedGroup.emergencyMessage.msg" placeholder="Enter the message to be displayed"/>
       </div>
     </div>
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" ng-click="emsgModal.close()" class="btn btn-default">Cancel</button>
-  <button ng-click="messageSave()" class="btn btn-primary">SAVE</button>
+  <button class="btn btn-default" type="button" ng-click="emsgModal.close()">Cancel</button>
+  <button class="btn btn-primary" ng-click="messageSave()">SAVE</button>
 </div>

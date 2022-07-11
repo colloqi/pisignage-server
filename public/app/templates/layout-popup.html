@@ -1,29 +1,28 @@
 
-<div style="margin-bottom:0px;" class="panel panel-primary">
+<div class="panel panel-primary" style="margin-bottom:0px;">
   <div class="panel-heading">
     <h4 class="text-center">Select Display Layout (default 1)
-      <button ng-click="modal.close()" class="btn btn-success pull-right">DONE</button>
+      <button class="btn btn-success pull-right" ng-click="modal.close()">DONE</button>
     </h4>
   </div>
   <div class="panel-body">
     <tabset>
       <tab heading="Layouts"><i><small>
-            The Display can be divided into multiple zones with each zone playing different content. Video files can be played
-            only in the main Zone. Select a file in the playlist to play in the main zone,add other zone files to the main file
+            The Display can be divided into multiple zones with each zone playing different content. Video files can be playedonly in the main Zone. Select a file in the playlist to play in the main zone,add other zone files to the main file
             by clicking zone file button. If there is no file attached to a particular zone, the previous content for that zone
             will continue to play.</small></i>
         <ul class="list-group">
-          <li ng-repeat="(ltype,item) in layouts" ng-class="{'list-group-item-success':playlist.selectedPlaylist.layout == ltype}" class="list-group-item">
+          <li class="list-group-item" ng-repeat="(ltype,item) in layouts" ng-class="{'list-group-item-success':playlist.selectedPlaylist.layout == ltype}">
             <div class="row">
-              <div dropdown="dropdown" class="col-sm-10 dropdown">
+              <div class="col-sm-10 dropdown" dropdown="dropdown">
                 <div class="radio">
                   <label>
                     <input type="radio" value="{{ltype}}" ng-change="saveLayout()" ng-disabled="item.disabled" ng-model="playlist.selectedPlaylist.layout"/><strong class="text-primary">{{ltype}}: &nbsp;{{item.title}}</strong>
                     <p><small>({{item.description}})</small></p>
                   </label>
                 </div>
-                <button dropdown-toggle="dropdown-toggle" ng-if="ltype.indexOf('custom') === 0" class="btn btn-sm btn-link dropdown-toggle"><small class="text-muted">layout file:&nbsp;</small><small>{{playlist.selectedPlaylist.templateName || "Select a custom_layout*.html file from Assets"}}</small><i class="fa fa-caret-down"></i></button>
-                <ul role="menu" ng-if="ltype.indexOf('custom') === 0" class="dropdown-menu">
+                <button class="btn btn-sm btn-link dropdown-toggle" dropdown-toggle="dropdown-toggle" ng-if="ltype.indexOf('custom') === 0"><small class="text-muted">layout file:&nbsp;</small><small>{{playlist.selectedPlaylist.templateName || "Select a custom_layout*.html file from Assets"}}</small><i class="fa fa-caret-down"></i></button>
+                <ul class="dropdown-menu" role="menu" ng-if="ltype.indexOf('custom') === 0">
                   <li ng-repeat="asset in asset.files | filter:customTemplates"><a href="#" ng-click="selectTemplate(asset,ltype)">&nbsp;&nbsp;{{asset}}</a></li>
                 </ul>
               </div>
@@ -41,13 +40,13 @@
               <label class="control-label"><small>Width:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="videoWindow.length" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="videoWindow.length" required=""/>
             </div>
             <div class="col-sm-2">
               <label class="control-label"><small>Height:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="videoWindow.width" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="videoWindow.width" required=""/>
             </div>
           </div>
           <div class="form-group row">
@@ -55,13 +54,13 @@
               <label class="control-label"><small>Left-Offset:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="videoWindow.xoffset" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="videoWindow.xoffset" required=""/>
             </div>
             <div class="col-sm-2">
               <label class="control-label"><small>Top-Offset:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="videoWindow.yoffset" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="videoWindow.yoffset" required=""/>
             </div>
           </div>
           <div class="form-group row">
@@ -75,10 +74,10 @@
           </div>
           <div class="form-group row">
             <div class="col-sm-3">
-              <button ng-click="setVideoWindow(null)" class="btn btn-danger">Restore Defaults</button>
+              <button class="btn btn-danger" ng-click="setVideoWindow(null)">Restore Defaults</button>
             </div>
             <div class="col-sm-3">
-              <button ng-click="setVideoWindow(videoWindow)" ng-disabled="!layoutform.$valid" class="btn btn-info">Save New Changes</button>
+              <button class="btn btn-info" ng-click="setVideoWindow(videoWindow)" ng-disabled="!layoutform.$valid">Save New Changes</button>
             </div>
           </div>
         </form>
@@ -92,13 +91,13 @@
               <label class="control-label"><small>Width:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.side.length" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.side.length" required=""/>
             </div>
             <div class="col-sm-2">
               <label class="control-label"><small>Height:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.side.width" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.side.width" required=""/>
             </div>
           </div>
           <div class="form-group row">
@@ -106,21 +105,21 @@
               <label class="control-label"><small>Left-Offset:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.side.xoffset" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.side.xoffset" required=""/>
             </div>
             <div class="col-sm-2">
               <label class="control-label"><small>Top-Offset:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.side.yoffset" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.side.yoffset" required=""/>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-sm-6">
-              <button ng-click="setZoneVideoWindow('side',null)" class="btn btn-danger">Restore Side Zone Defaults</button>
+              <button class="btn btn-danger" ng-click="setZoneVideoWindow('side',null)">Restore Side Zone Defaults</button>
             </div>
             <div class="col-sm-6">
-              <button ng-click="setZoneVideoWindow('side',zoneVideoWindow.side)" ng-disabled="!sideZoneForm.$valid" class="btn btn-info">Save New Changes</button>
+              <button class="btn btn-info" ng-click="setZoneVideoWindow('side',zoneVideoWindow.side)" ng-disabled="!sideZoneForm.$valid">Save New Changes</button>
             </div>
           </div>
           <hr/>
@@ -132,13 +131,13 @@
               <label class="control-label"><small>Width:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.bottom.length" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.bottom.length" required=""/>
             </div>
             <div class="col-sm-2">
               <label class="control-label"><small>Height:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.bottom.width" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.bottom.width" required=""/>
             </div>
           </div>
           <div class="form-group row">
@@ -146,21 +145,21 @@
               <label class="control-label"><small>Left-Offset:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.bottom.xoffset" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.bottom.xoffset" required=""/>
             </div>
             <div class="col-sm-2">
               <label class="control-label"><small>Top-Offset:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.bottom.yoffset" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.bottom.yoffset" required=""/>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-sm-6">
-              <button ng-click="setZoneVideoWindow('bottom',null)" class="btn btn-danger">Restore Bottom Zone Defaults</button>
+              <button class="btn btn-danger" ng-click="setZoneVideoWindow('bottom',null)">Restore Bottom Zone Defaults</button>
             </div>
             <div class="col-sm-6">
-              <button ng-click="setZoneVideoWindow('bottom',zoneVideoWindow.bottom)" ng-disabled="!bottomZoneForm.$valid" class="btn btn-info">Save New Changes</button>
+              <button class="btn btn-info" ng-click="setZoneVideoWindow('bottom',zoneVideoWindow.bottom)" ng-disabled="!bottomZoneForm.$valid">Save New Changes</button>
             </div>
           </div>
         </form>
@@ -174,13 +173,13 @@
               <label class="control-label"><small>Width:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.zone4.length" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.zone4.length" required=""/>
             </div>
             <div class="col-sm-2">
               <label class="control-label"><small>Height:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.zone4.width" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.zone4.width" required=""/>
             </div>
           </div>
           <div class="form-group row">
@@ -188,21 +187,21 @@
               <label class="control-label"><small>Left-Offset:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.zone4.xoffset" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.zone4.xoffset" required=""/>
             </div>
             <div class="col-sm-2">
               <label class="control-label"><small>Top-Offset:</small></label>
             </div>
             <div class="col-sm-2">
-              <input type="text" ng-model="zoneVideoWindow.zone4.yoffset" required="" class="form-control"/>
+              <input class="form-control" type="text" ng-model="zoneVideoWindow.zone4.yoffset" required=""/>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-sm-6">
-              <button ng-click="setZoneVideoWindow('zone4',null)" class="btn btn-danger">Restore Zone4 Defaults</button>
+              <button class="btn btn-danger" ng-click="setZoneVideoWindow('zone4',null)">Restore Zone4 Defaults</button>
             </div>
             <div class="col-sm-6">
-              <button ng-click="setZoneVideoWindow('zone4',zoneVideoWindow.zone4)" ng-disabled="!zone4Form.$valid" class="btn btn-info">Save New Changes</button>
+              <button class="btn btn-info" ng-click="setZoneVideoWindow('zone4',zoneVideoWindow.zone4)" ng-disabled="!zone4Form.$valid">Save New Changes</button>
             </div>
           </div>
         </form>
