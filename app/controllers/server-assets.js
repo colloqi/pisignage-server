@@ -24,10 +24,11 @@ var sendResponse = function (res, err) {
 exports.storeDetails = function (req, res) {
 
     var files = req.body.files;
+    var videoConversion = req.body.videoConversion;
 
     async.eachSeries(files, function (fileObj, array_cb) {
         var filename = fileObj.name.replace(config.filenameRegex, '');
-        processFile.processFile(filename, fileObj.size,  req.body.categories, array_cb)
+        processFile.processFile(filename, fileObj.size,  req.body.categories, videoConversion, array_cb)
     }, function () {
         console.log("processed " + files.length + " files")
     });
@@ -36,7 +37,7 @@ exports.storeDetails = function (req, res) {
 
 exports.storeLinkDetails = function(name, type, categories, cb) {
 
-    processFile.processFile(name,0,categories || [],function(err){
+    processFile.processFile(name,0,categories || [], 'none', function(err){
         cb()
     })
 }

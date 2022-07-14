@@ -16,6 +16,14 @@
       <button class="btn btn-success btn-xs" type="submit" ng-click="upload.addLabel()"><i class="fa fa-plus"></i></button>
     </form>
     <div class="text-danger" ng-if="msg.error" ng-bind="msg.error"></div>
+    <h5 translate="translate">Video Conversion
+      <form class="form-inline row">
+        <div class="form-group col-sm-8">
+          <select class="form-control" ng-model="conversion.selected" ng-change="setConversion(conversion.selected)" ng-options="option.text for option in conversionOptions"></select>
+        </div>
+      </form><br/>
+      <div class="text-danger" style="margin-left: 10px;margin-top: -15px;" ng-if="conversion.msg" ng-bind="conversion.msg"></div>
+    </h5>
   </div>
 </div>
 <div class="modal-footer">

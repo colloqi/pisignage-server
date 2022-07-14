@@ -11,7 +11,7 @@ var path = require('path'),
     Asset = mongoose.model('Asset'),
     _ = require('lodash');
 
-exports.processFile = function (filename, filesize, categories, cb) {
+exports.processFile = function (filename, filesize, categories, videoConversion, cb) {
     var errorMessages = [],
         assetDir = path.join(config.mediaDir);
 
@@ -19,6 +19,8 @@ exports.processFile = function (filename, filesize, categories, cb) {
         ext = path.extname(filename),
         destName = path.basename(filename, ext) + '_c.mp4',
         destPath = path.join(assetDir, destName),
+        mkvName = path.basename(filename, ext) + '.mkv',
+        mkvPath = path.join(assetDir, mkvName),
         mediaSize = parseInt(filesize / 1000) + 'KB',
         type,
         duration,
@@ -84,23 +86,31 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                 //console.dir(metadata);
                                 if (metadata && metadata.streams) {
                                     var vdoInfo = _.find(metadata.streams, {'codec_type': 'video'});
-                                    var formatName;
+                                    var adoInfo = _.find(metadata.streams, { codec_type: 'audio' });
+                                    var aCodec = (adoInfo && adoInfo.codec_name === 'aac') ? 'copy' : 'libfdk_aac';
+                                    var formatName, numPixels;
                                     if (metadata.format)
                                         formatName = metadata.format.format_name;
-                                    if ((vdoInfo && vdoInfo.codec_name != 'h264') ||
+                                    if (vdoInfo && typeof(vdoInfo.width) === 'number' && typeof (vdoInfo.height) === 'number')
+                                        numPixels = vdoInfo.width * vdoInfo.height;
+                                    if (videoConversion === 'hd' && ((vdoInfo && vdoInfo.codec_name != 'h264') ||
                                         (formatName.indexOf('mp4') == -1) ||
                                         (vdoInfo && vdoInfo.pix_fmt == 'yuv422p') ||
-                                        (parseInt(vdoInfo.width) * parseInt(vdoInfo.height) > 2073600 )   //1080p pixels
+                                        (numPixels > 2073600 ))   //1080p pixels
                                     ) {
+                                        var hdSize = ((vdoInfo.width / vdoInfo.height) > (1920 / 1080)) ? '1920x?' : '?x1080';
                                         new FFmpeg({source: src})
-                                            .audioCodec('libfdk_aac')
+                                            .audioCodec(aCodec)
                                             .videoCodec('libx264')
-                                            .size('?x1080')
+                                            .size(hdSize)
+                                            .videoBitrate('6144k')
+                                            .withFPSOutput(30)
                                             .toFormat('mp4')
                                             .outputOptions([
                                                 '-profile:v high',
                                                 '-level 4.0',
-                                                '-pix_fmt yuv420p'
+                                                '-pix_fmt yuv420p',
+                                                '-map 0'
                                             ])
                                             .on('error', function (err, stdout, stderr) {
                                                 console.log('Conversion Err: ' + err);
@@ -121,6 +131,37 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                                 })
                                             })
                                             .saveToFile(destPath);
+                                    } else if (videoConversion === 'uhd' && metadata && metadata.format && numPixels &&
+                                        (numPixels > 2073600) && (metadata.format.format_name.indexOf('mkv') === -1)) {
+                                        var bitRate = '6144k';
+                                        var isCbr = false;
+                                        var uhdSize = ((vdoInfo.width/vdoInfo.height) > (3840/2160)) ? '3840x?' : '?x2160';
+                                        new FFmpeg({ source: src })
+                                            .audioCodec(aCodec)
+                                            .videoCodec('libx265')
+                                            .size(uhdSize)
+                                            .withFPSOutput(30)
+                                            .videoBitrate(bitRate, isCbr)
+                                            .toFormat('matroska')
+                                            .outputOptions([
+                                                '-preset veryfast',
+                                                '-crf 27',
+                                                '-map 0'
+                                            ])
+                                            .on('error', function(err, stdout, stderr) {
+                                                errorMessages.push(err.message);
+                                            })
+                                            .on('end', function () {
+                                                filename = mkvName;
+                                                filePath = mkvPath;
+                                                fs.unlink(src, function (err) {
+                                                    if (err) {
+                                                        errorMessages.push(err.message);
+                                                    }
+                                                    video_cb();
+                                                });
+                                            })
+                                            .saveToFile(mkvPath);
                                     } else {
                                         video_cb();
                                     }
@@ -139,7 +180,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                                 if (metadata) {
                                     duration = metadata.format.duration;
                                     if (metadata.format.size)
-                                        mediaSize = parseInt(metadata.format.size / 1000) + 'KB';
+                                        mediaSize = parseInt(metadata.format.size) / 1000 + 'KB';
 
                                     var vdoInfo = _.find(metadata.streams, {'codec_type': 'video'});
                                     if (vdoInfo) {

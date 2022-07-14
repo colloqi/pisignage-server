@@ -184,6 +184,21 @@ angular.module('piAssets.controllers',[])
                 $state.go("home.assets.assetDetails",{file:file})
             }
 
+        $scope.conversionOptions = [
+            { tag: 'none', text: 'No conversion' },
+            { tag: 'hd', text: 'Convert uploaded video to HD (default)' },
+            { tag: 'uhd', text: 'Convert uploaded video to UHD (.mkv)'}
+        ];
+
+        $scope.conversion = {
+            selected: $scope.conversionOptions[1],
+            msg: 'Video conversion (only if in different format) may take time'
+        };
+
+        $scope.setConversion = function(selected) {
+            $scope.conversion.selected = selected;
+        };
+
         //upload assets related
         $scope.msg = {
             title: 'Upload',
@@ -271,7 +286,8 @@ angular.module('piAssets.controllers',[])
                     return ({name:file.name,size:file.size,type:file.type})
                 })
                 $http
-                    .post(piUrls.filespostupload, {files: fileArray, categories: $scope.upload.selectedLabels})
+                    .post(piUrls.filespostupload, {files: fileArray, categories: $scope.upload.selectedLabels,
+                        videoConversion: $scope.conversion.selected.tag })
                     .success(function (data, status) {
                         if (data.success) {
                             $scope.msg.title = 'Queued in for Processing';
