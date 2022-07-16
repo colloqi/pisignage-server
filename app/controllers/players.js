@@ -25,17 +25,17 @@ var pipkgjson ={},
 
 var readVersions = function() {
     try {
-        pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
+        pipkgjson = JSON.parse(fs.readFileSync(path.join(config.releasesDir,'package.json'), 'utf8'))
     } catch(e) {
         pipkgjson = {};
     }
     try {
-        pipkgjsonBeta = JSON.parse(fs.readFileSync('data/releases/package-beta.json', 'utf8'))
+        pipkgjsonBeta = JSON.parse(fs.readFileSync(path.join(config.releasesDir,'package-beta.json'), 'utf8'))
     } catch(e) {
         pipkgjsonBeta = {};
     }
     try{
-        pipkgjsonP2 = JSON.parse(fs.readFileSync('data/releases/package-p2.json', 'utf8'));
+        pipkgjsonP2 = JSON.parse(fs.readFileSync(path.join(config.releasesDir,'package-p2.json'), 'utf8'));
         pipkgjson.versionP2 = pipkgjsonP2.version;
     }
     catch(e) {
@@ -190,7 +190,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.enablePio =  group.enablePio || false;
 
     //if (!pipkgjson)
-        //pipkgjson = JSON.parse(fs.readFileSync('data/releases/package.json', 'utf8'))
+        //pipkgjson = JSON.parse(fs.readFileSync(path.join(config.releasesDir,'package.json'), 'utf8'))
     retObj.currentVersion = { 
         version: pipkgjson.version, platform_version: pipkgjson.platform_version,
         beta: pipkgjsonBeta.version,
