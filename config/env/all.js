@@ -8,7 +8,7 @@ var path = require('path');
 //     assetDir = path.join(rootPath, '/../media');
 var rootPath = process.cwd(),
     dataDir = path.join(rootPath, '/data'),
-    assetDir = path.join(rootPath, '/../media');
+    assetDir = path.join('/media');
 
 module.exports = {
     root: rootPath,
