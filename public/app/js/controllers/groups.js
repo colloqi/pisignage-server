@@ -559,6 +559,7 @@ angular.module('piGroups.controllers', [])
 
             $scope.displayModal.close();
             var minutes,hours;
+            var rebootMinutes, rebootHours;
             if ($scope.tempPopup.sleep && $scope.tempPopup.sleep.ontimeObj) {
                 hours = $scope.tempPopup.sleep.ontimeObj.getHours()
                 $scope.group.selectedGroup.sleep.ontime = (hours < 10)?("0"+hours):(""+hours);
@@ -570,6 +571,13 @@ angular.module('piGroups.controllers', [])
                 $scope.group.selectedGroup.sleep.offtime = (hours < 10)?("0"+hours):(""+hours);
                 minutes = $scope.tempPopup.sleep.offtimeObj.getMinutes();
                 $scope.group.selectedGroup.offtime += (minutes < 10)?(":0"+minutes):":"+minutes;
+            }
+
+            if($scope.tempPopup.reboot && $scope.tempPopup.reboot.time){
+                rebootHours = $scope.tempPopup.reboot.time.getHours()
+                $scope.group.selectedGroup.reboot.absoluteTime = (rebootHours < 10)?("0"+rebootHours):(""+rebootHours);
+                rebootMinutes = $scope.tempPopup.reboot.time.getMinutes();
+                $scope.group.selectedGroup.reboot.absoluteTime += (rebootMinutes < 10)?(":0"+rebootMinutes):":"+rebootMinutes;
             }
 
             switch ($scope.group.selectedGroup.imageSize) {

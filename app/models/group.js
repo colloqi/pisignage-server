@@ -49,7 +49,8 @@ var GroupSchema = new Schema({
                                 offtime: {type: String}
     },
     reboot:                 {   enable: {type: Boolean,default: false},
-                                time: { type: String}
+                                time: { type: String},
+                                absoluteTime: { type: String}
                             },
     kioskUi:                {   enable: {type: Boolean,default: false},
                                 url:        {type: String},

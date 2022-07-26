@@ -167,7 +167,7 @@ var sendConfig = function (player, group, periodic) {
     retObj.imageLetterboxed = group.imageLetterboxed || false;
     retObj.brightness = group.brightness || { defaults: { control: 'None', level: 'Bright' }, schedule: [] };
     retObj.sleep = group.sleep || {enable: false, ontime: null , offtime: null };
-    retObj.reboot = group.reboot || {enable: false, time: null };
+    retObj.reboot = group.reboot || {enable: false, time: null,absoluteTime: null };
     retObj.signageBackgroundColor =  group.signageBackgroundColor || "#000";
     retObj.omxVolume = (group.omxVolume || group.omxVolume == 0)?group.omxVolume:100;
     retObj.timeToStopVideo = group.timeToStopVideo || 0;
