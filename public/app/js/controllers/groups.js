@@ -288,15 +288,6 @@ angular.module('piGroups.controllers', [])
 
 
         $scope.scheduleCalendar = function (playlist) {
-            var getHoursMinutes = function(timeString) {
-                var hhmmArray = timeString.split(':');
-                if (hhmmArray.length == 2)
-                    return ({h:parseInt(hhmmArray[0]),m: parseInt(hhmmArray[1])});
-                else if (hhmmArray.length == 1)
-                    return ({h:0,m: parseInt(hhmmArray[0])});
-                else if (hhmmArray.length > 2)
-                    return ({h:parseInt(hhmmArray[hhmmArray.length -2]),m: parseInt(hhmmArray[hhmmArray.length -1])});
-            }
 
             $scope.forPlaylist = playlist;
             if (!$scope.forPlaylist.settings.weekdays &&
@@ -485,6 +476,15 @@ angular.module('piGroups.controllers', [])
             $scope.scheduleCalendarModal.close();
         }
 
+        function getHoursMinutes (timeString) {
+            var hhmmArray = timeString.split(':');
+            if (hhmmArray.length == 2)
+                return ({h:parseInt(hhmmArray[0]),m: parseInt(hhmmArray[1])});
+            else if (hhmmArray.length == 1)
+                return ({h:0,m: parseInt(hhmmArray[0])});
+            else if (hhmmArray.length > 2)
+                return ({h:parseInt(hhmmArray[hhmmArray.length -2]),m: parseInt(hhmmArray[hhmmArray.length -1])});
+        }
         $scope.tempPopup;
 
         $scope.displaySet = function () {
@@ -555,9 +555,6 @@ angular.module('piGroups.controllers', [])
         $scope.saveSettings = function () {
 
             $scope.group.selectedGroup = JSON.parse(JSON.stringify($scope.tempPopup));
-            $scope.tempPopup = {};
-
-            $scope.displayModal.close();
             var minutes,hours;
             var rebootMinutes, rebootHours;
             if ($scope.tempPopup.sleep && $scope.tempPopup.sleep.ontimeObj) {
@@ -570,7 +567,14 @@ angular.module('piGroups.controllers', [])
                 hours = $scope.tempPopup.sleep.offtimeObj.getHours()
                 $scope.group.selectedGroup.sleep.offtime = (hours < 10)?("0"+hours):(""+hours);
                 minutes = $scope.tempPopup.sleep.offtimeObj.getMinutes();
-                $scope.group.selectedGroup.offtime += (minutes < 10)?(":0"+minutes):":"+minutes;
+                $scope.group.selectedGroup.sleep.offtime += (minutes < 10)?(":0"+minutes):":"+minutes;
+            }
+
+            if($scope.tempPopup.reboot && $scope.tempPopup.reboot.time){
+                rebootHours = $scope.tempPopup.reboot.time.getHours()
+                $scope.group.selectedGroup.reboot.absoluteTime = (rebootHours < 10)?("0"+rebootHours):(""+rebootHours);
+                rebootMinutes = $scope.tempPopup.reboot.time.getMinutes();
+                $scope.group.selectedGroup.reboot.absoluteTime += (rebootMinutes < 10)?(":0"+rebootMinutes):":"+rebootMinutes;
             }
 
             if($scope.tempPopup.reboot && $scope.tempPopup.reboot.time){
@@ -605,6 +609,8 @@ angular.module('piGroups.controllers', [])
 
             $scope.group.selectedGroup.enableMpv = $scope.group.selectedGroup.selectedVideoPlayer === "mpv"
             $scope.updateGroup();
+            $scope.tempPopup = {};
+            $scope.displayModal.close();
         }
 
         $scope.groupTicker = function() {
