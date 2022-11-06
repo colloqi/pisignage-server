@@ -22,7 +22,7 @@ var allowCrossDomain = function (req, res, next) {
     res.header('Vary', "Origin");   //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
     res.header('Access-Control-Expose-Headers', 'Content-Length');
     res.header('Access-Control-Allow-Methods', 'HEAD,GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, X-Requested-With,origin,accept,Authorization,x-access-token,Last-Modified');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length,Response-Type, X-Requested-With,origin,accept,Authorization,x-access-token,Last-Modified');
 
     if (req.method == 'OPTIONS') {
         res.sendStatus(200);
