@@ -75,13 +75,11 @@ require('./config/express')(app);
 var server;
 if (config.https) {
     var https_options = {
-        ca: fs.readFileSync("/home/ec2-user/.ssh/intermediate.crt"),
-        key: fs.readFileSync("/home/ec2-user/.ssh/pisignage-server.key"),
-        cert: fs.readFileSync("/home/ec2-user/.ssh/pisignage-server.crt")
+        key: fs.readFileSync("./pisignage-server-key.pem"),
+        cert: fs.readFileSync("./pisignage-server-cert.pem"),
+        passphrase: 'pisignage'
     };
     server = require('https').createServer(https_options, app);
-
-    //require('http').createServer(app).listen(80);
 }
 else {
     server = require('http').createServer(app);
