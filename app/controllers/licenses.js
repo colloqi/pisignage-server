@@ -95,10 +95,12 @@ exports.getSettings = function(req,res) {
         } else {
             var obj = data.toObject()
             obj.serverIp = serverIp;
-            exec('git log -1 --format=%cd;git rev-parse HEAD',function(err,stdout,stderr){
+            exec('git log -1 --format="%cd" && git log -1 --format="%H"',function(err,stdout,stderr){
                 if(err || stderr){
                     obj.date = 'N/A';
                     obj.version = 'N/A';
+                    console.log('There was an error obtaining the current server version from git:');
+                    console.log(stderr);
                 }else{
                     stdout = stdout.trim().split('\n');
                     obj.date = [stdout[0].split(' ')[1],stdout[0].split(' ')[2],stdout[0].split(' ')[4]].join(' '); 
