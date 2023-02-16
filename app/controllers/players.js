@@ -625,7 +625,7 @@ exports.upload = function (cpuId, filename, data) {
                     // else
                     //     console.log("info","Forever Log file saved for player : "+cpuId);
                 })
-            } else if (path.extname(filename) == '.log' && filename != "forever_out.log") {
+            } else if (path.extname(filename) == '.log' && filename.indexOf('forever_out.log')===-1 ) {
                 try {
                     logData = JSON.parse(data);
                     logData.installation = player.installation;
