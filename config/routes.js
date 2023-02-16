@@ -12,6 +12,7 @@ var assets = require('../app/controllers/assets'),
     players = require('../app/controllers/players'),
     groups = require('../app/controllers/groups'),
     labels = require('../app/controllers/labels'),
+    rssFeed = require('../app/controllers/rss-feed'),
     licenses  = require('../app/controllers/licenses');
     //gcalAuthorize = require('../app/controllers/gcal-authorize');
 
@@ -75,6 +76,7 @@ router.get('/api/labels/:label', labels.getObject)
 router.post('/api/labels', labels.createObject);
 router.post('/api/labels/:label', labels.updateObject);
 router.delete('/api/labels/:label', labels.deleteObject);
+router.get('/api/rssfeed', rssFeed.getFeeds);
 
 require('../app/controllers/licenses').getSettingsModel(function(err,settings){
     var uploadLicense = multer({dest:(config.licenseDirPath+(settings.installation || "local"))})
