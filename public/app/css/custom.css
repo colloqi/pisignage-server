@@ -136,13 +136,13 @@ body {
 .portrait {
     max-height:468px;
     max-width:988px;
-    transform: rotate(-90deg);
+    transform: rotate(90deg);
 }
 
 .portrait270 {
     max-height:468px;
     max-width:988px;
-    transform: rotate(90deg);
+    transform: rotate(-90deg);
 }
 .statcard-number {
     margin-top: 0;
