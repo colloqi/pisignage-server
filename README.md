@@ -30,7 +30,7 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
 
 1. Change to pisignage-server directory where you have pulled the code last time
 2. Issue the command `git pull origin master`
-   ***IMPORTANT: If you are upadating from before 24 Nov 2016, after git pull, please change the uri variable in config/env/development.js to 'mongodb://localhost/pisignage-dev' to retain the old data***
+   ***IMPORTANT: If you are updating from before 24 Nov 2016, after git pull, please change the uri variable in config/env/development.js to 'mongodb://localhost/pisignage-dev' to retain the old data***
 3. Apply your code changes if any
 4. rm package-lock.json
 5. rm -rf node_modules (entire directory and its contents)
