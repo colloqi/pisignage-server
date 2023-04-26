@@ -107,6 +107,11 @@ module.exports = function (app) {
 
     //app.use('/sync_folders',serveIndex(config.syncDir));
     app.use('/sync_folders',function(req, res, next){
+            // Player uses --no-cache header in wget to download assets. The --no-cache flag sends the following headers
+            // Cache-Control: no-cache , Pragma: no-cache
+            // This causes 200 OK response for all requests. Hence remove this header to minimise data-transfer costs.
+            delete req.headers['cache-control'];  // delete header
+            delete req.headers['pragma'];  // delete header
             fs.stat(path.join(config.syncDir,req.path), function(err, stat){
                 if (!err && stat.isDirectory()) {
                     res.setHeader('Last-Modified', (new Date()).toUTCString());
