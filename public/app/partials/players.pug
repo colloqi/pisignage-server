@@ -59,6 +59,7 @@
                         small.text-info.pl-5(title="player on since") {{item.uptimeFormatted }}
                         small.text-info.pl-5(title="cpu temperature") {{item.piTemperature}}
                         small.text-info.pl-5(title="disk space available") {{item.diskSpaceAvailable}}
+                        small.text-info.pl-5(title="ip address") ip: {{item.myIpAddress}}
                 .col-sm-3
                     h6.text-primary.truncate: small last seen:&nbsp;{{item.lastReported?(item.lastReported | timeAgo):"never"}}
                 .col-sm-3
