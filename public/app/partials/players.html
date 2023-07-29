@@ -52,7 +52,7 @@
       </div>
       <div class="row">
         <div class="col-sm-4">
-          <h6 class="text-primary"><small>{{item.cpuSerialNumber}}<small class="text-info pl-5" title="player on since">{{item.uptimeFormatted }}</small><small class="text-info pl-5" title="cpu temperature">{{item.piTemperature}}</small><small class="text-info pl-5" title="disk space available">{{item.diskSpaceAvailable}}</small></small></h6>
+          <h6 class="text-primary"><small>{{item.cpuSerialNumber}}<small class="text-info pl-5" title="player on since">{{item.uptimeFormatted }}</small><small class="text-info pl-5" title="cpu temperature">{{item.piTemperature}}</small><small class="text-info pl-5" title="disk space available">{{item.diskSpaceAvailable}}</small><small class="text-info pl-5" title="ip address">ip: {{item.myIpAddress}}</small></small></h6>
         </div>
         <div class="col-sm-3">
           <h6 class="text-primary truncate"><small>last seen:&nbsp;{{item.lastReported?(item.lastReported | timeAgo):"never"}}</small></h6>
