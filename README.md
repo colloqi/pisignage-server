@@ -13,6 +13,7 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
    just get the file https://raw.githubusercontent.com/colloqi/pisignage-server/master/docker-compose.yml
 - docker-compose  up -d
 - Use the url http://localhost:3000  to launch web application
+- Default credentials: Username:Passwword = `pi:pi`
 - To generate your own Docker image, please goto docker-build branch and modify Dockerfile. Also use docker-compose.prod.yml
 
 
