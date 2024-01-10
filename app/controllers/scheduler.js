@@ -113,7 +113,7 @@ var checkAndDownloadImage = function() {
         function (async_cb) {
             //read version, different from local one
             if (!update) {
-                fs.access(path.join(config.releasesDir,"piimage"+serverVersion_p2+"-p2-v14.zip"), (fs.constants || fs).F_OK, function(err) {
+                fs.access(path.join(config.releasesDir,"piimage"+serverVersion_p2+"-p2-v20.zip"), (fs.constants || fs).F_OK, function(err) {
                     if (err) {
                         update = true;
                         console.log(err);
@@ -141,7 +141,10 @@ var checkAndDownloadImage = function() {
             linkFileV14 = path.join(config.releasesDir,"pi-image-v14.zip"),
             serverLink_p2 = "http://pisignage.com/releases/piimage"+serverVersion_p2+"-p2-v14.zip",
             imageFile_p2 = path.join(config.releasesDir,"piimage"+serverVersion_p2+"-p2-v14.zip"),
-            linkFile_p2 = path.join(config.releasesDir,"pi-image-p2.zip");
+            linkFile_p2 = path.join(config.releasesDir,"pi-image-p2-v14.zip"),
+            serverLink_p2_v20 = "http://pisignage.com/releases/piimage"+serverVersion_p2+"-p2-v20.zip",
+            imageFile_p2_v20 = path.join(config.releasesDir,"piimage"+serverVersion_p2+"-p2-v20.zip"),
+            linkFile_p2_v20 = path.join(config.releasesDir,"pi-image-p2-v20.zip");
         download(serverLink,
             imageFile,
             function (err) {
@@ -163,6 +166,11 @@ var checkAndDownloadImage = function() {
                                                     if(err){
                                                         console.log(err)
                                                     } else {
+                                                        download(serverLink_p2_v20,
+                                                            imageFile_p2_v20, function(err){
+                                                            if(err){
+                                                                console.log(err)
+                                                            } else {
                                                             //create the symbolic link pi-image.zip to the the donwloaded zip file
                                                             fs.unlink(linkFile, function (err) {
                                                                 fs.symlink(imageFile, linkFile, function (err) {
@@ -193,6 +201,11 @@ var checkAndDownloadImage = function() {
                                                             console.log("piSignage image updated to " + serverVersion);
                                                             fs.unlink(linkFile_p2, function (err) {
                                                                 fs.symlink(imageFile_p2, linkFile_p2, function (err) {
+                                                                    if (err) console.log(err)
+                                                                })
+                                                            })
+                                                            fs.unlink(linkFile_p2_v20, function (err) {
+                                                                fs.symlink(imageFile_p2_v20, linkFile_p2_v20, function (err) {
                                                                     if (err) console.log(err)
                                                                 })
                                                             })
