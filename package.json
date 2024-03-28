@@ -20,7 +20,7 @@
     "bson": ">=4.6.5",
     "cookie-parser": "~1.4.3",
     "errorhandler": "^1.5.0",
-    "express": "^4.16.4",
+    "express": "^4.19.2",
     "feedparser": "^2.2.10",
     "fluent-ffmpeg": "^2.1.2",
     "gm": "^1.23.0",
