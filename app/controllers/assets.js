@@ -16,6 +16,8 @@ import {
     serverAssetsStoreLinkDetails,
 } from "./server-assets.js";
 
+import logger from "../others/logger.js";
+
 export const assetsIndex = (req, res) => {
     let files = [];
     let dbdata;
@@ -58,7 +60,7 @@ export const assetsIndex = (req, res) => {
             const data = await AssetModel.find({});
             return data;
         } catch (error) {
-            util.log("Error reading Asset Collection: " + error);
+            logger.error("Error reading Asset Collection: " + error);
             return;
         }
     };
@@ -121,7 +123,7 @@ export const assetsCreateFiles = async (req, res) => {
         return restwareSendSuccess(res, "Successfully uploaded files", data);
     } catch (error) {
         const msg = "File rename error after upload: " + error;
-        util.log(msg);
+        logger.error(msg);
         return restwareSendError(res, msg);
     }
 };
@@ -187,7 +189,7 @@ export const assetsGetFileDetails = async (req, res) => {
             const data = await AssetModel.findOne({ name: file });
             return data;
         } catch (error) {
-            util.log("Error reading Asset Collection: " + error);
+            logger.error("Error reading Asset Collection: " + error);
             return null;
         }
     };
@@ -221,7 +223,7 @@ export const assetsDeleteFile = async (req, res) => {
         try {
             await AssetModel.remove({ name: file });
         } catch (error) {
-            util.log("unable to delete asset from db," + file);
+            logger.error("unable to delete asset from db," + file);
         }
 
         try {
@@ -234,7 +236,7 @@ export const assetsDeleteFile = async (req, res) => {
                 }
             }
         } catch (error) {
-            util.log("unable to find/delete thumbnail: " + error);
+            logger.error("unable to find/delete thumbnail: " + error);
         }
 
         return restwareSendSuccess(res, "Deleted file successfully", file);
@@ -258,10 +260,10 @@ export const assetsUpdateAsset = async (req, res) => {
             try {
                 asset = await AssetModel.findOne({ name: oldName });
             } catch (error) {
-                util.log("Unable to find asset from db: " + oldName);
+                logger.error("Unable to find asset from db: " + oldName);
             }
             if (!asset) {
-                util.log("Unable to find asset from db: " + oldName);
+                logger.error("Unable to find asset from db: " + oldName);
             } else {
                 asset.name = newName;
                 await asset.save();
