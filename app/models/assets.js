@@ -36,4 +36,6 @@ AssetSchema.statics = {
     }
 }
 
-mongoose.model('Asset', AssetSchema)
+const AssetModel = mongoose.model('Asset', AssetSchema)
+
+module.exports = AssetModel

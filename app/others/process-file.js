@@ -202,7 +202,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                     task_cb();
                 }
             }],
-        function (err) {
+        function (seriesErr) {
             Asset.findOne({name: filename}, function (err, data) {
                 var asset,
                     object = {
@@ -232,7 +232,7 @@ exports.processFile = function (filename, filesize, categories, cb) {
                     } else {
                         console.log('Successfully processed file: '+filename)
                     }
-                    cb();
+                    cb(seriesErr);
                 })
             })
         }
