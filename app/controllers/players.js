@@ -1,76 +1,79 @@
-'use strict;'
+"use strict" // REMOVE AFTER MIGRATING require TO import statements
 
-var mongoose = require('mongoose'),
-    Player = mongoose.model('Player'),
-    Group = mongoose.model('Group'),
-    groups = require('./groups'),
-    rest = require('../others/restware'),
-    _ = require('lodash'),
-    path = require('path'),
-    async = require('async'),
-    config = require('../../config/config');
+const mongoose = require('mongoose')
+const Player = mongoose.model('Player')
+const Group = mongoose.model('Group')
+const groups = require('./groups')
+const _ = require('lodash')
+const path = require('path')
+const fs = require('fs');
 
-var oldSocketio = require('./server-socket'),
-    newSocketio = require('./server-socket-new'),
-    webSocket = require('./server-socket-ws'),
-    licenses = require('./licenses');
+const async = require('async') // TO BE REMOVED AFTER FULL FILE CONVERSION
 
-var installation,
+const config = require('../../config/config.js');
+const sockets = require("./socket.js");
+const licenses = require('./licenses');
+
+const restwareSendSuccess = require("../others/restware.js").sendSuccess;
+const restwareSendError = require("../others/restware.js").sendError;
+
+let installation,
     settings;
 
-var pipkgjson ={},
+let pipkgjson = {},
     pipkgjsonBeta = {},
-    pipkgjsonP2 ={},
-    fs = require('fs');
+    pipkgjsonP2 = {};
 
-var readVersions = function() {
+
+const readVersions = function () {
     try {
-        pipkgjson = JSON.parse(fs.readFileSync(path.join(config.releasesDir,'package.json'), 'utf8'))
-    } catch(e) {
+        pipkgjson = JSON.parse(fs.readFileSync(path.join(config.releasesDir, 'package.json'), 'utf8'))
+    } catch (e) {
         pipkgjson = {};
     }
     try {
-        pipkgjsonBeta = JSON.parse(fs.readFileSync(path.join(config.releasesDir,'package-beta.json'), 'utf8'))
-    } catch(e) {
+        pipkgjsonBeta = JSON.parse(fs.readFileSync(path.join(config.releasesDir, 'package-beta.json'), 'utf8'))
+    } catch (e) {
         pipkgjsonBeta = {};
     }
-    try{
-        pipkgjsonP2 = JSON.parse(fs.readFileSync(path.join(config.releasesDir,'package-p2.json'), 'utf8'));
+    try {
+        pipkgjsonP2 = JSON.parse(fs.readFileSync(path.join(config.releasesDir, 'package-p2.json'), 'utf8'));
         pipkgjson.versionP2 = pipkgjsonP2.version;
     }
-    catch(e) {
+    catch (e) {
         pipkgjsonP2 = {};
     }
 }
 readVersions();
 
-fs.mkdir(config.logStoreDir, function(err) {
+fs.mkdir(config.logStoreDir, function (err) {
     if (err && (err.code != 'EEXIST')) {
-        console.log("Error creating logs directory, "+err.code)
+        console.log("Error creating logs directory, " + err.code)
     }
 });
 
 
-var activePlayers = {},
+const activePlayers = {},
     lastCommunicationFromPlayers = {};
-Player.update({"isConnected": true},{$set:{"isConnected": false}},{ multi: true }, function(err, num) {
+
+Player.update({ "isConnected": true }, { $set: { "isConnected": false } }, { multi: true }, function (err, num) {
     if (!err && num)
-        console.log("Reset isConnected for "+num.nModified+" players");
+        console.log("Reset isConnected for " + num.nModified + " players");
     checkPlayersWatchdog();
 })
 
-var defaultGroup = {_id: 0, name: 'default'};
+let defaultGroup = { _id: 0, name: 'default' };
 //create a default group if does not exist
-licenses.getSettingsModel(function(err,data){
+licenses.getSettingsModel(function (err, data) {
     settings = data;
     installation = settings.installation || "local"
 
-    Group.update({name:"default"},{name:"default",description:"Default group for Players"},{upsert:true},function(err){
-        fs.mkdir(path.join(config.syncDir,installation), function (err) {
-            fs.mkdir(path.join(config.syncDir,installation, "default"), function (err) {
+    Group.update({ name: "default" }, { name: "default", description: "Default group for Players" }, { upsert: true }, function (err) {
+        fs.mkdir(path.join(config.syncDir, installation), function (err) {
+            fs.mkdir(path.join(config.syncDir, installation, "default"), function (err) {
             })
         })
-        Group.findOne({name: 'default'}, function (err, data) {
+        Group.findOne({ name: 'default' }, function (err, data) {
             if (!err && data)
                 defaultGroup = data;
         });
@@ -86,7 +89,7 @@ function checkPlayersWatchdog() {
                 if (!err && player && player.isConnected) {
                     player.isConnected = false;
                     player.save();
-                    console.log("disconnect: "+player.installation+"-"+player.name+";reason: checkPlayersWatchdog")
+                    console.log("disconnect: " + player.installation + "-" + player.name + ";reason: checkPlayersWatchdog")
                 }
                 delete activePlayers[playerId];
                 cb();
@@ -101,27 +104,31 @@ function checkPlayersWatchdog() {
     })
 }
 
-exports.updateDisconnectEvent = function(socketId, reason) {
-    Player.findOne({socket:socketId}, function(err,player) {
-        if (!err && player) {
-            player.isConnected = false;
-            player.save();
-            delete activePlayers[player._id.toString()];
-            console.log("disconnect: "+player.installation+"-"+player.name+";reason: "+reason)
-        } else {
-            //console.log("not able to find player for disconnect event: "+socketId);
-        }
-    })
+exports.updateDisconnectEvent = async (socketId, reason) => {
+
+    try {
+        const player = await Player.findOne({ socket: socketId })    
+        player.isConnected = false;
+        await player.save();
+
+        delete activePlayers[player._id.toString()];
+
+        console.log(`disconnect: ${player.installation} - ${player.name}; reason: ${reason}`)
+
+    } catch (error) {
+        console.error(`Update disconnect error: ${error}`)
+    }
+    
 }
 
-var sendConfig = function (player, group, periodic) {
+const sendConfig = (player, group, periodic) => {
     var retObj = {};
 
     var groupPlaylists,
         groupAssets,
         groupTicker;
 
-    if (group.deployedPlaylists && group.deployedPlaylists.length >0) {
+    if (group.deployedPlaylists && group.deployedPlaylists.length > 0) {
         groupPlaylists = group.deployedPlaylists;
         groupAssets = group.deployedAssets;
         groupTicker = group.deployedTicker;
@@ -147,54 +154,54 @@ var sendConfig = function (player, group, periodic) {
     retObj.lastDeployed = group.lastDeployed;
     retObj.installation = installation;
     retObj.TZ = player.TZ;
-    retObj.location = player.configLocation || player.location ;
+    retObj.location = player.configLocation || player.location;
     retObj.baseUrl = '/sync_folders/' + installation + '/';
     retObj.name = player.name;
     retObj.resolution = group.resolution || '720p';
     retObj.orientation = group.orientation || 'landscape';
-    retObj.enableMpv =  group.enableMpv || false;
-    retObj.mpvAudioDelay =  group.mpvAudioDelay || '0';
-    retObj.selectedVideoPlayer =  group.selectedVideoPlayer || 'default';
-    retObj.kioskUi = group.kioskUi || {enable: false};
-    retObj.animationType =  group.animationType || "right";
-    if (!player.version || parseInt(player.version.replace(/\D/g,"")) < 180)
-        retObj.animationEnable =  false;
+    retObj.enableMpv = group.enableMpv || false;
+    retObj.mpvAudioDelay = group.mpvAudioDelay || '0';
+    retObj.selectedVideoPlayer = group.selectedVideoPlayer || 'default';
+    retObj.kioskUi = group.kioskUi || { enable: false };
+    retObj.animationType = group.animationType || "right";
+    if (!player.version || parseInt(player.version.replace(/\D/g, "")) < 180)
+        retObj.animationEnable = false;
     else
-        retObj.animationEnable =  group.animationEnable || false;
+        retObj.animationEnable = group.animationEnable || false;
     retObj.resizeAssets = group.resizeAssets || false;
     retObj.videoKeepAspect = group.videoKeepAspect || false;
     retObj.videoShowSubtitles = group.videoShowSubtitles || false;
     retObj.imageLetterboxed = group.imageLetterboxed || false;
     retObj.brightness = group.brightness || { defaults: { control: 'None', level: 'Bright' }, schedule: [] };
-    retObj.sleep = group.sleep || {enable: false, ontime: null , offtime: null };
-    retObj.reboot = group.reboot || {enable: false, time: null,absoluteTime: null };
-    retObj.signageBackgroundColor =  group.signageBackgroundColor || "#000";
-    retObj.omxVolume = (group.omxVolume || group.omxVolume == 0)?group.omxVolume:100;
+    retObj.sleep = group.sleep || { enable: false, ontime: null, offtime: null };
+    retObj.reboot = group.reboot || { enable: false, time: null, absoluteTime: null };
+    retObj.signageBackgroundColor = group.signageBackgroundColor || "#000";
+    retObj.omxVolume = (group.omxVolume || group.omxVolume == 0) ? group.omxVolume : 100;
     retObj.timeToStopVideo = group.timeToStopVideo || 0;
-    retObj.logo =  group.logo;
-    retObj.logox =  group.logox;
-    retObj.logoy =  group.logoy;
-    retObj.showClock = group.showClock || {enable: false};
-    retObj.monitorArrangement = group.monitorArrangement || { mode: "mirror"};
-    retObj.emergencyMessage = group.emergencyMessage || {enable: false};
+    retObj.logo = group.logo;
+    retObj.logox = group.logox;
+    retObj.logoy = group.logoy;
+    retObj.showClock = group.showClock || { enable: false };
+    retObj.monitorArrangement = group.monitorArrangement || { mode: "mirror" };
+    retObj.emergencyMessage = group.emergencyMessage || { enable: false };
     retObj.combineDefaultPlaylist = group.combineDefaultPlaylist || false;
     retObj.playAllEligiblePlaylists = group.playAllEligiblePlaylists || false;
     retObj.shuffleContent = group.shuffleContent || false;
     retObj.alternateContent = group.alternateContent || false;
-    retObj.urlReloadDisable =  group.urlReloadDisable || false;
-    retObj.keepWeblinksInMemory =  group.keepWeblinksInMemory || false;
-    retObj.loadPlaylistOnCompletion =  group.loadPlaylistOnCompletion || false;
-    retObj.disableWebUi =  group.disableWebUi || false;
-    retObj.disableWarnings =  group.disableWarnings || false;
-    retObj.disableAp =  group.disableAp || false;
-    retObj.enablePio =  group.enablePio || false;
+    retObj.urlReloadDisable = group.urlReloadDisable || false;
+    retObj.keepWeblinksInMemory = group.keepWeblinksInMemory || false;
+    retObj.loadPlaylistOnCompletion = group.loadPlaylistOnCompletion || false;
+    retObj.disableWebUi = group.disableWebUi || false;
+    retObj.disableWarnings = group.disableWarnings || false;
+    retObj.disableAp = group.disableAp || false;
+    retObj.enablePio = group.enablePio || false;
 
     //if (!pipkgjson)
-        //pipkgjson = JSON.parse(fs.readFileSync(path.join(config.releasesDir,'package.json'), 'utf8'))
-    retObj.currentVersion = { 
+    //pipkgjson = JSON.parse(fs.readFileSync(path.join(config.releasesDir,'package.json'), 'utf8'))
+    retObj.currentVersion = {
         version: pipkgjson.version, platform_version: pipkgjson.platform_version,
         beta: pipkgjsonBeta.version,
-        versionP2:pipkgjson.versionP2
+        versionP2: pipkgjson.versionP2
     }
     // retObj.gcal = {
     //     id: config.gCalendar.CLIENT_ID,
@@ -207,32 +214,44 @@ var sendConfig = function (player, group, periodic) {
     retObj.forceTvOn = settings.forceTvOn;
     retObj.disableCECPowerCheck = settings.disableCECPowerCheck;
     retObj.hideWelcomeNotice = settings.hideWelcomeNotice;
-    retObj.reportIntervalMinutes=settings.reportIntervalMinutes;
+    retObj.reportIntervalMinutes = settings.reportIntervalMinutes;
     retObj.authCredentials = settings.authCredentials;
     retObj.enableLog = settings.enableLog || false;
     retObj.enableYoutubeDl = true;
     if (settings.sshPassword)
         retObj.sshPassword = settings.sshPassword;
     retObj.currentTime = Date.now();
-    var socketio = (player.webSocket?webSocket:(player.newSocketIo?newSocketio:oldSocketio));
-    socketio.emitMessage(player.socket, 'config', retObj);
+
+    sockets.emitMessage(
+        player.webSocket
+            ? sockets.WEB_SOCKET
+            : player.newSocketIo
+                ? sockets.NEW_SOCKET
+                : sockets.OLD_SOCKET,
+        player.socket,
+        "config",
+        retObj
+    );
 }
 
 //Load a object
-exports.loadObject = function (req, res, next, id) {
+exports.loadObject = async (req, res, next, id) => {
 
-    Player.load(id, function (err, object) {
-        if (err || !object)
-            return rest.sendError(res,'Unable to get group details',err);
+    try {
+        const playerToLoad = await Player.load(id)
 
+        if (!playerToLoad) return restwareSendError(res, 'Unable to get group details');
 
-        req.object = object;
-        next();
-    })
+        req.object = playerToLoad
+
+        next()
+    } catch (error) {
+        return restwareSendError(res, 'Unable to get group details', error);
+    }
 }
 
 //list of objects
-exports.index = function (req, res) {
+exports.index =  (req, res) => {
 
     var criteria = {};
 
@@ -252,8 +271,8 @@ exports.index = function (req, res) {
 
 
     if (req.query['location']) {
-        criteria['$or'] = [ {'location':req.query['location']}, {'configLocation':req.query['location']} ];
-    }
+        criteria['$or'] = [{ 'location': req.query['location'] }, { 'configLocation': req.query['location'] }];
+    }    // save screen shot in  _screenshots directory
 
     if (req.query['label']) {
         criteria['labels'] = req.query['label'];
@@ -278,7 +297,7 @@ exports.index = function (req, res) {
 
     Player.list(options, function (err, objects) {
         if (err)
-            return rest.sendError(res, 'Unable to get Player list', err);
+            return restwareSendError(res, 'Unable to get Player list', err);
 
         objects = objects || []
 
@@ -289,33 +308,33 @@ exports.index = function (req, res) {
             count: objects.length
         };
         data.currentVersion = {
-                    version: pipkgjson.version, platform_version: pipkgjson.platform_version,
-                    beta: pipkgjsonBeta.version,
-                    versionP2:pipkgjson.versionP2
-                };
-        return rest.sendSuccess(res, 'sending Player list', data);
+            version: pipkgjson.version, platform_version: pipkgjson.platform_version,
+            beta: pipkgjsonBeta.version,
+            versionP2: pipkgjson.versionP2
+        };
+        return restwareSendSuccess(res, 'sending Player list', data);
     })
 }
 
-exports.getObject = function (req, res) {
+exports.getObject = (req, res) => {
 
     var object = req.object;
     if (object) {
-        return rest.sendSuccess(res, 'Player details', object);
+        return restwareSendSuccess(res, 'Player details', object);
     } else {
-        return rest.sendError(res, 'Unable to retrieve Player details', err);
+        return restwareSendError(res, 'Unable to retrieve Player details', err);
     }
 
 };
 
-exports.createObject = function (req, res) {
+exports.createObject = (req, res) => {
 
     var player;
 
-    Player.findOne({cpuSerialNumber: req.body.cpuSerialNumber}, function (err, data) {
+    Player.findOne({ cpuSerialNumber: req.body.cpuSerialNumber }, function (err, data) {
 
         if (err) {
-            console.log("Error while retriving player data: " + err);
+            console.log("Error while retrieving player data: " + err);
         }
 
         if (data) {
@@ -328,19 +347,19 @@ exports.createObject = function (req, res) {
         player.registered = false;
 
         player.installation = installation;
-        console.log(player);
-        Group.findById(player.group._id, function(err,group) {
+
+        Group.findById(player.group._id, function (err, group) {
             if (!err && group) {
-                sendConfig(player,group,true)
+                sendConfig(player, group, true)
             } else {
-                console.log("unable to find group for the player");
+                console.log("unable to find group for the player");    // save screen shot in  _screenshots directory
             }
         })
         player.save(function (err, obj) {
             if (err) {
-                return rest.sendError(res, 'Error in saving new Player', err || "");
+                return restwareSendError(res, 'Error in saving new Player', err || "");
             } else {
-                return rest.sendSuccess(res, 'new Player added successfully', obj);
+                return restwareSendSuccess(res, 'new Player added successfully', obj);
             }
         })
     })
@@ -356,19 +375,19 @@ exports.updateObject = function (req, res) {
     async.series([
         function (next) {
             var playerGroup = {
-                name: "__player__"+ object.cpuSerialNumber,
+                name: "__player__" + object.cpuSerialNumber,
                 installation: req.installation,
                 _id: object.selfGroupId
             }
 
-            if (!req.body.group || (req.body.group && req.body.group._id)){
+            if (!req.body.group || (req.body.group && req.body.group._id)) {
                 next()
-            } else if (playerGroup._id){
+            } else if (playerGroup._id) {
                 req.body.group = playerGroup
                 next()
             } else {
-                delete playerGroup._id;
-                groups.newGroup(playerGroup,function(err,data){
+                delete playerGroup._id;    // save screen shot in  _screenshots directory
+                groups.newGroup(playerGroup, function (err, data) {
                     if (err) {
                         console.log(err)
                     }
@@ -382,12 +401,12 @@ exports.updateObject = function (req, res) {
             object = _.extend(object, req.body)
             object.save(function (err, data) {
                 if (err)
-                    rest.sendError(res, 'Unable to update Player data', err);
+                    restwareSendError(res, 'Unable to update Player data', err);
                 else
-                    rest.sendSuccess(res, 'updated Player details', data);
+                    restwareSendSuccess(res, 'updated Player details', data);
                 next()
             });
-        }], function() {
+        }], function () {
 
             Group.findById(object.group._id, function (err, group) {
                 if (!err && group) {
@@ -396,7 +415,7 @@ exports.updateObject = function (req, res) {
                     console.log("unable to find group for the player");
                 }
             })
-    })
+        })
 };
 
 
@@ -406,114 +425,149 @@ exports.deleteObject = function (req, res) {
         playerId = object.cpuSerialNumber;
     object.remove(function (err) {
         if (err)
-            return rest.sendError(res, 'Unable to remove Player record', err);
+            return restwareSendError(res, 'Unable to remove Player record', err);
         else {
-            return rest.sendSuccess(res, 'Player record deleted successfully');
+            return restwareSendSuccess(res, 'Player record deleted successfully');
         }
     })
 }
 
-var updatePlayerCount = {},
-    perDayCount = 20 * 24;
-exports.updatePlayerStatus = function (obj) {
-    var retObj = {};
+const updatePlayerCount = {};    // save screen shot in  _screenshots directory
+const perDayCount = 20 * 24;
 
-    updatePlayerCount[obj.cpuSerialNumber] = (updatePlayerCount[obj.cpuSerialNumber] || 0) + 1;
+exports.updatePlayerStatus = async (obj) => {
+
+    updatePlayerCount[obj.cpuSerialNumber] =
+        (updatePlayerCount[obj.cpuSerialNumber] || 0) + 1;
     if (updatePlayerCount[obj.cpuSerialNumber] > perDayCount) {
         updatePlayerCount[obj.cpuSerialNumber] = 0;
     }
 
-    Player.findOne({cpuSerialNumber: obj.cpuSerialNumber}, function (err, data) {
-        if (err) {
-            console.log("Error while retriving player data: " + err);
-        } else {
-            var player;
-            if (data) {
-                if (!obj.lastUpload || (obj.lastUpload < data.lastUpload))
-                    delete obj.lastUpload;
-                if (!obj.name || obj.name.length == 0)
-                    delete obj.name;
-                player = _.extend(data, obj)
-                if (!player.isConnected) {
-                    player.isConnected = true;
-                }
-            } else {
-                player = new Player(obj);
-                player.group = defaultGroup;
-                player.installation = installation;
+    try {
+        const playerData = await Player.findOne({
+            cpuSerialNumber: obj.cpuSerialNumber,
+        });
+
+        let player;
+
+        if (playerData) {
+            if (!obj.lastUpload || obj.lastUpload < playerData.lastUpload)
+                delete obj.lastUpload;
+
+            if (!obj.name || obj.name.length == 0) delete obj.name;
+
+            player = _.extend(playerData, obj);
+            if (!player.isConnected) {
                 player.isConnected = true;
             }
-            //server license feature, disable communication if server license is not available
-            if (player.serverServiceDisabled)
-                player.socket = null;
-
-            activePlayers[player._id.toString()] = true;
-            if (!player.registered || obj.request ) {
-                Group.findById(player.group._id, function (err, group) {
-                    if (!err && group) {
-                        var now = Date.now(),
-                            pid = player._id.toString();
-                        //throttle messages
-                        if (!lastCommunicationFromPlayers[pid] || (now - lastCommunicationFromPlayers[pid]) > 60000 ||
-                            obj.priority) {
-                            lastCommunicationFromPlayers[pid] = now;
-                            sendConfig(player,group, (updatePlayerCount[obj.cpuSerialNumber] === 1));
-                        } else {
-                            //console.log("communication to "+player.name+" at "+now+", last "+ lastCommunicationFromPlayers[pid]+" did not happen")
-                        }
-                    } else {
-                        console.log("unable to find group for the player");
-                    }
-                })
-            }
-            player.save(function (err, player) {
-                if (err) {
-                    return console.log("Error while saving player status: " + err);
-                }
-            });
-        }
-    })
-}
-
-exports.secretAck = function (sid, status) {
-    Player.findOne({socket: sid}, function (err, player) {
-        if (!err && player) {
-            player.registered = status;
-            player.save();
         } else {
-            console.log("not able to find player")
+            player = new Player(obj);
+            player.group = defaultGroup;
+            player.installation = installation;
+            player.isConnected = true;
         }
-    })
+
+        if (player.serverServiceDisabled) player.socket = null;
+
+        activePlayers[player._id.toString()] = true;    // save screen shot in  _screenshots directory
+
+        if (!player.registered || obj.request) {
+            try {
+                const groupData = await Group.findById(player.group._id);
+
+                const now = Date.now();
+                const pid = player._id.toString();
+                //throttle messages
+                if (
+                    !lastCommunicationFromPlayers[pid] ||
+                    now - lastCommunicationFromPlayers[pid] > 60000 ||
+                    obj.priority
+                ) {
+                    lastCommunicationFromPlayers[pid] = now;
+                    sendConfig(
+                        player,
+                        groupData,
+                        updatePlayerCount[obj.cpuSerialNumber] === 1
+                    );
+                } 
+                
+                // else {
+                    //console.log("communication to "+player.name+" at "+now+", last "+ lastCommunicationFromPlayers[pid]+" did not happen")
+                // }
+            } catch (error) {
+                console.error("unable to find group for the player");
+            }
+        }
+
+        try {
+            await player.save();
+        } catch (error) {
+            console.error(`Error while saving player status: ${error}`);
+            return;
+        }
+    } catch (error) {
+        console.log(`Error while retrieving player data: ${error}`);
+    }    // save screen shot in  _screenshots directory
+
+};
+
+exports.secretAck = async (sid, status) => {
+    try {
+        const player = await Player.findOne({ socket: sid })
+
+        if (player) {
+            player.registered = status
+            player.save()
+
+        }
+
+    } catch (error) {
+        console.log("not able to find player")
+        console.error(error)
+    }
+
 }
 
-var pendingCommands = {};
-var shellCmdTimer = {};
+const pendingCommands = {};
+const shellCmdTimer = {};
 
-exports.shell = function (req, res) {
-    var cmd = req.body.cmd;
-    var object = req.object,
-        sid = object.socket;
+exports.shell =  (req, res) => {
+
+    const cmd = req.body.cmd
+    const object = req.object
+    const sid = object.socket;
     pendingCommands[sid] = res;
-    var socketio = (object.webSocket?webSocket:(object.newSocketIo?newSocketio:oldSocketio));
-    socketio.emitMessage(sid, 'shell', cmd);
+
+    sockets.emitMessage(
+        object.webSocket
+            ? sockets.WEB_SOCKET
+            : object.newSocketIo
+                ? sockets.NEW_SOCKET
+                : sockets.OLD_SOCKET,
+        sid,
+        'shell',
+        cmd
+    );
 
     clearTimeout(shellCmdTimer[sid]);
-    shellCmdTimer[sid] = setTimeout(function(){
+    shellCmdTimer[sid] = setTimeout(function () {
         delete shellCmdTimer[sid];
-        if(pendingCommands[sid]){
-            rest.sendSuccess(res,"Request Timeout",
-                { err: "Could not get response from the player,Make sure player is online and try again."})
+        if (pendingCommands[sid]) {
+            restwareSendSuccess(res, "Request Timeout",
+                { err: "Could not get response from the player! Make sure player is online and try again." })
             pendingCommands[sid] = null;
         }
-    },60000)
+    }, 60000)
 }
 
-exports.shellAck = function (sid, response) {
+exports.shellAck = (sid, response) => {
 
     if (pendingCommands[sid]) {
+
         clearTimeout(shellCmdTimer[sid])
         delete shellCmdTimer[sid];
-        rest.sendSuccess(pendingCommands[sid], 'Shell cmd response', response);
+
+        restwareSendSuccess(pendingCommands[sid], 'Shell cmd response', response);
         pendingCommands[sid] = null;
     }
 
@@ -533,50 +587,66 @@ var playerActionTimers = {
     backward: {}
 };
 
-exports.playlistMedia = function (req, res) {
+exports.playlistMedia = (req, res) => {
     var object = req.object,
         sid = object.socket;
     var action = req.params.action;
 
-    // logger.log('info', 'Player action: ' + action);
-    var socketIO = (object.newSocketIo?newSocketio:oldSocketio);
-    socketIO.emitMessage(sid, 'playlist_media', action);
+    sockets.emitMessage(
+        object.webSocket
+            ? sockets.WEB_SOCKET
+            : object.newSocketIo
+                ? sockets.NEW_SOCKET
+                : sockets.OLD_SOCKET,
+        sid,
+        'playlist_media',
+        action
+    );
 
     pendingPlayerActions[action][sid] = res;
     clearTimeout(playerActionTimers[action][sid]);
 
-    playerActionTimers[action][sid] = setTimeout(function(){
+    playerActionTimers[action][sid] = setTimeout(function () {
         if (playerActionTimers[action][sid]) {
             delete playerActionTimers[action][sid];
-            rest.sendSuccess(res, 'Request Timeout',
-                { err: 'No response from the player, make sure the player is online and try again.'});
+            restwareSendSuccess(res, 'Request Timeout',
+                { err: 'No response from the player, make sure the player is online and try again.' });
             pendingPlayerActions[action][sid] = null;
         }
-    },60000)
+    }, 60000)
 
 };
 
 
-exports.setPlaylist = function(req, res) {
+exports.setPlaylist = (req, res) => {
     var object = req.object;
     var playlist = req.params.playlist;
     var sid = object.socket;
-    var socketIo = (object.newSocketIo ? newSocketio : oldSocketio);
-    socketIo.emitMessage(sid, 'setplaylist', playlist);
+
+    sockets.emitMessage(
+        object.webSocket
+            ? sockets.WEB_SOCKET
+            : object.newSocketIo
+                ? sockets.NEW_SOCKET
+                : sockets.OLD_SOCKET,
+        sid,
+        'setplaylist',
+        playlist
+    );
 
     pendingPlaylistChanges[sid] = res;
     clearTimeout(playlistChangeTimers[sid]);
-    playlistChangeTimers[sid] = setTimeout(function() {
+    playlistChangeTimers[sid] = setTimeout(function () {
         delete playlistChangeTimers[sid];
         if (pendingPlaylistChanges[sid]) {
             var errMsg = 'Could not get response from the player for changing playlist, make sure player is online';
-            rest.sendSuccess(res, 'Request Timeout', { err: errMsg });
+            restwareSendSuccess(res, 'Request Timeout', { err: errMsg });
             pendingPlaylistChanges[sid] = null;
         }
     }, 60000);
 };
 
-exports.playlistMediaAck = function(sid, response) {
+exports.playlistMediaAck = (sid, response) => {
     var data = {};
 
     if (response.action && pendingPlayerActions[response.action][sid]) {
@@ -586,154 +656,241 @@ exports.playlistMediaAck = function(sid, response) {
         if (response.action === 'pause') {
             data.isPaused = response.isPaused;
         }
-        rest.sendSuccess(pendingPlayerActions[response.action][sid], response.msg, data);
+        restwareSendSuccess(pendingPlayerActions[response.action][sid], response.msg, data);
         pendingPlayerActions[response.action][sid] = null;
     }
 };
 
-exports.playlistChangeAck = function(sid, response) {
+exports.playlistChangeAck = (sid, response) => {
     if (pendingPlaylistChanges[sid]) {
         clearTimeout(playlistChangeTimers[sid]);
         delete playlistChangeTimers[sid];
-        rest.sendSuccess(pendingPlaylistChanges[sid], 'Playlist change response', response);
+        restwareSendSuccess(pendingPlaylistChanges[sid], 'Playlist change response', response);
         pendingPlaylistChanges[sid] = null;
     }
 };
 
-exports.swupdate = function (req, res) {
-    var object = req.object,
-        version = req.body.version || null;
+exports.swupdate = (req, res) => {
+    const object = req.object
+    const version = req.body.version || null;
+
     if (!version) {
-        version = 'piimage'+pipkgjson.version+'.zip'
+        version = `piimage${pipkgjson.versionP2}-p2.zip`
     }
-    var socketio = (object.webSocket?webSocket:(object.newSocketIo?newSocketio:oldSocketio));
-    socketio.emitMessage(object.socket, 'swupdate',version,'piimage'+pipkgjson.versionP2+'-p2.zip');
-    //console.log("updating to "+(version?version:'piimage'+pipkgjson.version+'.zip'));
-    return rest.sendSuccess(res, 'SW update command issued');
+
+    sockets.emitMessage(
+        object.webSocket
+            ? sockets.WEB_SOCKET
+            : object.newSocketIo
+                ? sockets.NEW_SOCKET
+                : sockets.OLD_SOCKET,
+        object.socket,
+        'swupdate',
+        version,
+        `piimage${pipkgjson.versionP2}-p2.zip`
+
+    );
+
+    return restwareSendSuccess(res, 'SW update command issued');
 }
 
-exports.upload = function (cpuId, filename, data) {
-    Player.findOne({cpuSerialNumber: cpuId}, function (err, player) {
-        if (player) {
-            var logData;
-            if(filename.indexOf('forever_out') == 0 ){
-                fs.writeFile(config.logStoreDir+'/'+cpuId+'_forever_out.log',data,function(err){
-                    if(err) {
-                        console.log("error", "Error in writing forever_out log for " + cpuId);
-                        console.log(err);
-                    }
-                    // else
-                    //     console.log("info","Forever Log file saved for player : "+cpuId);
-                })
-            } else if (path.extname(filename) == '.log' && filename.indexOf('forever_out.log')===-1 ) {
+
+exports.upload = async (cpuId, filename, data) => {
+
+    try {
+        const playerDetails = await Player.findOne({ cpuSerialNumber: cpuId });
+
+        if (playerDetails) {
+            let logData;
+
+            if (filename.indexOf("forever_out") === 0) {
                 try {
+                    await fs.promises.writeFile(
+                        `${config.logStoreDir}/${cpuId}_forever_out.log`,
+                        data
+                    );
+                } catch (error) {
+                    console.log(
+                        "error",
+                        `Error in writing forever_out log for ${cpuId}`
+                    );
+                    console.error(error);
+                }
+            } else if (
+                path.extname(filename) === ".log" &&
+                filename.indexOf("forever_out.log") === -1
+            ) {
+                try {
+                    
                     logData = JSON.parse(data);
-                    logData.installation = player.installation;
-                    logData.playerId = player._id.toString();
+                    logData.installation = playerDetails.installation;
+                    logData.playerId = playerDetails._id.toString();
                 } catch (e) {
                     //corrupt file
-                    console.log(player.cpuSerialNumber)
-                    console.log("corrupt log file: "+filename);
+                    console.log(`corrupt log file: ${filename}`);
+                    console.error(e)
+
                 }
-            } else if (path.extname(filename) == '.events') {
-                var lines = data.split('\n'),
-                    events = [];
-                for (var i = 0; i < lines.length; i++) {
-                    //console.log(lines[i]);
+            } else if (path.extname(filename) === ".events") {
+                const lines = data.split("\n");
+                const events = [];
+
+                for (const line of lines) {
                     try {
-                        logData = JSON.parse(lines[i]);
-                        if (logData.category == "file" || logData.description == "connected to server")
-                            continue;
-                        logData.installation = player.installation;
-                        logData.playerId = player._id.toString();
-                        events.push(logData);
-                    } catch (e) {
-                        //corrupt file
-                        //console.log("corrupt log file: "+filename);
+                        if (line !== "" && line !== " ") {
+                            logData = JSON.parse(line);
+
+                            if (logData.category == "file" || logData.description == "connected to server") continue;
+
+                            logData.installation = playerDetails.installation;
+                            logData.playerId = playerDetails._id.toString();
+
+                            events.push(logData);
+                        }
+
+                    } catch (error) {
+                        console.error(error);
                     }
                 }
             }
-            var socketio = (player.webSocket?webSocket:(player.newSocketIo?newSocketio:oldSocketio));
-            socketio.emitMessage(player.socket, 'upload_ack', filename);
-        } else {
-            console.log("ignoring file upload: " + filename);
-        }
-    })
-}
 
-exports.tvPower = function(req,res){
-    var object = req.object,
-        cmd = req.body.cmd || "tvpower",
-        arg;
-    if (cmd =="debuglevel") {
-        arg = {level: req.body.level }
-    } else if (cmd == "tvpower") {
-        arg =  {off: req.body.status}
+            sockets.emitMessage(
+                playerDetails.webSocket
+                    ? sockets.WEB_SOCKET
+                    : playerDetails.newSocketIo
+                        ? sockets.NEW_SOCKET
+                        : sockets.OLD_SOCKET,
+                playerDetails.socket,
+                "upload_ack",
+                filename
+            );
+        } else {
+            console.log(`ignoring file upload: ${filename}`);
+        }
+    } catch (error) {
+        console.error(error);
     }
 
-    var socketio = (object.webSocket?webSocket:(object.newSocketIo?newSocketio:oldSocketio));
-    socketio.emitMessage(object.socket,'cmd',cmd,arg );
-    return rest.sendSuccess(res,'Player command issued');
+};
+
+exports.tvPower = (req, res) => {
+    const object = req.object
+
+    const cmd = req.body.cmd || "tvpower"
+
+    let arg;
+    
+    if (cmd == "debuglevel") {
+        arg = { level: req.body.level }
+    } else if (cmd == "tvpower") {
+        arg = { off: req.body.status }
+    }
+
+    sockets.emitMessage(
+        object.webSocket
+            ? sockets.WEB_SOCKET
+            : object.newSocketIo
+                ? sockets.NEW_SOCKET
+                : sockets.OLD_SOCKET,
+        object.socket,
+        "cmd",
+        cmd,
+        arg
+    );
+
+    return restwareSendSuccess(res, 'Player command issued');
 }
 
+const snapShotTimer = {};
+const pendingSnapshots = {};
 
+exports.piScreenShot = async (sid, data) => {
 
-var snapShotTimer = {};
-var pendingSnapshots = {};
+    // save screen shot in  _screenshots directory
+    const img = Buffer.from(data.data, "base64").toString("binary");
+    const cpuId = data.playerInfo["cpuSerialNumber"];
 
-exports.piScreenShot = function (sid,data) { // save screen shot in  _screenshots directory
-    var img =  Buffer.from(data.data,"base64").toString("binary"),
-        cpuId = data.playerInfo["cpuSerialNumber"];
-
-    clearTimeout(snapShotTimer[cpuId])
+    clearTimeout(snapShotTimer[cpuId]);
     delete snapShotTimer[cpuId];
 
-    fs.writeFile(path.join(config.thumbnailDir,cpuId + '.jpeg'), img, 'binary',function (err) {
-        if (err)
-            console.log('error in  saving screenshot for ' + cpuId, err);
+    try {
+        await fs.promises.writeFile(
+            path.join(config.thumbnailDir, `${cpuId}.jpeg`),
+            img,
+            "binary"
+        );
+
         if (pendingSnapshots[cpuId]) {
-            rest.sendSuccess(pendingSnapshots[cpuId], 'screen shot received',
+            restwareSendSuccess(
+                pendingSnapshots[cpuId],
+                "screen shot received",
                 {
-                    url: "/media/_thumbnails/"+cpuId+".jpeg",
-                    lastTaken: Date.now()
+                    url: `/media/_thumbnails/${cpuId}.jpeg`,
+                    lastTaken: Date.now(),
                 }
             );
             delete pendingSnapshots[cpuId];
         }
-    })
-}
+    } catch (error) {
+        console.error(`error in saving screenshot for ${cpuId}: `, error);
+    }
 
-exports.takeSnapshot = function (req, res) { // send socket.io event
-    var object = req.object,
-        cpuId = object.cpuSerialNumber;
+};
+
+exports.takeSnapshot = async (req, res) => {
+
+    const object = req.object;
+    const cpuId = object.cpuSerialNumber;
+
     if (pendingSnapshots[cpuId])
-        rest.sendError(res, 'snapshot taking in progress');
+        restwareSendError(res, "snapshot taking in progress");
     else if (!object.isConnected) {
-        fs.stat(path.join(config.thumbnailDir, cpuId + '.jpeg'), function (err, stats) {
-            rest.sendSuccess(res, 'player is offline, sending previous snapshot',
-                {
-                    url: "/media/_thumbnails/" + cpuId + ".jpeg",
-                    lastTaken: stats ? stats.mtime : "NA"
-                }
+        try {
+            const stats = await fs.promises.stat(
+                path.join(config.thumbnailDir, `${cpuId}.jpeg`)
             );
-        })
+            restwareSendSuccess(
+                res,
+                "player is offline, sending previous snapshot",
+                {
+                    url: `/media/_thumbnails/${cpuId}.jpeg`,
+                    lastTaken: stats ? stats.mtime : "NA",
+                }
+            )
+        } catch (error) {
+            console.error(error);
+        }
+
     } else {
         pendingSnapshots[cpuId] = res;
-        snapShotTimer[cpuId] = setTimeout(function () {
+        snapShotTimer[cpuId] = setTimeout(async () => {
             delete snapShotTimer[cpuId];
             delete pendingSnapshots[cpuId];
-            fs.stat(path.join(config.thumbnailDir, cpuId + '.jpeg'), function (err, stats) {
-                rest.sendSuccess(res, 'screen shot command timeout',
-                    {
-                        url: "/media/_thumbnails/" + cpuId + ".jpeg",
-                        lastTaken: stats ? stats.mtime : "NA"
-                    }
+
+            try {
+                const stats = await fs.stat(
+                    path.join(config.thumbnailDir, `${cpuId}.jpeg`)
                 );
-            })
-        }, 60000)
-        var socketio = (object.webSocket?webSocket:(object.newSocketIo?newSocketio:oldSocketio));
-        socketio.emitMessage(object.socket, 'snapshot');
+
+                restwareSendSuccess(res, "screen shot command timeout", {
+                    url: `/media/_thumbnails/${cpuId}.jpeg`,
+                    lastTaken: stats ? stats.mtime : "NA",
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }, 60000);
+
+        sockets.emitMessage(
+            object.webSocket
+                ? sockets.WEB_SOCKET
+                : object.newSocketIo
+                    ? sockets.NEW_SOCKET
+                    : sockets.OLD_SOCKET,
+            object.socket,
+            "snapshot"
+        );
     }
-}
+};
 
 

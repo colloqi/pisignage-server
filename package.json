@@ -38,6 +38,7 @@
     "serve-favicon": "^2.5.0",
     "serve-index": "^1.9.1",
     "socket.io": "^2.4.0",
+    "uuid": "^10.0.0",
     "winston": "^3.13.0",
     "ws": "^7.4.6"
   },

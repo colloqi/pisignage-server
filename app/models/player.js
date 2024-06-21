@@ -57,9 +57,8 @@ PlayerSchema.path('cpuSerialNumber').validate(function (name) {
 }, 'cpuSerialNumber cannot be blank')
 
 PlayerSchema.statics = {
-   load: function (id, cb) {
-        this.findOne({ _id: id })
-            .exec(cb)
+   load: function (id) {
+        return this.findById({ _id: id })
     },
 
     list: function (options, cb) {

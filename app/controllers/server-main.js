@@ -1,20 +1,20 @@
-'use strict';
+"use strict" // REMOVE AFTER MIGRATING require TO import statements
 
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
     Player = mongoose.model('Player'),
     Asset = mongoose.model('Asset'),
     rest = require('../others/restware'),
     config = require('../../config/config'),
     fs = require('fs'),
-    async = require('async'),
+
+    async = require('async'), // TO BE REMOVED AFTER FULL FILE CONVERSION
+
     util = require('util'),
     path = require('path');
 
-var oldSocketio = require('./server-socket'),
-    newSocketio = require('./server-socket-new'),
-    webSocket = require('./server-socket-ws');
+const playersToBeSynced = {}, players = {};
 
-var playersToBeSynced = {}, players = {};
+const sockets = require("./socket.js")
 
 exports.getStatus = function (req, res) {
     return rest.sendSuccess(res, 'Dummy status', {server: true});
@@ -191,7 +191,8 @@ exports.deploy = function (installation,group, cb) {
                     }
                     async_cb();
                 })
-        }], function (err, results) {
+        }], 
+        function (err, results) {
             group.deployedAssets = group.assets;
             group.deployedPlaylists = group.playlists;
             group.deployedTicker = group.ticker;
@@ -200,13 +201,33 @@ exports.deploy = function (installation,group, cb) {
                 console.log("Error in deploy: ", err);
                 return cb(err, group);
             }
-            players[group._id.toString()].forEach(function (player) {
-                var socketio = (player.webSocket?webSocket:(player.newSocketIo?newSocketio:oldSocketio));
-                socketio.emitMessage(player.socket, 'sync',
-                    group.playlists, group.assets, group.deployedTicker,
-                    group.logo, group.logox, group.logoy,group.combineDefaultPlaylist,group.omxVolume,
-                    group.loadPlaylistOnCompletion, group.assetsValidity);
-            });
+
+            for (const player of players[group._id.toString()]) {
+                const emitMessageArgs = [
+                    player.socket,
+                    "sync",
+                    group.playlists,
+                    group.assets,
+                    group.deployedTicker,
+                    group.logo,
+                    group.logox,
+                    group.logoy,
+                    group.combineDefaultPlaylist,
+                    group.omxVolume,
+                    group.loadPlaylistOnCompletion,
+                    group.assetsValidity,
+                ];
+
+                sockets.emitMessage(
+                    player.webSocket
+                        ? sockets.WEB_SOCKET
+                        : player.newSocketIo
+                        ? sockets.NEW_SOCKET
+                        : sockets.OLD_SOCKET,
+                    ...emitMessageArgs
+                );
+            }
+            
             console.log("sending sync event to players");
             cb(null, group);
         }
