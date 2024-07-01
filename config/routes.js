@@ -1,13 +1,13 @@
 'use strict';
 
-var express = require('express'),
+const express = require('express'),
     router = express.Router();
 
-var multer = require('multer'),
+const multer = require('multer'),
     config = require('./config'),
     upload = multer({dest:config.uploadDir})
 
-var assets = require('../app/controllers/assets'),
+const assets = require('../app/controllers/assets'),
     playlists = require('../app/controllers/playlists'),
     players = require('../app/controllers/players'),
     groups = require('../app/controllers/groups'),
@@ -66,10 +66,10 @@ router.post('/api/snapshot/:playerid',players.takeSnapshot)
 router.post('/api/swupdate/:playerid', players.swupdate)
 router.post('/api/pitv/:playerid',players.tvPower);
 
+router.param('playerid', players.loadObject)
+
 router.post('/api/playlistmedia/:playerid/:action',  players.playlistMedia);
 router.post('/api/setplaylist/:playerid/:playlist',  players.setPlaylist);
-
-router.param('playerid', players.loadObject)
 
 router.get('/api/labels', labels.index);
 router.get('/api/labels/:label', labels.getObject)

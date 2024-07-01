@@ -57,20 +57,19 @@ PlayerSchema.path('cpuSerialNumber').validate(function (name) {
 }, 'cpuSerialNumber cannot be blank')
 
 PlayerSchema.statics = {
-   load: function (id) {
-        return this.findById({ _id: id })
+    load: function (id) {
+        return this.findById({ _id: id });
     },
 
-    list: function (options, cb) {
-        var criteria = options.criteria || {}
+    list: function (options) {
+        const criteria = options.criteria || {};
 
-        this.find(criteria)
-            .sort({name: 1}) // sort by date
+        return this.find(criteria)
+            .sort({ name: 1 }) // sort by date
             .limit(options.perPage)
-            .skip(options.perPage * options.page)
-            .exec(cb)
-    }
-}
+            .skip(options.perPage * options.page);
+    },
+};
 
 mongoose.model('Player', PlayerSchema)
 
