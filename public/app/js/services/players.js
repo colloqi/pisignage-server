@@ -6,7 +6,7 @@
 angular.module('piPlayers.services', [])
     .factory('playerLoader', function ($http,piUrls,$state,assetLoader,$stateParams) {
         var observerCallbacks = {};
-        var BUCKET_INTERVALS = [0,5,60,240,24 * 60, 7 * 24 * 60,Infinity];
+        var BUCKET_INTERVALS = [0,5,60,240,24 * 60, 7 * 24 * 60,Infinity];    
         var filterByBucket = function(playerReportedTime) {
         playerReportedTime = playerReportedTime || 0;
         var lastReportedTimeInMinutes = parseInt((Date.now() - (new Date(playerReportedTime).getTime()))/60000);
@@ -42,6 +42,22 @@ angular.module('piPlayers.services', [])
                         locationWise=$stateParams.locationName;
                         playerLoader.player.players = data.data.objects;
                         playerLoader.player.currentVersion = data.data.currentVersion;
+
+                        const calculatedLabelCount = {}
+
+                        for (const player of playerLoader.player.players) {
+                            for (const label of player.labels) {
+                                    if (label != "") {
+                                        if (calculatedLabelCount[label]) {
+                                            calculatedLabelCount[label] += 1;
+                                        } else {
+                                            calculatedLabelCount[label] = 1;
+                                        }
+                                    }
+                            }
+                        }
+
+
                         playerLoader.player.players.forEach(function(player){
                             if (!isNaN(bucketIndex)) {
                                 //filter players
@@ -92,9 +108,14 @@ angular.module('piPlayers.services', [])
 
                             if (!player.lastReported)
                                 player.lastReported = 0;    //never reported
-                            player.labels.forEach(function (item) {
-                                assetLoader.label.labelsCount[item] = (assetLoader.label.labelsCount[item] || 0) + 1;
-                            })
+
+                            for (const labelCount in calculatedLabelCount) {
+                                assetLoader.label.labelsCount[labelCount] = (calculatedLabelCount[labelCount] || 0)
+                            }
+
+                            // player.labels.forEach(function (item) {
+                            //     assetLoader.label.labelsCount[item] = (calculatedLabelCount[item] || 0);
+                            // })
                         });
                     }
                     if(groupWise){

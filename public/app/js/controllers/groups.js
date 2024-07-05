@@ -901,10 +901,13 @@ angular.module('piGroups.controllers', [])
                 templateUrl: '/app/templates/groupChangePopUp.html',
                 scope: $scope
             });
-
+            
             $scope.playerLabels = assetLoader.label.labels.filter(function(label){
                 return (label.mode && label.mode === "players")
             });
+
+            $scope.ngDropdown.selectedLabels = []
+
             $scope.playerLabels.forEach(function(label){
                 if ($scope.selectedPlayer.labels.indexOf(label.name) >=0)
                     $scope.ngDropdown.selectedLabels.push(label)
