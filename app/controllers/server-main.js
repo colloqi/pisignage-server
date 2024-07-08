@@ -24,7 +24,7 @@ const sockets = require("./socket.js");
 // exports.saveSettings = function () {
 // }
 
-exports.deploy = async (installation, group, cb) => {
+exports.deploy = async (installation, group) => {
 
     // OPERATION 0 ================================================================================
     if (!group.playlists || group.playlists.length == 0) {
@@ -33,7 +33,7 @@ exports.deploy = async (installation, group, cb) => {
         group.deployedTicker = group.ticker;
 
         console.log("Error in deploy: No Playlists assigned to the Group");
-        return cb("Error in deploy: No Playlists assigned to the Group", group);
+        throw new Error("Error in deploy: No Playlists assigned to the Group")
     }
 
     // OPERATION 1 ================================================================================
@@ -48,7 +48,7 @@ exports.deploy = async (installation, group, cb) => {
             group.deployedTicker = group.ticker;
 
             console.log("No Players associated");
-            return cb("No Players associated, ", group);
+            throw new Error("No Players associated")
         }
 
         for (const player of playersInGroup) {
@@ -64,7 +64,7 @@ exports.deploy = async (installation, group, cb) => {
         group.deployedTicker = group.ticker;
 
         console.log("Error in deploy: No Players associated");
-        return cb("No Players associated, ", group);
+        throw new Error("No Players associated")
     }
 
     // FOLDER SETUP ================================================================================
@@ -120,7 +120,7 @@ exports.deploy = async (installation, group, cb) => {
                     group.deployedTicker = group.ticker;
 
                     console.error(`Error in deploy: ${errorMessage}`);
-                    return cb(err, group);
+                    throw new Error(error.message)
                 }
 
                 /*
@@ -189,7 +189,7 @@ exports.deploy = async (installation, group, cb) => {
         group.deployedTicker = group.ticker;
 
         console.error(`Error in deploy: ${error}`);
-        return cb(error, group);
+        throw new Error(error.message)
     }
 
 
@@ -231,6 +231,8 @@ exports.deploy = async (installation, group, cb) => {
             continue;
         }
     }
+
+    group.assets = group.assets.concat(filesAdded)
 
 
     // OPERATION 5 ================================================================================
@@ -293,5 +295,5 @@ exports.deploy = async (installation, group, cb) => {
     }
 
     console.log("Sending sync event to players");
-    cb(null, group);
+    return group
 };
