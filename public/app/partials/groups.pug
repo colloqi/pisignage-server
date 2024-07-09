@@ -12,11 +12,11 @@
                 a(ng-click="fn.selected(item)")
                     .row
                         .col-sm-10
-                            small(ng-hide="item.renameEnable && fn.editMode") {{ item.name }}
-                            .form-group(ng-show="item.renameEnable && fn.editMode")
+                            small(ng-hide="item.renameEnable && fn.editMode && item.name !== 'default'") {{ item.name }}
+                            .form-group(ng-show="item.renameEnable && fn.editMode && item.name !== 'default'")
                                 input.form-control(type='text', ng-model='item.newname',ng-blur="fn.rename($index)")
                         .col-sm-2
-                            button.close(ng-click='$event.stopPropagation();fn.delete($index);',ng-if="fn.editMode")
+                            button.close(ng-click='$event.stopPropagation();fn.delete($index);',ng-if="fn.editMode", ng-show="item.name !== 'default'")
                                 i.fa.fa-times-circle(ng-class="{'text-danger': fn.editMode}")
 
     form(name="addform", ng-submit='fn.add()')
@@ -26,3 +26,4 @@
                 button.btn.btn-info(type="submit")
                     i.fa.fa-plus
 
+''

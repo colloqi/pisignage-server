@@ -89,24 +89,37 @@ GroupSchema.path('name').validate(function (name) {
 
 GroupSchema.statics = {
 
-    load: function (id, cb) {
-        this.findOne({ _id: id })
-            .exec(cb)
+    load: function (id) {
+        return this.findOne({ _id: id })
+            
     },
 
-    list: function (options, cb) {
-        var criteria = options.criteria || {}
+    list: function (options) {
+        const criteria = options.criteria || {}
 
         if (!(criteria.all || criteria.name)) {
             criteria.name = {"$not": /__player__/}
         }
         delete criteria.all;
-        this.find(criteria)
+        return this.find(criteria)
             .sort({name: 1}) // sort by date
             .limit(options.perPage)
             .skip(options.perPage * options.page)
-            .exec(cb)
     }
+
+    // list: function (options, cb) {
+    //     var criteria = options.criteria || {}
+
+    //     if (!(criteria.all || criteria.name)) {
+    //         criteria.name = {"$not": /__player__/}
+    //     }
+    //     delete criteria.all;
+    //     this.find(criteria)
+    //         .sort({name: 1}) // sort by date
+    //         .limit(options.perPage)
+    //         .skip(options.perPage * options.page)
+    //         .exec(cb)
+    // }
 }
 
 mongoose.model('Group', GroupSchema)

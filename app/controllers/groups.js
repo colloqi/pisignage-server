@@ -1,146 +1,171 @@
-'use strict;'
+'use strict;' // REMOVE WHEN require USAGE IS REPLACED WITH import STATEMENTS
 
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
     Group = mongoose.model('Group'),
 
     fs = require('fs'),
     config = require('../../config/config'),
 
-    rest = require('../others/restware'),
+    restwareSendSuccess = require('../others/restware').sendSuccess,
+    restwareSendError = require('../others/restware').sendError,
     _ = require('lodash'),
 
-    path = require('path'),
-    async = require('async');
+    path = require('path');
 
-var serverMain = require('./server-main'),
+const serverMain = require('./server-main'),
     licenses = require('./licenses');
 
-var installation;
+let installation;
 
-licenses.getSettingsModel(function(err,settings){
-    installation = settings.installation || "local"
-})
+licenses.getSettingsModel(function (err, settings) {
+    installation = settings.installation || "local";
+});
 
+exports.newGroup = async (group) => {
+    let object;
 
-
-exports.newGroup = function (group, cb) {
-
-    var object;
-    Group.findOne({name:group.name}, function(err,data) {
-        if (err || !data) {
+    try {
+        const groupData = await Group.findOne({ name: group.name });
+        console.log("LOG E: ", groupData);
+        if (!groupData) {
             object = new Group(group);
+            console.log("LOG F: ", { object });
         } else {
-            object = _.extend(data, group);
+            object = _.extend(groupData, group);
         }
-        //create a sync folder under sync_folder
-        if (!object.name) {
-            console.log("can not be null: "+object.name);
-            return cb('Unable to create a group folder in server: '+object.name);
+    } catch (error) {
+        object = new Group(group);
+    }
+
+    if (!object.name) {
+        console.log("Group name cannot be null");
+        throw new Error("Unable to create a group folder in server");
+    }
+
+    try {
+        await fs.promises.mkdir(
+            path.join(config.syncDir, installation, object.name)
+        );
+    } catch (error) {
+        if (error.code != "EEXIST") {
+            console.error({ error }, error.code);
+            throw new Error(
+                `Unable to create a group folder in server: ${error.message}`
+            );
         }
-        fs.mkdir(path.join(config.syncDir,installation, object.name),function(err){
-            if (err && (err.code != 'EEXIST'))
-                return cb('Unable to create a group folder in server: '+err);
-            else {
-                object.save(function (err, data) {
-                    cb(err,data);
-                })
-            }
-        });
-    })
-}
-
-//Load a object
-exports.loadObject = function (req, res, next, id) {
-
-    Group.load(id, function (err, object) {
-        if (err || !object)
-            return rest.sendError(res,'Unable to get group details',err);
-
-        req.object = object;
-        next();
-    })
-}
-
-//list of objects
-exports.index = function (req, res) {
-
-    var criteria = {};
-
-    if (req.query['string']) {
-        var str = new RegExp(req.query['string'], "i")
-        criteria['name'] = str;
     }
 
-    if (req.query['all']) {
-        criteria['all'] = true;
+    try {
+        await object.save();
+
+        return object;
+    } catch (error) {
+        throw new Error(error.message);
     }
-
-    var page = req.query['page'] > 0 ? req.query['page'] : 0
-    var perPage = req.query['per_page'] || 500
-
-    var options = {
-        perPage: perPage,
-        page: page,
-        criteria: criteria
-    }
-
-    Group.list(options, function (err, groups) {
-        if (err)
-            return rest.sendError(res, 'Unable to get Group list', err);
-        else
-            return rest.sendSuccess(res, 'sending Group list', groups || []);
-    })
-}
-
-exports.getObject = function (req, res) {
-
-    var object = req.object;
-    if (object) {
-        return rest.sendSuccess(res, 'Group details', object);
-    } else {
-        return rest.sendError(res, 'Unable to retrieve Group details', err);
-    }
-
 };
 
-exports.createObject = function (req, res) {
+//Load an object
+exports.loadObject = async (req, res, next, id) => {
+    try {
+        const object = await Group.load(id);
 
-    var object = req.body;
-
-    exports.newGroup(object, function (err, data) {
-        if (err)
-            return rest.sendError(res, err);
-        else
-            return rest.sendSuccess(res, 'new Group added successfully', data);
-    })
-}
-
-exports.updateObject = function (req, res) {
-
-    var saveObject = function (err, group) {
-        if (err) {
-            return rest.sendError(res, err);
+        if (object) {
+            req.object = object;
+            next();
         } else {
-            if (req.body.deploy) {
-                group.lastDeployed = Date.now();
-                Group.update({ _id: group._id }, { $set: {
-                    lastDeployed: group.lastDeployed,
-                    assets: group.assets,
-                    deployedAssets: group.deployedAssets,
-                    assetsValidity: group.assetsValidity
-                }}).exec();
-            }
-            return rest.sendSuccess(res, 'updated Group details', group);
+            return restwareSendError(res, "Unable to get group details");
         }
+    } catch (error) {
+        return restwareSendError(
+            res,
+            "Unable to get group details",
+            error.message
+        );
+    }
+};
+
+//list of objects
+exports.index = async (req, res) => {
+    const criteria = {};
+
+    if (req.query["string"]) {
+        const str = new RegExp(req.query["string"], "i");
+        criteria["name"] = str;
     }
 
-    var object = req.object;
-    delete req.body.__v;        //do not copy version key
-    if (req.body.name && (object.name != req.body.name)) {
-        fs.mkdir(path.join(config.syncDir, installation, req.body.name), function (err) {
-            if (err && (err.code != 'EEXIST'))
-                console.log('Unable to create a group folder in server: ' + err);
-        });
+    if (req.query["all"]) {
+        criteria["all"] = true;
+    }
+
+    const page = req.query["page"] > 0 ? req.query["page"] : 0;
+    const perPage = req.query["per_page"] || 500;
+
+    const options = {
+        perPage,
+        page,
+        criteria,
+    };
+
+    try {
+        const groupsList = await Group.list(options);
+        return restwareSendSuccess(res, "sending Group list", groupsList || []);
+    } catch (error) {
+        return restwareSendError(
+            res,
+            "Unable to get Group list",
+            error.message
+        );
+    }
+};
+
+exports.getObject = (req, res) => {
+    const object = req.object;
+    try {
+        if (object) {
+            return restwareSendSuccess(res, "Group details", object);
+        } else {
+            return restwareSendError(res, "Unable to retrieve Group details");
+        }
+    } catch (error) {
+        return restwareSendError(
+            res,
+            "Unable to retrieve Group details",
+            error.message
+        );
+    }
+};
+
+exports.createObject = async (req, res) => {
+    const object = req.body;
+
+    try {
+        const newGroupData = await exports.newGroup(object);
+        return restwareSendSuccess(
+            res,
+            "new Group added successfully",
+            newGroupData
+        );
+    } catch (error) {
+        return restwareSendError(res, error.message);
+    }
+};
+
+exports.updateObject = async (req, res) => {
+    let object = req.object;
+
+    delete req.body.__v; //do not copy version key
+
+    if (req.body.name && object.name != req.body.name) {
+        try {
+            await fs.promises.mkdir(
+                path.join(config.syncDir, installation, req.body.name)
+            );
+        } catch (error) {
+            if (error.name != "EEXIST")
+                console.log(
+                    `Unable to create a group folder in server: ${error}`
+                );
+        }
     }
     object = _.extend(object, req.body);
 
@@ -150,28 +175,56 @@ exports.updateObject = function (req, res) {
         object.deployedTicker = object.ticker;
     }
 
-    //disable animation for the timebeing
-    //object.animationEnable = false;
-    object.save(function (err, data) {
-        if (!err && req.body.deploy) {
-            serverMain.deploy(installation,object, saveObject);
-        } else {
-            saveObject(err, object);
-        }
-    });
+    try {
+        await object.save();
 
+        if (req.body.deploy) {
+            let deployGroupObject;
+            try {
+                deployGroupObject = await serverMain.deploy(
+                    installation,
+                    object
+                );
+            } catch (error) {
+                throw new Error(error.message);
+            }
+            deployGroupObject.lastDeployed = Date.now();
+            await Group.updateOne(
+                { _id: deployGroupObject._id },
+                {
+                    $set: {
+                        lastDeployed: deployGroupObject.lastDeployed,
+                        assets: deployGroupObject.assets,
+                        deployedAssets: deployGroupObject.deployedAssets,
+                        assetsValidity: deployGroupObject.assetsValidity,
+                    },
+                }
+            );
+        }
+
+        return restwareSendSuccess(res, "Updated Group details", object);
+    } catch (error) {
+        return restwareSendError(res, error.message);
+    }
 };
 
-
-exports.deleteObject = function (req, res) {
+exports.deleteObject = async (req, res) => {
     if (!req.object || req.object.name == "default")
-        return rest.sendError(res,'No group specified or can not remove default group');
+        return restwareSendError(
+            res,
+            "No group specified or can not remove default group"
+        );
 
-    var object = req.object;
-    object.remove(function (err) {
-        if (err)
-            return rest.sendError(res, 'Unable to remove Group record', err);
-        else
-            return rest.sendSuccess(res, 'Group record deleted successfully');
-    })
-}
+    const object = req.object;
+
+    try {
+        await object.remove();
+        return restwareSendSuccess(res, "Group record deleted successfully");
+    } catch (error) {
+        return restwareSendError(
+            res,
+            "Unable to remove Group record",
+            error.message
+        );
+    }
+};
