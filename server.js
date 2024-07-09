@@ -64,16 +64,16 @@ console.log('*    in config/env/development.js and restart the server           
 console.log('******************************************************************\n');
 
 
-var app = express();
+const app = express();
 
 // Express settings
 require('./config/express')(app);
 
 // Start server
-var server;
+let server;
 if (config.https) {
 
-    var https_options = {
+    const https_options = {
         key: fs.readFileSync("./pisignage-server-key.pem"),
         cert: fs.readFileSync("./pisignage-server-cert.pem"),
         passphrase: 'pisignage'
@@ -81,11 +81,10 @@ if (config.https) {
     server = require('https').createServer(https_options, app);
 }
 else {
-
     server = require('http').createServer(app);
 }
 
-var wss = new WebSocket.Server({ server, path:"/websocket" });
+const wss = new WebSocket.Server({ server, path:"/websocket" });
 
 require("./app/controllers/socket.js").handleSockets(server, wss);
 
