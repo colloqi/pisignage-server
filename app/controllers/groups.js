@@ -251,7 +251,7 @@ exports.deleteObject = async (req, res) => {
         const object = req.object;
 
         try {
-            await object.remove();
+            await object.deleteOne()
 
             try {
                 const pathToSyncFolder = path.join(
