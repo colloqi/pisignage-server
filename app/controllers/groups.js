@@ -152,37 +152,28 @@ exports.createObject = async (req, res) => {
 };
 
 exports.updateObject = async (req, res) => {
-    console.log("LOG C: RENAMING TRIGGER", req.object.name, req.body.name, req.body.deploy)
     let object = req.object;
+    const oldGroupName = object.name;
+    const newGroupName = req.body.name;
 
     delete req.body.__v; //do not copy version key
 
-    // if (req.body.name && object.name != req.body.name) {
-    //     try {
-    //         await fs.promises.mkdir(
-    //             path.join(config.syncDir, installation, req.body.name)
-    //         );
-    //     } catch (error) {
-    //         if (error.code != "EEXIST")
-    //             console.log(
-    //                 `Unable to create a group folder in server: ${ error }`
-    //             );
-    //     }
-    // }
     object = _.extend(object, req.body);
 
     try {
-        await Player.updateMany(
-            { "group.name": req.object.name },
-            { $set: { "group.name": req.body.name } }
-        );
+        if (oldGroupName !== newGroupName) {
+            await Player.updateMany(
+                { "group.name": oldGroupName },
+                { $set: { "group.name": newGroupName } }
+            );
 
-        await fs.promises.rename(
-            path.join(config.syncDir, installation, req.object.name),
-            path.join(config.syncDir, installation, req.body.name)
-        );
+            await fs.promises.rename(
+                path.join(config.syncDir, installation, oldGroupName),
+                path.join(config.syncDir, installation, newGroupName)
+            );
+        }
     } catch (error) {
-        console.error({ error })
+        console.error({ error });
         return restwareSendError(res, error.message);
     }
 
