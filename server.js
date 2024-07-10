@@ -18,14 +18,18 @@ mongoose.Promise = global.Promise;
 
 const connectToMongoDB = async () => {
     try {
-        await mongoose.connect(config.mongo.uri);
+        await mongoose.connect(config.mongo.uri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
         console.log("MongoDB connected successfully");
     } catch (error) {
         console.log("********************************************");
         console.log("*          MongoDB Process not running     *");
         console.log("********************************************\n");
-        
-        process.exit(1);    }
+
+        process.exit(1);
+    }
 };
 
 connectToMongoDB();
