@@ -2,7 +2,7 @@
 
 angular.module('piGroups.controllers', [])
 
-    .controller('GroupsCtrl', function ($scope, $http,$sce, piUrls, $location, piPopup,$modal,playerLoader,piConstants,GroupFunctions) {
+    .controller('GroupsCtrl', function ($scope, $http,$sce, piUrls, $location, piPopup,$modal,playerLoader,piConstants,GroupFunctions, $window) {
 
         
         
@@ -34,6 +34,8 @@ angular.module('piGroups.controllers', [])
                     if (data.success) {
                         $scope.group.groups.unshift(data.data);
                         $scope.newGroup = {}
+                        $window.location.reload();
+
                     }
                 })
                 .error(function (data, status) {
@@ -41,8 +43,9 @@ angular.module('piGroups.controllers', [])
         }
 
         $scope.fn.delete = function (index) {
+
             if ($scope.fn.editMode) {
-                piPopup.confirm($scope.group.groups[index].name+" Group", function () {
+                piPopup.confirm(`${$scope.group.groups[index].name} group`, function () {
 
                     $http
                         .delete(piUrls.groups + $scope.group.groups[index]._id)
@@ -50,8 +53,14 @@ angular.module('piGroups.controllers', [])
                             if (data.success) {
                                 $scope.group.groups.splice(index, 1);
                             }
+                            $window.location.reload();
                         })
                         .error(function (data, status) {
+                            if (data.stat_message === "PLAYERS EXIST")
+                                piPopup.status({
+                                    msg: "Move them to other groups before deleting this group!",
+                                    title: "Players are assigned to group! ",
+                                });
                         });
                 })
             } else {
@@ -117,6 +126,7 @@ angular.module('piGroups.controllers', [])
 
 
         $scope.fn.rename = function (index) {
+            console.log("RENAME PATH TRIGGERED", $scope.group.groups)
             $scope.group.groups[index].renameEnable = false;
             if (!$scope.group.groups[index].newname ||
                 ($scope.group.groups[index].name == $scope.group.groups[index].newname)) {
@@ -137,6 +147,9 @@ angular.module('piGroups.controllers', [])
                     if (!data.success) {
                         $scope.group.groups[index].name = oldname;
                         $scope.group.groups[index].newname = "Could not rename";
+                    }
+                    else {
+                        $window.location.reload();
                     }
                 })
                 .error(function (data, status) {
