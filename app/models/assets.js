@@ -14,16 +14,14 @@ var AssetSchema = new Schema({
     validity:               {enable:Boolean, startdate:String,enddate:String,starthour:Number,endhour:Number},
     createdAt: {type: Date, default: Date.now},
     createdBy: {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}
-}, {
-    usePushEach: true
 })
 
 AssetSchema.index({ installation: 1 });
 
 AssetSchema.statics = {
-    load: function (id, cb) {
-        this.findOne({_id: id})
-            .exec(cb)
+    load: function (id) {
+        return this.findOne({_id: id})
+    
     },
     list: function (options, cb) {
         var criteria = options.criteria || {}
