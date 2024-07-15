@@ -4,6 +4,7 @@ const fs = require("fs").promises,
     path = require("path"),
     _ = require("lodash"),
     Asset = require("../models/assets.js"),
+    Group = require("../models/group.js"),
     config = require("../../config/config.js"),
     logger = require("../others/logger.js");
 
@@ -216,6 +217,7 @@ exports.getFileDetails = async (req, res) => {
 /* DELETE ASSET FILE, DB ENTRY AND PLAYLIST FILE ---------------------------------------------- */
 exports.deleteFile = async (req, res) => {
     const file = req.params["file"];
+    console.log("DELETING FILE: ", { file })
 
     /* LOAD DB ENTRY FOR FILE */
     const fileDbData = await Asset.findOne({ name: file });
@@ -283,6 +285,29 @@ exports.deleteFile = async (req, res) => {
     }
 
     /* DELETE ENTRY FROM GROUPS IN DB */
+    try {
+        const groupsWithAssetToBeDeleted = await Group.find({ assets: file })
+        
+        for (const group of groupsWithAssetToBeDeleted) {
+            console.log("a=>", group.assets);
+            console.log("d.a=>", group.deployedAssets);
+
+            const newSetOfAssets = group.assets.filter(
+                (asset) => asset != file
+            );
+            const newSetOfDeployedAssets = group.deployedAssets.filter(
+                (deployedAsset) => deployedAsset != file
+            );
+
+            group.assets = newSetOfAssets
+            group.deployedAssets = newSetOfDeployedAssets
+
+            await group.save()
+        }
+
+    } catch (error) {
+        console.error(`Error removing asset ${file} from groups: `, { error })
+    }
 
     /* DELETE MEDIA FILE & DB ENTRY */
     try {
