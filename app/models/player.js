@@ -1,7 +1,7 @@
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
     Schema = mongoose.Schema
 
-var PlayerSchema = new Schema({
+const PlayerSchema = new Schema({
     name:                   String,
     group:                  {_id: {type: Schema.ObjectId, ref: 'Group', index: true},
                                         name: {type: String, default: 'default'}},
@@ -71,5 +71,7 @@ PlayerSchema.statics = {
     },
 };
 
-mongoose.model('Player', PlayerSchema)
+const PlayerModel = mongoose.model('Player', PlayerSchema)
+
+module.exports = PlayerModel
 

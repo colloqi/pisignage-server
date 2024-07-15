@@ -1,7 +1,7 @@
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
     Schema = mongoose.Schema
 
-var AssetSchema = new Schema({
+const AssetSchema = new Schema({
 
     name: {type: String, index: true},
     type: String,

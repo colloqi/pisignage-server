@@ -1,7 +1,7 @@
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
     Schema = mongoose.Schema
 
-var GroupSchema = new Schema({
+const GroupSchema = new Schema({
     name:                   {type: String,index: true},
     description:            String,
 
@@ -78,8 +78,6 @@ var GroupSchema = new Schema({
                             },
     createdAt:              {type: Date, default: Date.now},
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}
-}, {
-    usePushEach: true
 })
 
 
@@ -122,5 +120,6 @@ GroupSchema.statics = {
     // }
 }
 
-mongoose.model('Group', GroupSchema)
+const GroupModel = mongoose.model('Group', GroupSchema)
 
+module.exports = GroupModel
