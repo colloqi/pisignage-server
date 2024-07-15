@@ -525,7 +525,7 @@ exports.deleteObject = async (req, res) => {
 }
 
 /* UPDATE PLAYER STATUS -------------------------------------------------------------- */
-const updatePlayerCount = {};    // save screen shot in  _screenshots directory
+const updatePlayerCount = {};  
 const perDayCount = 20 * 24;
 
 exports.updatePlayerStatus = async (obj) => {
@@ -562,7 +562,7 @@ exports.updatePlayerStatus = async (obj) => {
 
         if (player.serverServiceDisabled) player.socket = null;
 
-        activePlayers[player._id.toString()] = true;    // save screen shot in  _screenshots directory
+        activePlayers[player._id.toString()] = true; 
 
         if (!player.registered || obj.request) {
             try {
@@ -604,6 +604,7 @@ exports.updatePlayerStatus = async (obj) => {
 
 };
 
+/* PING ACKNOWLEDGEMENT ----------------------------------------------------- */
 exports.secretAck = async (sid, status) => {
     try {
         const player = await Player.findOne({ socket: sid })
@@ -833,7 +834,7 @@ exports.upload = async (cpuId, filename, data) => {
                         "error",
                         `Error in writing forever_out log for ${cpuId}`
                     );
-                    console.error(error);
+                    console.error({ error });
                 }
             } else if (
                 path.extname(filename) === ".log" &&
@@ -868,7 +869,7 @@ exports.upload = async (cpuId, filename, data) => {
                         }
 
                     } catch (error) {
-                        console.error(error);
+                        console.error({ error });
                     }
                 }
             }
