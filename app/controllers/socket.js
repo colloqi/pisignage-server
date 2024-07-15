@@ -1,10 +1,10 @@
 "use strict" // REMOVE AFTER MIGRATING require TO import statements
 
-const oldSocketio = require("919.socket.io");
-const socketio = require("socket.io");
+const oldSocketio = require("919.socket.io"),
+    socketio = require("socket.io");
 
-const players = require("./players");
-const _ = require("lodash");
+const players = require("./players"),
+    _ = require("lodash");
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -15,11 +15,14 @@ let clientSocketsWebSocket = null;
 // let nextClientId = 1;
 let nextClientId = uuidv4();
 
+
+/* CONSTANTS FOR SOCKET NAMES --------------------------------------------------- */
 const OLD_SOCKET = "old-socket";
 const NEW_SOCKET = "new-socket";
 const NEW_WEB_SOCKET = "new-web-socket";
 const WEB_SOCKET = "web-socket";
 
+/* HANDLE CLIENT BASED ON SOCKET TYPE ------------------------------------------- */
 const handleClient = (socket, request, serverType) => {
 
     switch (serverType) {
@@ -171,12 +174,15 @@ const handleClient = (socket, request, serverType) => {
     }
 };
 
+/* HANDLE CLIENT FUNCTION GENERATOR --------------------------------------------- */
 const createHandleClient = (serverType) => {
     return (socket, request) => {
         handleClient(socket, request, serverType);
     };
 };
 
+
+/* START ALL SOCKETS ------------------------------------------------------------ */
 const startOldSocket = (io) => {
     io.sockets.on("connection", createHandleClient(OLD_SOCKET));
     io.set("log level", 0);
@@ -220,6 +226,8 @@ const startWebSocket = (wss) => {
     });
 };
 
+
+/* SOCKET ENTRY POINT ----------------------------------------------------------- */
 const handleSockets = (server, wss) => {
 
     const io = oldSocketio.listen(server, { "destroy upgrade": false });
@@ -265,8 +273,9 @@ const handleSockets = (server, wss) => {
         console.log("caught ECONNRESET error 5");
         console.log(err);
     });
-};
+};server.js
 
+/* EMIT MESSAGE HANDLER  -------------------------------------------------------- */
 const emitMessage = (serverType, sid, ...args) => {
 
     switch (serverType) {
@@ -297,6 +306,8 @@ const emitMessage = (serverType, sid, ...args) => {
     }
 };
 
+
+/* EXPORTS ----------------------------------------------------------------- */ 
 module.exports = {
     OLD_SOCKET,
     NEW_SOCKET,

@@ -1,16 +1,16 @@
 "use strict" // REMOVE AFTER MIGRATING require TO import statements
 
-const mongoose = require('mongoose')
-const Player = mongoose.model('Player')
-const Group = mongoose.model('Group')
-const groups = require('./groups')
-const _ = require('lodash')
-const path = require('path')
-const fs = require('fs');
+const mongoose = require("mongoose"),
+    Player = mongoose.model("Player"),
+    Group = mongoose.model("Group"),
+    groups = require("./groups"),
+    _ = require("lodash"),
+    path = require("path"),
+    fs = require("fs");
 
-const config = require('../../config/config.js');
-const sockets = require("./socket.js");
-const licenses = require('./licenses');
+const config = require("../../config/config.js"),
+    sockets = require("./socket.js"),
+    licenses = require("./licenses");
 
 const restwareSendSuccess = require("../others/restware.js").sendSuccess;
 const restwareSendError = require("../others/restware.js").sendError;
@@ -59,6 +59,8 @@ const readVersions = function () {
 
 readVersions();
 
+
+/* CREATE LOG DIRECTORY ----------------------------------------------------------- */
 const createDirectory = async (dirPath) => {
     try {
         await fs.promises.mkdir(dirPath);
@@ -71,6 +73,8 @@ const createDirectory = async (dirPath) => {
 
 createDirectory(config.logStoreDir);
 
+
+/* RESET isConnected FOR ALL PLAYERS ---------------------------------------------- */
 const resetIsConnectedForAllPlayers = async () => {
     try {
         const updateManyPlayersResult = await Player.updateMany(
@@ -87,7 +91,7 @@ const resetIsConnectedForAllPlayers = async () => {
 
 resetIsConnectedForAllPlayers();
 
-//create a default group if does not exist
+/* create a default group if does not exist --------------------------------------- */
 let defaultGroup = { _id: 0, name: 'default' };
 
 const getSettingsModelHandler = async (err, data) => {
@@ -157,6 +161,7 @@ const checkPlayersWatchdog = async () => {
     }
 };
 
+/* HANDLE DISCONNECT EVENT ----------------------------------------------------------- */
 exports.updateDisconnectEvent = async (socketId, reason) => {
     try {
         const player = await Player.findOne({ socket: socketId })    
@@ -173,10 +178,11 @@ exports.updateDisconnectEvent = async (socketId, reason) => {
     
 }
 
+/* CREATE AND SEND CONFIG OBJECT ------------------------------------------------------ */
 const sendConfig = (player, group, periodic) => {
-    var retObj = {};
+    const retObj = {};
 
-    var groupPlaylists, groupAssets, groupTicker;
+    let groupPlaylists, groupAssets, groupTicker;
 
     if (group.deployedPlaylists && group.deployedPlaylists.length > 0) {
         groupPlaylists = group.deployedPlaylists;
@@ -297,7 +303,7 @@ const sendConfig = (player, group, periodic) => {
     );
 }
 
-//Load a object
+/* LOAD AN OBJECT MIDDLEWARE ------------------------------------------------------------ */
 exports.loadObject = async (req, res, next, id) => {
 
     try {
@@ -313,7 +319,7 @@ exports.loadObject = async (req, res, next, id) => {
     }
 }
 
-//list of objects
+/* GET LIST OF PLAYERS ------------------------------------------------------------------ */
 exports.index = async (req, res) => {
 
     const criteria = {};
@@ -380,31 +386,10 @@ exports.index = async (req, res) => {
     } catch (error) {
         return restwareSendError(res, "Unable to get Player list", error);
     }
-    
 
-    /*
-    Player.list(options, function (err, objects) {
-        if (err)
-            return restwareSendError(res, 'Unable to get Player list', err);
-
-        objects = objects || []
-
-        var data = {
-            objects: objects,
-            page: page,
-            pages: Math.ceil(objects.length / perPage),
-            count: objects.length
-        };
-        data.currentVersion = {
-            version: pipkgjson.version, platform_version: pipkgjson.platform_version,
-            beta: pipkgjsonBeta.version,
-            versionP2: pipkgjson.versionP2
-        };
-        return restwareSendSuccess(res, 'sending Player list', data);
-    })
-    */
 }
 
+/* GET PLAYER OBJECT BY ID ---------------------------------------------------------- */
 exports.getObject = (req, res) => {
     try {
         const object = req.object;
@@ -416,6 +401,7 @@ exports.getObject = (req, res) => {
     }
 };
 
+/* CREATE PLAYER -------------------------------------------------------------------- */
 exports.createObject = async (req, res) => {
     let player;
 
@@ -456,42 +442,9 @@ exports.createObject = async (req, res) => {
         );
     }
 
-    /*
-    Player.findOne({ cpuSerialNumber: req.body.cpuSerialNumber }, function (err, data) {
-
-        if (err) {
-            console.log("Error while retrieving player data: " + err);
-        }
-
-        if (data) {
-            delete req.body.__v;        //do not copy version key
-            player = _.extend(data, req.body)
-        } else {
-            player = new Player(req.body);
-            if (!player.group) player.group = defaultGroup;
-        }
-        player.registered = false;
-
-        player.installation = installation;
-
-        Group.findById(player.group._id, function (err, group) {
-            if (!err && group) {
-                sendConfig(player, group, true)
-            } else {
-                console.log("unable to find group for the player");    // save screen shot in  _screenshots directory
-            }
-        })
-        player.save(function (err, obj) {
-            if (err) {
-                return restwareSendError(res, 'Error in saving new Player', err || "");
-            } else {
-                return restwareSendSuccess(res, 'new Player added successfully', obj);
-            }
-        })
-    })
-    */
 }
 
+/* SUPPORTING FUNCTION FOR UPDATE OBJECT FUNCTION ---------------------------------- */
 const updateObjectObjectSaveHandler = async (object, req, res) => {
     object = _.extend(object, req.body);
 
@@ -506,6 +459,7 @@ const updateObjectObjectSaveHandler = async (object, req, res) => {
 
 };
 
+/* UPDATE PLAYER HANDLER ----------------------------------------------------------- */
 exports.updateObject = async (req, res) => {
     let object = req.object;
 
@@ -554,6 +508,7 @@ exports.updateObject = async (req, res) => {
 
 };
 
+/* DELETE PLAYER ---------------------------------------------------------------------- */
 exports.deleteObject = async (req, res) => {
 
     const object = req.object;
@@ -567,19 +522,9 @@ exports.deleteObject = async (req, res) => {
         });
     }
 
-    /*
-    var object = req.object,
-        playerId = object.cpuSerialNumber;
-    object.remove(function (err) {
-        if (err)
-            return restwareSendError(res, 'Unable to remove Player record', err);
-        else {
-            return restwareSendSuccess(res, 'Player record deleted successfully');
-        }
-    })
-    */
 }
 
+/* UPDATE PLAYER STATUS -------------------------------------------------------------- */
 const updatePlayerCount = {};    // save screen shot in  _screenshots directory
 const perDayCount = 20 * 24;
 
@@ -676,13 +621,13 @@ exports.secretAck = async (sid, status) => {
 
 }
 
+/* PLAYER SHELL HANDLER ------------------------------------------------------ */
 const pendingCommands = {};
 const shellCmdTimer = {};
 
-exports.shell =  (req, res) => {
-
-    const cmd = req.body.cmd
-    const object = req.object
+exports.shell = (req, res) => {
+    const cmd = req.body.cmd;
+    const object = req.object;
     const sid = object.socket;
     pendingCommands[sid] = res;
 
@@ -690,10 +635,10 @@ exports.shell =  (req, res) => {
         object.webSocket
             ? sockets.WEB_SOCKET
             : object.newSocketIo
-                ? sockets.NEW_SOCKET
-                : sockets.OLD_SOCKET,
+            ? sockets.NEW_SOCKET
+            : sockets.OLD_SOCKET,
         sid,
-        'shell',
+        "shell",
         cmd
     );
 
@@ -701,12 +646,13 @@ exports.shell =  (req, res) => {
     shellCmdTimer[sid] = setTimeout(function () {
         delete shellCmdTimer[sid];
         if (pendingCommands[sid]) {
-            restwareSendSuccess(res, "Request Timeout",
-                { err: "Could not get response from the player! Make sure player is online and try again." })
+            restwareSendSuccess(res, "Request Timeout", {
+                err: "Could not get response from the player! Make sure player is online and try again.",
+            });
             pendingCommands[sid] = null;
         }
-    }, 60000)
-}
+    }, 60000);
+};
 
 exports.shellAck = (sid, response) => {
 
@@ -736,7 +682,6 @@ const playerActionTimers = {
 };
 
 exports.playlistMedia = (req, res) => {
-    console.log("PLAYLIST MEDIA INVOKED!")
 
     const object = req.object,
         sid = object.socket;
@@ -770,6 +715,7 @@ exports.playlistMedia = (req, res) => {
     }, 60000);
 };
 
+/* PLAYER PLAYLIST SETTER ------------------------------------------------------------ */
 exports.setPlaylist = (req, res) => {
     const object = req.object;
     const playlist = req.params.playlist;
@@ -946,6 +892,7 @@ exports.upload = async (cpuId, filename, data) => {
 
 };
 
+/* PLAYER ON/OFF -------------------------------------------------------------- */
 exports.tvPower = (req, res) => {
     const object = req.object
 
@@ -974,6 +921,7 @@ exports.tvPower = (req, res) => {
     return restwareSendSuccess(res, 'Player command issued');
 }
 
+/* PLAYER SCREEN SHOT HANDLERS ----------------------------------------------- */
 const snapShotTimer = {};
 const pendingSnapshots = {};
 

@@ -1,12 +1,14 @@
-// import Winston from "winston";
 const Winston = require("winston");
 
+
+/* SETUP LEVELS OF LOGGING ------------------------------------- */
 const level = () => {
   const env = process.env.NODE_ENV || "development";
   const isDevelopment = env === "development";
   return isDevelopment ? "info" : "warn";
 };
 
+/* CREATE LOGGER ENTITY TO BE USED ELSE WHERE IN THE APP -------- */
 const logger = Winston.createLogger({
   level: level(),
   format: Winston.format.combine(

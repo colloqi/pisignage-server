@@ -4,7 +4,7 @@ const mongoose = require('mongoose'),
     Group = mongoose.model('Group'),
     Player = mongoose.model('Player'),
 
-    fs = require('fs'),
+    fs = require('fs').promises,
     config = require('../../config/config'),
 
     restwareSendSuccess = require('../others/restware').sendSuccess,
@@ -23,6 +23,7 @@ licenses.getSettingsModel(function (err, settings) {
     installation = settings.installation || "local";
 });
 
+/* CREATE NEW GROUP --------------------------------------------------------- */
 exports.newGroup = async (group) => {
     let object;
 
@@ -44,7 +45,7 @@ exports.newGroup = async (group) => {
     }
 
     try {
-        await fs.promises.mkdir(
+        await fs.mkdir(
             path.join(config.syncDir, installation, object.name)
         );
     } catch (error) {
@@ -65,7 +66,7 @@ exports.newGroup = async (group) => {
     }
 };
 
-//Load an object
+/* LOAD GROUP MIDDLEWARE ------------------------------------------------ */
 exports.loadObject = async (req, res, next, id) => {
     try {
         const object = await Group.load(id);
@@ -85,7 +86,7 @@ exports.loadObject = async (req, res, next, id) => {
     }
 };
 
-//list of objects
+/* LOAD LIST OF GROUPS ------------------------------------------------- */
 exports.index = async (req, res) => {
     const criteria = {};
 
@@ -119,6 +120,7 @@ exports.index = async (req, res) => {
     }
 };
 
+/* GET GROUP DETAILS ---------------------------------------------------- */
 exports.getObject = (req, res) => {
     const object = req.object;
     try {
@@ -136,6 +138,7 @@ exports.getObject = (req, res) => {
     }
 };
 
+/* CREATE NEW GROUP ------------------------------------------------------ */
 exports.createObject = async (req, res) => {
     const object = req.body;
 
@@ -151,6 +154,8 @@ exports.createObject = async (req, res) => {
     }
 };
 
+
+/* RENAME (update) AND DEPLOY ---------------------------------------------- */
 exports.updateObject = async (req, res) => {
     let object = req.object;
     const oldGroupName = object.name;
@@ -167,7 +172,7 @@ exports.updateObject = async (req, res) => {
                 { $set: { "group.name": newGroupName } }
             );
 
-            await fs.promises.rename(
+            await fs.rename(
                 path.join(config.syncDir, installation, oldGroupName),
                 path.join(config.syncDir, installation, newGroupName)
             );
@@ -216,26 +221,28 @@ exports.updateObject = async (req, res) => {
     }
 };
 
+/* SUPPORTING FUNCTION TO DELETE DIRECTORY ----------------------------------- */
 const deleteDirectory = async (dirPath) => {
     try {
-        const files = await fs.promises.readdir(dirPath);
+        const files = await fs.readdir(dirPath);
         for (const file of files) {
             const filePath = path.join(dirPath, file);
-            const stat = await fs.promises.lstat(filePath);
+            const stat = await fs.lstat(filePath);
 
             if (stat.isDirectory()) {
                 await deleteDirectory(filePath);
             } else {
-                await fs.promises.unlink(filePath);
+                await fs.unlink(filePath);
             }
         }
-        await fs.promises.rmdir(dirPath);
+        await fs.rmdir(dirPath);
         console.log(`Directory "${dirPath}" has been deleted`);
     } catch (error) {
         console.error(`Error while deleting "${dirPath}": ${error}`);
     }
 };
 
+/* DELETE GROUP ---------------------------------------------------------------- */
 exports.deleteObject = async (req, res) => {
     if (!req.object || req.object.name == "default")
         return restwareSendError(

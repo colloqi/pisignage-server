@@ -24,6 +24,7 @@ const sockets = require("./socket.js");
 // exports.saveSettings = function () {
 // }
 
+/* DEPlOY PLAYLIST TO GROUP'S PLAYERS ---------------------------------------------------------- */
 exports.deploy = async (installation, group) => {
 
     // OPERATION 0 ================================================================================

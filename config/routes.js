@@ -1,4 +1,4 @@
-'use strict';
+"use strict" // REMOVE AFTER MIGRATING require TO import statements
 
 const express = require('express'),
     router = express.Router();
@@ -26,20 +26,20 @@ const assets = require('../app/controllers/assets'),
 //     router.post('/api/gcal/authorize', gcalAuthorize.gCalAuthorize)   //from client
 //}
 
-router.get('/api/files', assets.assetsIndex);
-router.get('/api/files/:file', assets.assetsGetFileDetails);
-router.post('/api/files', upload.fields([{name:'assets',maxCount: 10}]), assets.assetsCreateFiles);
-router.post('/api/postupload', assets.assetsUpdateFileDetails);
-router.post('/api/playlistfiles', assets.assetsUpdatePlaylist);
-router.post('/api/files/:file', assets.assetsUpdateAsset);
-router.delete('/api/files/:file', assets.assetsDeleteFile);
+router.get('/api/files', assets.index);
+router.get('/api/files/:file', assets.getFileDetails);
+router.post('/api/files', upload.fields([{name:'assets',maxCount: 10}]), assets.createFiles);
+router.post('/api/postupload', assets.updateFileDetails);
+router.post('/api/playlistfiles', assets.updatePlaylist);
+router.post('/api/files/:file', assets.updateAsset);
+router.delete('/api/files/:file', assets.deleteFile);
 
 // router.get('/api/calendars/:file', assets.getCalendar);
 // router.post('/api/calendars/:file', assets.updateCalendar);
-router.delete('/api/calendars/:file', assets.assetsDeleteFile);
+router.delete('/api/calendars/:file', assets.deleteFile);
 
-router.post('/api/links', assets.assetsCreateLinkFile);
-router.get('/api/links/:file', assets.assetsGetLinkFileDetails);
+router.post('/api/links', assets.createLinkFile);
+router.get('/api/links/:file', assets.getLinkFileDetails);
 
 router.get('/api/playlists', playlists.index);
 router.get('/api/playlists/:file', playlists.getPlaylist);

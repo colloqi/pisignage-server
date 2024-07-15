@@ -15,8 +15,9 @@ const serverAssetsUpdatePlaylist = require("./server-assets.js").updatePlaylist,
     serverAssetsStoreLinkDetails =
         require("./server-assets.js").storeLinkDetails;
 
-const { fileUtilModifyHTML } = require("../others/file-util.js");
+const fileUtilModifyHTML = require("../others/file-util.js").modifyHTML;
 
+/* LOAD ALL ASSETS -------------------------------------------------------------- */
 exports.index = (req, res) => {
     let files = [];
     let dbdata;
@@ -67,6 +68,7 @@ exports.index = (req, res) => {
     sendMediaDirectoryFiles();
 };
 
+/* CREATE ASSETS VIA MULTER (see routes.js) --------------------------------------------------- */
 exports.createFiles = async (req, res) => {
     let files = [];
     let data = [];
@@ -94,10 +96,10 @@ exports.createFiles = async (req, res) => {
         filename = filename.replace(/[äößüæøåéè]/gi, (matched) => tr[matched]);
 
         if (filename.match(config.zipfileRegex))
-            filename = filename.replace(/ /g, "");
+            filename = filename.replace(/ /g, ""); //unzip won't work with spaces in file name
 
         if (filename.match(config.brandRegex))
-            filename = filename.toLowerCase();
+            filename = filename.toLowerCase(); // change brand video name
 
         // const renameAsync = promisify(fs.rename);
         await fs.rename(fileObj.path, path.join(config.mediaDir, filename));
@@ -134,6 +136,7 @@ exports.createFiles = async (req, res) => {
     }
 };
 
+/* UPDATE FILE DETAILS ----------------------------------------------------------------------- */
 exports.updateFileDetails = async (req, res) => {
     /* 
     CALLS (process-file.js) IN (server-assets.js) WITHIN (exports.storeDetails) 
@@ -142,9 +145,11 @@ exports.updateFileDetails = async (req, res) => {
 
 };
 
+/* RETRIEVE FILE DETAILS ---------------------------------------------------------------------- */
 exports.getFileDetails = async (req, res) => {
     const file = req.params["file"];
 
+    /* MAIN FUNCTION -------------------------------------------------------------------------- */
     const loadFileDetails = async (file) => {
         try {
             const fileData = await getFileType(file);
@@ -163,6 +168,7 @@ exports.getFileDetails = async (req, res) => {
         }
     };
 
+    /* SUPPORTING FUNCTIONS ------------------------------------------------------------------- */
     const getFileType = async (file) => {
         let fileData;
 
@@ -207,29 +213,20 @@ exports.getFileDetails = async (req, res) => {
     loadFileDetails(file);
 };
 
+/* DELETE ASSET FILE, DB ENTRY AND PLAYLIST FILE ---------------------------------------------- */
 exports.deleteFile = async (req, res) => {
+    const file = req.params["file"];
+
+    /* LOAD DB ENTRY FOR FILE */
+    const fileDbData = await Asset.findOne({ name: file });
+
+    /* DELETE THUMBNAIL FILE */
     try {
-        const file = req.params["file"];
-
-        /* DELETE MEDIA FILE */
-        await fs.unlink(path.join(config.mediaDir, file));
-
-        try {
-            await Asset.deleteOne({ name: file });
-        } catch (error) {
-            console.log("Unable to delete asset from db", { error });
-            logger.error(`Unable to delete asset from db: ${file}`);
-        }
-
-        /* DELETE THUMBNAIL FILE */
         if (file.match(config.videoRegex) || file.match(config.imageRegex)) {
-
             let thumbnailPath;
 
-            const dbData = await Asset.findOne({ name: file });
-
-            if (dbData && dbData["thumbnail"]) {
-                const imageThumbnailName = dbData["thumbnail"].replace(
+            if (fileDbData && fileDbData["thumbnail"]) {
+                const imageThumbnailName = fileDbData["thumbnail"].replace(
                     "/media/_thumbnails/",
                     ""
                 );
@@ -239,23 +236,73 @@ exports.deleteFile = async (req, res) => {
                 );
             }
 
-            try {
-                if (thumbnailPath) {
-                    await fs.unlink(thumbnailPath);
-                }
-            } catch (error) {
-                console.error("Error deleting thumbnail: ", { error });
-                logger.error(`unable to find/delete thumbnail: ${error.message}`);
+            if (thumbnailPath) {
+                await fs.unlink(thumbnailPath);
             }
         }
-
-        return restwareSendSuccess(res, "Deleted file successfully", file);
     } catch (error) {
-        console.error("Error deleting file: ", { error });
-        return restwareSendError(res, error);
+        console.error("Error deleting thumbnail: ", { error });
+        logger.error(`unable to find/delete thumbnail: ${error.message}`);
     }
+
+    /* DELETE ASSET FROM PLAYLIST'S FILE */
+    try {
+        // get playlist names:
+        if (fileDbData) {
+            const allThePlaylistsThisAssetIsIn = fileDbData.playlists;
+
+            for (const playlist of allThePlaylistsThisAssetIsIn) {
+
+                // load playlist file into JSON
+                const pathToPlaylistFile = path.join(
+                    config.mediaDir,
+                    `__${playlist}.json`
+                );
+
+                const playlistJSON = JSON.parse(
+                    await fs.readFile(pathToPlaylistFile, "utf-8")
+                );
+
+
+                // playlist file with asset removed:
+                const newPlaylistJSONAssets = playlistJSON.assets.filter(
+                    (asset) => asset.filename !== file
+                );
+                playlistJSON.assets = newPlaylistJSONAssets;
+
+                // write to file:
+                await fs.writeFile(
+                    pathToPlaylistFile,
+                    JSON.stringify(playlistJSON, null, 4)
+                );
+            }
+        }
+    } catch (error) {
+        console.error("Deleting asset from playlist file failed: ", { error });
+        return restwareSendError(res, error.message);
+    }
+
+    /* DELETE ENTRY FROM GROUPS IN DB */
+
+    /* DELETE MEDIA FILE & DB ENTRY */
+    try {
+        await fs.unlink(path.join(config.mediaDir, file));
+
+        try {
+            await Asset.deleteOne({ name: file });
+        } catch (error) {
+            console.log("Unable to delete asset from db", { error });
+            logger.error(`Unable to delete asset from db: ${file}`);
+        }
+    } catch (error) {
+        console.error("Error deleting media file: ", { error });
+        return restwareSendError(res, error.message);
+    }
+
+    return restwareSendSuccess(res, "Deleted file successfully", file);
 };
 
+/* UPDATE ASSET FILE (replacement) */
 exports.updateAsset = async (req, res) => {
     if (req.body.newname) {
         try {
@@ -369,6 +416,7 @@ exports.assetsUpdateCalendar = async (req, res) => {
 };
 */
 
+/* LINK FILE CREATION OPERATION --------------------------------------------------------- */
 exports.createLinkFile = async (req, res) => {
     try {
         let details = req.body.details;
@@ -398,6 +446,7 @@ exports.createLinkFile = async (req, res) => {
     }
 };
 
+/* GET LINK FILE DETAILS ---------------------------------------------------------------- */
 exports.getLinkFileDetails = async (req, res) => {
     try {
         const file = req.params["file"];
@@ -419,7 +468,9 @@ exports.getLinkFileDetails = async (req, res) => {
     }
 };
 
+/* UPDATE ASSET PLAYLIST ----------------------------------------------------------------- */
 exports.updatePlaylist = async (req, res) => {
+    // handled in server-assets.js
     //req.body contain playlist name and assets, for deleted playlist send playlist name and empty assets
     await serverAssetsUpdatePlaylist(req.body.playlist, req.body.assets);
     return restwareSendSuccess(res, "asset update has been queued");
