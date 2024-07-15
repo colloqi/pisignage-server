@@ -217,7 +217,6 @@ exports.getFileDetails = async (req, res) => {
 /* DELETE ASSET FILE, DB ENTRY AND PLAYLIST FILE ---------------------------------------------- */
 exports.deleteFile = async (req, res) => {
     const file = req.params["file"];
-    console.log("DELETING FILE: ", { file })
 
     /* LOAD DB ENTRY FOR FILE */
     const fileDbData = await Asset.findOne({ name: file });
