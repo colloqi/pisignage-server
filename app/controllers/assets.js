@@ -289,9 +289,6 @@ exports.deleteFile = async (req, res) => {
         const groupsWithAssetToBeDeleted = await Group.find({ assets: file })
         
         for (const group of groupsWithAssetToBeDeleted) {
-            console.log("a=>", group.assets);
-            console.log("d.a=>", group.deployedAssets);
-
             const newSetOfAssets = group.assets.filter(
                 (asset) => asset != file
             );
@@ -327,7 +324,7 @@ exports.deleteFile = async (req, res) => {
     return restwareSendSuccess(res, "Deleted file successfully", file);
 };
 
-/* UPDATE ASSET FILE (replacement) */
+/* UPDATE ASSET FILE (renaming and extension of existing entry) */
 exports.updateAsset = async (req, res) => {
     if (req.body.newname) {
         try {
@@ -347,6 +344,7 @@ exports.updateAsset = async (req, res) => {
             } catch (error) {
                 console.error("Unable to rename asset name in DB", { error });
                 logger.error(`Unable to rename asset in DB: ${oldName}`);
+                restwareSendError(res, "File rename error", error);
             }
 
             return restwareSendSuccess(
