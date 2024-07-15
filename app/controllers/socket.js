@@ -273,7 +273,7 @@ const handleSockets = (server, wss) => {
         console.log("caught ECONNRESET error 5");
         console.log(err);
     });
-};server.js
+};
 
 /* EMIT MESSAGE HANDLER  -------------------------------------------------------- */
 const emitMessage = (serverType, sid, ...args) => {
