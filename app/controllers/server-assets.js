@@ -1,5 +1,7 @@
+"use strict" // REMOVE AFTER MIGRATING require TO import statements
+
 const config = require("../../config/config.js"),
-    AssetModel = require("./../models/assets.js"),
+    Asset = require("./../models/assets.js"),
     _ = require("lodash");
 
 const rest = require("../others/restware");
@@ -103,13 +105,13 @@ exports.storeLinkDetails = async (name, type, categories, cb) => {
 /* UPDATE PLAYLIST (to support this function in assets.js) */
 exports.updatePlaylist = async (playlist, assets) => {
     try {
-        await AssetModel.updateMany(
+        await Asset.updateMany(
             { playlists: playlist },
             { $pull: { playlists: playlist } },
             { multi: true }
         );
 
-        await AssetModel.updateMany(
+        await Asset.updateMany(
             { name: { $in: assets } },
             { $push: { playlists: playlist } },
             { multi: true }

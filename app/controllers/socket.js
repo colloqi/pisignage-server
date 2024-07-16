@@ -102,7 +102,7 @@ const handleClient = (socket, request, serverType) => {
                     messageArguments = JSON.parse(msg);
                 } catch (e) {
                     console.error(
-                        "Unable to parse message from client ws, " + msg
+                        `Unable to parse message from client ws: ${msg}`
                     );
                     return;
                 }
