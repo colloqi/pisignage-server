@@ -214,113 +214,177 @@ exports.getFileDetails = async (req, res) => {
     loadFileDetails(file);
 };
 
-/* DELETE ASSET FILE, DB ENTRY AND PLAYLIST FILE ---------------------------------------------- */
+/* 
+    DELETE MEDIA FILE (DB ENTRY, MEDIA ASSET FILE, AND PLAYLIST FILE ENTRY) OR
+    DELETE PLAYLIST FILE 
+*/
 exports.deleteFile = async (req, res) => {
     const file = req.params["file"];
+    console.log("File to be deleted: ", { file });
 
-    /* LOAD DB ENTRY FOR FILE */
-    const fileDbData = await Asset.findOne({ name: file });
-
-    /* DELETE THUMBNAIL FILE */
-    try {
-        if (file.match(config.videoRegex) || file.match(config.imageRegex)) {
-            let thumbnailPath;
-
-            if (fileDbData && fileDbData["thumbnail"]) {
-                const imageThumbnailName = fileDbData["thumbnail"].replace(
-                    "/media/_thumbnails/",
-                    ""
-                );
-                thumbnailPath = path.join(
-                    config.thumbnailDir,
-                    imageThumbnailName
-                );
-            }
-
-            if (thumbnailPath) {
-                await fs.unlink(thumbnailPath);
-            }
-        }
-    } catch (error) {
-        console.error("Error deleting thumbnail: ", { error });
-        logger.error(`unable to find/delete thumbnail: ${error.message}`);
-    }
-
-    /* DELETE ASSET FROM PLAYLIST'S FILE */
-    try {
-        // get playlist names:
-        if (fileDbData) {
-            const allThePlaylistsThisAssetIsIn = fileDbData.playlists;
-
-            for (const playlist of allThePlaylistsThisAssetIsIn) {
-
-                // load playlist file into JSON
-                const pathToPlaylistFile = path.join(
-                    config.mediaDir,
-                    `__${playlist}.json`
-                );
-
-                const playlistJSON = JSON.parse(
-                    await fs.readFile(pathToPlaylistFile, "utf-8")
-                );
-
-
-                // playlist file with asset removed:
-                const newPlaylistJSONAssets = playlistJSON.assets.filter(
-                    (asset) => asset.filename !== file
-                );
-                playlistJSON.assets = newPlaylistJSONAssets;
-
-                // write to file:
-                await fs.writeFile(
-                    pathToPlaylistFile,
-                    JSON.stringify(playlistJSON, null, 4)
-                );
-            }
-        }
-    } catch (error) {
-        console.error("Deleting asset from playlist file failed: ", { error });
-        return restwareSendError(res, error.message);
-    }
-
-    /* DELETE ENTRY FROM GROUPS IN DB */
-    try {
-        const groupsWithAssetToBeDeleted = await Group.find({ assets: file })
-        
-        for (const group of groupsWithAssetToBeDeleted) {
-            const newSetOfAssets = group.assets.filter(
-                (asset) => asset != file
-            );
-            const newSetOfDeployedAssets = group.deployedAssets.filter(
-                (deployedAsset) => deployedAsset != file
-            );
-
-            group.assets = newSetOfAssets
-            group.deployedAssets = newSetOfDeployedAssets
-
-            await group.save()
-        }
-
-    } catch (error) {
-        console.error(`Error removing asset ${file} from groups: `, { error })
-    }
-
-    /* DELETE MEDIA FILE & DB ENTRY */
-    try {
-        await fs.unlink(path.join(config.mediaDir, file));
+    /* CHECK IF PLAYLIST-FILE IS BEING DELETED - IF NOT (else) PROCEED WITH MEDIA FILE DELETION */
+    if (file.startsWith("__") && file.endsWith(".json")) {
 
         try {
-            await Asset.deleteOne({ name: file });
-        } catch (error) {
-            console.log("Unable to delete asset from db", { error });
-            logger.error(`Unable to delete asset from db: ${file}`);
-        }
-    } catch (error) {
-        console.error("Error deleting media file: ", { error });
-        return restwareSendError(res, error.message);
-    }
+            // extract playlist name
+            let cleanedUpPlaylistName = file;
 
-    return restwareSendSuccess(res, "Deleted file successfully", file);
+            // Remove "__" at the start
+            cleanedUpPlaylistName = cleanedUpPlaylistName.replace(/^__/, "");
+
+            // Remove ".json" at the end
+            cleanedUpPlaylistName = cleanedUpPlaylistName.replace(/\.json$/, "");
+
+
+            const groupsWithSpecifiedPlaylist = await Group.find({
+                playlists: { $elemMatch: { name: cleanedUpPlaylistName } },
+            });
+
+
+            for (const group of groupsWithSpecifiedPlaylist) {
+
+                // handle playlist entries
+                const newPlaylists = group.playlists.filter((playlist) => playlist.name !== cleanedUpPlaylistName )
+                const newDeployedPlaylists = group.deployedPlaylists.filter((playlist) => playlist.name !== cleanedUpPlaylistName )
+
+                group.playlists = newPlaylists
+                group.deployedPlaylists = newDeployedPlaylists
+
+                // handle asset entries
+                group.assets.pull(file)
+                group.deployedAssets.pull(file)
+
+                // save group with updates
+                try {
+                    await group.save()
+                } catch (error) {
+                    console.error(`Error saving group ${group.name} after removing playlist entry: `, { error })
+                }
+            }
+
+            // deleting playlist file
+            await fs.unlink(path.join(config.mediaDir, file));
+            
+
+        } catch (error) {
+            console.error("Error in deleting playlist file: ", { error })
+            logger.error(`Unable to delete playlist file: ${file}`);
+        }
+        
+        return restwareSendSuccess(res, "Deleted playlist successfully: ", file);
+
+    } else {
+        /* LOAD DB ENTRY FOR FILE */
+        const fileDbData = await Asset.findOne({ name: file });
+
+        /* DELETE THUMBNAIL FILE */
+        try {
+            if (
+                file.match(config.videoRegex) ||
+                file.match(config.imageRegex)
+            ) {
+                let thumbnailPath;
+
+                if (fileDbData && fileDbData["thumbnail"]) {
+                    const imageThumbnailName = fileDbData["thumbnail"].replace(
+                        "/media/_thumbnails/",
+                        ""
+                    );
+                    thumbnailPath = path.join(
+                        config.thumbnailDir,
+                        imageThumbnailName
+                    );
+                }
+
+                if (thumbnailPath) {
+                    await fs.unlink(thumbnailPath);
+                }
+            }
+        } catch (error) {
+            console.error("Error deleting thumbnail: ", { error });
+            logger.error(`unable to find/delete thumbnail: ${error.message}`);
+        }
+
+        /* DELETE ASSET FROM PLAYLIST'S FILE */
+        try {
+            // get playlist names:
+            if (fileDbData) {
+                const allThePlaylistsThisAssetIsIn = fileDbData.playlists;
+
+                for (const playlist of allThePlaylistsThisAssetIsIn) {
+                    // load playlist file into JSON
+                    const pathToPlaylistFile = path.join(
+                        config.mediaDir,
+                        `__${playlist}.json`
+                    );
+
+                    const playlistJSON = JSON.parse(
+                        await fs.readFile(pathToPlaylistFile, "utf-8")
+                    );
+
+                    // playlist file with asset removed:
+                    const newPlaylistJSONAssets = playlistJSON.assets.filter(
+                        (asset) => asset.filename !== file
+                    );
+                    playlistJSON.assets = newPlaylistJSONAssets;
+
+                    // write to file:
+                    await fs.writeFile(
+                        pathToPlaylistFile,
+                        JSON.stringify(playlistJSON, null, 4)
+                    );
+                }
+            }
+        } catch (error) {
+            console.error("Deleting asset from playlist file failed: ", {
+                error,
+            });
+            return restwareSendError(res, error.message);
+        }
+
+        /* DELETE ENTRY FROM GROUPS IN DB */
+        try {
+            const groupsWithAssetToBeDeleted = await Group.find({
+                assets: file,
+            });
+
+            for (const group of groupsWithAssetToBeDeleted) {
+                const newSetOfAssets = group.assets.filter(
+                    (asset) => asset != file
+                );
+                const newSetOfDeployedAssets = group.deployedAssets.filter(
+                    (deployedAsset) => deployedAsset != file
+                );
+
+                group.assets = newSetOfAssets;
+                group.deployedAssets = newSetOfDeployedAssets;
+
+                await group.save();
+            }
+        } catch (error) {
+            console.error(`Error removing asset ${file} from groups: `, {
+                error,
+            });
+            return restwareSendError(res, error.message);
+        }
+
+        /* DELETE MEDIA FILE & DB ENTRY */
+        try {
+            await fs.unlink(path.join(config.mediaDir, file));
+
+            try {
+                await Asset.deleteOne({ name: file });
+            } catch (error) {
+                console.log("Unable to delete asset from db", { error });
+                logger.error(`Unable to delete asset from db: ${file}`);
+            }
+        } catch (error) {
+            console.error("Error deleting media file: ", { error });
+            return restwareSendError(res, error.message);
+        }
+
+        return restwareSendSuccess(res, "Deleted file successfully", file);
+    }
 };
 
 /* UPDATE ASSET FILE (renaming and extension of existing entry) */
