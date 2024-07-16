@@ -135,6 +135,13 @@ licenses.getSettingsModel(getSettingsModelHandler)
 const activePlayers = {},
     lastCommunicationFromPlayers = {};
 
+/* 
+    SUMMARY:
+    - this function regularly checks the connection status of players, 
+    - updates their status in the database if necessary, 
+    - removes inactive players from the active list, and 
+    - handles errors by retrying the operation every 10 minutes
+*/
 const checkPlayersWatchdog = async () => {
     const playerIds = Object.keys(activePlayers);
 
@@ -307,15 +314,23 @@ const sendConfig = (player, group, periodic) => {
 exports.loadObject = async (req, res, next, id) => {
 
     try {
-        const playerToLoad = await Player.load(id)
+        const playerToLoad = await Player.load(id);
 
-        if (!playerToLoad) return restwareSendError(res, 'Unable to get group details');
+        if (!playerToLoad)
+            return restwareSendError(res, "Unable to get player details");
 
-        req.object = playerToLoad
+        req.object = playerToLoad;
 
-        next()
+        next();
     } catch (error) {
-        return restwareSendError(res, 'Unable to get group details', error);
+        console.error("Unable to get player details in middleware: ", {
+            error,
+        });
+        return restwareSendError(
+            res,
+            "Unable to get player details",
+            error.message
+        );
     }
 }
 
@@ -323,7 +338,6 @@ exports.loadObject = async (req, res, next, id) => {
 exports.index = async (req, res) => {
 
     const criteria = {};
-
 
     if (req.query['group']) {
         criteria['group._id'] = req.query['group'];
@@ -384,7 +398,8 @@ exports.index = async (req, res) => {
         };
         return restwareSendSuccess(res, "sending Player list", data);
     } catch (error) {
-        return restwareSendError(res, "Unable to get Player list", error);
+        console.error("Error getting player list: ", { error })
+        return restwareSendError(res, "Unable to get Player list", error.message);
     }
 
 }
@@ -395,9 +410,12 @@ exports.getObject = (req, res) => {
         const object = req.object;
         return restwareSendSuccess(res, "Player details", object);
     } catch (error) {
-        return restwareSendError(res, "Unable to retrieve Player details", {
-            error,
-        });
+        console.error("Unable to retrieve Player details", { error });
+        return restwareSendError(
+            res,
+            "Unable to retrieve Player details",
+            error.message
+        );
     }
 };
 
@@ -428,7 +446,7 @@ exports.createObject = async (req, res) => {
         const playerGroup = await Group.findById(player.group._id);
         sendConfig(player, playerGroup, true);
     } catch (error) {
-        console.log("unable to find group for the player");
+        console.error("unable to find group for the player");
     }
 
     try {
