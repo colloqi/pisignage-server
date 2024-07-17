@@ -137,7 +137,7 @@ server.on("connection", (socket) => {
 
 /* GLOBAL ERROR HANDLING --------------------------------------------------- */
 
-process.on("uncaughtException", function (err) {
+process.on("uncaughtException", (err) => {
     console.error(`${err.message} - ${err.stack}`);
 });
 
