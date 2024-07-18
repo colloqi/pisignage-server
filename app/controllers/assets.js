@@ -290,6 +290,7 @@ exports.deleteFile = async (req, res) => {
                         "/media/_thumbnails/",
                         ""
                     );
+
                     thumbnailPath = path.join(
                         config.thumbnailDir,
                         imageThumbnailName
@@ -505,7 +506,7 @@ exports.assetsUpdateCalendar = async (req, res) => {
 /* LINK FILE CREATION OPERATION --------------------------------------------------------- */
 exports.createLinkFile = async (req, res) => {
     try {
-        let details = req.body.details;
+        const details = req.body.details;
 
         await fs.writeFile(
             path.join(config.mediaPath, `${details.name}${details.type}`),
