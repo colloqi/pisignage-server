@@ -19,7 +19,7 @@ const serverMain = require('./server-main'),
 
 let installation;
 
-licenses.getSettingsModel(function (err, settings) {
+licenses.getSettingsModel((error, settings) => {
     installation = settings.installation || "local";
 });
 
@@ -40,7 +40,7 @@ exports.newGroup = async (group) => {
     }
 
     if (!object.name) {
-        console.log("Group name cannot be null");
+        console.error("Group name cannot be null");
         throw new Error("Unable to create a group folder in server");
     }
 
