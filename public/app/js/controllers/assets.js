@@ -267,6 +267,7 @@ angular.module('piAssets.controllers',[])
                 }
                 $scope.msg.title = 'Processing in Progress...';
                 $scope.msg.msg = 'Please Wait';
+                $scope.msg.disable = true
                 var fileArray = $scope.uploadedFiles.map(function(file){
                     return ({name:file.name,size:file.size,type:file.type})
                 })
