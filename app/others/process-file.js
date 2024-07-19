@@ -167,7 +167,7 @@ exports.processFile = async (filename, filesize, categories) => {
                             parseInt(vdoInfo.width) * parseInt(vdoInfo.height) >
                                 2073600 //1080p pixels
                         ) {
-                            ;
+                            console.log("\nFFMPEG processing starting...")
                             new FFmpeg({ source: src })
                                 .audioCodec("libfdk_aac")
                                 .videoCodec("libx264")
@@ -202,7 +202,7 @@ exports.processFile = async (filename, filesize, categories) => {
                                         );
                                         errorMessages.push(error.message);
                                     }
-
+                                    console.log("FFMPEG processing ending!\n")
                                     resolve();
                                 })
                                 .saveToFile(destPath);                            
