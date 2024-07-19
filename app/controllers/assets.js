@@ -220,13 +220,12 @@ exports.getFileDetails = async (req, res) => {
 */
 exports.deleteFile = async (req, res) => {
     const file = req.params["file"];
-    console.log("File to be deleted: ", { file });
 
     /* CHECK IF PLAYLIST-FILE IS BEING DELETED - IF NOT (else) PROCEED WITH MEDIA FILE DELETION */
     if (file.startsWith("__") && file.endsWith(".json")) {
 
         try {
-            // extract playlist name
+            // extract playlist name ----------------------------------------------------------------------------------- //
             let cleanedUpPlaylistName = file;
 
             // Remove "__" at the start
@@ -235,12 +234,11 @@ exports.deleteFile = async (req, res) => {
             // Remove ".json" at the end
             cleanedUpPlaylistName = cleanedUpPlaylistName.replace(/\.json$/, "");
 
-
+            // remove playlist entry from groups ----------------------------------------------------------------------- //
             const groupsWithSpecifiedPlaylist = await Group.find({
                 playlists: { $elemMatch: { name: cleanedUpPlaylistName } },
             });
-
-
+    
             for (const group of groupsWithSpecifiedPlaylist) {
 
                 // handle playlist entries
@@ -261,11 +259,19 @@ exports.deleteFile = async (req, res) => {
                     console.error(`Error saving group ${group.name} after removing playlist entry: `, { error })
                 }
             }
+                
 
-            // deleting playlist file
+            // remove playlist entry from assets in DB ----------------------------------------------------------------- //
+            const assetsWithSpecifiedPLaylists = await Asset.find({ playlists: cleanedUpPlaylistName })
+
+            for (const asset of assetsWithSpecifiedPLaylists) {
+                asset.playlists.pull(cleanedUpPlaylistName)
+            }
+
+            
+            // deleting playlist file ---------------------------------------------------------------------------------- //
             await fs.unlink(path.join(config.mediaDir, file));
             
-
         } catch (error) {
             console.error("Error in deleting playlist file: ", { error })
             logger.error(`Unable to delete playlist file: ${file}`);
