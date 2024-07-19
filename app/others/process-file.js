@@ -104,7 +104,7 @@ exports.processFile = async (filename, filesize, categories) => {
                     }
 
                     if (value) {
-                        var multipleB = value.lastIndexOf(
+                        const multipleB = value.lastIndexOf(
                             "B",
                             value.length - 2
                         );
@@ -242,7 +242,7 @@ exports.processFile = async (filename, filesize, categories) => {
                             mediaSize =
                                 parseInt(metadata.format.size / 1000) + "KB";
 
-                        var vdoInfo = _.find(metadata.streams, {
+                        const vdoInfo = _.find(metadata.streams, {
                             codec_type: "video",
                         });
                         if (vdoInfo) {
