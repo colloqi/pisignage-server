@@ -62,15 +62,13 @@ exports.processFile = async (filename, filesize, categories) => {
                                 errorMessages.push(error);
 
                                 console.error(
-                                    `imageKick write done: ${filename}; error: ${error}`
+                                    `imageMagick write done: ${filename}; error: ${error}`
                                 );
-
-                                return reject(error);
                             }
 
                             thumbnail = `/media/_thumbnails/${random}${filename}`;
 
-                            resolve(thumbnail);
+                            resolve();
                         }
                     );
             });
@@ -87,7 +85,6 @@ exports.processFile = async (filename, filesize, categories) => {
                                 `Image resize error for ${src}: ${error}`
                             );
                             errorMessages.push(error);
-                            return reject(error);
                         }
 
                         resolve();
@@ -100,7 +97,6 @@ exports.processFile = async (filename, filesize, categories) => {
                 imageMagick(src).filesize((error, value) => {
                     if (error) {
                         errorMessages.push(error);
-                        return reject(error);
                     }
 
                     if (value) {
@@ -110,9 +106,9 @@ exports.processFile = async (filename, filesize, categories) => {
                         );
                         if (multipleB > 0) value = value.slice(multipleB + 1);
                         mediaSize = value;
-
-                        resolve(mediaSize);
                     }
+
+                    resolve();
                 });
             });
         };
@@ -122,11 +118,10 @@ exports.processFile = async (filename, filesize, categories) => {
                 imageMagick(src).size((error, value) => {
                     if (error) {
                         errorMessages.push(error);
-                        return reject(error);
                     }
                     resolution = value;
 
-                    return resolve(resolution);
+                    resolve();
                 });
             });
         };
@@ -155,11 +150,6 @@ exports.processFile = async (filename, filesize, categories) => {
         const convertToMP4 = () => {
             return new Promise((resolve, reject) => {
                 probe(src, (error, metadata) => {
-                    if (error) {
-                        errorMessages.push(error);
-                        return reject(error);
-                    }
-
                     if (metadata && metadata.streams) {
                         const vdoInfo = _.find(metadata.streams, {
                             codec_type: "video",
@@ -169,7 +159,7 @@ exports.processFile = async (filename, filesize, categories) => {
 
                         if (metadata.format)
                             formatName = metadata.format.format_name;
-
+                        
                         if (
                             (vdoInfo && vdoInfo.codec_name != "h264") ||
                             formatName.indexOf("mp4") === -1 ||
@@ -177,9 +167,9 @@ exports.processFile = async (filename, filesize, categories) => {
                             parseInt(vdoInfo.width) * parseInt(vdoInfo.height) >
                                 2073600 //1080p pixels
                         ) {
+                            ;
                             new FFmpeg({ source: src })
                                 .audioCodec("libfdk_aac")
-                                // .audioCodec("aac")
                                 .videoCodec("libx264")
                                 .size("?x1080")
                                 .toFormat("mp4")
@@ -189,16 +179,18 @@ exports.processFile = async (filename, filesize, categories) => {
                                     "-pix_fmt yuv420p",
                                 ])
                                 .on("error", (error, stdout, stderr) => {
-                                    console.log(`Conversion Error: ${error}`);
+                                    console.log(
+                                        `Conversion Error: ${error.message}`
+                                    );
                                     console.log(`stdout: ${stdout}`);
                                     console.log(`stderr: ${stderr}`);
 
                                     errorMessages.push(error.message);
 
-                                    return reject(error);
+                                    resolve();
+
                                 })
                                 .on("end", async () => {
-                                    // yet to be tested since libx264 is missing on my local
                                     try {
                                         await fs.promises.unlink(src);
                                         filename = destName;
@@ -209,19 +201,17 @@ exports.processFile = async (filename, filesize, categories) => {
                                             { error }
                                         );
                                         errorMessages.push(error.message);
-
-                                        return reject(error);
                                     }
-                                })
-                                // .saveToFile(destPath);
-                                .output(destPath);
 
-                            resolve();
+                                    resolve();
+                                })
+                                .saveToFile(destPath);                            
                         } else {
                             resolve();
                         }
                     } else {
-                        return reject();
+                        if (error) errorMessages.push(error)
+                        resolve()
                     }
                 });
             });
@@ -234,7 +224,7 @@ exports.processFile = async (filename, filesize, categories) => {
                         console.log(
                             `probe error ${filePath}: ${error.message}`
                         );
-                        return reject();
+                        errorMessages.push(error.message);
                     }
                     if (metadata) {
                         duration = metadata.format.duration;
@@ -266,7 +256,10 @@ exports.processFile = async (filename, filesize, categories) => {
                             `ffmpeg, An error occurred: ${error.message}`
                         );
                         errorMessages.push(error.message);
-                        return reject(error);
+                    })
+                    .on('end', () => {
+                        thumbnail = `/media/_thumbnails/${random}${filename}.png`;
+                        resolve()
                     })
                     .takeScreenshots(
                         {
@@ -277,8 +270,6 @@ exports.processFile = async (filename, filesize, categories) => {
                         },
                         config.thumbnailDir
                     );
-                thumbnail = `/media/_thumbnails/${random}${filename}.png`;
-                resolve();
             });
         };
 
