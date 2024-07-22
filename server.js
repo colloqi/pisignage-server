@@ -47,10 +47,14 @@ const createDirectory = async (dirPath) => {
     }
 };
 
-createDirectory(config.releasesDir);
-createDirectory(config.licenseDir);
-createDirectory(config.syncDir);
-createDirectory(config.thumbnailDir);
+const createDockerDirectories = async () => {
+    await createDirectory(config.releasesDir);
+    await createDirectory(config.licenseDir);
+    await createDirectory(config.syncDir);
+    await createDirectory(config.thumbnailDir);
+}
+
+createDockerDirectories()
 
 /* SYSTEM CHECK ------------------------------------------------------ */
 require("./app/others/system-check")();

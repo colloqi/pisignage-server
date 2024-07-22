@@ -66,10 +66,10 @@ router.post('/api/snapshot/:playerid',players.takeSnapshot)
 router.post('/api/swupdate/:playerid', players.swupdate)
 router.post('/api/pitv/:playerid',players.tvPower);
 
-router.param('playerid', players.loadObject)
-
 router.post('/api/playlistmedia/:playerid/:action',  players.playlistMedia);
 router.post('/api/setplaylist/:playerid/:playlist',  players.setPlaylist);
+
+router.param('playerid', players.loadObject)
 
 router.get('/api/labels', labels.index);
 router.get('/api/labels/:label', labels.getObject)
@@ -77,6 +77,8 @@ router.post('/api/labels', labels.createObject);
 router.post('/api/labels/:label', labels.updateObject);
 router.delete('/api/labels/:label', labels.deleteObject);
 router.get('/api/rssfeed', rssFeed.getFeeds);
+
+router.param('label', labels.loadObject)
 
 require('../app/controllers/licenses').getSettingsModel(function(err,settings){
     var uploadLicense = multer({dest:(config.licenseDirPath+(settings.installation || "local"))})
@@ -90,7 +92,6 @@ router.post('/api/settings',licenses.updateSettings)
 
 router.get('/api/serverconfig',licenses.getSettings);
 
-router.param('label', labels.loadObject)
 
 module.exports = router;
 
