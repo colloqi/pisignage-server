@@ -46,8 +46,6 @@ const PlayerSchema = new Schema({
     cecTvStatus:            {type: Boolean, default : true},
     piTemperature:          {type:String},
     uptime:                 {type:String}
-}, {
-    usePushEach: true
 })
 
 
@@ -57,17 +55,24 @@ PlayerSchema.path('cpuSerialNumber').validate(function (name) {
 }, 'cpuSerialNumber cannot be blank')
 
 PlayerSchema.statics = {
-    load: function (id) {
-        return this.findById({ _id: id });
+    load: async function (id) {
+        try {
+            return await this.findById(id);
+        } catch (error) {
+            throw new Error(error);
+        }
     },
-
-    list: function (options) {
+    list: async function (options) {
         const criteria = options.criteria || {};
 
-        return this.find(criteria)
-            .sort({ name: 1 }) // sort by date
-            .limit(options.perPage)
-            .skip(options.perPage * options.page);
+        try {
+            return await this.find(criteria)
+                .sort({ name: 1 }) // sort by date
+                .limit(options.perPage)
+                .skip(options.perPage * options.page);
+        } catch (error) {
+            throw new Error(error);
+        }
     },
 };
 

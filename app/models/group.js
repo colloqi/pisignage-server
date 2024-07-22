@@ -86,39 +86,32 @@ GroupSchema.path('name').validate(function (name) {
 }, 'name cannot be blank')
 
 GroupSchema.statics = {
-
-    load: function (id) {
-        return this.findOne({ _id: id })
-            
+    load: async function (id) {
+        try {
+            return await this.findById(id);
+        } catch (error) {
+            throw new Error(error);
+        }
     },
 
-    list: function (options) {
-        const criteria = options.criteria || {}
+    list: async function (options) {
+        const criteria = options.criteria || {};
 
         if (!(criteria.all || criteria.name)) {
-            criteria.name = {"$not": /__player__/}
+            criteria.name = { $not: /__player__/ };
         }
         delete criteria.all;
-        return this.find(criteria)
-            .sort({name: 1}) // sort by date
-            .limit(options.perPage)
-            .skip(options.perPage * options.page)
-    }
 
-    // list: function (options, cb) {
-    //     var criteria = options.criteria || {}
-
-    //     if (!(criteria.all || criteria.name)) {
-    //         criteria.name = {"$not": /__player__/}
-    //     }
-    //     delete criteria.all;
-    //     this.find(criteria)
-    //         .sort({name: 1}) // sort by date
-    //         .limit(options.perPage)
-    //         .skip(options.perPage * options.page)
-    //         .exec(cb)
-    // }
-}
+        try {
+            return await this.find(criteria)
+                .sort({ name: 1 }) // sort by date
+                .limit(options.perPage)
+                .skip(options.perPage * options.page);
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
+};
 
 const GroupModel = mongoose.model('Group', GroupSchema)
 
