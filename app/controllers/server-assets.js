@@ -23,6 +23,8 @@ const sendResponse = (res, err) => {
 exports.storeDetails = async (req, res) => {
     const files = req.body.files;
 
+    sendResponse(res);
+
     try {
         for (const file of files) {
             const filename = file.name.replace(config.filenameRegex, "");
@@ -34,7 +36,7 @@ exports.storeDetails = async (req, res) => {
         console.error("Error in processing files: ", error);
     }
 
-    sendResponse(res);
+    
 };
 
 /* STORE DETAILS OF LINKS */
