@@ -26,10 +26,10 @@ exports.processFile = async (filename, filesize, categories) => {
     /* 
     OPERATIONS STRUCTURE:
         1/ IMAGE FILE PROCESSING:
-            - OP 1: async => create thumbnail
-            - OP 2: async => resize image
-            - OP 3: async => get media size
-            - op 4: async => get resolution
+            - OP 1: create thumbnail
+            - OP 2: resize image
+            - OP 3: get media size
+            - op 4: get resolution
             - empty callback results
         2/ VIDEO FILE PROCESSING:
             - op 1: convert to MP4
