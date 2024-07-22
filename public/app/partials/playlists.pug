@@ -22,6 +22,6 @@
                         .form-group(ng-show="playlist.renameEnable && fn.editMode")
                             input.form-control(type='text', ng-model='playlist.newname',ng-blur="fn.rename($index)")
                     .col-sm-2
-                        button.close(ng-click='$event.stopPropagation();fn.delete($index);',ng-if="fn.editMode" ng-show="playlist.name !== 'TV_OFF'")
+                        button.close(ng-click='$event.stopPropagation();fn.delete($index);',ng-if="fn.editMode && playlist.name !== 'TV_OFF'")
                             i.fa.fa-times-circle(ng-class="{'text-danger': fn.editMode}")
 

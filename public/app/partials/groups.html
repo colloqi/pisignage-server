@@ -21,7 +21,7 @@
               </div>
             </div>
             <div class="col-sm-2">
-              <button class="close" ng-click="$event.stopPropagation();fn.delete($index);" ng-if="fn.editMode" ng-show="item.name !== 'default'"><i class="fa fa-times-circle" ng-class="{'text-danger': fn.editMode}"></i></button>
+              <button class="close" ng-click="$event.stopPropagation();fn.delete($index);" ng-if="fn.editMode &amp;&amp; item.name !== 'default'"><i class="fa fa-times-circle" ng-class="{'text-danger': fn.editMode}"></i></button>
             </div>
           </div></a></li>
     </ul>

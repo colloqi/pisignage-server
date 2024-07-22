@@ -16,7 +16,7 @@
                             .form-group(ng-show="item.renameEnable && fn.editMode && item.name !== 'default'")
                                 input.form-control(type='text', ng-model='item.newname',ng-blur="fn.rename($index)")
                         .col-sm-2
-                            button.close(ng-click='$event.stopPropagation();fn.delete($index);',ng-if="fn.editMode", ng-show="item.name !== 'default'")
+                            button.close(ng-click='$event.stopPropagation();fn.delete($index);',ng-if="fn.editMode && item.name !== 'default'")
                                 i.fa.fa-times-circle(ng-class="{'text-danger': fn.editMode}")
 
     form(name="addform", ng-submit='fn.add()')
