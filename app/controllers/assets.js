@@ -437,9 +437,6 @@ exports.updateAsset = async (req, res) => {
 
                     // rename asset filename in playlist file JSON
                     for (const asset of playlistJSON.assets) {
-                        console.log("LOG D: ", { asset });
-                        console.log("LOG E: ", asset.filename);
-
                         if (asset.filename === oldName)
                             asset.filename = newName;
                     }
@@ -457,6 +454,12 @@ exports.updateAsset = async (req, res) => {
             }
 
             // rename asset in groups in DB
+
+            try {
+                
+            } catch (error) {
+                
+            }
 
             // send success res
             return restwareSendSuccess(
