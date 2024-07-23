@@ -415,13 +415,14 @@ exports.updateAsset = async (req, res) => {
             } catch (error) {
                 console.error("Unable to rename asset in DB", { error });
                 logger.error(`Unable to rename asset in DB: ${oldName}`);
-                restwareSendError(res, "File rename error", error.message);
+                return restwareSendError(res, "File rename error", error.message);
             }
 
             // rename asset in playlist file
             try {
                 // get all playlists the asset is in:
-                const assetDetails = await Asset.findOne({ name: newName });
+                // get my newName as the DB entry has already been renamed in the previous block
+                const assetDetails = await Asset.findOne({ name: newName }); 
                 const playlistsAssetIsIn = assetDetails.playlists;
 
                 for (const playlist of playlistsAssetIsIn) {
@@ -450,15 +451,23 @@ exports.updateAsset = async (req, res) => {
             } catch (error) {
                 console.error("Unable to rename asset in playlist file", { error });
                 logger.error(`Unable to rename asset in playlist file: ${oldName}`);
-                restwareSendError(res, "File rename error", error.message);
+                return restwareSendError(res, "File rename error", error.message);
             }
 
             // rename asset in groups in DB
-
             try {
-                
+                const groupsWithRenamedAsset = await Group.find({ assets: oldName })
+
+                for (const group of groupsWithRenamedAsset) {
+                    await group.assets.pull(oldName).push(newName)
+                    await group.deployedAssets.pull(oldName).push(newName)
+                    await group.save()
+                }
+
             } catch (error) {
-                
+                console.error("Unable to rename asset in groups in DB", { error });
+                logger.error(`Unable to rename asset in groups in DB: ${oldName}`);
+                return restwareSendError(res, "File rename error", error.message);
             }
 
             // send success res
@@ -468,7 +477,7 @@ exports.updateAsset = async (req, res) => {
                 newName
             );
         } catch (error) {
-            restwareSendError(res, "File rename error", error);
+            return restwareSendError(res, "File rename error", error);
         }
     } else if (req.body.dbdata) {
         try {
