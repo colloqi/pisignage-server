@@ -18,8 +18,8 @@
             a(ng-click="fn.selected(playlist)")
                 .row
                     .col-sm-10
-                        small(ng-hide="playlist.renameEnable && fn.editMode") {{ playlist.name }}
-                        .form-group(ng-show="playlist.renameEnable && fn.editMode")
+                        small(ng-hide="playlist.renameEnable && fn.editMode && playlist.name !== 'TV_OFF'") {{ playlist.name }}
+                        .form-group(ng-show="playlist.renameEnable && fn.editMode && playlist.name !== 'TV_OFF'")
                             input.form-control(type='text', ng-model='playlist.newname',ng-blur="fn.rename($index)")
                     .col-sm-2
                         button.close(ng-click='$event.stopPropagation();fn.delete($index);',ng-if="fn.editMode && playlist.name !== 'TV_OFF'")
