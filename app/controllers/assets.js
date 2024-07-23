@@ -401,6 +401,7 @@ exports.updateAsset = async (req, res) => {
             const oldName = req.params["file"];
             const newName = req.body.newname;
 
+            // rename asset file
             await fs.rename(
                 path.join(config.mediaDir, oldName),
                 path.join(config.mediaDir, newName)
