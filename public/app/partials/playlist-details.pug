@@ -7,7 +7,7 @@
                         i.fa.fa-lg(ng-class="{'fa-carret-right':collapsed,'fa-carret-down':!collapsed}")
             .col-sm-3
                 a.btn.btn-success.pull-right(ui-sref="home.playlists.playlistAddAssets({playlist:playlist.selectedPlaylist.name})",
-                                                ui-sref-opts="{reload: true, notify: true}") Assign Assets
+                                                ui-sref-opts="{reload: true, notify: true}", ng-disabled="playlist.selectedPlaylist.name === 'TV_OFF'") Assign Assets
             .col-sm-1
                 a.pull-right.close(ng-click="closeWindow()") &times;
 
