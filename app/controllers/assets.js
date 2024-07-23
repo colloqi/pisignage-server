@@ -406,17 +406,59 @@ exports.updateAsset = async (req, res) => {
                 path.join(config.mediaDir, newName)
             );
 
+            // rename asset in DB
             try {
                 await Asset.findOneAndUpdate(
                     { name: oldName },
                     { name: newName }
                 );
             } catch (error) {
-                console.error("Unable to rename asset name in DB", { error });
+                console.error("Unable to rename asset in DB", { error });
                 logger.error(`Unable to rename asset in DB: ${oldName}`);
-                restwareSendError(res, "File rename error", error);
+                restwareSendError(res, "File rename error", error.message);
             }
 
+            // rename asset in playlist file
+            try {
+                // get all playlists the asset is in:
+                const assetDetails = await Asset.findOne({ name: newName });
+                const playlistsAssetIsIn = assetDetails.playlists;
+
+                for (const playlist of playlistsAssetIsIn) {
+                    // load playlist file into JSON
+                    const pathToPlaylistFile = path.join(
+                        config.mediaDir,
+                        `__${playlist}.json`
+                    );
+
+                    const playlistJSON = JSON.parse(
+                        await fs.readFile(pathToPlaylistFile, "utf-8")
+                    );
+
+                    // rename asset filename in playlist file JSON
+                    for (const asset of playlistJSON.assets) {
+                        console.log("LOG D: ", { asset });
+                        console.log("LOG E: ", asset.filename);
+
+                        if (asset.filename === oldName)
+                            asset.filename = newName;
+                    }
+
+                    // write back to playlist file:
+                    await fs.writeFile(
+                        pathToPlaylistFile,
+                        JSON.stringify(playlistJSON, null, 4)
+                    );
+                }
+            } catch (error) {
+                console.error("Unable to rename asset in playlist file", { error });
+                logger.error(`Unable to rename asset in playlist file: ${oldName}`);
+                restwareSendError(res, "File rename error", error.message);
+            }
+
+            // rename asset in groups in DB
+
+            // send success res
             return restwareSendSuccess(
                 res,
                 "Successfully renamed file to",
