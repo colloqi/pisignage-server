@@ -31,6 +31,10 @@ const cleanUpPlaylistName = (dirtyName) => {
     return cleanedUpName;
 };
 
+const isPlaylist = (file) => {
+    return file.startsWith("__") && file.endsWith(".json");
+};
+
 /* LOAD ALL ASSETS -------------------------------------------------------------- */
 exports.index = (req, res) => {
     let files = [];
@@ -415,7 +419,7 @@ exports.updateAsset = async (req, res) => {
             );
 
             // handle playlist rename in assets collection -------------------------------------------------
-            if (oldName.startsWith("__") && oldName.endsWith(".json")) {
+            if (isPlaylist(oldName)) {
 
                 try {
                     const cleanedUpOldPlaylistName = cleanUpPlaylistName(oldName);
