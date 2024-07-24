@@ -424,31 +424,35 @@ exports.updateAsset = async (req, res) => {
                 // get all playlists the asset is in:
                 // get my newName as the DB entry has already been renamed in the previous block
                 const assetDetails = await Asset.findOne({ name: newName }); 
-                const playlistsAssetIsIn = assetDetails.playlists;
 
-                for (const playlist of playlistsAssetIsIn) {
-                    // load playlist file into JSON
-                    const pathToPlaylistFile = path.join(
-                        config.mediaDir,
-                        `__${playlist}.json`
-                    );
+                if (assetDetails) {
+                    const playlistsAssetIsIn = assetDetails.playlists;
 
-                    const playlistJSON = JSON.parse(
-                        await fs.readFile(pathToPlaylistFile, "utf-8")
-                    );
-
-                    // rename asset filename in playlist file JSON
-                    for (const asset of playlistJSON.assets) {
-                        if (asset.filename === oldName)
-                            asset.filename = newName;
+                    for (const playlist of playlistsAssetIsIn) {
+                        // load playlist file into JSON
+                        const pathToPlaylistFile = path.join(
+                            config.mediaDir,
+                            `__${playlist}.json`
+                        );
+    
+                        const playlistJSON = JSON.parse(
+                            await fs.readFile(pathToPlaylistFile, "utf-8")
+                        );
+    
+                        // rename asset filename in playlist file JSON
+                        for (const asset of playlistJSON.assets) {
+                            if (asset.filename === oldName)
+                                asset.filename = newName;
+                        }
+    
+                        // write back to playlist file:
+                        await fs.writeFile(
+                            pathToPlaylistFile,
+                            JSON.stringify(playlistJSON, null, 4)
+                        );
                     }
-
-                    // write back to playlist file:
-                    await fs.writeFile(
-                        pathToPlaylistFile,
-                        JSON.stringify(playlistJSON, null, 4)
-                    );
                 }
+
             } catch (error) {
                 console.error("Unable to rename asset in playlist file", { error });
                 logger.error(`Unable to rename asset in playlist file: ${oldName}`);
