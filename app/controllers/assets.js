@@ -18,6 +18,19 @@ const serverAssetsUpdatePlaylist = require("./server-assets.js").updatePlaylist,
 
 const fileUtilModifyHTML = require("../others/file-util.js").modifyHTML;
 
+/* HELPER FUNCTIONS -------------------------------------------------------------- */
+const cleanUpPlaylistName = (dirtyName) => {
+    let cleanedUpName = dirtyName;
+
+    // Remove "__" at the start
+    cleanedUpName = cleanedUpName.replace(/^__/, "");
+
+    // Remove ".json" at the end
+    cleanedUpName = cleanedUpName.replace(/\.json$/, "");
+
+    return cleanedUpName;
+};
+
 /* LOAD ALL ASSETS -------------------------------------------------------------- */
 exports.index = (req, res) => {
     let files = [];
@@ -226,13 +239,7 @@ exports.deleteFile = async (req, res) => {
 
         try {
             // extract playlist name ----------------------------------------------------------------------------------- //
-            let cleanedUpPlaylistName = file;
-
-            // Remove "__" at the start
-            cleanedUpPlaylistName = cleanedUpPlaylistName.replace(/^__/, "");
-
-            // Remove ".json" at the end
-            cleanedUpPlaylistName = cleanedUpPlaylistName.replace(/\.json$/, "");
+            const cleanedUpPlaylistName = cleanUpPlaylistName(file);
 
             // remove playlist entry from groups ----------------------------------------------------------------------- //
             const groupsWithSpecifiedPlaylist = await Group.find({
@@ -262,9 +269,9 @@ exports.deleteFile = async (req, res) => {
                 
 
             // remove playlist entry from assets in DB ----------------------------------------------------------------- //
-            const assetsWithSpecifiedPLaylists = await Asset.find({ playlists: cleanedUpPlaylistName })
+            const assetsWithSpecifiedPlaylists = await Asset.find({ playlists: cleanedUpPlaylistName })
 
-            for (const asset of assetsWithSpecifiedPLaylists) {
+            for (const asset of assetsWithSpecifiedPlaylists) {
                 asset.playlists.pull(cleanedUpPlaylistName)
             }
 
@@ -401,13 +408,34 @@ exports.updateAsset = async (req, res) => {
             const oldName = req.params["file"];
             const newName = req.body.newname;
 
-            // rename asset file
+            // rename asset file ---------------------------------------------------------------------------
             await fs.rename(
                 path.join(config.mediaDir, oldName),
                 path.join(config.mediaDir, newName)
             );
 
-            // rename asset in DB
+            // handle playlist rename in assets collection -------------------------------------------------
+            if (oldName.startsWith("__") && oldName.endsWith(".json")) {
+
+                try {
+                    const cleanedUpOldPlaylistName = cleanUpPlaylistName(oldName);
+                    const cleanedUpNewPlaylistName = cleanUpPlaylistName(newName);
+
+                    const assetsWithSpecifiedPlaylist = await Asset.find({ playlists: cleanedUpOldPlaylistName })
+
+                    for (const asset of assetsWithSpecifiedPlaylist) {
+                        await asset.playlists.pull(cleanedUpOldPlaylistName).push(cleanedUpNewPlaylistName)
+                        await asset.save()
+                    }
+                    
+                } catch (error) {
+                    console.error("Unable to rename playlist name in DB assets", { error });
+                    logger.error(`Unable to rename playlist name in DB assets: ${oldName}`);
+                    return restwareSendError(res, "File rename error", error.message);
+                }
+            }
+
+            // rename asset in DB --------------------------------------------------------------------------
             try {
                 await Asset.findOneAndUpdate(
                     { name: oldName },
@@ -419,12 +447,12 @@ exports.updateAsset = async (req, res) => {
                 return restwareSendError(res, "File rename error", error.message);
             }
 
-            // rename asset in playlist file
+            // rename asset in playlist file ---------------------------------------------------------------
             try {
-                // get all playlists the asset is in:
-                // get my newName as the DB entry has already been renamed in the previous block
+                // get by newName as the DB entry has already been renamed in the previous block
                 const assetDetails = await Asset.findOne({ name: newName }); 
 
+                
                 if (assetDetails) {
                     const playlistsAssetIsIn = assetDetails.playlists;
 
@@ -459,7 +487,7 @@ exports.updateAsset = async (req, res) => {
                 return restwareSendError(res, "File rename error", error.message);
             }
 
-            // rename asset in groups in DB
+            // rename asset or playlist file name in groups in DB ------------------------------------------
             try {
                 const groupsWithRenamedAsset = await Group.find({ assets: oldName })
 
@@ -470,12 +498,12 @@ exports.updateAsset = async (req, res) => {
                 }
 
             } catch (error) {
-                console.error("Unable to rename asset in groups in DB", { error });
-                logger.error(`Unable to rename asset in groups in DB: ${oldName}`);
+                console.error("Unable to rename asset/playlist file name in groups in DB", { error });
+                logger.error(`Unable to rename asset/playlist file name in groups in DB: ${oldName}`);
                 return restwareSendError(res, "File rename error", error.message);
             }
 
-            // send success res
+            // send success response ----------------------------------------------------------------------
             return restwareSendSuccess(
                 res,
                 "Successfully renamed file to",
