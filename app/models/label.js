@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
     Schema = mongoose.Schema
 
 /**
@@ -12,19 +12,17 @@ var mongoose = require('mongoose'),
 /**
  * Post Schema
  */
-var LabelSchema= new Schema({
+const LabelSchema = new Schema({
     name:                   {type: String,unique: true, index: true},
     mode:                   {type: String},
 
     createdAt:              {type: Date, default: Date.now},
     createdBy:              {_id: {type: Schema.ObjectId, ref: 'User'}, name: String}
-}, {
-    usePushEach: true
 })
 
-LabelSchema.path('name').validate(function (name) {
-    return name.length > 0
-}, 'name cannot be blank')
+LabelSchema.path("name").validate(function (name) {
+    return name.length > 0;
+}, "name cannot be blank");
 
 
 /**
@@ -44,33 +42,29 @@ LabelSchema.statics = {
      * Find article by id
      *
      * @param {ObjectId} id
-     * @param {Function} cb
      * @api private
      */
 
-    load: function (id, cb) {
-        this.findOne({ _id: id })
-            .exec(cb)
+    load: async function (id) {
+        return await this.findById(id);
     },
 
     /**
      * List articles
      *
      * @param {Object} options
-     * @param {Function} cb
      * @api private
      */
 
-    list: function (options, cb) {
-        var criteria = options.criteria || {}
+    list: async function (options) {
+        const criteria = options.criteria || {};
 
-        this.find(criteria)
-            .sort({name: 1}) // sort by date
+        return await this.find(criteria)
+            .sort({ name: 1 }) // sort by date
             .limit(options.perPage)
-            .skip(options.perPage * options.page)
-            .exec(cb)
-    }
-}
+            .skip(options.perPage * options.page);
+    },
+};
 
 mongoose.model('Label', LabelSchema)
 
