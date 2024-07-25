@@ -5,7 +5,7 @@
       <div class="col-sm-2">
         <h3 class="panel-title">{{assetConfig.assets.assets.length}} Files in&nbsp;{{!assetConfig.allAssets && playlist.selectedPlaylist.name || "total"}}</h3>
       </div>
-      <div class="col-sm-2"><span class="btn-group" ng-attr-title="Click this button to select, edit and add labels">
+      <div class="col-sm-3"><span class="btn-group" ng-attr-title="Click this button to select, edit and add labels">
           <button class="btn btn-info btn-sm" ng-click="loadCategory()"><i class="fa fa-tags">&nbsp;</i><span>{{label.selectedLabel.trunc(10) || "Labels"}}</span></button>
           <button class="btn btn-info btn-sm" ng-show="label.selectedLabel" ng-click="label.selectedLabel=null;"><i class="fa fa-close"></i></button></span></div>
       <div class="col-sm-2">
@@ -13,7 +13,7 @@
           <input class="form-control" type="text" placeholder="filter" ng-model="searchFilename"/>
         </form>
       </div>
-      <div class="col-sm-3 dropdown" dropdown="dropdown" ng-if="!assetConfig.allAssets">
+      <div class="col-sm-2 dropdown" dropdown="dropdown" ng-if="!assetConfig.allAssets">
         <button class="btn btn-success dropdown-toggle pull-right" dropdown-toggle="dropdown-toggle"><i class="fa fa-plus">&nbsp;ADD</i></button>
         <ul class="dropdown-menu" role="menu">
           <li>

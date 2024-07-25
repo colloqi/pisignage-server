@@ -518,7 +518,7 @@ exports.updateAsset = async (req, res) => {
         }
     } else if (req.body.dbdata) {
         try {
-            const asset = await Asset.load(req.body.dbdata._id);
+            let asset = await Asset.load(req.body.dbdata._id);
 
             if (!asset) {
                 return restwareSendError(

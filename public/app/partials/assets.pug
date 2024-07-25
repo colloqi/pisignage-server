@@ -3,7 +3,7 @@
         .row
             .col-sm-2
                 h3.panel-title {{assetConfig.assets.assets.length}} Files in&nbsp;{{!assetConfig.allAssets && playlist.selectedPlaylist.name || "total"}}
-            .col-sm-2
+            .col-sm-3
                 span.btn-group(ng-attr-title="Click this button to select, edit and add labels")
                     button.btn.btn-info.btn-sm(ng-click="loadCategory()")
                         i.fa.fa-tags &nbsp;
@@ -13,7 +13,7 @@
             .col-sm-2
                 form
                     input.form-control(type="text",placeholder="filter",ng-model="searchFilename")
-            .col-sm-3.dropdown(dropdown,ng-if="!assetConfig.allAssets")
+            .col-sm-2.dropdown(dropdown,ng-if="!assetConfig.allAssets")
                 button.btn.btn-success.dropdown-toggle.pull-right(dropdown-toggle)
                     i.fa.fa-plus &nbsp;ADD
                 ul.dropdown-menu(role="menu")
