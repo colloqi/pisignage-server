@@ -3,9 +3,9 @@
 const express = require('express'),
     router = express.Router();
 
-const multer = require('multer'),
-    config = require('./config'),
-    upload = multer({dest:config.uploadDir})
+const multer = require("multer"),
+    config = require("./config"),
+    upload = multer({ dest: config.uploadDir });
 
 const assets = require('../app/controllers/assets'),
     playlists = require('../app/controllers/playlists'),
@@ -26,6 +26,7 @@ const assets = require('../app/controllers/assets'),
 //     router.post('/api/gcal/authorize', gcalAuthorize.gCalAuthorize)   //from client
 //}
 
+// ASSETS ROUTES --------------------------------------------------------------------------------
 router.get('/api/files', assets.index);
 router.get('/api/files/:file', assets.getFileDetails);
 router.post('/api/files', upload.fields([{name:'assets',maxCount: 10}]), assets.createFiles);
@@ -41,12 +42,13 @@ router.delete('/api/calendars/:file', assets.deleteFile);
 router.post('/api/links', assets.createLinkFile);
 router.get('/api/links/:file', assets.getLinkFileDetails);
 
+// PLAYLIST ROUTES ------------------------------------------------------------------------------
 router.get('/api/playlists', playlists.index);
 router.get('/api/playlists/:file', playlists.getPlaylist);
 router.post('/api/playlists', playlists.createPlaylist);
 router.post('/api/playlists/:file', playlists.savePlaylist);
 
-// group routes
+// GROUP ROUTES ---------------------------------------------------------------------------------
 router.get('/api/groups', groups.index)
 router.get('/api/groups/:groupid', groups.getObject)
 router.post('/api/groups', groups.createObject)
@@ -55,6 +57,7 @@ router.delete('/api/groups/:groupid', groups.deleteObject)
 
 router.param('groupid', groups.loadObject)
 
+// PLAYERS ROUTES -------------------------------------------------------------------------------
 router.get('/api/players', players.index);
 router.get('/api/players/:playerid', players.getObject)
 router.post('/api/players', players.createObject)
@@ -71,6 +74,7 @@ router.post('/api/setplaylist/:playerid/:playlist',  players.setPlaylist);
 
 router.param('playerid', players.loadObject)
 
+// LABELS ROUTES ------------------------------------------------------------------------------------
 router.get('/api/labels', labels.index);
 router.get('/api/labels/:label', labels.getObject)
 router.post('/api/labels', labels.createObject);
@@ -80,6 +84,7 @@ router.get('/api/rssfeed', rssFeed.getFeeds);
 
 router.param('label', labels.loadObject)
 
+// LICENSES ROUTES ----------------------------------------------------------------------------------
 require('../app/controllers/licenses').getSettingsModel(function(err,settings){
     var uploadLicense = multer({dest:(config.licenseDirPath+(settings.installation || "local"))})
     router.post('/api/licensefiles',uploadLicense.fields([{name:'assets',maxCount: 10}]),licenses.saveLicense);
@@ -87,6 +92,7 @@ require('../app/controllers/licenses').getSettingsModel(function(err,settings){
 router.get('/api/licensefiles',licenses.index);
 router.delete('/api/licensefiles/:filename',licenses.deleteLicense)
 
+// SETTINGS ROUTES ----------------------------------------------------------------------------------
 router.get('/api/settings',licenses.getSettings)
 router.post('/api/settings',licenses.updateSettings)
 
