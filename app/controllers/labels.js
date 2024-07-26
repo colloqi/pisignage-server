@@ -2,6 +2,8 @@
 
 const mongoose = require("mongoose"),
     Label = mongoose.model("Label"),
+    Asset = mongoose.model("Asset"),
+    Player = mongoose.model("Player"),
     rest = require("../others/restware"),
     _ = require("lodash");
 
@@ -100,6 +102,43 @@ exports.updateObject = async (req, res) => {
 exports.deleteObject = async (req, res) => {
     const object = req.object;
 
+    // delete label from assets in DB
+    try {
+        const allAssetsWithLabelToBeRemoved = await Asset.find({
+            labels: object.name,
+        });
+
+        for (const asset of allAssetsWithLabelToBeRemoved) {
+            await asset.labels.pull(object.name);
+            await asset.save();
+        }
+    } catch (error) {
+        return rest.sendError(
+            res,
+            "Unable to remove Label from Assets in DB",
+            error.message
+        );
+    }
+
+    // delete labels from players in DB
+    try {
+        const playersWithLabelToDelete = await Player.find({
+            labels: object.name,
+        });
+
+        for (const player of playersWithLabelToDelete) {
+            await player.labels.pull(object.name);
+            await player.save();
+        }
+    } catch (error) {
+        return rest.sendError(
+            res,
+            "Unable to remove Label from Players in DB",
+            error.message
+        );
+    }
+
+    // delete label from DB
     try {
         await object.deleteOne();
         return rest.sendSuccess(res, "Label deleted successfully");

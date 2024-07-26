@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('piLabels.controllers', [])
-    .controller('LabelsCtrl', function ($scope,$state, $http,$location,piUrls, assetLoader,piPopup) {
+    .controller('LabelsCtrl', function ($scope,$state, $http,$location,piUrls, assetLoader,piPopup, $window) {
 
         $scope.label = assetLoader.label;
 
@@ -65,6 +65,7 @@ angular.module('piLabels.controllers', [])
                         .success(function (data, status) {
                             if (data.success) {
                                 $scope.label.labels.splice($scope.label.labels.indexOf(label), 1);
+                                $window.location.reload();
                             }
                         })
                         .error(function (data, status) {
