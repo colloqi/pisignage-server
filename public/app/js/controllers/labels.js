@@ -51,6 +51,7 @@ angular.module('piLabels.controllers', [])
                     if (data.success) {
                         $scope.label.labels.unshift(data.data);
                         $scope.newLabel = {}
+                        $window.location.reload();
                     }
                 })
                 .error(function(data, status) {
