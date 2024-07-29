@@ -13,7 +13,7 @@
           <input class="form-control" type="text" placeholder="filter" ng-model="searchFilename"/>
         </form>
       </div>
-      <div class="col-sm-2 dropdown" dropdown="dropdown" ng-if="!assetConfig.allAssets">
+      <div class="col-sm-1 dropdown" dropdown="dropdown" ng-if="!assetConfig.allAssets">
         <button class="btn btn-success dropdown-toggle pull-right" dropdown-toggle="dropdown-toggle"><i class="fa fa-plus">&nbsp;ADD</i></button>
         <ul class="dropdown-menu" role="menu">
           <li>
@@ -28,9 +28,18 @@
         </ul>
       </div>
       <div class="col-sm-1" ng-if="!assetConfig.allAssets"><a class="btn btn-link" ng-click="fn.edit()"><strong class="text-muted">EDIT</strong></a></div>
-      <div class="col-sm-2 pull-right" ng-hide="!ngDropdown.selectedAssets.length">
+      <div class="col-sm-3 pull-right" ng-hide="!ngDropdown.selectedAssets.length">
         <div class="pull-right" ng-if="!assetConfig.allAssets" ng-dropdown-multiselect="" options="assetLabels" selected-model="ngDropdown.label.selectedLabels" events="ngDropdown.label.events" translation-texts="ngDropdown.label.customTexts" extra-settings="ngDropdown.label.extraSettings" checkboxes="true"></div>
-        <div class="btn-group-xs pull-right"><a class="btn btn-success" ng-if="assetConfig.allAssets" ng-click="ngDropdown.playlist.events.onItemSelect()"><i class="fa fa-lg fa-arrow-circle-right">assign</i></a><a class="btn btn-link" ng-click="ngDropdown.clearCheckboxes()"><i class="fa fa-times"></i></a></div>
+        <div class="row d-flex flex-row justify-content-end">
+          <button class="btn btn-danger" ng-click="ngDropdown.deleteSelectedAssets()">DELETE</button>
+        </div>
+        <div class="btn-group-xs pull-right">
+          <div class="row">
+            <a class="btn btn-success" ng-if="assetConfig.allAssets" ng-click="ngDropdown.playlist.events.onItemSelect()"><i class="fa fa-lg fa-arrow-circle-right">assign</i></a>
+            <a class="btn btn-link" ng-click="ngDropdown.clearCheckboxes()"><i class="fa fa-times"></i></a>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
