@@ -43,7 +43,7 @@
             .col-sm-2.pull-right(ng-hide="!ngDropdown.selectedAssets.length")
                 div.pull-right(ng-if="!assetConfig.allAssets",
                                     ng-dropdown-multiselect="",
-                                    options="ngDropdown.label.Label.labels",
+                                    options="assetLabels",
                                     selected-model="ngDropdown.label.selectedLabels",
                                     events = "ngDropdown.label.events",
                                     translation-texts="ngDropdown.label.customTexts",

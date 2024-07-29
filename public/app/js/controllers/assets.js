@@ -85,10 +85,9 @@ angular.module('piAssets.controllers',[])
 
     }).
 
-    controller('AssetsEditCtrl', function($scope,$rootScope,$state, $http,$modal, fileUploader, assetLoader,piUrls,piPopup){
+    controller('AssetsEditCtrl', function($scope, $state, $http,$modal, fileUploader, assetLoader,piUrls,piPopup){
 
         $scope.sortListName = "assets"
-        $scope.label = assetLoader.label
 
         $scope.assetConfig = {
             allAssets: false,
@@ -350,6 +349,13 @@ angular.module('piAssets.controllers',[])
         //     });
         // }
 
+        // $scope.label = assetLoader.label;
+        // console.log("LOG B: ", $scope.label);
+
+        assetLoader.getAssetLabels().then((data) => {
+            $scope.assetLabels = data.filter((label) => label.mode && label.mode === "assets")
+        })
+
         //dropdown selects for filter and assign selected files
         $scope.ngDropdown = {
             selectedAssets: [],
@@ -358,7 +364,7 @@ angular.module('piAssets.controllers',[])
                     //scrollableHeight: '200px', scrollable: true,
                     showCheckAll:false,showUncheckAll:false  },
                 customTexts: {buttonDefaultText: "Assign Label"},
-                Label: assetLoader.label,
+                // Label: assetLoader.label.labels.filter((label) => label.mode == 'assets'),
                 selectedLabels: [],
                 events: {
                     onItemSelect: function(label) {

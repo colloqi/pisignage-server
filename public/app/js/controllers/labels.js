@@ -42,8 +42,9 @@ angular.module('piLabels.controllers', [])
             }
             if ($scope.labelMode == "players")
                 $scope.newLabel.mode = $scope.labelMode;
-
-
+            else 
+                $scope.newLabel.mode = "assets"
+                
             $http
                 .post(piUrls.labels, $scope.newLabel)
                 .success(function(data, status) {

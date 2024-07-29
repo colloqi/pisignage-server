@@ -85,6 +85,17 @@ angular.module('piAssets.services', [])
             },
             registerObserverCallback: function(callback,key){
                 observerCallbacks[key] = callback;
+            },
+            getAssetLabels: () => {
+                return new Promise ((resolve, reject) => {
+                    $http.get(piUrls.labels)
+                        .then((response) => {
+                            resolve(response.data.data)
+                        })
+                        .catch((error) => {
+                            reject(error)
+                        })
+                })
             }
         }
 

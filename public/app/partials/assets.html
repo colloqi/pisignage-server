@@ -29,7 +29,7 @@
       </div>
       <div class="col-sm-1" ng-if="!assetConfig.allAssets"><a class="btn btn-link" ng-click="fn.edit()"><strong class="text-muted">EDIT</strong></a></div>
       <div class="col-sm-2 pull-right" ng-hide="!ngDropdown.selectedAssets.length">
-        <div class="pull-right" ng-if="!assetConfig.allAssets" ng-dropdown-multiselect="" options="ngDropdown.label.Label.labels" selected-model="ngDropdown.label.selectedLabels" events="ngDropdown.label.events" translation-texts="ngDropdown.label.customTexts" extra-settings="ngDropdown.label.extraSettings" checkboxes="true"></div>
+        <div class="pull-right" ng-if="!assetConfig.allAssets" ng-dropdown-multiselect="" options="assetLabels" selected-model="ngDropdown.label.selectedLabels" events="ngDropdown.label.events" translation-texts="ngDropdown.label.customTexts" extra-settings="ngDropdown.label.extraSettings" checkboxes="true"></div>
         <div class="btn-group-xs pull-right"><a class="btn btn-success" ng-if="assetConfig.allAssets" ng-click="ngDropdown.playlist.events.onItemSelect()"><i class="fa fa-lg fa-arrow-circle-right">assign</i></a><a class="btn btn-link" ng-click="ngDropdown.clearCheckboxes()"><i class="fa fa-times"></i></a></div>
       </div>
     </div>
