@@ -19,22 +19,20 @@
                 | at pisignage.com/subscriptions.<br><br>
                 | By uploading license files to your local server, they are downloaded to players automatically.
         small.alert.alert-danger(ng-show='statusMsg') {{statusMsg}}
-        .form-group
-            label(for="licenseSelect") Select License:
-            select#licenseSelect.form-control(
-                ng-model="selectedFile",
-                ng-options="file for file in savedFiles | filter: searchLicense"
-            )
-                option(value="" disabled) Select a license file
+        .form-group(ng-show='savedFiles.length > 0')
             input.form-control(
                 type="text",
                 placeholder="Search licenses",
                 ng-model="searchLicense"
             )
+            select#licenseSelect.form-control(
+                ng-model="selectedFile",
+                ng-options="file for file in savedFiles | filter: searchLicense"
+            )
         button.btn.btn-danger(
             ng-disabled="!selectedFile",
             ng-click="deleteEntry(selectedFile)"
-        ) Delete Selected License
+        ) Delete License
 
     .panel.panel-info
         .panel-heading

@@ -19,29 +19,27 @@
       at pisignage.com/subscriptions.<br><br>
       By uploading license files to your local server, they are downloaded to players automatically.
     </div><small class="alert alert-danger" ng-show="statusMsg">{{statusMsg}}</small>
-    <div class="form-group">
-      <label for="licenseSelect">Select License:</label>
-      <select
-          id="licenseSelect"
-          class="form-control"
-          ng-model="selectedFile"
-          ng-options="file for file in savedFiles | filter: searchLicense"
-      >
-          <option value="" disabled>Select a license file</option>
-      </select>
+    <div class="form-group" ng-show="savedFiles.length > 0">
       <input
           type="text"
           class="form-control"
           placeholder="Search licenses"
           ng-model="searchLicense"
       />
+      <select
+          id="licenseSelect"
+          class="form-control"
+          ng-model="selectedFile"
+          ng-options="file for file in savedFiles | filter: searchLicense"
+      >
+      </select>
     </div>
     <button
         class="btn btn-danger"
         ng-disabled="!selectedFile"
         ng-click="deleteEntry(selectedFile)"
     >
-        Delete Selected License
+        Delete License
     </button>
   </div>
   <div class="panel panel-info">
