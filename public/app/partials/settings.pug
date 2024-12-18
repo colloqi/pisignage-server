@@ -29,10 +29,10 @@
                 ng-model="selectedFile",
                 ng-options="file for file in savedFiles | filter: searchLicense"
             )
-        button.btn.btn-danger(
-            ng-disabled="!selectedFile",
-            ng-click="deleteEntry(selectedFile)"
-        ) Delete License
+            button.btn.btn-danger(
+                ng-disabled="!selectedFile",
+                ng-click="deleteEntry(selectedFile)"
+            ) Delete License
 
     .panel.panel-info
         .panel-heading

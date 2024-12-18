@@ -33,14 +33,14 @@
           ng-options="file for file in savedFiles | filter: searchLicense"
       >
       </select>
+      <button
+          class="btn btn-danger"
+          ng-disabled="!selectedFile"
+          ng-click="deleteEntry(selectedFile)"
+      >
+          Delete License
+      </button>
     </div>
-    <button
-        class="btn btn-danger"
-        ng-disabled="!selectedFile"
-        ng-click="deleteEntry(selectedFile)"
-    >
-        Delete License
-    </button>
   </div>
   <div class="panel panel-info">
     <div class="panel-heading">
