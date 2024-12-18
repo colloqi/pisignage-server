@@ -29,6 +29,7 @@
                 ng-model="selectedFile",
                 ng-options="file for file in savedFiles | filter: searchLicense"
             )
+                option(value="" disabled) Select a license
             button.btn.btn-danger(
                 ng-disabled="!selectedFile",
                 ng-click="deleteEntry(selectedFile)"

@@ -32,6 +32,7 @@
           ng-model="selectedFile"
           ng-options="file for file in savedFiles | filter: searchLicense"
       >
+        <option value="" disabled>Select a license</option>
       </select>
       <button
           class="btn btn-danger"
