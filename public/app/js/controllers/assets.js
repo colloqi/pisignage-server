@@ -123,7 +123,6 @@ angular.module('piAssets.controllers',[])
                 if ($scope.fn.editMode) {
                     $scope.names = [];
                     $scope.asset.files.forEach(function (file) {
-                        var fileDetails = $scope.asset.filesDetails[file];
                         var name, ext;
                         if (file.lastIndexOf('.') == -1) {
                             name = file;
@@ -134,9 +133,7 @@ angular.module('piAssets.controllers',[])
                         }
                         $scope.names.push({
                             name: name,
-                            ext: ext,
-                            file: file,
-                            fileDetails: fileDetails
+                            ext: ext
                         })
                     });
                 } else {

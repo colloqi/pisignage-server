@@ -77,9 +77,7 @@
   <ul class="list-group">
     <li class="list-group-item" ng-repeat="name in names">
       <form class="row" name="editform">
-        <div class="col-sm-2"><a ng-click="fn.showDetails(name.fileDetails.name)"><img class="media-object img-rounded" ng-if="name.fileDetails.thumbnail" ng-src="{{name.fileDetails.thumbnail}}"/>
-          <div class="letter-box media-object img-rounded" ng-if="!name.fileDetails.thumbnail"><span ng-if="name.fileDetails.type == &quot;audio&quot; || name.fileDetails.type == &quot;radio&quot;"><i class="fa fa-music"></i></span><span ng-if="name.fileDetails.type != &quot;audio&quot; &amp;&amp; name.fileDetails.type != &quot;radio&quot;">{{name.fileDetails.type.slice(0,1) || 'N'}}</span></div></a></div>
-        <div class="form-group col-xs-8" ng-class="editform.$dirty?'':fieldStatus">
+        <div class="form-group col-xs-10" ng-class="editform.$dirty?'':fieldStatus">
           <div class="input-group col-xs-12">
             <input class="form-control" type="text" ng-model="name.name"/><span class="input-group-addon" ng-bind="name.ext" ng-hide="editform.$dirty"></span><span class="input-group-btn" ng-click="fn.rename($index)" ng-show="editform.$dirty"><a class="btn btn-success" type="button">SAVE</a></span>
           </div>

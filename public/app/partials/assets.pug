@@ -121,15 +121,7 @@
     ul.list-group
         li.list-group-item(ng-repeat='name in names')
             form.row(name="editform")
-                .col-sm-2
-                    a(ng-click='fn.showDetails(name.fileDetails.name)')
-                        img.media-object.img-rounded(ng-if='name.fileDetails.thumbnail',ng-src='{{name.fileDetails.thumbnail}}')
-                        .letter-box.media-object.img-rounded(ng-if='!name.fileDetails.thumbnail')
-                            span(ng-if='name.fileDetails.type == "audio" || name.fileDetails.type == "radio"')
-                                i.fa.fa-music
-                            span(ng-if='name.fileDetails.type != "audio" && name.fileDetails.type != "radio"')
-                                | {{name.fileDetails.type.slice(0,1) || 'N'}}
-                .form-group.col-xs-8(ng-class="editform.$dirty?'':fieldStatus")
+                .form-group.col-xs-10(ng-class="editform.$dirty?'':fieldStatus")
                     .input-group.col-xs-12
                         input.form-control(type='text', ng-model='name.name')
                         span.input-group-addon(ng-bind="name.ext", ng-hide="editform.$dirty")

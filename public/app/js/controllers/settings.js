@@ -6,7 +6,6 @@ angular.module('piSettings.controllers', []).
         //licenses part
 
         $scope.savedFiles = []; // license files
-        $scope.selectedFile = null; // Selected license for deletion
         $scope.statusMsg = null;
 
         $http.get(piUrls.licenses)
@@ -44,7 +43,6 @@ angular.module('piSettings.controllers', []).
                         if (data.success) {
                             $scope.modal.dismiss(); // close modal if successful
                             $scope.savedFiles = data.data;
-                            $scope.selectedFile = null; // Reset selection
                         } else {
                             $scope.statusMsg = data.stat_message;
                         }
