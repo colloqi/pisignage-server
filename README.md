@@ -11,7 +11,8 @@ Run the `npm install` command after `git pull` and before starting the server
    OR
 
    just get the file https://raw.githubusercontent.com/colloqi/pisignage-server/master/docker-compose.yml
-- `docker compose up -d`
+  
+- Change to your pisignage working directory (if you're not already there, eg. C:\Users\<USERNAME>\pisignage-server) and run `docker compose up -d`
 - Use the url http://localhost:3000  to launch web application
 - Default credentials: Username:Password = `pi:pi`
 - To generate your own Docker image, please goto docker-build branch and modify Dockerfile. Also use `docker-compose.prod.yml`
