@@ -145,7 +145,15 @@
                     p KeyCode to be pressed to play this playlist
                     small (Usual keycodes are, key_0:11, key_1:2, key_2:3 ,..., key_9:10)
                 .col-sm-6
-                    input.form-control(type="text",ng-model="playlist.selectedPlaylist.settings.keyPress.key",placeholder="{{'Enter the keycode for the playlist'}}")
+                    input.form-control(type="number",ng-model="playlist.selectedPlaylist.settings.keyPress.key",placeholder="{{'Enter the keycode for the playlist'}}")
+            .form-group(ng-show="playlist.selectedPlaylist.settings.keyPress.enable")
+                .col-sm-6
+                    p Play Once
+                .col-sm-6
+                    .checkbox
+                        label
+                            input(type="checkbox",ng-model="playlist.selectedPlaylist.settings.keyPress.playOnceParameter")
+                            span Enable
             .form-group
                 .col-sm-6.col-sm-offset-6
                     button.btn.btn-success(ng-click="saveSettings()") Save
