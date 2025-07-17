@@ -1,7 +1,7 @@
 ***To start the pisignage-server on reboot in linux systems, you need to add a init service in init.d, upstart or systemd (check what is used in your server)***
 
-*This is an example for Systemd, Courtesy: Martyn Scott Bell* 
-    
+*This is an example for Systemd, Courtesy: Martyn Scott Bell*
+
 
 1. Create startup file for pisignage at /etc/systemd/system/pisignage.service using your favorite editor
 
@@ -11,13 +11,13 @@
     Description=pisignage Player -  Server Software
     #Include the After directive to make sure mongodb is running
     After=mogodb.service
-    
-    
+
+
     [Service]
-    # Key `User` specifies that the server will run under the pisignage user 
+    # Key `User` specifies that the server will run under the pisignage user
     # Hash User & Group out if you want root to run it
     #User=pisignage
-    #Group=pisignage 
+    #Group=pisignage
     Restart=always
     RestartSec=10
     WorkingDirectory=/root/pisignage-server
@@ -33,7 +33,7 @@
 
     ```systemctl daemon-reload```
 
-3. Start the service with systemcl.
+3. Start the service with systemctl.
 
     ```sudo systemctl start pisignage```
 
@@ -46,13 +46,13 @@
 5. Enable auto start MongoDB when system starts.
 
     `sudo systemctl enable pisignage`
-    
-6. To Stop the service with systemcl.
+
+6. To Stop the service with systemctl.
 
     `sudo systemctl stop pisignage`
 
 7. To check the server log file.
 
-    `sudo journalctl -u pisignage.service -n 200 `
-    
+    `sudo journalctl -u pisignage.service -n 200`
+
     Above command display last 200 lines from log.
