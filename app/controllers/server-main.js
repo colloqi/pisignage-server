@@ -2,14 +2,13 @@ import mongoose from 'mongoose';
 import fs from 'fs/promises';
 import path from 'path';
 import util from 'util';
-import rest from '../others/restware.js';
+import * as rest from '../others/restware.js';
 import config from '../../config/config.js';
 import { emitMessage as emitMessageOld } from './server-socket.js';
 import { emitMessage as emitMessageNew } from './server-socket-new.js';
 import { emitMessage as emitMessageWS } from './server-socket-ws.js';
-
-const Player = mongoose.model('Player');
-const Asset = mongoose.model('Asset');
+import { Player } from '../models/player.js';
+import { Asset } from '../models/assets.js';
 
 const playersToBeSynced = {};
 const players = {};

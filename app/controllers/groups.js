@@ -1,27 +1,30 @@
 
 
 import mongoose from 'mongoose';
-const { Group } = mongoose.model('Group');
-
+import { Group } from '../models/group.js';
 import fs from 'fs';
-import config from '../../config/config';
-import rest from '../others/restware';
+import config from '../../config/config.js';
+import * as rest from '../others/restware.js';
 import path from 'path';
-import serverMain from './server-main';
-import licenses from './licenses';
+import * as serverMain from './server-main.js';
+import * as licenses from './licenses.js';
 
 let installation;
 
-try {
-    const settings = await licenses.getSettingsModel();
-    installation = settings.installation || "local";
-} catch (err) {
-    console.error('Error loading settings:', err);
-    installation = "local"; // fallback
+const initializeInstallation = async () => {
+    try {
+        const settings = await licenses.getSettingsModel();
+        installation = settings.installation || "local";
+    } catch (err) {
+        console.error('Error loading settings:', err);
+        installation = "local"; // fallback
+    }
 };
 
 
 export const newGroup = async (group) => {
+      // Initialize installation when function is called
+      await initializeInstallation();
     try {
         // Find existing group by name
         let object = await Group.findOne({ name: group.name });

@@ -4,7 +4,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 // ES6 imports
 import express from 'express';
 import oldSocketio from '919.socket.io';
-import socketio from 'socket.io';
+import { Server as SocketIOServer } from 'socket.io';
 import { WebSocketServer } from 'ws';
 import mongoose from 'mongoose';
 import path from 'path';
@@ -94,7 +94,7 @@ if (config.https) {
 }
 
 const io = oldSocketio.listen(server, { 'destroy upgrade': false });
-const ioNew = socketio(server, {
+const ioNew = new SocketIOServer(server, {
     path: '/newsocket.io',
     serveClient: true,
     // below are engine.IO options
@@ -104,7 +104,7 @@ const ioNew = socketio(server, {
     maxHttpBufferSize: 10e7
 });
 
-const ioNewWebsocketOnly = socketio(server, {
+const ioNewWebsocketOnly = new SocketIOServer(server, {
     path: "/wssocket.io",
     serveClient: true,
     // below are engine.IO options

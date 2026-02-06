@@ -2,15 +2,15 @@
 import fs from 'fs/promises';
 import path from 'path';
 import util from 'util';
-import fileUtil from '../others/file-util.js';
+import * as fileUtil from '../others/file-util.js';
 
 // At the top of assets.js
-import serverAssets from './server-assets.js';
+import * as serverAssets from './server-assets.js';
 
 import mongoose from 'mongoose';
-const Asset = mongoose.model('Asset');
-import config from '../../config/config';
-import rest from '../others/restware';
+import { Asset } from '../models/assets.js';
+import config from '../../config/config.js';
+import * as rest from '../others/restware.js';
 
 
 export const index = async (req, res) => {

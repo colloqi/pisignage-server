@@ -1,6 +1,6 @@
 
 
-import players from './players.js';
+import * as players from './players.js';
 
 let iosockets = null;
 let nextClientId = 1;

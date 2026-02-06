@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import rest from '../others/restware.js';
-
-const Label = mongoose.model('Label');
+import * as rest from '../others/restware.js';
+import { Label } from '../models/label.js';
 
 export const loadObject = async (req, res, next, id) => {
     try {

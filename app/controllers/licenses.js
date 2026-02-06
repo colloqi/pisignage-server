@@ -5,11 +5,11 @@ import mongoose from 'mongoose';
 import { promisify } from 'util';
 const execAsync = promisify(exec);
 import config from '../../config/config.js';
-import rest from '../others/restware.js';
+import * as rest from '../others/restware.js';
 import ip from 'ip';
+import { Settings } from '../models/settings.js';
 
 const serverIp = ip.address();
-const Settings = mongoose.model('Settings');
 
 let settingsModel = null;
 

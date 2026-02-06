@@ -1,4 +1,4 @@
-import players from './players.js';
+import * as players from './players.js';
 
 let iosockets = null;     //holds all the clients io.sockets
 let iosocketsWebsocketOnly = null;     //holds all the clients io.sockets
