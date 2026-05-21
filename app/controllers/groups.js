@@ -21,10 +21,12 @@ const initializeInstallation = async () => {
     }
 };
 
+// Initialize at module load so `installation` is ready for all functions
+initializeInstallation();
 
 export const newGroup = async (group) => {
-      // Initialize installation when function is called
-      await initializeInstallation();
+      // Ensure installation is initialized (safety check)
+      if (!installation) await initializeInstallation();
     try {
         // Find existing group by name
         let object = await Group.findOne({ name: group.name });
@@ -132,9 +134,10 @@ export const createObject = async (req, res) => {
 
 export const updateObject = async (req, res) => {
     try {
+        if (!installation) await initializeInstallation();
         const object = req.object;
         delete req.body.__v; // do not copy version key
-        
+
         // Create new folder if name is changing
         if (req.body.name && (object.name !== req.body.name)) {
             const newFolderPath = path.join(config.syncDir, installation, req.body.name);

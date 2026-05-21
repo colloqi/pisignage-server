@@ -76,7 +76,7 @@ const writePlaylistFile = async (filePath, data) => {
 };
 
 // Create new playlist
-export const newPlaylist = async (playlist, cb) => {
+export const newPlaylist = async (playlist) => {
     const file = path.join(config.mediaDir, getPlaylistFile(playlist));
     const data = {
         ...newPlaylistTemplate,
@@ -85,18 +85,15 @@ export const newPlaylist = async (playlist, cb) => {
 
     try {
         await writePlaylistFile(file, data);
-        cb(null, data);
+        return data;
     } catch (err) {
-        cb(err, null);
+        console.error(`Error creating playlist ${playlist}:`, err);
+        throw err;
     }
 };
 
 // List all playlists (GET /api/playlists)
 export const index = async (req, res) => {
-    if (!req.installation) {
-        return sendError(res, 'Missing installation in request');
-    }
-
     try {
         const assetDir = path.join(config.mediaDir);
         const files = await fs.readdir(assetDir);
@@ -181,12 +178,12 @@ export const createPlaylist = async (req, res) => {
 
     const playlistName = req.body.file.replace(config.filenameRegex, '');
 
-    newPlaylist(playlistName, (err, data) => {
-        if (err) {
-            return sendError(res, 'Playlist write error', err);
-        }
+    try {
+        const data = await newPlaylist(playlistName);
         return sendSuccess(res, 'Playlist Created', data);
-    });
+    } catch (err) {
+        return sendError(res, 'Playlist write error', err);
+    }
 };
 
 // Save/Update playlist (POST /api/playlists/:file)

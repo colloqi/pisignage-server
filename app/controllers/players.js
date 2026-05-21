@@ -748,7 +748,7 @@ import { fileURLToPath } from 'url';
 import config from '../../config/config.js';
 import fs from 'fs';
 import { readFileSync, writeFile, stat } from 'fs';
-import mkdir from 'fs/promises';
+import { mkdir } from 'fs/promises';
 import * as oldSocketio from './server-socket.js';
 import * as newSocketio from './server-socket-new.js';
 import * as webSocket from './server-socket-ws.js';

@@ -16,32 +16,23 @@ const sendResponse = (res, err) => {
     }
 };
 
-export const storeDetails = (req, res) => {
+export const storeDetails = async (req, res) => {
     const files = req.body.files;
-
-    // Process files sequentially without async library
-    const processFilesSequentially = (fileArray, index = 0) => {
-        if (index >= fileArray.length) {
-            console.log(`processed ${fileArray.length} files`);
-            return;
-        }
-
-        const fileObj = fileArray[index];
-        const filename = fileObj.name.replace(config.filenameRegex, '');
-        
-        processFile(filename, fileObj.size, req.body.categories, () => {
-            processFilesSequentially(fileArray, index + 1);
-        });
-    };
-
-    processFilesSequentially(files);
     sendResponse(res);
+
+    for (const fileObj of files) {
+        const filename = fileObj.name.replace(config.filenameRegex, '');
+        try {
+            await processFile(filename, fileObj.size, req.body.categories);
+        } catch (err) {
+            console.error(`processFile failed for ${filename}:`, err);
+        }
+    }
+    console.log(`processed ${files.length} files`);
 };
 
-export const storeLinkDetails = (name, type, categories, cb) => {
-    processFile(name, 0, categories || [], (err) => {
-        cb();
-    });
+export const storeLinkDetails = async (name, type, categories) => {
+    await processFile(name, 0, categories || []);
 };
 
 export const updateObject = (req, res) => {

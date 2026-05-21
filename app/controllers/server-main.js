@@ -23,28 +23,7 @@ export const getSettings = () => {
 export const saveSettings = () => {
 };
 
-// Helper function to copy file using streams
-const copyFile = (srcfile, dstfile) => {
-    return new Promise((resolve, reject) => {
-        let cbCalled = false;
-        const done = (err) => {
-            if (!cbCalled) {
-                cbCalled = true;
-                if (err) reject(err);
-                else resolve();
-            }
-        };
-
-        const rd = fs.createReadStream(srcfile);
-        rd.on('error', done);
-        
-        const wr = fs.createWriteStream(dstfile);
-        wr.on('error', done);
-        wr.on('close', () => done());
-        
-        rd.pipe(wr);
-    });
-};
+const copyFile = (srcfile, dstfile) => fs.copyFile(srcfile, dstfile);
 
 // Helper function to process each asset file
 const processAssetFile = async (file, mediaPath, syncPath, installation) => {
@@ -75,7 +54,7 @@ const processAssetFile = async (file, mediaPath, syncPath, installation) => {
     } catch (err) {
         const errMessage = `Unable to copy playlist ${file} for ${installation}`;
         console.error(errMessage, err);
-        throw new Error(errMessage);
+        throw new Error(errMessage, { cause: err });
     }
 };
 
@@ -254,7 +233,7 @@ const sendSyncToPlayers = (group) => {
 };
 
 // Main deploy function - ES6 async/await version
-export const deploy = async (installation, group, cb) => {
+export const deploy = async (installation, group) => {
     try {
         // Step 1: Validate and get players
         await validateAndGetPlayers(group);
@@ -279,11 +258,9 @@ export const deploy = async (installation, group, cb) => {
         // Step 6: Send sync to players
         sendSyncToPlayers(group);
 
-        // Success callback
-        cb(null, group);
-        
+        return group;
     } catch (err) {
         console.log("Error in deploy: ", err);
-        cb(err, group);
+        throw err;
     }
 };
