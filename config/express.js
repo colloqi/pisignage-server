@@ -128,6 +128,15 @@ module.exports = function (app) {
     app.use('/media', express.static(path.join(config.mediaDir)));
     app.use(express.static(path.join(config.root, 'public')));
 
+    // SPA fallback for the new React UI at /v2/. Static handler above serves
+    // built assets (index.html, /v2/assets/*); any unmatched client-side
+    // route (e.g. /v2/players) falls through to here and gets index.html so
+    // React Router can take over.
+    app.get(/^\/v2(\/.*)?$/, function (req, res, next) {
+        if (path.extname(req.path)) return next();   // let 404 happen for missing files
+        res.sendFile(path.join(config.root, 'public', 'v2', 'index.html'));
+    });
+
     app.set('view engine', 'pug');
     app.locals.basedir = config.viewDir; //for jade root
 
