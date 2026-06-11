@@ -85,6 +85,11 @@ export default (app) => {
     // CORS related  http://stackoverflow.com/questions/7067966/how-to-allow-cors-in-express-nodejs
     app.use(allowCrossDomain);
 
+    // v2 React UI is the primary console — send the site root to it.
+    // Registered before basicHttpAuth so the redirect itself isn't gated by the
+    // Basic-auth prompt (the /v2 shell handles its own login).
+    app.get('/', (_req, res) => res.redirect('/v2/'));
+
     if (process.env.NODE_ENV === 'development') {
 
         // Disable caching of scripts for easier testing
