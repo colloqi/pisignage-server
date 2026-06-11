@@ -326,13 +326,16 @@ export const processFile = async (filename, filesize, categories) => {
         } else if (filename.match(config.videoRegex)) {
             type = 'video';
 
-            // Check if video needs conversion
-            const metadata = await new Promise((resolve, reject) => {
-                probe(src, (err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
+            // Check if video needs conversion.
+            // node-ffprobe@3 is promise-based and ignores a callback argument.
+            // The old callback-style call left this Promise unsettled, hanging
+            // processFile forever so the asset was never saved to the DB.
+            let metadata = null;
+            try {
+                metadata = await probe(src);
+            } catch (err) {
+                console.log(`probe error ${src}; ${err.message}`);
+            }
 
             if (metadata && metadata.streams) {
                 // Use native Array.find() instead of lodash
@@ -347,7 +350,7 @@ export const processFile = async (filename, filesize, categories) => {
                 if (needsConversion) {
                     await new Promise((resolve, reject) => {
                         new FFmpeg({ source: src })
-                            .audioCodec('libfdk_aac')
+                            .audioCodec('aac')   // libfdk_aac isn't in most ffmpeg builds; aac is built-in
                             .videoCodec('libx264')
                             .size('?x1080')
                             .toFormat('mp4')
@@ -380,17 +383,13 @@ export const processFile = async (filename, filesize, categories) => {
                 }
             }
 
-            // Get video metadata
-            const videoMetadata = await new Promise((resolve, reject) => {
-                probe(filePath, (err, data) => {
-                    if (err) {
-                        console.log(`probe error ${filePath}; ${err.message}`);
-                        resolve(null);
-                    } else {
-                        resolve(data);
-                    }
-                });
-            });
+            // Get video metadata (promise-based; see note above)
+            let videoMetadata = null;
+            try {
+                videoMetadata = await probe(filePath);
+            } catch (err) {
+                console.log(`probe error ${filePath}; ${err.message}`);
+            }
 
             if (videoMetadata) {
                 duration = videoMetadata.format?.duration;
@@ -432,17 +431,13 @@ export const processFile = async (filename, filesize, categories) => {
         } else if (filename.match(config.audioRegex)) {
             type = 'audio';
 
-            const audioMetadata = await new Promise((resolve, reject) => {
-                probe(filePath, (err, data) => {
-                    if (err) {
-                        console.log('Error getting audio file info');
-                        errorMessages.push(err.message);
-                        resolve(null);
-                    } else {
-                        resolve(data);
-                    }
-                });
-            });
+            let audioMetadata = null;
+            try {
+                audioMetadata = await probe(filePath);
+            } catch (err) {
+                console.log('Error getting audio file info');
+                errorMessages.push(err.message);
+            }
 
             if (audioMetadata) {
                 duration = audioMetadata.format?.duration;

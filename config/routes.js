@@ -23,7 +23,7 @@ export default () => {
     // Asset routes
     router.get('/api/files', assets.index);
     router.get('/api/files/:file', assets.getFileDetails);
-    router.post('/api/files', upload.fields([{ name: 'assets', maxCount: 10 }]), assets.createFiles);
+    router.post('/api/files', upload.fields([{ name: 'assets', maxCount: 10 }, { name: 'newfiles', maxCount: 10 }]), assets.createFiles);
     router.post('/api/postupload', assets.updateFileDetails);
     router.post('/api/playlistfiles', assets.updatePlaylist);
     router.post('/api/files/:file', assets.updateAsset);
@@ -43,6 +43,7 @@ export default () => {
     router.get('/api/playlists/:file', playlists.getPlaylist);
     router.post('/api/playlists', playlists.createPlaylist);
     router.post('/api/playlists/:file', playlists.savePlaylist);
+    router.put('/api/playlists/:file', playlists.savePlaylist);   // REST alias for /v2 UI
 
     // Group routes
     router.param('groupid', groups.loadObject);
@@ -51,6 +52,7 @@ export default () => {
     router.get('/api/groups/:groupid', groups.getObject);
     router.post('/api/groups', groups.createObject);
     router.post('/api/groups/:groupid', groups.updateObject);
+    router.put('/api/groups/:groupid', groups.updateObject);   // REST alias for /v2 UI
     router.delete('/api/groups/:groupid', groups.deleteObject);
 
     // Player routes

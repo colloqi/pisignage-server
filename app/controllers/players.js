@@ -760,6 +760,16 @@ const __dirname = path.dirname(__filename);
 
 let installation, settings;
 
+/**
+ * Refresh the cached settings used by sendConfig (sshPassword, behaviors,
+ * authCredentials, reportIntervalMinutes…). Called by licenses.updateSettings
+ * after a save so changed settings reach players on their next config push,
+ * instead of staying stale until a server restart.
+ */
+export const setSettings = (data) => {
+    if (data) settings = data;
+};
+
 let pipkgjson = {};
 let pipkgjsonBeta = {};
 let pipkgjsonP2 = {};

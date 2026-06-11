@@ -33,6 +33,15 @@ const allowCrossDomain = (req, res, next) => {
 
 
 const basicHttpAuth = async (req, res, next) => {
+    // The /v2 React UI manages auth itself (credentials in sessionStorage,
+    // sent as an Authorization header on API/socket calls). The browser cannot
+    // attach that header to the initial HTML document load or to <img>/media
+    // requests, so let the /v2 shell and the media it references load without
+    // Basic auth. The /api endpoints below stay protected.
+    if (req.path === '/v2' || req.path.startsWith('/v2/') || req.path.startsWith('/media/')) {
+        return next();
+    }
+
     const auth = req.headers['authorization'];  // auth is in base64(username:password)
 
     if (!auth) {  // No Authorization header was passed in
@@ -139,6 +148,15 @@ export default (app) => {
     app.use(cookieParser());
 
     app.use(routes());
+
+    // /v2 single-page app: serve the React shell for client-side routes such as
+    // /v2/players so deep links and refreshes resolve. Requests for real built
+    // assets (they carry a file extension) fall through to express.static above
+    // / the 404 handler below.
+    app.get(/^\/v2(\/.*)?$/, (req, res, next) => {
+        if (path.extname(req.path)) return next();
+        res.sendFile(path.join(config.root, 'public', 'v2', 'index.html'));
+    });
 
     // custom error handler
     app.use((err, req, res, next) => {

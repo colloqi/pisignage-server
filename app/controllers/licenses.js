@@ -157,7 +157,18 @@ export const updateSettings = async (req, res) => {
         
         // Update cache
         settingsModel = data;
-        
+
+        // Refresh the players controller's cached settings too, so changed
+        // values (sshPassword, behaviors, authCredentials…) propagate to players
+        // on their next config push rather than only after a server restart.
+        // Dynamic import avoids a static players<->licenses circular import.
+        try {
+            const players = await import('./players.js');
+            players.setSettings(data);
+        } catch (e) {
+            console.log('Unable to refresh players settings cache:', e);
+        }
+
         // Update licenseDir if installation changed
         if (installationChanged) {
             licenseDir = config.licenseDirPath + (data.installation || 'local');

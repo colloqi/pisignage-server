@@ -46,12 +46,13 @@ export const index = async (req, res) => {
 
 export const createFiles = async (req, res) => {
     try {
-        // Validate uploaded files
-        if (!req.files || !req.files.assets) {
+        // Validate uploaded files. The legacy UI posts the multipart field as
+        // `assets`; the /v2 React UI posts it as `newfiles`. Accept either.
+        if (!req.files || (!req.files.assets && !req.files.newfiles)) {
             return rest.sendError(res, "There are no files to be uploaded");
         }
-        
-        const files = req.files.assets;
+
+        const files = req.files.assets || req.files.newfiles;
         const data = [];
         const renameErrors = [];
         
