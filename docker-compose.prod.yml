@@ -1,15 +1,15 @@
-version: '3'
 services:
   mongo:
-    image: mongo:4.4
+    image: mongo:5.0
+    restart: unless-stopped
     ports:
       - 27017:27017
     volumes:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
   pisignage-server:
-    build:
-      context: .
+    image: pisignage/pisignage-server:latest
+    restart: unless-stopped
     ports:
       - 3000:3000
     volumes:
