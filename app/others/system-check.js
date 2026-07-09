@@ -55,7 +55,7 @@ module.exports = function(){
 			exec('convert -version',function(err,stdout,stderr){
                 if(err){
 					console.log('*********************************************************************');
-					console.log('* Please install imagemagik, otherwise thumbnails cannot be created *');
+					console.log('* Please install imagemagick, otherwise thumbnails cannot be created *');
 					console.log('*********************************************************************\n');
                     console.log(err)
                     errors++;
