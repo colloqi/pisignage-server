@@ -351,7 +351,7 @@ export const getObject = (req, res) => {
 
 export const createObject = async (req, res) => {
     try {
-        let player;
+        let player, existingPlayer;
         try {
             existingPlayer = await Player.findOne({ cpuSerialNumber: req.body.cpuSerialNumber });
           } catch (err) {
