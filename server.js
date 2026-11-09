@@ -14,9 +14,11 @@ import fs from 'fs/promises';
 import http from 'http';
 import https from 'https';
 import { readFileSync, writeSync } from 'fs';
-import { startSIO as startSIOOld, emitMessage as emitMessageOld } from './app/controllers/server-socket.js';
-import { startSIO as startSIONew, startSIOWebsocketOnly, emitMessage as emitMessageNew } from './app/controllers/server-socket-new.js';
-import { startSIO as startSIOWebSocket, emitMessage as emitMessageWS } from './app/controllers/server-socket-ws.js';
+// NOTE: the socket controllers (and the players/groups/licenses controllers
+// they pull in) run DB queries in top-level init code at import time. They are
+// therefore imported dynamically AFTER mongoose.connect() below — importing
+// them here would hoist those queries before the connection exists, causing
+// them to buffer and time out on a cold start.
 
 // Get __dirname equivalent in ES6 modules
 const __filename = fileURLToPath(import.meta.url);
@@ -67,6 +69,13 @@ for (const file of modelFiles) {
     // Import each model file (this registers the model with Mongoose)
     await import(`${modelsPath}/${file}`);
 }
+
+// Import the socket controllers now that Mongoose is connected — their (and the
+// players/groups/licenses controllers') top-level init queries run at import
+// time, so they must not be imported before the connection above.
+const { startSIO: startSIOOld } = await import('./app/controllers/server-socket.js');
+const { startSIO: startSIONew, startSIOWebsocketOnly } = await import('./app/controllers/server-socket-new.js');
+const { startSIO: startSIOWebSocket } = await import('./app/controllers/server-socket-ws.js');
 
 console.log('********************************************************************');
 console.log('*    After update if you do not see your groups, please change     *');
