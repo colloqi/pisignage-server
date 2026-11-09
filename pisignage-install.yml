@@ -1,0 +1,401 @@
+#!/usr/bin/env ansible-playbook
+# =============================================================================
+# pisignage-server — one-shot installer (Debian / Ubuntu / RHEL family)
+# =============================================================================
+# Installs system packages, Node 20, MongoDB 8, clones the app, runs it as a
+# systemd service, and verifies it is serving the v2 UI. Mirrors INSTALL-debian.md.
+#
+# Supported:
+#   Debian 11/12/13 (bullseye / bookworm / trixie)
+#   Ubuntu 20.04/22.04/24.04 (focal / jammy / noble)
+#   RHEL family 8/9 (Rocky, AlmaLinux, CentOS Stream)
+#
+# Service account: defaults to a dedicated 'pisignage' user (created if it
+# doesn't exist), installed under /home/pisignage and run as that user —
+# regardless of who runs the playbook. Override with -e app_user=<name> to
+# install under an existing account instead.
+#
+# RUN IT (no inventory needed — it targets this machine):
+#   As a normal user with sudo:   ansible-playbook pisignage-install.yml -K
+#   As root:                      ansible-playbook pisignage-install.yml
+#
+# Override defaults with -e, e.g.:
+#   -e app_user=signage         (run under a different account)
+#   -e install_dir=/opt/pisignage   (install somewhere other than the home dir)
+#   -e repo_branch=es6-mongodb8 -e app_port=3000
+#
+# Requires Ansible on this machine:
+#   Debian/Ubuntu: sudo apt-get install -y ansible
+#   RHEL family:   sudo dnf install -y ansible-core
+#
+# If you hit "Ansible requires the locale encoding to be UTF-8", your shell
+# locale isn't UTF-8 — prefix the command (C.UTF-8 is always available):
+#   LANG=C.UTF-8 LC_ALL=C.UTF-8 ansible-playbook pisignage-install.yml
+# =============================================================================
+
+- name: Install and run pisignage-server
+  hosts: localhost
+  connection: local
+  become: true
+  gather_facts: true
+
+  vars:
+    # --- Who/where -----------------------------------------------------------
+    # Dedicated service account the app runs as. Always defaults to 'pisignage'
+    # (created if missing) no matter who runs the playbook. Override to install
+    # under an existing account with -e app_user=<name>.
+    app_user: pisignage
+    install_dir: "/home/{{ app_user }}"
+    repo_url: "https://github.com/santhoshmaderi/pisignage-server.git"
+    repo_branch: "es6-mongodb8"
+
+    # --- Versions / runtime --------------------------------------------------
+    node_major: "20"
+    mongo_version: "8.0"
+    app_port: 3000
+    node_env: production
+    run_audit_fix: true
+    open_firewall: true
+
+    # --- Derived (do not usually change) ------------------------------------
+    repo_dir: "{{ install_dir }}/pisignage-server"
+    media_dir: "{{ install_dir }}/media"
+    service_name: pisignage
+    # MongoDB apt repos only exist for these codenames; map newer/odd releases
+    # onto the closest supported one (e.g. Debian trixie -> bookworm).
+    _mongo_codename_map:
+      trixie: bookworm
+      bookworm: bookworm
+      bullseye: bullseye
+      noble: noble
+      jammy: jammy
+      focal: focal
+    _mongo_codename_fallback: "{{ 'noble' if ansible_distribution == 'Ubuntu' else 'bookworm' }}"
+    mongo_apt_codename: "{{ _mongo_codename_map[ansible_distribution_release] | default(_mongo_codename_fallback) }}"
+    mongo_apt_path: "{{ 'ubuntu' if ansible_distribution == 'Ubuntu' else 'debian' }}"
+    mongo_apt_component: "{{ 'multiverse' if ansible_distribution == 'Ubuntu' else 'main' }}"
+
+  pre_tasks:
+    - name: Fail early on unsupported OS
+      ansible.builtin.assert:
+        that: ansible_facts['os_family'] in ['Debian', 'RedHat']
+        fail_msg: >-
+          Unsupported OS '{{ ansible_distribution }} {{ ansible_distribution_version }}'.
+          This playbook supports Debian, Ubuntu and the RHEL family only.
+
+    - name: Show what will be installed
+      ansible.builtin.debug:
+        msg: >-
+          Installing pisignage on {{ ansible_distribution }} {{ ansible_distribution_version }}
+          ({{ ansible_distribution_release | default('n/a') }}) as user '{{ app_user }}'
+          into {{ install_dir }} — branch {{ repo_branch }}, port {{ app_port }}.
+
+  tasks:
+    # =========================================================================
+    # 1. System packages — Debian / Ubuntu
+    # =========================================================================
+    # Clear any stale/half-written NodeSource repo + key from a previous run
+    # FIRST — otherwise the base-package `apt update` below would itself fail on
+    # the leftover bad-signature repo ("Missing key …") before we can fix it.
+    - name: "[Debian] Remove stale NodeSource/MongoDB repos & keys"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/apt/sources.list.d/nodesource.list
+        - /etc/apt/sources.list.d/nodesource.sources
+        - /usr/share/keyrings/nodesource.gpg
+        - "/etc/apt/sources.list.d/mongodb-org-{{ mongo_version }}.list"
+        - "/usr/share/keyrings/mongodb-server-{{ mongo_version }}.gpg"
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: "[Debian] Install base packages"
+      ansible.builtin.apt:
+        name:
+          - git
+          - curl
+          - ca-certificates
+          - gnupg
+          - build-essential
+          - python3
+          - ffmpeg
+          - imagemagick
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+      when: ansible_facts['os_family'] == 'Debian'
+
+    # NodeSource's official setup script installs the key + repo correctly across
+    # Debian/Ubuntu releases, including trixie's stricter `sqv` signature checks.
+    - name: "[Debian] Add NodeSource repo (official setup script)"
+      ansible.builtin.shell: "curl -fsSL https://deb.nodesource.com/setup_{{ node_major }}.x | bash -"
+      when: ansible_facts['os_family'] == 'Debian'
+
+    # Debian 13 (trixie) ships apt's Sequoia verifier (sqv), which rejects
+    # MongoDB's repo signing key (its self-signature uses an algorithm sqv
+    # refuses) → "Missing key …". MongoDB publishes no trixie/sqv-compatible key
+    # yet, so trust this one repo: transport is still HTTPS (repo.mongodb.org);
+    # only the OpenPGP repo-signature check is skipped.
+    - name: "[Debian] Add MongoDB apt repo"
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [ arch=amd64,arm64 trusted=yes ]
+          https://repo.mongodb.org/apt/{{ mongo_apt_path }} {{ mongo_apt_codename }}/mongodb-org/{{ mongo_version }} {{ mongo_apt_component }}
+        filename: "mongodb-org-{{ mongo_version }}"
+        state: present
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: "[Debian] Install Node.js and MongoDB"
+      ansible.builtin.apt:
+        name:
+          - nodejs
+          - mongodb-org
+        state: present
+        update_cache: true
+      when: ansible_facts['os_family'] == 'Debian'
+
+    # =========================================================================
+    # 1b. System packages — RHEL family
+    # =========================================================================
+    - name: "[RedHat] Install EPEL"
+      ansible.builtin.dnf:
+        name: epel-release
+        state: present
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: "[RedHat] Enable RPM Fusion (free) for ffmpeg"
+      ansible.builtin.dnf:
+        name: "https://download1.rpmfusion.org/free/el/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+        state: present
+        disable_gpg_check: true
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: "[RedHat] Install Development Tools group"
+      ansible.builtin.dnf:
+        name: "@Development Tools"
+        state: present
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: "[RedHat] Install base packages"
+      ansible.builtin.dnf:
+        name:
+          - git
+          - curl
+          - gcc-c++
+          - make
+          - python3
+          - ImageMagick
+          - ffmpeg
+        state: present
+        enablerepo: "*rpmfusion*"
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: "[RedHat] Add NodeSource repo"
+      ansible.builtin.shell: "curl -fsSL https://rpm.nodesource.com/setup_{{ node_major }}.x | bash -"
+      args:
+        creates: /etc/yum.repos.d/nodesource-nodejs.repo
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: "[RedHat] Add MongoDB yum repo"
+      ansible.builtin.yum_repository:
+        name: "mongodb-org-{{ mongo_version }}"
+        description: "MongoDB Repository"
+        baseurl: "https://repo.mongodb.org/yum/redhat/{{ ansible_distribution_major_version }}/mongodb-org/{{ mongo_version }}/x86_64/"
+        gpgcheck: true
+        enabled: true
+        gpgkey: "https://pgp.mongodb.com/server-{{ mongo_version }}.asc"
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: "[RedHat] Install Node.js and MongoDB"
+      ansible.builtin.dnf:
+        name:
+          - nodejs
+          - mongodb-org
+        state: present
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    # =========================================================================
+    # 2. MongoDB service
+    # =========================================================================
+    - name: Enable and start mongod
+      ansible.builtin.systemd:
+        name: mongod
+        enabled: true
+        state: started
+        daemon_reload: true
+
+    # =========================================================================
+    # 3. Application user & directories
+    # =========================================================================
+    # Ensure the service account exists (idempotent — harmless for an existing
+    # account). Skipped only when targeting root explicitly.
+    - name: Ensure the service user exists
+      ansible.builtin.user:
+        name: "{{ app_user }}"
+        shell: /bin/bash
+        create_home: true
+      when: app_user != 'root'
+
+    - name: Create install directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_user }}"
+        mode: "0755"
+      loop:
+        - "{{ install_dir }}"
+        - "{{ media_dir }}"
+        # Pre-create the per-user Ansible tmp dir so the become_user tasks below
+        # don't emit the harmless "remote_tmp did not exist" warning.
+        - "{{ install_dir }}/.ansible/tmp"
+
+    # =========================================================================
+    # 4. Clone & build the app (as the application user)
+    # =========================================================================
+    - name: Clone / update the repository
+      become_user: "{{ app_user }}"
+      ansible.builtin.git:
+        repo: "{{ repo_url }}"
+        dest: "{{ repo_dir }}"
+        version: "{{ repo_branch }}"
+        force: true
+      notify: Restart pisignage
+
+    - name: Install npm dependencies
+      become_user: "{{ app_user }}"
+      ansible.builtin.command:
+        cmd: npm install
+        chdir: "{{ repo_dir }}"
+      environment:
+        HOME: "{{ install_dir }}"
+      register: npm_install
+      changed_when: "'added' in npm_install.stdout or 'changed' in npm_install.stdout or 'removed' in npm_install.stdout"
+      notify: Restart pisignage
+
+    - name: "Apply non-breaking security fixes (npm audit fix — never --force)"
+      become_user: "{{ app_user }}"
+      ansible.builtin.command:
+        cmd: npm audit fix
+        chdir: "{{ repo_dir }}"
+      environment:
+        HOME: "{{ install_dir }}"
+      register: npm_audit
+      changed_when: "'fixed' in npm_audit.stdout"
+      failed_when: false
+      when: run_audit_fix | bool
+
+    # =========================================================================
+    # 5. systemd service for the app
+    #    WorkingDirectory MUST be the repo dir: the app derives media (../media)
+    #    and data/ from process.cwd().
+    # =========================================================================
+    - name: Install pisignage systemd unit
+      ansible.builtin.copy:
+        dest: "/etc/systemd/system/{{ service_name }}.service"
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=pisignage-server (digital signage)
+          After=network-online.target mongod.service
+          Wants=network-online.target
+          Requires=mongod.service
+
+          [Service]
+          Type=simple
+          User={{ app_user }}
+          Group={{ app_user }}
+          WorkingDirectory={{ repo_dir }}
+          Environment=NODE_ENV={{ node_env }}
+          Environment=PORT={{ app_port }}
+          Environment=PATH=/usr/local/bin:/usr/bin:/bin
+          ExecStart=/usr/bin/node server.js
+          Restart=on-failure
+          RestartSec=5
+          StandardOutput=append:{{ install_dir }}/pisignage.log
+          StandardError=append:{{ install_dir }}/pisignage.log
+
+          [Install]
+          WantedBy=multi-user.target
+      notify: Restart pisignage
+
+    - name: Enable and start pisignage
+      ansible.builtin.systemd:
+        name: "{{ service_name }}"
+        enabled: true
+        state: started
+        daemon_reload: true
+
+    # Apply any pending restart (from clone/npm/unit changes) before verifying.
+    - name: Apply pending restarts
+      ansible.builtin.meta: flush_handlers
+
+    # =========================================================================
+    # 6. Firewall (best effort)
+    # =========================================================================
+    - name: "[firewalld] Open app port"
+      ansible.builtin.command: "firewall-cmd --permanent --add-port={{ app_port }}/tcp"
+      register: fwd
+      changed_when: "'success' in fwd.stdout"
+      failed_when: false
+      when: open_firewall | bool and ansible_facts['os_family'] == 'RedHat'
+
+    - name: "[firewalld] Reload"
+      ansible.builtin.command: firewall-cmd --reload
+      failed_when: false
+      when: open_firewall | bool and ansible_facts['os_family'] == 'RedHat'
+
+    - name: "[ufw] Open app port"
+      ansible.builtin.command: "ufw allow {{ app_port }}/tcp"
+      register: ufw
+      changed_when: "'added' in ufw.stdout or 'updated' in ufw.stdout"
+      failed_when: false
+      when: open_firewall | bool and ansible_facts['os_family'] == 'Debian'
+
+    # =========================================================================
+    # 7. Verify it is up and serving the v2 UI
+    # =========================================================================
+    - name: Wait for the app port to accept connections
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: "{{ app_port }}"
+        timeout: 90
+
+    - name: Verify root redirects to /v2/
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ app_port }}/"
+        follow_redirects: none
+        status_code: [301, 302]
+        return_content: false
+      register: root_check
+      retries: 5
+      delay: 3
+      until: root_check.status in [301, 302]
+
+    - name: Verify the v2 UI shell loads
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ app_port }}/v2/"
+        status_code: 200
+      register: v2_check
+      retries: 5
+      delay: 3
+      until: v2_check.status == 200
+
+  handlers:
+    - name: Restart pisignage
+      ansible.builtin.systemd:
+        name: "{{ service_name }}"
+        state: restarted
+        daemon_reload: true
+
+  post_tasks:
+    - name: Installation summary
+      ansible.builtin.debug:
+        msg:
+          - "✅ pisignage-server is installed and running."
+          - "URL:        http://{{ ansible_default_ipv4.address | default('<server-ip>') }}:{{ app_port }}/  (redirects to the v2 UI)"
+          - "Login:      pi / pi   (change under Settings → Download Access)"
+          - "Service:    systemctl status {{ service_name }}   |   journalctl -u {{ service_name }} -f"
+          - "App logs:   {{ install_dir }}/pisignage.log"
+          - "Code:       {{ repo_dir }}  (branch {{ repo_branch }}, run as user '{{ app_user }}')"
+          - "Update:     re-run this playbook, or: sudo -u {{ app_user }} git -C {{ repo_dir }} pull && sudo systemctl restart {{ service_name }}"

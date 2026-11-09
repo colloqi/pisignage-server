@@ -28,7 +28,7 @@ AssetSchema.statics = {
         const criteria = options.criteria || {};
 
         return await this.find(criteria)
-            .sort({ name: 1 }) // sort by date
+            .sort({ createdAt: 1 }) // sort by date
             .skip(options.perPage * options.page)
             .limit(options.perPage)
             .exec();

@@ -14,9 +14,11 @@ import fs from 'fs/promises';
 import http from 'http';
 import https from 'https';
 import { readFileSync, writeSync } from 'fs';
-import { startSIO as startSIOOld, emitMessage as emitMessageOld } from './app/controllers/server-socket.js';
-import { startSIO as startSIONew, startSIOWebsocketOnly, emitMessage as emitMessageNew } from './app/controllers/server-socket-new.js';
-import { startSIO as startSIOWebSocket, emitMessage as emitMessageWS } from './app/controllers/server-socket-ws.js';
+// NOTE: the socket controllers (and the players/groups/licenses controllers
+// they pull in) run DB queries in top-level init code at import time. They are
+// therefore imported dynamically AFTER mongoose.connect() below — importing
+// them here would hoist those queries before the connection exists, causing
+// them to buffer and time out on a cold start.
 
 // Get __dirname equivalent in ES6 modules
 const __filename = fileURLToPath(import.meta.url);
@@ -68,6 +70,13 @@ for (const file of modelFiles) {
     await import(`${modelsPath}/${file}`);
 }
 
+// Import the socket controllers now that Mongoose is connected — their (and the
+// players/groups/licenses controllers') top-level init queries run at import
+// time, so they must not be imported before the connection above.
+const { startSIO: startSIOOld } = await import('./app/controllers/server-socket.js');
+const { startSIO: startSIONew, startSIOWebsocketOnly } = await import('./app/controllers/server-socket-new.js');
+const { startSIO: startSIOWebSocket } = await import('./app/controllers/server-socket-ws.js');
+
 console.log('********************************************************************');
 console.log('*    After update if you do not see your groups, please change     *');
 console.log('*    change the uri variable to "mongodb://localhost/pisignage-dev"*');
@@ -97,6 +106,7 @@ const io = oldSocketio.listen(server, { 'destroy upgrade': false });
 const ioNew = new SocketIOServer(server, {
     path: '/newsocket.io',
     serveClient: true,
+    allowEIO3: true,   // accept legacy Engine.IO v3 clients (socket.io-client 2.x player firmware); v4 rejects them by default
     // below are engine.IO options
     pingInterval: 45000,
     pingTimeout: 45000,
@@ -107,6 +117,7 @@ const ioNew = new SocketIOServer(server, {
 const ioNewWebsocketOnly = new SocketIOServer(server, {
     path: "/wssocket.io",
     serveClient: true,
+    allowEIO3: true,   // accept legacy Engine.IO v3 clients (socket.io-client 2.x player firmware); v4 rejects them by default
     // below are engine.IO options
     pingInterval: 45000,
     pingTimeout: 180000,
@@ -124,12 +135,17 @@ startSIONew(ioNew);
 startSIOWebsocketOnly(ioNewWebsocketOnly);
 
 // Bootstrap WebSocket
-const wss = new WebSocketServer({ server, path: "/websocket" });
+// noServer: a WebSocketServer attached with { server, path } answers every
+// upgrade for any OTHER path with "400 Bad Request" — on top of socket.io's own
+// "101 Switching Protocols" for /newsocket.io and /wssocket.io — which corrupts
+// those websocket connections ("Invalid frame header"; v2 UI realtime offline,
+// players stuck on polling). Route only our own paths to it instead.
+const wss = new WebSocketServer({ noServer: true });
 startSIOWebSocket(wss);
 
 server.on('upgrade', (request, socket, head) => {
     const pathname = urlParse(request.url).pathname;
-    if (pathname === '/WebSocket') {
+    if (pathname === '/websocket' || pathname === '/WebSocket') {
         wss.handleUpgrade(request, socket, head, (ws) => {
             wss.emit('connection', ws, request);
         });

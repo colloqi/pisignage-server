@@ -63,8 +63,15 @@ export const startSIOWebsocketOnly = (io) => {
 };
 
 export const emitMessage = (sid, ...args) => {
-    if (iosockets.sockets[sid]) {
-        iosockets.sockets[sid].emit(...args);
+    // socket.io v4: namespace.sockets is a Map, not a plain object — bracket
+    // access is always undefined, so we must use .get(sid). Also, the two
+    // server instances (/newsocket.io and /wssocket.io) each keep their own
+    // sockets Map, so check both to reach players on either path.
+    const socket =
+        (iosockets && iosockets.sockets.get(sid)) ||
+        (iosocketsWebsocketOnly && iosocketsWebsocketOnly.sockets.get(sid));
+    if (socket) {
+        socket.emit(...args);
     }
 };
 

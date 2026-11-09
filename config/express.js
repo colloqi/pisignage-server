@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
+import crypto from 'crypto';
 import config from './config.js';
 import serveIndex from 'serve-index';
 
@@ -32,13 +33,64 @@ const allowCrossDomain = (req, res, next) => {
 };
 
 
+// --- Media session cookie ----------------------------------------------------
+// The v2 React UI keeps its credentials in sessionStorage and sends them as an
+// Authorization header on API calls — but the browser cannot attach that header
+// to <img>/<video> (/media) loads. Rather than leave /media open, we mirror the
+// legacy server's behaviour (where browser-native Basic auth auto-sent creds to
+// /media): after any successful Basic-auth request we set an HttpOnly cookie,
+// which the browser then auto-attaches to same-origin /media requests.
+//
+// The cookie value is an HMAC keyed by a per-process random secret, so it cannot
+// be forged. It is opaque (proves "this browser authenticated"); it carries no
+// credentials. The secret is regenerated on restart — clients simply re-seed the
+// cookie on their next authenticated API call.
+//
+// Reverse-proxy notes: the Secure flag is set only when https is detected (via
+// req.secure OR the X-Forwarded-Proto header, so it works without trust-proxy);
+// a non-Secure cookie still works over https, so a missing header never breaks
+// loading. SameSite=Lax is fine because the page and /media share one origin.
+const SESSION_COOKIE = 'psm_session';
+const SESSION_SECRET = crypto.randomBytes(32);
+const SESSION_TOKEN = crypto.createHmac('sha256', SESSION_SECRET)
+    .update('pisignage-media-session')
+    .digest('hex');
+
+const hasValidSessionCookie = (req) => {
+    const raw = req.headers['cookie'];
+    if (!raw) return false;
+    const entry = raw.split(';')
+        .map((c) => c.trim())
+        .find((c) => c.startsWith(SESSION_COOKIE + '='));
+    if (!entry) return false;
+    const value = entry.slice(SESSION_COOKIE.length + 1);
+    const a = Buffer.from(value);
+    const b = Buffer.from(SESSION_TOKEN);
+    return a.length === b.length && crypto.timingSafeEqual(a, b);
+};
+
+const setSessionCookie = (req, res) => {
+    res.cookie(SESSION_COOKIE, SESSION_TOKEN, {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+        path: '/',
+        maxAge: 7 * 24 * 60 * 60 * 1000   // 7 days
+    });
+};
+
 const basicHttpAuth = async (req, res, next) => {
-    // The /v2 React UI manages auth itself (credentials in sessionStorage,
-    // sent as an Authorization header on API/socket calls). The browser cannot
-    // attach that header to the initial HTML document load or to <img>/media
-    // requests, so let the /v2 shell and the media it references load without
-    // Basic auth. The /api endpoints below stay protected.
-    if (req.path === '/v2' || req.path.startsWith('/v2/') || req.path.startsWith('/media/')) {
+    // The /v2 React shell + its bundled assets load without Basic auth (the app
+    // authenticates its own API calls). Everything else stays protected.
+    if (req.path === '/v2' || req.path.startsWith('/v2/')) {
+        return next();
+    }
+
+    // Media is gated, but the browser can't send the Authorization header on
+    // <img>/<video> loads — so accept a valid session cookie here. Without it,
+    // /media falls through to the Basic-auth check below (so direct/credentialed
+    // requests still work, and unauthenticated ones get 401).
+    if (req.path.startsWith('/media/') && hasValidSessionCookie(req)) {
         return next();
     }
 
@@ -58,13 +110,13 @@ const basicHttpAuth = async (req, res, next) => {
             const username = creds[0];
             const password = creds[1];
 
-            const pathComponents = req.path.split('/');
-            // console.log(pathComponents);
-
             const settings = await getSettingsModel();
             if ((!settings.authCredentials) ||
                 (!settings.authCredentials.user || username === settings.authCredentials.user) &&
                 (!settings.authCredentials.password || password === settings.authCredentials.password)) {
+                // Seed/refresh the media session cookie so same-origin <img>/<video>
+                // loads (which can't carry the Authorization header) are authorized.
+                setSessionCookie(req, res);
                 next();
             } else {
                 res.statusCode = 401;   // or use 403 Forbidden

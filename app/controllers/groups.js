@@ -84,7 +84,10 @@ export const index = async (req, res) => {
         const criteria = {};
         
         if (req.query['string']) {
-            criteria['name'] = new RegExp(req.query['string'], "i");
+            // Escape regex metacharacters so the query is a literal substring
+            // match — prevents regex injection / ReDoS from user input.
+            const escaped = req.query['string'].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            criteria['name'] = new RegExp(escaped, "i");
         }
         
         if (req.query['all']) {
@@ -163,11 +166,15 @@ export const updateObject = async (req, res) => {
         // Save the object
         await object.save();
         
-        // If deploying, update lastDeployed and call deploy
+        // If deploying, run the deploy first, then persist what it produced.
+        // deploy() drops assets missing from the media folder, appends the
+        // brand/special files and computes assetsValidity, so these fields must
+        // be written after it runs (as the pre-ES6 code did) — otherwise the
+        // stored deployedAssets/assetsValidity are stale.
         if (req.body.deploy) {
+            await serverMain.deploy(installation, object);
             object.lastDeployed = Date.now();
-            
-            // Update specific fields in database
+
             await Group.updateOne(
                 { _id: object._id },
                 {
@@ -179,9 +186,6 @@ export const updateObject = async (req, res) => {
                     }
                 }
             );
-            
-            // Deploy to players (assuming this returns a promise or is async)
-            await serverMain.deploy(installation, object);
         }
         
         return rest.sendSuccess(res, 'updated Group details', object);

@@ -4,23 +4,6 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
 
 Run the `npm install` command after `git pull` and before starting the server
 
-## Docker image available - beta
-- Install docker from https://docs.docker.com/get-docker/
-- Install git if needed & issue `git clone https://github.com/colloqi/pisignage-server`
-
-   OR
-
-   just get the file https://raw.githubusercontent.com/colloqi/pisignage-server/master/docker-compose.yml
-
-- Change to your pisignage working directory (if you're not already there, eg. C:\Users\<USERNAME>\pisignage-server) and run `docker compose up -d`
-- Use the url http://localhost:3000  to launch web application
-- Default credentials: Username:Password = `pi:pi`
-- To generate your own Docker image, please goto docker-build branch and modify Dockerfile. Also use `docker-compose.prod.yml`
-
-
-#### Changes to Docker application from server code (it is built in docker-build branch and you could watch the different as well Dockerfile there)
-1. media and data dir are docker volumes (instead of ../media and ./data)
-2. in config/end/production.js: https is false and port is 3000, db is changed to pisignage-server-dev for compatibility and mongo network is changed from 127.0.0.1 to mongo
 
 ## Recommended Server configuration
 - Intel CPU based VM or server

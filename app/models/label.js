@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 
 const LabelSchema= new Schema({
-    name:                   {type: String,unique: true, index: true, required: true, minlength: 1},
+    name:                   {type: String,unique: true, required: true, minlength: 1},
     mode:                   {type: String},
 
     createdAt:              {type: Date, default: Date.now},
@@ -28,7 +28,7 @@ LabelSchema.statics = {
             .sort({ name: 1 })
             .skip(options.perPage * options.page)
             .limit(options.perPage)
-            .exec();  // ✅ Explicitly returns a Promise
+            .exec();  
     }
 }; 
 

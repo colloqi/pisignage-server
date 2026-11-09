@@ -12,6 +12,11 @@ import { Asset } from '../models/assets.js';
 import config from '../../config/config.js';
 import * as rest from '../others/restware.js';
 
+// Path-traversal guard: media operations only ever use a bare filename, so
+// reject anything that isn't its own basename ("../", "a/b", absolute paths…).
+const safeName = (name) =>
+    typeof name === 'string' && name.length > 0 && name === path.basename(name);
+
 
 export const index = async (req, res) => {
     try {
@@ -111,7 +116,7 @@ export const createFiles = async (req, res) => {
             // Step 7: Modify custom HTML layouts if needed
             if (filename.match(/^custom_layout.*html$/i)) {
                 try {
-                    fileUtil.modifyHTML(config.mediaDir, filename);
+                    await fileUtil.modifyHTML(config.mediaDir, filename);
                 } catch (htmlErr) {
                     console.error(`HTML modification error for ${filename}:`, htmlErr);
                     // Non-fatal, continue
@@ -176,7 +181,6 @@ export const getFileType = (file) => {
         { pattern: config.pdffileRegex, type: 'pdf' },
         { pattern: config.txtFileRegex, type: 'text' },
         { pattern: config.radioFileRegex, type: 'radio' },
-        { pattern: config.gcalRegex, type: 'gcal' },
         { pattern: config.zipfileRegex, type: 'zip' },
         { pattern: config.repofileRegex, type: 'repo' },
         { pattern: config.localFolderRegex, type: 'local' }
@@ -194,7 +198,8 @@ export const getFileType = (file) => {
 export const getFileDetails = async (req, res) => {
     try {
         const fileName = req.params.file;
-        
+        if (!safeName(fileName)) return rest.sendError(res, 'Invalid file name');
+
         // Step 1: Get file stats from filesystem
         let fileData;
         try {
@@ -242,6 +247,7 @@ export const getFileDetails = async (req, res) => {
 export const deleteFile = async (req, res) => {
     try {
         const fileName = req.params.file;
+        if (!safeName(fileName)) return rest.sendError(res, 'Invalid file name');
         let thumbnailPath = null;
         
         // Step 1: Delete main file from disk (critical - stops if fails)
@@ -301,6 +307,9 @@ export const updateAsset = async (req, res) => {
         if (req.body.newname) {
             const oldName = req.params.file;
             const newName = req.body.newname;
+            if (!safeName(oldName) || !safeName(newName)) {
+                return rest.sendError(res, 'Invalid file name');
+            }
             const oldPath = path.join(config.mediaDir, oldName);
             const newPath = path.join(config.mediaDir, newName);
             
@@ -444,6 +453,7 @@ export const updateAsset = async (req, res) => {
 
 
 export const createAssetFileFromContent = async (name, data) => {
+    if (!safeName(name)) throw new Error('Invalid asset file name');
     const file = path.resolve(config.mediaDir, name);
     await fs.writeFile(file, JSON.stringify(data, null, 4));
 };
@@ -459,6 +469,7 @@ export const createLinkFile = async (req, res) => {
         }
         
         const fileName = `${details.name}${details.type}`;
+        if (!safeName(fileName)) return rest.sendError(res, 'Invalid link name');
         const filePath = path.join(config.mediaDir, fileName);
         
         // Step 1: Write file to disk
@@ -480,6 +491,7 @@ export const createLinkFile = async (req, res) => {
 export const getLinkFileDetails = async (req, res) => {
     try {
         const fileName = req.params.file;
+        if (!safeName(fileName)) return rest.sendError(res, 'Invalid file name');
         const filePath = path.join(config.mediaDir, fileName);
         const retData = {};
         

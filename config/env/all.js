@@ -51,6 +51,5 @@ export default {
     radioFileRegex:         /\.radio$/i,
     brandRegex:             /^(brand_intro|brand_intro_portrait)\./i,
     nestedPlaylist:         /^__/i,
-    gcalRegex: /\.gcal$/i,
     systemAssets: ["_system_notice.html"]
 };

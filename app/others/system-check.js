@@ -40,8 +40,10 @@ export default async function systemCheck() {
         }
     }
 
-    // Check 3: Verify ffprobe (ffmpeg) is installed
+    // Check 3: Verify ffmpeg AND ffprobe are installed (they ship together, but
+    // check both — ffmpeg does the transcode, ffprobe reads metadata).
     try {
+        await execAsync('ffmpeg -version');
         await execAsync('ffprobe -version');
     } catch (err) {
         console.log('****************************************************************');

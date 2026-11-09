@@ -37,6 +37,8 @@ const newPlaylistTemplate = {
     assets: [],
     layout: '1',
     templateName: 'custom_layout.html',
+    videoWindow: null,
+    zoneVideoWindow: {},
     schedule: {},
     version: 0
 };
@@ -75,11 +77,23 @@ const writePlaylistFile = async (filePath, data) => {
     await fs.writeFile(filePath, JSON.stringify(data, null, 4), 'utf8');
 };
 
+// Helper: Check if a playlist file already exists
+const playlistExists = async (filePath) => {
+    try {
+        await fs.access(filePath);
+        return true;
+    } catch {
+        return false;
+    }
+};
+
 // Create new playlist
 export const newPlaylist = async (playlist) => {
     const file = path.join(config.mediaDir, getPlaylistFile(playlist));
+    // Deep clone so each playlist gets its own nested settings/assets/schedule
+    // objects instead of sharing references with the module-level template.
     const data = {
-        ...newPlaylistTemplate,
+        ...structuredClone(newPlaylistTemplate),
         name: playlist
     };
 
@@ -176,9 +190,18 @@ export const createPlaylist = async (req, res) => {
         return sendError(res, 'Missing playlist name in request');
     }
 
-    const playlistName = req.body.file.replace(config.filenameRegex, '');
+    const playlistName = req.body.file.replace(config.filenameRegex, '').trim();
+
+    if (!playlistName) {
+        return sendError(res, 'Invalid playlist name');
+    }
 
     try {
+        const file = path.join(config.mediaDir, getPlaylistFile(playlistName));
+        if (await playlistExists(file)) {
+            return sendError(res, `Playlist "${playlistName}" already exists`);
+        }
+
         const data = await newPlaylist(playlistName);
         return sendSuccess(res, 'Playlist Created', data);
     } catch (err) {

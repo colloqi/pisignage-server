@@ -18,11 +18,20 @@ const sendResponse = (res, err) => {
 
 export const storeDetails = async (req, res) => {
     const files = req.body.files;
+    // Guard before responding: without this, a missing/non-array `files` would
+    // throw in the for-loop *after* the response is sent → unhandled rejection.
+    if (!Array.isArray(files)) {
+        return sendError(res, 'No files to process');
+    }
     sendResponse(res);
 
     for (const fileObj of files) {
-        const filename = fileObj.name.replace(config.filenameRegex, '');
+        // Declared outside the try so the catch can log it — referencing a
+        // try-scoped const there threw a ReferenceError (an unhandled rejection
+        // after the response was already sent) whenever processFile failed.
+        let filename = fileObj?.name;
         try {
+            filename = fileObj.name.replace(config.filenameRegex, '');
             await processFile(filename, fileObj.size, req.body.categories);
         } catch (err) {
             console.error(`processFile failed for ${filename}:`, err);
