@@ -26,8 +26,12 @@ export const storeDetails = async (req, res) => {
     sendResponse(res);
 
     for (const fileObj of files) {
+        // Declared outside the try so the catch can log it — referencing a
+        // try-scoped const there threw a ReferenceError (an unhandled rejection
+        // after the response was already sent) whenever processFile failed.
+        let filename = fileObj?.name;
         try {
-            const filename = fileObj.name.replace(config.filenameRegex, '');
+            filename = fileObj.name.replace(config.filenameRegex, '');
             await processFile(filename, fileObj.size, req.body.categories);
         } catch (err) {
             console.error(`processFile failed for ${filename}:`, err);

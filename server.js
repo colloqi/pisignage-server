@@ -135,12 +135,17 @@ startSIONew(ioNew);
 startSIOWebsocketOnly(ioNewWebsocketOnly);
 
 // Bootstrap WebSocket
-const wss = new WebSocketServer({ server, path: "/websocket" });
+// noServer: a WebSocketServer attached with { server, path } answers every
+// upgrade for any OTHER path with "400 Bad Request" — on top of socket.io's own
+// "101 Switching Protocols" for /newsocket.io and /wssocket.io — which corrupts
+// those websocket connections ("Invalid frame header"; v2 UI realtime offline,
+// players stuck on polling). Route only our own paths to it instead.
+const wss = new WebSocketServer({ noServer: true });
 startSIOWebSocket(wss);
 
 server.on('upgrade', (request, socket, head) => {
     const pathname = urlParse(request.url).pathname;
-    if (pathname === '/WebSocket') {
+    if (pathname === '/websocket' || pathname === '/WebSocket') {
         wss.handleUpgrade(request, socket, head, (ws) => {
             wss.emit('connection', ws, request);
         });
