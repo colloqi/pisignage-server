@@ -1,5 +1,8 @@
 # Installing pisignage-server (open-source) on Debian
 
+> This guide is for a **new install** of the `v2-beta` branch. To move an
+> existing server from `master`, see [MIGRATION.md](MIGRATION.md).
+
 ## 1. System packages
 ```bash
 sudo apt-get update
@@ -58,7 +61,7 @@ mongod --version                  # db version v8.0.x
 ## 4. Get the code
 ```bash
 mkdir -p ~/pisignage && cd ~/pisignage
-git clone -b es6-mongodb8 https://github.com/santhoshmaderi/pisignage-server.git
+git clone -b v2-beta https://github.com/colloqi/pisignage-server.git
 cd pisignage-server
 ```
 

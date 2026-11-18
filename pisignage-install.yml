@@ -22,7 +22,7 @@
 # Override defaults with -e, e.g.:
 #   -e app_user=signage         (run under a different account)
 #   -e install_dir=/opt/pisignage   (install somewhere other than the home dir)
-#   -e repo_branch=es6-mongodb8 -e app_port=3000
+#   -e repo_branch=v2-beta -e app_port=3000
 #
 # Requires Ansible on this machine:
 #   Debian/Ubuntu: sudo apt-get install -y ansible
@@ -46,8 +46,8 @@
     # under an existing account with -e app_user=<name>.
     app_user: pisignage
     install_dir: "/home/{{ app_user }}"
-    repo_url: "https://github.com/santhoshmaderi/pisignage-server.git"
-    repo_branch: "es6-mongodb8"
+    repo_url: "https://github.com/colloqi/pisignage-server.git"
+    repo_branch: "v2-beta"
 
     # --- Versions / runtime --------------------------------------------------
     node_major: "20"

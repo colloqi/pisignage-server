@@ -11,7 +11,18 @@ Run the `npm install` command after `git pull` and before starting the server
 - 30GB+ SSD or hard disk
 - Linux based OS
 
-## Upgrading to latest from existing versions**
+## v2-beta (this branch)
+
+This is the [`v2-beta`](https://github.com/colloqi/pisignage-server/tree/v2-beta) branch: ES modules, Node.js 20, MongoDB 8.0 and the new v2 React UI.
+It is a beta; a few installations have migrated and testing is still in progress.
+
+- **New install:** follow [INSTALL-debian.md](INSTALL-debian.md), or run the one-shot Ansible installer [pisignage-install.yml](pisignage-install.yml).
+- **Migrating an existing server from `master`:** follow [MIGRATION.md](MIGRATION.md). Take a backup first; the production database name changes from `pisignage-server-dev` to `pisignage-server-prod`.
+- **Docker:** the Dockerfile and compose files are not yet updated for Node.js 20 / MongoDB 8.0; use the native install for now.
+
+The sections below describe the older `master` branch and are kept for reference.
+
+## Upgrading to latest from existing versions (master branch)
 
 1. Change to pisignage-server directory where you have pulled the code last time
 2. Issue the command `git pull origin master`
