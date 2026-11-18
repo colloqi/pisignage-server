@@ -1,161 +1,164 @@
-# pisignage-server
+# pisignage-server (v2-beta)
 
-Server code to manage piSignage players in a LAN or Private Network or to setup your own server!
+Server code to manage piSignage players in a LAN or private network, or to set up your own server.
 
-Run the `npm install` command after `git pull` and before starting the server
+This is the [`v2-beta`](https://github.com/colloqi/pisignage-server/tree/v2-beta) branch: Node.js 20, MongoDB 8.0 and the new v2 web UI.
+It is a beta; a few installations are already running it and testing is still in progress.
 
+## Recommended server configuration
 
-## Recommended Server configuration
 - Intel CPU based VM or server
 - 2GB minimum memory
 - 30GB+ SSD or hard disk
 - Linux based OS
 
-## v2-beta (this branch)
+## Requirements
 
-This is the [`v2-beta`](https://github.com/colloqi/pisignage-server/tree/v2-beta) branch: ES modules, Node.js 20, MongoDB 8.0 and the new v2 React UI.
-It is a beta; a few installations have migrated and testing is still in progress.
+- Node.js 20 LTS
+- MongoDB 8.0
+- ffmpeg and ffprobe (video conversion and metadata)
+- ImageMagick (thumbnails)
+- Git
 
-- **New install:** follow [INSTALL-debian.md](INSTALL-debian.md), or run the one-shot Ansible installer [pisignage-install.yml](pisignage-install.yml).
-- **Migrating an existing server from `master`:** follow [MIGRATION.md](MIGRATION.md). Take a backup first; the production database name changes from `pisignage-server-dev` to `pisignage-server-prod`.
-- **Docker:** `docker compose up -d --build` builds the image (Node.js 20) and starts it with MongoDB 8.0. For an existing Docker install, follow the Docker section of [MIGRATION.md](MIGRATION.md) first; MongoDB 8.0 cannot open the older data volume directly.
+## Install
 
-The sections below describe the older `master` branch and are kept for reference.
+Pick one of the three options.
 
-## Upgrading to latest from existing versions (master branch)
+### Option 1: one-shot installer (Debian / Ubuntu / RHEL family)
 
-1. Change to pisignage-server directory where you have pulled the code last time
-2. Issue the command `git pull origin master`
-   ***IMPORTANT: If you are updating from before 24 Nov 2016, after git pull, please change the uri variable in config/env/development.js to 'mongodb://localhost/pisignage-dev' to retain the old data***
-3. Apply your code changes if any
-4. rm package-lock.json
-5. rm -rf node_modules (entire directory and its contents)
-6. Do "npm install"
-7. Start the pisignage-server and go to url localhost:3000
-8. Enter the username of yours at pisignage.com (not the email ID) (or change under settings, otherwise player license will not be enabled)
-9. Default authentication credentials for player webUI has been changed to pi:pi
-10. New settings tab has been added for settings instead of config/env/all.js file
-11. New player software upgrades are automatically pulled to the server and you can upgrade from the local server itself
-12. Upload new licenses bought to the local server so that they are automatically installed in the pi
-13. Authentication has been added to the server UI which can be changed under settings (default pi:pi)
+[pisignage-install.yml](pisignage-install.yml) installs Node.js, MongoDB and the other packages, clones this branch, and runs the server as a systemd service.
 
-## Getting Started
+```bash
+sudo apt-get install -y ansible        # RHEL family: sudo dnf install -y ansible-core
+ansible-playbook pisignage-install.yml -K
+```
 
+The options are described at the top of the file.
 
-    Note: Instructions may change, please refer to the respective package/OS websites for the latest,
-            Write to us at support@pisignage.com for help.
+### Option 2: manual install
 
+Step-by-step instructions are in [INSTALL-debian.md](INSTALL-debian.md). In short, once Node.js 20, MongoDB 8.0, ffmpeg and ImageMagick are installed:
 
-1. Install mongodb - open-source document database
+```bash
+mkdir -p ~/pisignage && cd ~/pisignage
+git clone -b v2-beta https://github.com/colloqi/pisignage-server.git
+mkdir -p media
+cd pisignage-server
+npm install
+NODE_ENV=production PORT=3000 node server.js
+```
 
-    Refer mongodb install guides to install mongodb.
+For Windows and macOS, install the same requirements from their own websites
+([MongoDB](https://www.mongodb.com/docs/manual/installation/), [Node.js](https://nodejs.org/en/download),
+[ffmpeg](https://www.ffmpeg.org/download.html), [ImageMagick](https://imagemagick.org/script/download.php))
+and then run the commands above.
 
-   - Windows: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
-   - Linux: https://docs.mongodb.com/manual/administration/install-on-linux/
-   - Mac OS X: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/
+To start the server on boot, use pm2 (see [INSTALL-debian.md](INSTALL-debian.md)) or a systemd service (see [Init service example for systemd.md](<Init service example for systemd.md>)).
 
-2. Install node.js and npm - open source server framework
+### Option 3: Docker
 
-   https://nodejs.org/en/download/package-manager/
+```bash
+git clone -b v2-beta https://github.com/colloqi/pisignage-server.git
+cd pisignage-server
+docker compose up -d --build
+```
 
-3. Install ffmpeg - video converter
+This builds the server image and starts it together with MongoDB 8.0. More detail is in [Creating Docker Image.md](<Creating Docker Image.md>).
 
-   https://www.ffmpeg.org/download.html
+## Migrating an existing server
 
-4. Install imagemagick - tool for image edit, conversion
+If you already run an older pisignage-server and want to keep its data, follow [MIGRATION.md](MIGRATION.md) instead of a fresh install. Take a backup first. The guide covers both native and Docker installs.
 
-    https://www.imagemagick.org/script/download.php
+## Updating
 
-5. Install Git -  distributed version control system
+To pick up newer commits on this branch:
 
-    https://git-scm.com/downloads
+```bash
+cd ~/pisignage/pisignage-server
+git pull
+npm install
+```
 
-5. Clone this repository and run the following commands
+Then restart the server (for example `pm2 restart pisignage` or `sudo systemctl restart pisignage`).
+For Docker, run `git pull` followed by `docker compose up -d --build`.
 
-    - git clone https://github.com/colloqi/pisignage-server
-    - mkdir media
-    - mkdir media/_thumbnails
-    - cd pisignage-server
-    - npm install
+## First-time setup
 
-6. Currently network port is configured as 3000 in local server. Modify in the file `config/env/development.js` for the port
+1. Open Chrome at [http://localhost:3000](http://localhost:3000) or `http://[your-ip]:3000` (for example 192.168.1.30:3000). It opens the v2 UI.
+2. Log in with the default credentials `pi` / `pi`, and change them under Settings.
+3. Under Settings, set the username to your sign-in username at pisignage.com (it is **not** your email id). Player licenses are not enabled otherwise.
+4. Download your license files from email or from pisignage.com and upload them under Settings, so that they are installed on the players automatically.
+5. New player software releases are pulled to the server automatically, and you can upgrade players from the server.
 
-7. Run node server with `node server.js`
+## Configuration
 
-8. Open Chrome browser and check at [http://localhost:3000](http://localhost:3000) **OR** `http://[your-ip]:3000` (ex: 192.168.1.30:3000, 10.50.16.110:3000)
+| Setting | How to change it | Default |
+|---|---|---|
+| Port | `PORT` environment variable | `3000` |
+| Mode | `NODE_ENV` environment variable (`production` or `development`) | `development` |
+| MongoDB connection | `MONGOLAB_URI` environment variable | `mongodb://127.0.0.1:27017/pisignage-server-prod` in production, `pisignage-server-dev` in development |
+| Media folder | `media`, next to the `pisignage-server` folder | created on startup |
+| Data folder (licenses, releases, sync folders) | `data`, inside the `pisignage-server` folder | created on startup |
 
-9. Do the following configuration before you start
-    - Under settings, configure the username to be same as that of your signin username at pisignage.com (it is **not** your email id)
-    - Download the license files either from email or from pisignage.com, upload them to your local server under settings
-    - You can upgrade your players directly from your local server
-    - authentication is pi & pi, you can change this under settings
+The REST API is at `http://[your-ip]:3000/api/...` and uses HTTP Basic authentication with the same credentials as the UI.
+The earlier AngularJS UI is still bundled at `http://[your-ip]:3000/index.html`.
 
-**NOTE:** Please make sure **mongod** process is running and **/data/db** ownership is changed to regular user. If not use, ``` sudo chown -R your-username:user-group /data```
-### Configure Pi
+## Configure the players
 
-    In player settings, PORT number should be part of server name for e.g. 192.168.1.12:3000
+In player settings, the port number must be part of the server name, for example `192.168.1.12:3000`.
 
-1. Download the pisignage player software and prepare SD card as per [instructions](https://github.com/colloqi/piSignage#method-1-download-image-and-prepare-the-sd-card)
+1. Download the pisignage player software and prepare the SD card as per the [instructions](https://github.com/colloqi/piSignage#method-1-download-image-and-prepare-the-sd-card).
 
-2. After player boots, configure admin and media server to your local address and port using one of the below methods
+2. After the player boots, set the admin and media server to your server address and port using one of these methods:
 
-   a. Using the webUI of the player at http://[player IP]:8000/settings
+   a. Using the webUI of the player at `http://[player IP]:8000/settings`
 
-   b. Connect Keyboard and press Ctrl-N or F6
-      * Change config and media server to `http://[your server ip]:port` (ex: 192.168.1.30:3000, 10.50.16.110:3000)
-      * Open terminal `ctrl+Alt+ t` and delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory
+   b. Connect a keyboard and press Ctrl-N or F6
+      * Change config and media server to `http://[your server ip]:port` (for example 192.168.1.30:3000)
+      * Open a terminal with `ctrl+Alt+t` and delete any existing `_config.json` and `_settings.json` files from the `/home/pi/piSignagePro/config` directory
 
    c. Connect through ssh
-      * Edit `/home/pi/piSignagePro/package.json` for admin and media server configuration
-      * delete any existing _config.json and _settings.json file from `/home/pi/piSignagePro/config` directory
+      * Edit `/home/pi/piSignagePro/package.json` for the admin and media server configuration
+      * Delete any existing `_config.json` and `_settings.json` files from the `/home/pi/piSignagePro/config` directory
 
 ## Features
 
 1. Player management
     - Auto discovery of players in a network
-    - Monitor Players
+    - Monitor players
 
 2. Group management - create groups and assign players to groups
     - Display settings - 1080p/720p and landscape or portrait mode
     - Deploy default playlist, scheduled playlists and advt playlist
-    - Assign Players to Groups
+    - Assign players to groups
 
-3. Assets Management
-    - Upload assets (video,mp3,html/zip,images, links, google calendar feed)
+3. Assets management
+    - Upload assets (video, mp3, html/zip, images, links)
     - Videos are automatically converted to mp4 using ffmpeg
-    - Thumbnail creation for videos and video metadata extraction to store in data base
+    - Thumbnail creation for videos, and video metadata extraction to store in the database
     - Add labels to manage assets
-    - View Details of files
-    - rename or delete files
-    - view assets locally
-    - auto label creation for uploaded time (in coming releases)
+    - View details of files
+    - Rename or delete files
+    - View assets locally
 
 4. Playlist management
     - Create, rename or delete playlists
-    - Assign assets & drag to change order
-    - assign duration for non-video assets
-    - select a layout to show (1,2a,2b,3a,3b,4,4b,2ab)
-    - Enable ticker & set Ticker text
-    - Make it ad playlist with configurable interval timer
+    - Assign assets and drag to change order
+    - Assign duration for non-video assets
+    - Select a layout to show (1, 2a, 2b, 3a, 3b, 4, 4b, 2ab)
+    - Enable ticker and set ticker text
+    - Make it an ad playlist with a configurable interval timer
 
+## Points to remember
 
-### Points to remember
+1. The server needs ffmpeg, ffprobe and ImageMagick. Without them videos cannot be uploaded and thumbnails are not created. The startup log reports whether the system check passed.
 
-1. angularjs-dropdown-multiselect is taken directly from
-    https://github.com/dotansimha/angularjs-dropdown-multiselect/pull/23/files instead of bower (for close-on-select to work)
+2. The server creates the `media` and `media/_thumbnails` directories on startup. If it cannot (for example because of permissions), create them manually; thumbnails are not created otherwise.
 
-2. Requires following programs to work
-    - ffmpeg >= 0.9  (in certain OS, these may have to be compiled since the package does not exist,
-      please see the issue #9)
-    - ffprobe associated with ffmpeg needed to convert videos
-    - imagemagick  creates thumbnails
+3. Make sure the **mongod** process is running before starting the server.
 
-3. Two directories are created by the program ../media and ../media/_thumbnails. If these directories are not created server won't work as expected (for e.g. thumbnails won't be created if _thumbnails directory does not exit). In that case create those directories manually.
+4. You can also manage a player directly from a browser at `http://[player IP]:8000`.
 
+5. Make sure the installation name under Settings is the same as your username (not email) at pisignage.com.
 
-4. You can also manage players using Browser(http://playerip:8000) or downloading Chrome app
-
-5. Make sure installation under settings page is same as your username (not email) at pisignage.com
-
-
-***Please raise an issue for problems or send us email at support@pisignage.com***
+***Please raise an issue for problems or send us an email at support@pisignage.com***
