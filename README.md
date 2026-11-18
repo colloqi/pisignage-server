@@ -5,6 +5,13 @@ Server code to manage piSignage players in a LAN or private network, or to set u
 This is the [`v2-beta`](https://github.com/colloqi/pisignage-server/tree/v2-beta) branch: Node.js 20, MongoDB 8.0 and the new v2 web UI.
 It is a beta; a few installations are already running it and testing is still in progress.
 
+> [!IMPORTANT]
+> **Already running pisignage-server? Do not install or update over it yet.**
+> 1. **Take a backup first** of your database, your `media` folder and your `data` folder.
+> 2. **Read [MIGRATION.md](MIGRATION.md) fully before you proceed**, then follow its steps.
+>
+> This branch needs MongoDB 8.0, which cannot open the data files of older MongoDB versions, and it uses a different database name in production mode. Without the migration steps, the server starts with no groups, playlists or players.
+
 ## Recommended server configuration
 
 - Intel CPU based VM or server
