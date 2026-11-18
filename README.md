@@ -8,7 +8,7 @@ Server code to manage piSignage players in a LAN or Private Network or to setup 
 
 Run the `npm install` command after `git pull` and before starting the server
 
-## Docker image available - beta
+## Docker image available
 - Install docker from https://docs.docker.com/get-docker/
 - Install git if needed & issue `git clone https://github.com/colloqi/pisignage-server`
 
