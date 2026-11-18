@@ -1,7 +1,7 @@
 # Installing pisignage-server (open-source) on Debian
 
 > This guide is for a **new install** of the `v2-beta` branch. To move an
-> existing server from `master`, see [MIGRATION.md](MIGRATION.md).
+> existing (older) server and keep its data, see [MIGRATION.md](MIGRATION.md).
 
 ## 1. System packages
 ```bash

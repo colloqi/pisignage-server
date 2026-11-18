@@ -1,6 +1,6 @@
 # Migrating an existing pisignage-server to v2-beta (MongoDB 8.0)
 
-This guide moves an existing install (the `master` branch) to the
+This guide moves an existing (older) pisignage-server install to the
 [`v2-beta`](https://github.com/colloqi/pisignage-server/tree/v2-beta) branch.
 
 > **Beta:** a few installations have already migrated, but v2-beta is still
@@ -9,7 +9,7 @@ This guide moves an existing install (the `master` branch) to the
 
 ## What changes
 
-| | `master` | `v2-beta` |
+| | Older server | `v2-beta` |
 |---|---|---|
 | Node.js | 8+ | 20 LTS |
 | MongoDB | 4.4 / 5.0 | 8.0 |

@@ -14,10 +14,10 @@ Open http://localhost:3000 (default login pi / pi).
 - `docker-compose.prod.yml` is the same stack without an image tag: `docker compose -f docker-compose.prod.yml up -d --build`
 - Moving an existing Docker install: see the Docker section of [MIGRATION.md](MIGRATION.md).
 
-## Older notes (master branch)
+## Older notes
 
 1. cd pisignage-server    //assuming pisignage-server is already installed
-2. git pull origin master //get the latest
+2. git pull //get the latest
 3. docker build --tag pisignage-server .     //build a new container image
 4. docker images
 5. docker run -dp 3000:3000 pisignage-server   //detached, port mapping (will not run needs mongodb)
