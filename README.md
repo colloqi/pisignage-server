@@ -1,7 +1,7 @@
 # pisignage-server
 
 > [!IMPORTANT]
-> **A new version is under development in the [`v2-beta`](https://github.com/ariemtech/pisignage-server/tree/v2-beta) branch.**
+> **A new version is under development in the [`v2-beta`](https://github.com/colloqi/pisignage-server/tree/v2-beta) branch.**
 > The `master` branch holds the current stable release and will receive only critical fixes. New features and pull requests should target `v2-beta`. Try it out and report issues; feedback is welcome.
 
 Server code to manage piSignage players in a LAN or Private Network or to setup your own server!
