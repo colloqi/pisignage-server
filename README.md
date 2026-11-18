@@ -18,7 +18,7 @@ It is a beta; a few installations have migrated and testing is still in progress
 
 - **New install:** follow [INSTALL-debian.md](INSTALL-debian.md), or run the one-shot Ansible installer [pisignage-install.yml](pisignage-install.yml).
 - **Migrating an existing server from `master`:** follow [MIGRATION.md](MIGRATION.md). Take a backup first; the production database name changes from `pisignage-server-dev` to `pisignage-server-prod`.
-- **Docker:** the Dockerfile and compose files are not yet updated for Node.js 20 / MongoDB 8.0; use the native install for now.
+- **Docker:** `docker compose up -d --build` builds the image (Node.js 20) and starts it with MongoDB 8.0. For an existing Docker install, follow the Docker section of [MIGRATION.md](MIGRATION.md) first; MongoDB 8.0 cannot open the older data volume directly.
 
 The sections below describe the older `master` branch and are kept for reference.
 

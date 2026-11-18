@@ -1,3 +1,21 @@
+## v2-beta quick start (Node.js 20 + MongoDB 8.0)
+
+```
+git clone -b v2-beta https://github.com/colloqi/pisignage-server.git
+cd pisignage-server
+docker compose up -d --build          # builds the image and starts MongoDB 8.0 + the server
+docker compose logs -f pisignage-server
+```
+
+Open http://localhost:3000 (default login pi / pi).
+
+- Volumes: `media` (assets) at `/media`, `data` (licenses, releases, sync folders) at `/pisignage-server/data`, `mongodb8` / `mongodb8_config` for MongoDB.
+- The server reaches MongoDB through `MONGOLAB_URI` (set in the compose files).
+- `docker-compose.prod.yml` is the same stack without an image tag: `docker compose -f docker-compose.prod.yml up -d --build`
+- Moving an existing Docker install: see the Docker section of [MIGRATION.md](MIGRATION.md).
+
+## Older notes (master branch)
+
 1. cd pisignage-server    //assuming pisignage-server is already installed
 2. git pull origin master //get the latest
 3. docker build --tag pisignage-server .     //build a new container image

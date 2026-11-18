@@ -1,25 +1,36 @@
-version: '3'
+# pisignage-server v2-beta, always built from this checkout (no image tag):
+#
+#   docker compose -f docker-compose.prod.yml up -d --build
+#
+# The MongoDB volumes are named mongodb8* on purpose: MongoDB 8.0 cannot open
+# data files written by 4.4 / 5.0, so the older "mongodb" volume is left
+# untouched. To bring existing data across, see MIGRATION.md (Docker section).
 services:
   mongo:
-    image: mongo:4.4
+    image: mongo:8.0
+    restart: unless-stopped
     ports:
       - 27017:27017
     volumes:
-      - mongodb:/data/db
-      - mongodb_config:/data/configdb
+      - mongodb8:/data/db
+      - mongodb8_config:/data/configdb
   pisignage-server:
     build:
       context: .
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - MONGOLAB_URI=mongodb://mongo:27017/pisignage-server-prod
     ports:
       - 3000:3000
     volumes:
       - media:/media
-      - data:/data
+      - data:/pisignage-server/data
     depends_on:
       - mongo
 
 volumes:
-  mongodb:
-  mongodb_config:
+  mongodb8:
+  mongodb8_config:
   media:
   data:

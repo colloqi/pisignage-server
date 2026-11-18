@@ -1,1 +1,8 @@
 node_modules
+.git
+.idea
+.claude
+# runtime data lives in the "data" volume, not in the image
+data/licenses
+data/releases
+data/sync_folders

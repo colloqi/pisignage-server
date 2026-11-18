@@ -108,6 +108,43 @@ The log should show `MongoDB connected successfully` followed by
   `db.players.countDocuments()`, and the same for `groups` and `assets`.
 - Deploy to one group and confirm a player picks it up.
 
+## Docker installs
+
+The compose files on this branch run Node.js 20 and MongoDB 8.0. MongoDB 8.0
+uses new volumes (`mongodb8`, `mongodb8_config`), so the old `mongodb` volume
+is left untouched and remains available for rollback. The `media` and `data`
+volumes are reused as they are.
+
+Run these from the directory that holds your compose file, so the same compose
+project (and its volumes) is used throughout.
+
+```bash
+# 1. With the OLD stack still running, dump the database to a file
+docker compose exec -T mongo mongodump --archive --db pisignage-server-dev > pisignage-dump.archive
+
+# 2. Stop the old stack (volumes are kept)
+docker compose down
+
+# 3. Switch to v2-beta
+git fetch && git checkout v2-beta
+
+# 4. Start only MongoDB 8.0 and restore into the new database name
+docker compose up -d mongo
+docker compose exec -T mongo mongorestore --archive \
+    --nsFrom 'pisignage-server-dev.*' --nsTo 'pisignage-server-prod.*' < pisignage-dump.archive
+
+# 5. Build and start the server
+docker compose up -d --build
+docker compose logs -f pisignage-server
+```
+
+Then verify as in step 7 above.
+
+Inside the container the server reads media from `/media` and data from
+`/pisignage-server/data` (the old image used `/data`); the compose files mount
+the existing `media` and `data` volumes at those paths. The MongoDB connection
+string comes from the `MONGOLAB_URI` environment variable in the compose file.
+
 ## Notes
 
 - **Keep the same server IP and port** so players reconnect without being
@@ -115,8 +152,6 @@ The log should show `MongoDB connected successfully` followed by
 - **Stricter validation:** players need a 16-character `cpuSerialNumber`, and
   group and label names are required. Older records that break these rules
   still load but fail when saved.
-- **Docker:** the `Dockerfile` and compose files on this branch still use
-  Node 14 and MongoDB 4.4 / 5.0, so use the native install for now.
 - **Rollback:** stop the new server and start the old install again. On a
   separate machine the old install is untouched. On the same machine, reinstall
   the old MongoDB version and put the old `/var/lib/mongodb` back first.
